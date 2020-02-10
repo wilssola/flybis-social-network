@@ -1,0 +1,47 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    match /feed/{userId} {
+			allow read: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    match /timeline/{userId} {
+			allow read: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    match /followers/{userId} {
+			allow read;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    match /following/{userId} {
+			allow read;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    match /users/{userId} {
+			allow read;
+      allow create: if request.auth.uid != null && isUsernameAvailable(request.resource.data.username);
+      allow update: if (request.auth.uid == userId && request.resource.data.username == resource.data.username) || (request.auth.uid == userId && isUsernameAvailable(request.resource.data.username));      
+    }
+
+    match /usernames/{username} {
+      allow get: if isValidUsername(username);
+    }  
+     
+    match /{document=**} {
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+    
+    function isValidUsername(username){
+      return username.matches('^([a-zA-Z0-9_.]){5,15}$');
+    }
+
+    function isUsernameAvailable(username){
+      return isValidUsername(username) && !exists(/databases/$(database)/documents/usernames/$(username));
+    }    
+  }
+}

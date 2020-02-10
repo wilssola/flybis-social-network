@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Flybis</title>
+</head>
+<body>
+  <script data-ad-client="ca-pub-4246318576696519" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDIXNU9svUBe0mlRBwM3lfTXpoEhnau130",
+      authDomain: "flybis-console.firebaseapp.com",
+      databaseURL: "https://flybis-console.firebaseio.com",
+      projectId: "flybis-console",
+      storageBucket: "flybis-console.appspot.com",
+      messagingSenderId: "659928014742",
+      appId: "1:659928014742:web:40a66fff21f84e8e5247b7",
+      measurementId: "G-LSG3SH3TPD"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    firebase.firestore().settings({
+      cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+    });
+    firebase.firestore().enablePersistence()
+    .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          console.log('Persistence work only in one tab', err);
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence          
+          console.log('Browser not support persistence', err);
+      } else {
+        console.log('Enable persistence results a error', err);
+      }
+  });
+  </script>
+
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>

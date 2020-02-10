@@ -1,0 +1,20 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class ImageNetwork {
+  ImageNetwork._();
+
+  static Widget cachedNetworkImage({
+    imageUrl,
+    placeholder,
+    errorWidget,
+    alignment,
+    fit,
+  }) {
+    throw 'Platform Not Supported';
+  }
+
+  static ImageProvider cachedNetworkImageProvider(url) {
+    throw 'Platform Not Supported';
+  }
+}
