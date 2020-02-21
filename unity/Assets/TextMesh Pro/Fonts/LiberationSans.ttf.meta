@@ -1,22 +1,3 @@
-fileFormatVersion: 2
-guid: e3265ab4bf004d28a9537516768c1c75
-TrueTypeFontImporter:
-  externalObjects: {}
-  serializedVersion: 4
-  fontSize: 16
-  forceTextureCase: -2
-  characterSpacing: 0
-  characterPadding: 1
-  includeFontData: 1
-  fontName: Liberation Sans
-  fontNames:
-  - Liberation Sans
-  fallbackFontReferences: []
-  customCharacters: 
-  fontRenderingMode: 0
-  ascentCalculationMode: 1
-  useLegacyBoundsCalculation: 0
-  shouldRoundAdvanceValue: 1
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:f7176bd490fbfc334588e522c08394e862593288174693c4ebf8e2e603576857
+size 508

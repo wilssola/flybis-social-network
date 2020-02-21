@@ -1,26 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-Widget infoCenterText(String text) {
-  return Center(
-    child: Container(
-      child: Text(text),
-    ),
-  );
-}
-
-showSnackbar(scaffoldKey, String content, {int duration = 4}) {
-  final SnackBar snackbar = SnackBar(
-    content: Text(content),
-    duration: Duration(seconds: duration),
-  );
-  scaffoldKey.currentState.showSnackBar(snackbar);
-}
-
-hideSnackbar(scaffoldKey) {
-  scaffoldKey.currentState.hideCurrentSnackBar();
-}
-
-removeSnackbar(scaffoldKey) {
-  scaffoldKey.currentState.removeCurrentSnackBar();
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:077b0aff5a8784c5bcbeaff16fdf411e05ed110f7738345d2fbd6f08a0a9d9af
+size 621

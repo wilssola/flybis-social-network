@@ -1,14 +1,3 @@
-{
-  "compilerOptions": {
-    "lib": ["es6", "dom"],
-    "module": "commonjs",
-    "noImplicitReturns": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "target": "es6",
-    "esModuleInterop": true,
-    "moduleResolution": "node"
-  },
-  "compileOnSave": true,
-  "files": ["src/index.ts"]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ea0a0f3b02f84f9fbd60cb9fbbb7d8dcab0630d00d3d9953f792a596dfb2ee49
+size 294

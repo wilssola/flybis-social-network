@@ -1,6 +1,3 @@
-{
-  "rules": {
-    ".read": "true",
-    ".write": "false"
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:d4956ee96fd38ed1484122b0c80410d99be073069cecf5f68207e97caeb35241
+size 63

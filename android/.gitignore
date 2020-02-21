@@ -1,7 +1,3 @@
-gradle-wrapper.jar
-/.gradle
-/captures/
-/gradlew
-/gradlew.bat
-/local.properties
-GeneratedPluginRegistrant.java
+version https://git-lfs.github.com/spec/v1
+oid sha256:838c1d9cdb7396c40ce48e4bd2f2f3f571346b04ecb7f06b719911204d422e87
+size 117

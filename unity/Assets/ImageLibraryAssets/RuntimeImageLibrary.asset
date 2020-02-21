@@ -1,27 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
-  m_Name: RuntimeImageLibrary
-  m_EditorClassIdentifier: 
-  m_GuidLow: 4771487299635088638
-  m_GuidHigh: 16366741093305614720
-  m_Images:
-  - m_SerializedGuid:
-      m_GuidLow: 5238647376842116937
-      m_GuidHigh: 14837882371889862542
-    m_SerializedTextureGuid:
-      m_GuidLow: 1492965247862116613
-      m_GuidHigh: 15569665648960036459
-    m_Size: {x: 0.1, y: 0.1}
-    m_SpecifySize: 1
-    m_Name: Unity Logo
-    m_Texture: {fileID: 0}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7396c59d15869697b775b21950494fe28d1afb4578c8a7a6bf212876cc508515
+size 791

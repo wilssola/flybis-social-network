@@ -1,8 +1,3 @@
-*.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
-/captures
+version https://git-lfs.github.com/spec/v1
+oid sha256:6718c10081add053293a43c8a7be024ec8956702d2c20899a4c4a6e0a4c32a9c
+size 97

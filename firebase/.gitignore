@@ -1,7 +1,3 @@
-**/node_modules/*
-config.json
-.firebaserc
-.vscode
-.env
-functions/src/lib/*
-firebase-debug.log
+version https://git-lfs.github.com/spec/v1
+oid sha256:2d6cce32a6af0e8c820ecd7120ecab189ae8c3df464a6e4bc404ea6006db4c30
+size 99

@@ -1,21 +1,3 @@
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-Pod::Spec.new do |s|
-  s.name             = 'flutter_native_admob'
-  s.version          = '0.0.1'
-  s.summary          = 'Admob native ad plugin for Flutter'
-  s.description      = <<-DESC
-Admob native ad plugin for Flutter
-                       DESC
-  s.homepage         = 'http://example.com'
-  s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
-  s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
-  s.dependency 'Flutter'
-
-  s.ios.deployment_target = '8.0'
-end
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:3e2883fbf926e8891124d741f84f9845eede7f8b6ccad788bdec865aca5e87c7
+size 680

@@ -1,15 +1,3 @@
-service firebase.storage {
-  match /b/{bucket}/o {
-  
-  	match /{allPaths=**} {
-    	allow read;
-      allow create: if request.auth.uid != null;
-    }
-    
-    match /{userId} {
-      allow update: if request.auth.uid == userId;
-      allow delete: if request.auth.uid == userId;
-    }
-
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ea8646bbd5a632c1500ae9ac6d1929f03edda133c4ce60718d0d7a03c6a7252c
+size 294
