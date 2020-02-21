@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:074058899d5001c61a0a917f54f0b969b728746fbe663f89a2948e613afd3496
-size 313
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess capabilities and perform upgrades etc.
+#
+# This file should be version controlled and should not be manually edited.
+
+version:
+  revision: 18cd7a3601bcffb36fdf2f679f763b5e827c2e8e
+  channel: beta
+
+project_type: app

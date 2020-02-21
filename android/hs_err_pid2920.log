@@ -1,3 +1,231 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:314733bb97c347b27f7f3b7677affa5d9f5e65eae8e676ea1b0150c5e7d8817b
-size 18704
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32744 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:272), pid=2920, tid=0x0000000000002eac
+#
+# JRE version: OpenJDK Runtime Environment (8.0_202-b03) (build 1.8.0_202-release-1483-b03)
+# Java VM: OpenJDK 64-Bit Server VM (25.202-b03 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000001e82c800):  JavaThread "C1 CompilerThread3" daemon [_thread_in_native, id=11948, stack(0x000000001f400000,0x000000001f500000)]
+
+Stack: [0x000000001f400000,0x000000001f500000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C1:  16918  969       3       org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext::isCurrentCharEquals (61 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000001fefb800 JavaThread "Forward input" [_thread_blocked, id=9548, stack(0x0000000021710000,0x0000000021810000)]
+  0x000000001fef2800 JavaThread "DisconnectableInputStream source reader" daemon [_thread_in_native, id=11664, stack(0x0000000021610000,0x0000000021710000)]
+  0x000000001fdc1800 JavaThread "pool-1-thread-1" [_thread_blocked, id=14996, stack(0x000000001ff00000,0x0000000020000000)]
+  0x000000001e85c000 JavaThread "Service Thread" daemon [_thread_blocked, id=9960, stack(0x000000001f500000,0x000000001f600000)]
+=>0x000000001e82c800 JavaThread "C1 CompilerThread3" daemon [_thread_in_native, id=11948, stack(0x000000001f400000,0x000000001f500000)]
+  0x000000001e820800 JavaThread "C2 CompilerThread2" daemon [_thread_blocked, id=15196, stack(0x000000001f300000,0x000000001f400000)]
+  0x000000001e81c000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=16640, stack(0x000000001f200000,0x000000001f300000)]
+  0x000000001e816800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=9064, stack(0x000000001f100000,0x000000001f200000)]
+  0x000000001e825800 JavaThread "Attach Listener" daemon [_thread_blocked, id=9168, stack(0x000000001f000000,0x000000001f100000)]
+  0x000000001e824800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=7908, stack(0x000000001ef00000,0x000000001f000000)]
+  0x000000001ca22000 JavaThread "Finalizer" daemon [_thread_blocked, id=2628, stack(0x000000001ecf0000,0x000000001edf0000)]
+  0x0000000002ef8800 JavaThread "Reference Handler" daemon [_thread_blocked, id=11292, stack(0x000000001ebf0000,0x000000001ecf0000)]
+  0x0000000002ffe800 JavaThread "main" [_thread_in_native, id=15960, stack(0x0000000002c50000,0x0000000002d50000)]
+
+Other Threads:
+  0x000000001ca18000 VMThread [stack: 0x000000001e6f0000,0x000000001e7f0000] [id=10888]
+  0x000000001e85e000 WatcherThread [stack: 0x000000001f600000,0x000000001f700000] [id=8056]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x00000006c1c00000, size: 4068 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x00000007c0000000
+
+Heap:
+ PSYoungGen      total 76288K, used 40645K [0x000000076b400000, 0x0000000770900000, 0x00000007c0000000)
+  eden space 65536K, 62% used [0x000000076b400000,0x000000076dbb1768,0x000000076f400000)
+  from space 10752K, 0% used [0x000000076fe80000,0x000000076fe80000,0x0000000770900000)
+  to   space 10752K, 0% used [0x000000076f400000,0x000000076f400000,0x000000076fe80000)
+ ParOldGen       total 175104K, used 0K [0x00000006c1c00000, 0x00000006cc700000, 0x000000076b400000)
+  object space 175104K, 0% used [0x00000006c1c00000,0x00000006c1c00000,0x00000006cc700000)
+ Metaspace       used 10470K, capacity 10790K, committed 11008K, reserved 1058816K
+  class space    used 1367K, capacity 1469K, committed 1536K, reserved 1048576K
+
+Card table byte_map: [0x00000000123c0000,0x0000000012bc0000] byte_map_base: 0x000000000edb2000
+
+Marking Bits: (ParMarkBitMap*) 0x00000000690c9f30
+ Begin Bits: [0x0000000013910000, 0x00000000178a0000)
+ End Bits:   [0x00000000178a0000, 0x000000001b830000)
+
+Polling page: 0x00000000013d0000
+
+CodeCache: size=245760Kb used=3354Kb max_used=3365Kb free=242405Kb
+ bounds [0x0000000003000000, 0x0000000003350000, 0x0000000012000000]
+ total_blobs=1325 nmethods=968 adapters=271
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 14.700 Thread 0x000000001e82c800 nmethod 964 0x0000000003346a90 code [0x0000000003346be0, 0x0000000003346cf0]
+Event: 16.601 Thread 0x000000001e82c800  965       1       org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext::access$000 (5 bytes)
+Event: 16.601 Thread 0x000000001e820800  966       4       sun.nio.cs.SingleByte$Encoder::encode (32 bytes)
+Event: 16.601 Thread 0x000000001e82c800 nmethod 965 0x0000000003346d50 code [0x0000000003346ea0, 0x0000000003346f90]
+Event: 16.602 Thread 0x000000001e82c800  967       1       org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext::access$500 (5 bytes)
+Event: 16.602 Thread 0x000000001e82c800 nmethod 967 0x0000000003347010 code [0x0000000003347160, 0x0000000003347250]
+Event: 16.602 Thread 0x000000001e82c800  968       1       org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext::access$600 (5 bytes)
+Event: 16.602 Thread 0x000000001e82c800 nmethod 968 0x00000000033472d0 code [0x0000000003347420, 0x0000000003347510]
+Event: 16.602 Thread 0x000000001e82c800  969       3       org.gradle.internal.logging.text.AbstractLineChoppingStyledTextOutput$StateContext::isCurrentCharEquals (61 bytes)
+Event: 16.603 Thread 0x000000001e820800 nmethod 966 0x000000000334a290 code [0x000000000334a3e0, 0x000000000334a4f8]
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (8 events):
+Event: 1.655 Thread 0x0000000002ffe800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003194b08 method=java.util.regex.Matcher.reset()Ljava/util/regex/Matcher; @ 47
+Event: 1.655 Thread 0x0000000002ffe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000319a394 method=java.util.regex.Matcher.match(II)Z @ 86
+Event: 1.655 Thread 0x0000000002ffe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000319a394 method=java.util.regex.Matcher.match(II)Z @ 86
+Event: 1.656 Thread 0x0000000002ffe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000319a394 method=java.util.regex.Matcher.match(II)Z @ 86
+Event: 1.656 Thread 0x0000000002ffe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000319a394 method=java.util.regex.Matcher.match(II)Z @ 86
+Event: 1.986 Thread 0x0000000002ffe800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000326314c method=java.util.HashMap.hash(Ljava/lang/Object;)I @ 1
+Event: 2.074 Thread 0x0000000002ffe800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003257d84 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 129
+Event: 2.074 Thread 0x0000000002ffe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003220708 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 1.986 Thread 0x0000000002ffe800 Implicit null exception at 0x0000000003262f15 to 0x000000000326313d
+Event: 1.991 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d01d0d8) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.991 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d0214b0) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.994 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d085880) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.994 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d087868) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.995 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d088938) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.995 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d089868) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 1.995 Thread 0x0000000002ffe800 Exception <a 'java/lang/ArrayIndexOutOfBoundsException'> (0x000000076d08bff0) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\runtime\sharedRuntime.cpp, line 605]
+Event: 2.028 Thread 0x0000000002ffe800 Exception <a 'java/lang/NoSuchFieldError': method resolution failed> (0x000000076d258e00) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\prims\methodHandles.cpp, line 1167]
+Event: 2.029 Thread 0x0000000002ffe800 Exception <a 'java/lang/NoSuchFieldError': method resolution failed> (0x000000076d2668c0) thrown at [D:\src\AOSP-openjdk-cygwin\jdk8u\hotspot\src\share\vm\prims\methodHandles.cpp, line 1167]
+
+Events (10 events):
+Event: 7.603 Thread 0x0000000002ffe800 DEOPT PACKING pc=0x00000000032f5c9e sp=0x0000000002d4d000
+Event: 7.603 Thread 0x0000000002ffe800 DEOPT UNPACKING pc=0x00000000030475d0 sp=0x0000000002d4cd20 mode 0
+Event: 16.586 loading class java/lang/Class$4
+Event: 16.586 loading class java/lang/Class$4 done
+Event: 16.586 loading class org/gradle/internal/logging/events/StyledTextOutputEvent$Span
+Event: 16.586 loading class org/gradle/internal/logging/events/StyledTextOutputEvent$Span done
+Event: 16.586 loading class org/gradle/internal/logging/events/operations/StyledTextBuildOperationProgressDetails$Span
+Event: 16.586 loading class org/gradle/internal/logging/events/operations/StyledTextBuildOperationProgressDetails$Span done
+Event: 16.600 loading class org/gradle/internal/logging/text/AbstractLineChoppingStyledTextOutput$StateContext
+Event: 16.600 loading class org/gradle/internal/logging/text/AbstractLineChoppingStyledTextOutput$StateContext done
+
+
+Dynamic libraries:
+0x00007ff628ee0000 - 0x00007ff628f11000 	C:\Program Files\Android Studio\jre\bin\java.exe
+0x00007ffe8ede0000 - 0x00007ffe8efd0000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffe8e320000 - 0x00007ffe8e3d2000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffe8c890000 - 0x00007ffe8cb33000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffe8d080000 - 0x00007ffe8d123000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffe8ecd0000 - 0x00007ffe8ed6e000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffe8e280000 - 0x00007ffe8e317000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffe8eb40000 - 0x00007ffe8ec60000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffe8d550000 - 0x00007ffe8d6e4000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffe8c7d0000 - 0x00007ffe8c7f1000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffe8e250000 - 0x00007ffe8e276000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffe8beb0000 - 0x00007ffe8c044000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffe8be10000 - 0x00007ffe8beae000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffe8cb40000 - 0x00007ffe8cc3a000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffe70570000 - 0x00007ffe707f5000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.535_none_e6c3b34713100821\COMCTL32.dll
+0x00007ffe8d6f0000 - 0x00007ffe8da26000 	C:\WINDOWS\System32\combase.dll
+0x00007ffe8bd40000 - 0x00007ffe8bdc0000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffe8cf20000 - 0x00007ffe8cf4e000 	C:\WINDOWS\System32\IMM32.DLL
+0x000000006aad0000 - 0x000000006aba2000 	C:\Program Files\Android Studio\jre\jre\bin\msvcr100.dll
+0x0000000068900000 - 0x0000000069146000 	C:\Program Files\Android Studio\jre\jre\bin\server\jvm.dll
+0x00007ffe8ead0000 - 0x00007ffe8ead8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffe897f0000 - 0x00007ffe897f9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffe89930000 - 0x00007ffe89954000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffe85320000 - 0x00007ffe8532a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffe8ec60000 - 0x00007ffe8eccf000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffe89900000 - 0x00007ffe8992d000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffe8bdc0000 - 0x00007ffe8be0a000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x00007ffe87120000 - 0x00007ffe8712f000 	C:\Program Files\Android Studio\jre\jre\bin\verify.dll
+0x00007ffe723b0000 - 0x00007ffe723d9000 	C:\Program Files\Android Studio\jre\jre\bin\java.dll
+0x00007ffe85a40000 - 0x00007ffe85a56000 	C:\Program Files\Android Studio\jre\jre\bin\zip.dll
+0x00007ffe8dab0000 - 0x00007ffe8e195000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ffe8e3e0000 - 0x00007ffe8e489000 	C:\WINDOWS\System32\shcore.dll
+0x00007ffe8c050000 - 0x00007ffe8c7cf000 	C:\WINDOWS\System32\windows.storage.dll
+0x00007ffe8bcb0000 - 0x00007ffe8bccf000 	C:\WINDOWS\System32\profapi.dll
+0x00007ffe8bcd0000 - 0x00007ffe8bd1a000 	C:\WINDOWS\System32\powrprof.dll
+0x00007ffe8bc80000 - 0x00007ffe8bc90000 	C:\WINDOWS\System32\UMPDC.dll
+0x00007ffe8d4f0000 - 0x00007ffe8d542000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ffe8bc90000 - 0x00007ffe8bca1000 	C:\WINDOWS\System32\kernel.appcore.dll
+0x00007ffe8cc40000 - 0x00007ffe8cc57000 	C:\WINDOWS\System32\cryptsp.dll
+0x00007ffe72720000 - 0x00007ffe7273a000 	C:\Program Files\Android Studio\jre\jre\bin\net.dll
+0x00007ffe8b4f0000 - 0x00007ffe8b557000 	C:\WINDOWS\system32\mswsock.dll
+0x00007ffe72420000 - 0x00007ffe72431000 	C:\Program Files\Android Studio\jre\jre\bin\nio.dll
+0x00007ffe722e0000 - 0x00007ffe72306000 	C:\Users\WolfTheZelda\.gradle\native\30\windows-amd64\native-platform.dll
+0x00007ffe83d90000 - 0x00007ffe83d9d000 	C:\Program Files\Android Studio\jre\jre\bin\management.dll
+0x00007ffe8b060000 - 0x00007ffe8b093000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007ffe8c800000 - 0x00007ffe8c826000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ffe8bba0000 - 0x00007ffe8bbc5000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ffe8b6c0000 - 0x00007ffe8b6cc000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007ffe8b200000 - 0x00007ffe8b23a000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ffe8ce60000 - 0x00007ffe8ce68000 	C:\WINDOWS\System32\NSI.dll
+0x00007ffe85b20000 - 0x00007ffe85b36000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x00007ffe865d0000 - 0x00007ffe865ec000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x00007ffe8b240000 - 0x00007ffe8b30a000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+
+VM Arguments:
+jvm_args: -Dorg.gradle.appname=gradlew 
+java_command: org.gradle.wrapper.GradleWrapperMain -q -Ptarget=D:\Projects\flybis\lib\main.dart -Ptrack-widget-creation=true -Pfilesystem-scheme=org-dartlang-root -Ptarget-platform=android-x86 assembleDebug
+java_class_path (initial): D:\Projects\flybis\android\\gradle\wrapper\gradle-wrapper.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Android Studio\jre
+CLASSPATH=D:\Projects\flybis\android\\gradle\wrapper\gradle-wrapper.jar
+PATH=C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Visual Studio Code\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Program Files\Node.js\;C:\Users\WolfTheZelda\AppData\Local\Programs\Python\Python 3.8.0\Scripts\;C:\Users\WolfTheZelda\AppData\Local\Programs\Python\Python 3.8.0\;C:\Users\WolfTheZelda\AppData\Local\Microsoft\WindowsApps;C:\Users\WolfTheZelda\AppData\Local\Yarn\bin;C:\Users\WolfTheZelda\AppData\Roaming\npm;D:\Tools\Flutter\bin;;D:\Tools\Flutter\bin\mingit\cmd
+USERNAME=WolfTheZelda
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 158 Stepping 9, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 18362 (10.0.18362.329)
+
+CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 158 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 16658020k(3329688k free), swap 16658020k(6156k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.202-b03) for windows-amd64 JRE (1.8.0_202-release-1483-b03), built by "builder" with MS VC++ 10.0 (VS2010)
+
+time: Thu Dec 12 21:10:54 2019
+timezone: Hora oficial do Brasil
+elapsed time: 16 seconds (0d 0h 0m 16s)
+

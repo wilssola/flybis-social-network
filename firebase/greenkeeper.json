@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c17771b69769a9926ea0e0b43be4bd47d56e91244c061abbcfb44fb11ea12b10
-size 129
+{
+    "groups": {
+      "default": {
+        "packages": [
+          "functions/package.json"
+        ]
+      }
+    }
+  }

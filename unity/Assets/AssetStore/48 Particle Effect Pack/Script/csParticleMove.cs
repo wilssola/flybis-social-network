@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:288adf366ad4911c24cb3d8fc8e5e38640cd466f1fdfcbccfd716d43ed65c072
-size 212
+﻿using UnityEngine;
+using System.Collections;
+
+public class csParticleMove : MonoBehaviour
+{
+    public float speed = 0.1f;
+
+	void Update () {
+        transform.Translate(Vector3.back * speed);
+	}
+}

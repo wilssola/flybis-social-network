@@ -1,3 +1,41 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c12cb5cb008e26303d8318df53a54369fe7bfc5e806b59fa68bd4d9cbd45c548
-size 3640
+<component name="libraryTable">
+  <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
+    <CLASSES>
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/google_api_availability-2.0.2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/cloud_functions-0.4.1+6" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.2.0" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_in_app_messaging-0.1.1+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/connectivity-0.4.6+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-5.0.9" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/geolocator-5.2.0" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.5.1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.15.3+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.4" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.4.1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-0.1.1+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_performance-0.3.1+5" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.3+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_dynamic_links-0.5.0+9" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_crashlytics-0.1.2+4" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/location_permissions-2.0.4+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.5+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.5.7+3" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.1.1+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.0+1" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.3+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.0+2" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/git/virgil-e3kit-flutter-2018521d27a688c20a709923c2a67688708551ae" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_admob-0.9.0+10" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-6.0.9" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-0.1.1+4" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/share-0.6.3+5" />
+      <root url="file://D:/Tools/Flutter/.pub-cache/hosted/pub.dartlang.org/firebase_ml_vision-0.9.3+5" />
+      <root url="file://$PROJECT_DIR$/lib/packages/native_admob" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

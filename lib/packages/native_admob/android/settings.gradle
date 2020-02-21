@@ -1,3 +1,1 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1b2bafbd927dd550b62b6c7118620c84b13498575f5cb380bd1e3830b1a8fd54
-size 42
+rootProject.name = 'native_flutter_admob'

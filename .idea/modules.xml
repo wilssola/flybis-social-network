@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:902cc146c11d386092d3ec59b2611551876173e713b247e3420e9710482cfef1
-size 271
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/flybis.iml" filepath="$PROJECT_DIR$/.idea/flybis.iml" />
+    </modules>
+  </component>
+</project>

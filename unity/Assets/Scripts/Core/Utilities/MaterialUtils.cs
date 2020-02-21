@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b86eff19f563cc1de789d51c7fbca0d0e4df3ef167f2a3acc368dc4ebfccedeb
-size 510
+using UnityEngine;
+
+namespace DilmerGames.Core.Utilities
+{
+    public static class MaterialUtils 
+    {
+        public static Material CreateMaterial(Color color, string name, string shaderName = "Standard")
+        {
+            Material material = new Material(Shader.Find(shaderName));
+            material.name = name;
+            material.color = color;
+            material.EnableKeyword("_EMISSION");
+            material.SetColor("_EmissionColor", color);
+            return material;
+        }
+    }
+}

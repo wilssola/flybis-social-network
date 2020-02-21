@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:68e3adf9155e930602c752ddf3ca627072ce43e4477948a3e4b8ba5284f479ff
-size 553
+import { JwtGenerator } from 'virgil-sdk';
+import { VirgilCrypto, VirgilAccessTokenSigner } from 'virgil-crypto';
+import * as functions from 'firebase-functions';
+
+const crypto = new VirgilCrypto();
+
+const { app_id, app_key_id, app_key } = functions.config().virgil;
+
+const generator = new JwtGenerator({
+  appId: app_id,
+  apiKeyId: app_key_id,
+  apiKey: crypto.importPrivateKey(app_key),
+  accessTokenSigner: new VirgilAccessTokenSigner(crypto)
+});
+
+export function generateVirgilJwt(identity: string) {
+  return generator.generateToken(identity);
+} 

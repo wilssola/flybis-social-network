@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2c9d2ac29b88e0b2642285f3b54f65532aa276fbc1c7681ab41416545f4e7ee7
-size 701
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+
+class ImageNetwork {
+  ImageNetwork._();
+
+  static Widget cachedNetworkImage({
+    imageUrl,
+    placeholder,
+    errorWidget,
+    alignment: Alignment.center,
+    fit,
+  }) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      alignment: alignment,
+      fit: fit,
+    );
+  }
+
+  static ImageProvider cachedNetworkImageProvider(url) {
+    return CachedNetworkImageProvider(url);
+  }
+}

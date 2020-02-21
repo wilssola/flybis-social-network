@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d0c318cdabbb4bde8b8552c126e42e087ac98abc37ca43bd387c3da86e23903e
-size 575
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(PlacementObject))]
+public class PlacementRotation : MonoBehaviour
+{
+    private PlacementObject placementObject;
+
+    [SerializeField]
+    private Vector3 rotationSpeed = Vector3.zero;
+
+    void Awake()
+    {
+        placementObject = GetComponent<PlacementObject>();
+    }
+
+    void Update()
+    {
+        if(placementObject.Selected)
+        {
+            transform.Rotate(rotationSpeed * Time.deltaTime, Space.World);
+        }   
+    }
+}

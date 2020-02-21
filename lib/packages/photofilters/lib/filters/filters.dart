@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:df10d81a9e366b3659295d0c7fde27c3933cd03a94fbc365d7dcdd44eae83645
-size 412
+import 'dart:typed_data';
+
+///The [Filter] class to define a Filter consists of multiple [SubFilter]s
+abstract class Filter extends Object {
+  final String name;
+  Filter({this.name}) : assert(name != null);
+
+  ///Apply the [SubFilter] to an Image.
+  void apply(Uint8List pixels);
+}
+
+///The [SubFilter] class is the abstract class to define any SubFilter.
+abstract class SubFilter extends Object {}

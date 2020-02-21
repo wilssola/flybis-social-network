@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:36d6c5bf26e09a7805c068cf6f6613dd220f6518b906cd52439fea44fbdb08cf
-size 609
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'package:transparent_image/transparent_image.dart';
+
+class ImageNetwork {
+  ImageNetwork._();
+
+  static Widget cachedNetworkImage({
+    imageUrl,
+    placeholder,
+    errorWidget,
+    alignment,
+    fit,
+  }) {
+    return FadeInImage.memoryNetwork(
+      placeholder: kTransparentImage,
+      image: imageUrl,
+    );
+  }
+
+  static ImageProvider cachedNetworkImageProvider(url) {
+    return FadeInImage.memoryNetwork(
+      placeholder: kTransparentImage,
+      image: url,
+    ).image;
+  }
+}

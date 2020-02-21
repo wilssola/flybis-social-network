@@ -1,3 +1,57 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fdb433a3f72f253f020bf03ff5e3d47ae6dc832c8fb630770c369cd77072aa71
-size 1522
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(PlacementObject))]
+public class PlacementBoundingArea : MonoBehaviour
+{
+    private PlacementObject placementObject;
+
+    private bool initialized = false;
+
+    private GameObject boundingArea;
+
+    [SerializeField]
+    private float boundingRadius = 1.0f;
+
+    [SerializeField]
+    private Vector3 boundingAreaPosition = Vector3.zero;
+
+    [SerializeField]
+    private Material boundingAreaMaterial;
+
+    void Awake()
+    {
+        SetupBounds();
+    }
+
+    void SetupBounds()
+    {   
+        placementObject = GetComponent<PlacementObject>();
+        initialized = true;
+    }
+
+    void Update()
+    {
+        if(initialized)
+        {
+            DrawBoundingArea(placementObject.Selected);
+        }
+    }
+
+    void DrawBoundingArea(bool isActive)
+    {
+        if(boundingArea == null)
+        {
+            boundingArea = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            boundingArea.name = "BoundingArea";
+            boundingArea.transform.parent = placementObject.transform.parent;
+            boundingArea.GetComponent<MeshRenderer>().material = boundingAreaMaterial;
+        }
+
+        boundingArea.transform.localScale = new Vector3(boundingRadius * 1.5f, boundingRadius * 1.5f, boundingRadius * 1.5f);
+        boundingArea.transform.localPosition = boundingAreaPosition;
+        
+        boundingArea.SetActive(isActive);
+    }
+}

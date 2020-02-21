@@ -1,3 +1,73 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aae3e2d716728d9b1baa2056e57107ef0ebac5b4bc8fdee080eae6b63758f54e
-size 1345
+using TMPro;
+using UnityEngine;
+
+public class PlacementObject : MonoBehaviour
+{
+    [SerializeField]
+    private bool IsSelected;
+
+    [SerializeField]
+    private bool IsLocked;
+
+    public bool Selected 
+    { 
+        get 
+        {
+            return this.IsSelected;
+        }
+        set 
+        {
+            IsSelected = value;
+        }
+    }
+
+    public bool Locked 
+    { 
+        get 
+        {
+            return this.IsLocked;
+        }
+        set 
+        {
+            IsLocked = value;
+        }
+    }
+
+    [SerializeField]
+    private TextMeshPro OverlayText;
+
+    [SerializeField]
+    private Canvas canvasComponent;
+
+    [SerializeField]
+    private string OverlayDisplayText;
+
+    public void SetOverlayText(string text)
+    {
+        if(OverlayText != null)
+        {
+            OverlayText.gameObject.SetActive(true);
+            OverlayText.text = text;
+        }
+    }
+
+    void Awake ()
+    {
+        OverlayText = GetComponentInChildren<TextMeshPro>();
+        if(OverlayText != null)
+        {
+            OverlayText.gameObject.SetActive(false);
+        }
+    }
+
+    public void ToggleOverlay()
+    {
+        OverlayText.gameObject.SetActive(IsSelected);
+        OverlayText.text = OverlayDisplayText;
+    }
+
+    public void ToggleCanvas()
+    {
+        canvasComponent?.gameObject.SetActive(IsSelected);
+    }
+}

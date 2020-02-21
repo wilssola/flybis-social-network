@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:46ddf47cc5ff55d6a186f0d7fb493693802a76d22f7eb2c3c5d9bfbbbfee8a74
-size 400
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class ImageNetwork {
+  ImageNetwork._();
+
+  static Widget cachedNetworkImage({
+    imageUrl,
+    placeholder,
+    errorWidget,
+    alignment,
+    fit,
+  }) {
+    throw 'Platform Not Supported';
+  }
+
+  static ImageProvider cachedNetworkImageProvider(url) {
+    throw 'Platform Not Supported';
+  }
+}

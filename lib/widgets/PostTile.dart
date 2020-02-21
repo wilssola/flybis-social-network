@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2b7819478f43c323107ce37db084d42b340fb4f0c7fb8865044c25bf4cebb044
-size 670
+import 'package:flutter/material.dart';
+import 'package:flybis/pages/ViewPost.dart';
+import 'package:flybis/widgets/CustomImage.dart';
+
+import 'package:flybis/models/Post.dart';
+
+class PostTile extends StatelessWidget {
+  final Post post;
+  PostTile(this.post);
+
+  showPost(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostScreen(
+          postId: this.post.postId,
+          userId: this.post.ownerId,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => showPost(context),
+      child: cachedNetworkImage(post.mediaUrl),
+    );
+  }
+}

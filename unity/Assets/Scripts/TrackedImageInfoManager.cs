@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1b69638e5dd73cf3eeb5eca20c2df29906f13c688e59fe6bc3633fc0103276e4
-size 844
+﻿using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+
+[RequireComponent(typeof(ARTrackedImageManager))]
+public class TrackedImageInfoManager : MonoBehaviour
+{
+    ARTrackedImageManager m_TrackedImageManager;
+
+    void Awake()
+    {
+        m_TrackedImageManager = GetComponent<ARTrackedImageManager>();
+    }
+
+    void OnEnable()
+    {
+        m_TrackedImageManager.trackedImagesChanged += OnTrackedImagesChanged;
+    }
+
+    void OnDisable()
+    {
+        m_TrackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
+    }
+
+    void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
+    {
+        foreach (var trackedImage in eventArgs.added)
+        {
+            // Give the initial image a reasonable default scale
+            trackedImage.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        }
+    }
+}

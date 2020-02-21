@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:80574f48d12d14788e72f6926e1a3cb201a57cd2d18ab4227e07369a794b7d63
-size 1054
+﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR.ARFoundation;
+
+[RequireComponent(typeof(ARPlaneManager))]
+public class AutoPlacementOfObjectsInPlane : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject welcomePanel;
+
+    [SerializeField]
+    private GameObject placedPrefab;
+
+    private GameObject placedObject;
+
+    [SerializeField]
+    private Button dismissButton;
+
+    [SerializeField]
+    private ARPlaneManager arPlaneManager;
+
+    void Awake() 
+    {
+        dismissButton.onClick.AddListener(Dismiss);
+        arPlaneManager = GetComponent<ARPlaneManager>();
+        arPlaneManager.planesChanged += PlaneChanged;
+    }
+
+    private void PlaneChanged(ARPlanesChangedEventArgs args)
+    {
+        if(args.added != null && placedObject == null)
+        {
+            ARPlane arPlane = args.added[0];
+            placedObject = Instantiate(placedPrefab, arPlane.transform.position, Quaternion.identity);
+        }
+    }
+
+    private void Dismiss() => welcomePanel.SetActive(false);
+}

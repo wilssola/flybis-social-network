@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:116147e35c1e24191b3a493838982d171563d0da1ad062c99fa7c67f819825d3
-size 131
+language: node_js
+node_js: "8"
+before_install:
+  - cd functions
+install:
+  - npm install
+script:
+  - npm test
+  - npm build
