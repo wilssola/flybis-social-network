@@ -1,5 +1,5 @@
 image:
-  file: .gitpod.Dockerfile
+  file: .gitpod.dockerfile
 github:
   prebuilds:
     master: true
@@ -18,5 +18,4 @@ tasks:
     /home/gitpod/android-sdk/tools/bin/sdkmanager "platform-tools" "platforms;android-28" "build-tools;28.0.3"
 vscode:
   extensions:
-    - Dart-Code.flutter@3.8.1:cytqQi/+kpu802ZOaJwayw==
-    - Dart-Code.dart-code@3.8.1:+5Rq24Mq46eJa5w39WY0bA==
+    - Dart-Code.flutter@3.5.0:/kOacEWdiDRLyN/idUiM4A==
