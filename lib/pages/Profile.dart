@@ -6,16 +6,18 @@ import "package:flutter_svg/svg.dart";
 import "package:flybis/widgets/Ads.dart";
 import "package:flybis/widgets/Header.dart";
 import "package:flybis/widgets/Progress.dart";
-import "package:flybis/widgets/PostTile.dart";
 import "package:flybis/widgets/PostWidget.dart";
 import "package:flybis/models/User.dart";
+import "package:flybis/widgets/Utils.dart";
 import "package:flybis/models/Post.dart";
-import "package:flybis/pages/Home.dart";
+import "package:flybis/pages/App.dart";
 import "package:flybis/pages/EditProfile.dart";
 import 'package:flybis/plugins/format.dart';
 import "package:flybis/plugins/image_network/image_network.dart";
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class Profile extends StatefulWidget {
   final String profileId;
@@ -27,36 +29,75 @@ class Profile extends StatefulWidget {
   ProfileState createState() => ProfileState();
 }
 
-class ProfileState extends State<Profile> {
-  final String currentUserId = currentUser?.id;
-  bool isLoading = false;
+class ProfileState extends State<Profile>
+    with AutomaticKeepAliveClientMixin<Profile> {
+  final String currentUserId = currentUser?.uid;
 
-  int postCount = 0;
-  List<Post> posts = [];
+  // Posts
+  int postsCount = 0;
+  List<Post> postsList = [];
   String postOrientation = "grid";
 
+  // Follows
   int followerCount = 0;
   int followingCount = 0;
   bool isFollowing = false;
 
+  // Friends
   int friendsCount = 0;
   bool isFriend = false;
   bool isRequestedFriend = false;
   bool isRequestedFriendToMe = false;
 
-  bool isLoad = false;
+  bool loaded = false;
 
   @override
   void initState() {
     super.initState();
+
     getProfile();
   }
 
   // Profile
-  getProfile() async {
+  Future<void> getProfile() async {
+    if (mounted) {
+      setState(() {
+        postsList = [];
+      });
+    }
+
+    await getPosts();
+    await getFollowers();
+    await getFollowing();
+    await getFriends();
+
+    await checkIfFollowing();
+
     await checkIfFriend();
     await checkIfRequestFriend();
     await checkIfRequestFriendToMe();
+
+    if (mounted && !loaded) {
+      setState(() {
+        loaded = true;
+      });
+    }
+
+    return null;
+  }
+
+  Future checkIfFollowing() async {
+    DocumentSnapshot doc = await followersRef
+        .document(widget.profileId)
+        .collection("userFollowers")
+        .document(currentUserId)
+        .get();
+
+    if (mounted) {
+      setState(() {
+        isFollowing = doc.exists;
+      });
+    }
   }
 
   editProfile() {
@@ -64,7 +105,7 @@ class ProfileState extends State<Profile> {
       context,
       MaterialPageRoute(
         builder: (context) => EditProfile(
-          currentUserId: currentUserId,
+          currentUser,
           pageColor: widget.pageColor,
         ),
       ),
@@ -72,95 +113,91 @@ class ProfileState extends State<Profile> {
   }
 
   buildProfileButton() {
-    return FutureBuilder(
-      future: followersRef
-          .document(widget.profileId)
-          .collection("userFollowers")
-          .document(currentUserId)
-          .get(source: Source.serverAndCache),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return buildButton();
-        }
+    bool isOwner = currentUserId == widget.profileId;
 
-        // Viewing own profile? Should show EditProfile button.
-        bool isOwner = currentUserId == widget.profileId;
-        bool isFollowing = snapshot.data.exists;
-
-        if (isOwner) {
-          return buildButton(
-            text: "Edit Profile",
-            function: editProfile,
-            colorButton: Colors.cyan,
-            colorText: Colors.white,
-          );
-        } else if (isFollowing) {
-          return buildButton(
-            text: "Unfollow",
-            function: handleUnfollowUser,
-            colorButton: Colors.orange,
-            colorText: Colors.white,
-          );
-        } else if (!isFollowing) {
-          return buildButton(
-            text: "Follow",
-            function: handleFollowUser,
-            colorButton: Colors.blue,
-            colorText: Colors.white,
-          );
-        }
-
-        return null;
-      },
-    );
+    if (isOwner) {
+      return buildButton(
+        text: "Edit Profile",
+        function: editProfile,
+        colorButton: Colors.cyan,
+        colorText: Colors.white,
+      );
+    } else if (isFollowing) {
+      return buildButton(
+        text: "Unfollow",
+        function: handleUnfollowUser,
+        colorButton: Colors.orange,
+        colorText: Colors.white,
+      );
+    } else if (!isFollowing) {
+      return buildButton(
+        text: "Follow",
+        function: handleFollowUser,
+        colorButton: Colors.blue,
+        colorText: Colors.white,
+      );
+    }
   }
   // Profile - End
 
   // Count
-  getFollowing() {
-    return futureCount(
-      followingRef
-          .document(widget.profileId)
-          .collection("userFollowing")
-          .getDocuments(),
-    );
+  Future getPosts() async {
+    QuerySnapshot doc = await postsRef
+        .document(widget.profileId)
+        .collection("userPosts")
+        .getDocuments();
+
+    List<Post> posts = [];
+
+    doc.documents.forEach((element) {
+      posts.add(Post.fromDocument(element));
+    });
+
+    if (mounted) {
+      setState(() {
+        this.postsList = posts;
+        this.postsCount = doc.documents.length;
+      });
+    }
   }
 
-  getPosts() {
-    return futureCount(
-      postsRef.document(widget.profileId).collection("userPosts").getDocuments(),
-    );
+  Future getFollowers() async {
+    QuerySnapshot doc = await followersRef
+        .document(widget.profileId)
+        .collection("userFollowers")
+        .getDocuments();
+
+    if (mounted) {
+      setState(() {
+        followerCount = doc.documents.length;
+      });
+    }
   }
 
-  getFollowers() {
-    return futureCount(
-      followersRef
-          .document(widget.profileId)
-          .collection("userFollowers")
-          .getDocuments(),
-    );
+  Future getFollowing() async {
+    QuerySnapshot doc = await followingRef
+        .document(widget.profileId)
+        .collection("userFollowing")
+        .getDocuments();
+
+    if (mounted) {
+      setState(() {
+        followingCount = doc.documents.length;
+      });
+    }
   }
 
-  getFriends() {
-    return futureCount(
-      friendsRef
-          .document(widget.profileId)
-          .collection("userFriends")
-          .getDocuments(),
-    );
-  }
+  Future getFriends() async {
+    QuerySnapshot doc = await friendsRef
+        .document(widget.profileId)
+        .collection("userFriends")
+        .getDocuments();
 
-  FutureBuilder futureCount(Future future) {
-    return FutureBuilder(
-      future: future,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return textCount("0");
-        }
-
-        return textCount(formatCompactNumber(snapshot.data.documents.length));
-      },
-    );
+    if (mounted) {
+      setState(() {
+        friendsCount = doc.documents.length;
+      });
+    }
   }
 
   Text textCount(String text) {
@@ -174,10 +211,10 @@ class ProfileState extends State<Profile> {
   }
   // Count - End
 
-  Column buildCountColumn(String label, Widget count) {
+  Column buildCountColumn(String label, int count) {
     return Column(
       children: <Widget>[
-        count,
+        textCount(formatCompactNumber(count)),
         Container(
           margin: EdgeInsets.only(
             top: 4,
@@ -219,7 +256,7 @@ class ProfileState extends State<Profile> {
             colorText: Colors.white,
           );
         }
-      } else {
+      } else if (isRequestedFriendToMe) {
         return buildButton(
           text: "Accept Friend",
           function: handleFriendUser,
@@ -245,10 +282,10 @@ class ProfileState extends State<Profile> {
     }
 
     friendsRef
-        .document(widget.profileId)
-        .collection("userRequests")
         .document(currentUserId)
-        .get(source: Source.serverAndCache)
+        .collection("userRequests")
+        .document(widget.profileId)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
@@ -271,7 +308,7 @@ class ProfileState extends State<Profile> {
         .setData({});
   }
 
-  handleUnfriendUser() {
+  handleUnfriendUser() async {
     if (mounted) {
       setState(() {
         isFriend = false;
@@ -279,10 +316,20 @@ class ProfileState extends State<Profile> {
     }
 
     friendsRef
+        .document(currentUserId)
+        .collection("userFriends")
+        .document(widget.profileId)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
+    friendsRef
         .document(widget.profileId)
         .collection("userFriends")
         .document(currentUserId)
-        .get(source: Source.serverAndCache)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
@@ -304,13 +351,33 @@ class ProfileState extends State<Profile> {
         .collection("userFriends")
         .document(widget.profileId)
         .setData({});
+    friendsRef
+        .document(widget.profileId)
+        .collection("userFriends")
+        .document(currentUserId)
+        .setData({});
+  }
+
+  checkIfFriend() async {
+    DocumentSnapshot doc = await friendsRef
+        .document(widget.profileId)
+        .collection("userFriends")
+        .document(currentUserId)
+        .get();
+
+    if (mounted) {
+      setState(() {
+        isFriend = doc.exists;
+      });
+    }
   }
 
   checkIfRequestFriend() async {
     DocumentSnapshot doc = await friendsRef
         .document(widget.profileId)
         .collection("userRequests")
-        .document(currentUserId).get(source: Source.serverAndCache);
+        .document(currentUserId)
+        .get();
 
     if (mounted) {
       setState(() {
@@ -324,25 +391,11 @@ class ProfileState extends State<Profile> {
         .document(currentUserId)
         .collection("userRequests")
         .document(widget.profileId)
-        .get(source: Source.serverAndCache);
+        .get();
 
     if (mounted) {
       setState(() {
         isRequestedFriendToMe = doc.exists;
-      });
-    }
-  }
-
-  checkIfFriend() async {
-    DocumentSnapshot doc = await friendsRef
-        .document(widget.profileId)
-        .collection("userFriends")
-        .document(currentUserId)
-        .get(source: Source.serverAndCache);
-
-    if (mounted) {
-      setState(() {
-        isFriend = doc.exists;
       });
     }
   }
@@ -374,10 +427,10 @@ class ProfileState extends State<Profile> {
         .document(currentUserId)
         .setData({
       "type": "follow",
-      "ownerId": widget.profileId,
+      "uid": widget.profileId,
       "username": currentUser.username,
       "userId": currentUserId,
-      "userProfileImg": currentUser.photoUrl,
+      "photoUrl": currentUser.photoUrl,
       "timestamp": FieldValue.serverTimestamp()
     });
   }
@@ -393,7 +446,7 @@ class ProfileState extends State<Profile> {
         .document(widget.profileId)
         .collection("userFollowers")
         .document(currentUserId)
-        .get(source: Source.serverAndCache)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
@@ -404,7 +457,7 @@ class ProfileState extends State<Profile> {
         .document(currentUserId)
         .collection("userFollowing")
         .document(widget.profileId)
-        .get(source: Source.serverAndCache)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
@@ -415,7 +468,7 @@ class ProfileState extends State<Profile> {
         .document(widget.profileId)
         .collection("feedItems")
         .document(currentUserId)
-        .get(source: Source.serverAndCache)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
@@ -432,7 +485,7 @@ class ProfileState extends State<Profile> {
     return Container(
       padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
       child: Container(
-        width: 135.0,
+        width: 150.0,
         height: 35.0,
         alignment: Alignment.center,
         child: FlatButton(
@@ -454,11 +507,11 @@ class ProfileState extends State<Profile> {
   }
 
   buildProfileHeader() {
-    return FutureBuilder(
-      future: usersRef.document(widget.profileId).get(),
+    return StreamBuilder(
+      stream: usersRef.document(widget.profileId).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return profileHeader();
+          return circularProgress();
         }
 
         if (!snapshot.data.exists) {
@@ -467,248 +520,203 @@ class ProfileState extends State<Profile> {
 
         User user = User.fromDocument(snapshot.data);
 
-        return profileHeader(
-          username: user.username,
-          displayName: user.displayName,
-          bio: user.bio,
-          photoUrl: user.photoUrl,
+        return Padding(
+          padding: EdgeInsets.all(0),
+          child: Column(
+            children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Positioned(
+                    //bottom: top + 10,
+                    left: 0,
+                    right: 0,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: !kIsWeb ? 250.0 : 350,
+                        maxHeight: !kIsWeb ? 250.0 : 350,
+                        minWidth: MediaQuery.of(context).size.width,
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: ImageNetwork.cachedNetworkImage(
+                          alignment: Alignment.topCenter,
+                          imageUrl: user.bannerUrl,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 100, bottom: 25),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: !kIsWeb ? 50.0 : 100.0,
+                        backgroundColor: Colors.grey[200],
+                        backgroundImage:
+                            ImageNetwork.cachedNetworkImageProvider(
+                          user.photoUrl,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 25),
+                child: usernameText(user.username),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  user.displayName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 5, bottom: 15),
+                child: user.bio.length > 0
+                    ? Text(
+                        '"' + user.bio + '"',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.all(0),
+                      ),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            buildCountColumn("posts", postsCount),
+                            buildCountColumn("followers", followerCount),
+                            buildCountColumn("following", followingCount),
+                            buildCountColumn("friends", friendsCount),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            buildProfileButton(),
+                            buildFriendButton(),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget profileHeader({
-    username = "",
-    displayName = "",
-    bio = "",
-    photoUrl = "",
-  }) {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Column(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Positioned(
-                //bottom: top + 10,
-                left: 0,
-                right: 0,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: 250.0,
-                    maxHeight: 250.0,
-                    minWidth: MediaQuery.of(context).size.width,
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: ImageNetwork.cachedNetworkImage(
-                      alignment: Alignment.topCenter,
-                      imageUrl:
-                          "https://images.unsplash.com/photo-1436874555419-bb64221c5c1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 100, bottom: 25),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    radius: !kIsWeb ? 50.0 : 100.0,
-                    backgroundColor: Colors.grey[200],
-                    backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                      photoUrl,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 25),
-            child: Text(
-              "@" + username,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 5),
-            child: Text(
-              displayName,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 5, bottom: 15),
-            child: bio.length > 0
-                ? Text(
-                    '"' + bio + '"',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  )
-                : Padding(
-                    padding: EdgeInsets.all(0),
-                  ),
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        buildCountColumn("posts", getPosts()),
-                        buildCountColumn("followers", getFollowers()),
-                        buildCountColumn("following", getFollowing()),
-                        buildCountColumn("friends", getFriends()),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        buildProfileButton(),
-                        buildFriendButton(),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   buildProfilePosts() {
-    return StreamBuilder(
-      stream: postsRef
-          .document(widget.profileId)
-          .collection("userPosts")
-          .orderBy("timestamp", descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container(
-            height: 100,
-            child: circularProgress(),
-          );
-        }
+    if (postsList.isEmpty) {
+      return Container(
+        padding: EdgeInsets.only(top: 30.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SvgPicture.asset("assets/images/no_content.svg", height: 260),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                "No Posts",
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
 
-        List<Post> posts = [];
+    if (postOrientation == "grid") {
+      List<PostWidget> gridTiles = [];
 
-        snapshot.data.documents.forEach((doc) {
-          posts.add(Post.fromDocument(doc));
-        });
+      postsList.forEach((post) {
+        gridTiles.add(PostWidget(
+          post,
+          PostType.GRID,
+          pageColor: widget.pageColor,
+        ));
+      });
 
-        if (posts.isEmpty) {
-          return Container(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset("assets/images/no_content.svg", height: 260),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text(
-                    "No Posts",
-                    style: TextStyle(
-                        color: Colors.redAccent,
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-          );
-        }
+      return GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: !kIsWeb ? 3 : 4,
+          childAspectRatio: 1,
+          mainAxisSpacing: 1.5,
+          crossAxisSpacing: 1.5,
+        ),
+        itemCount: gridTiles.length,
+        itemBuilder: (context, index) {
+          return gridTiles[index];
+        },
+        physics: NeverScrollableScrollPhysics(),
+      );
+    } else if (postOrientation == "list") {
+      List<PostWidget> listTiles = [];
 
-        if (postOrientation == "grid") {
-          List<GridTile> gridTiles = [];
-          
-          posts.forEach((post) {
-            gridTiles.add(GridTile(child: PostTile(post)));
-          });
+      postsList.forEach((post) {
+        listTiles.add(PostWidget(
+          post,
+          PostType.LIST,
+          pageColor: widget.pageColor,
+        ));
+      });
 
-          bannerToList(
-            gridTiles,
-            10,
-            GridTile(child: bannerGrid()),
-          );
-
-          return GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: !kIsWeb ? 3 : 4,
-              childAspectRatio: 1,
-              mainAxisSpacing: 1.5,
-              crossAxisSpacing: 1.5,
-            ),
-            itemCount: gridTiles.length,
-            itemBuilder: (context, index) {
-              return gridTiles[index];
-            },
-            physics: NeverScrollableScrollPhysics(),
-          );
-        } else if (postOrientation == "list") {
-          List<Widget> listTiles = [];
-
-          posts.forEach((post) {
-            listTiles.add(PostWidget(
-              post: post,
-              pageColor: widget.pageColor,
-            ));
-          });
-
-          bannerToList(
-            listTiles,
-            5,
-            bannerMedia(),
-          );
-
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: listTiles.length,
-            itemBuilder: (context, index) {
-              return listTiles[index];
-            },
-            physics: NeverScrollableScrollPhysics(),
-          );
-        }
-
-        return null;
-      },
-    );
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: listTiles.length,
+        itemBuilder: (context, index) {
+          return listTiles[index];
+        },
+        physics: NeverScrollableScrollPhysics(),
+      );
+    }
   }
 
   buildTogglePostOrientation() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        IconButton(
-          onPressed: () => setPostOrientation("grid"),
-          icon: Icon(FeatherIcons.grid),
-          color: postOrientation == "grid"
-              ? Theme.of(context).primaryColor
-              : Colors.grey,
+        Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
+        GestureDetector(
+          onTap: () => setPostOrientation("grid"),
+          child: Icon(
+            FeatherIcons.grid,
+            color: postOrientation == "grid"
+                ? Theme.of(context).primaryColor
+                : Colors.grey,
+          ),
         ),
-        IconButton(
-          onPressed: () => setPostOrientation("list"),
-          icon: Icon(FeatherIcons.list),
-          color: postOrientation == "list"
-              ? Theme.of(context).primaryColor
-              : Colors.grey,
-        )
+        GestureDetector(
+          onTap: () => setPostOrientation("list"),
+          child: Icon(
+            FeatherIcons.list,
+            color: postOrientation == "list"
+                ? Theme.of(context).primaryColor
+                : Colors.grey,
+          ),
+        ),
+        Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
       ],
     );
   }
@@ -725,29 +733,20 @@ class ProfileState extends State<Profile> {
     return ListView(
       children: <Widget>[
         buildProfileHeader(),
-        Divider(
-          height: 1,
-        ),
+        Divider(height: 0, thickness: 0),
         buildTogglePostOrientation(),
-        Divider(
-          height: 1,
-        ),
+        Divider(height: 0, thickness: 0),
         buildProfilePosts(),
       ],
     );
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
-    if (!isLoad) {
-      Future.delayed(Duration(seconds: 1)).then((_) {
-        if (mounted) {
-          setState(() {
-            isLoad = true;
-          });
-        }
-      });
-    }
+    super.build(context);
 
     return Scaffold(
       appBar: header(
@@ -756,8 +755,13 @@ class ProfileState extends State<Profile> {
         scaffoldKey: widget.scaffoldKey,
         pageColor: widget.pageColor,
       ),
-      body:
-          !isLoad ? circularProgress(color: widget.pageColor) : buildProfile(),
+      body: loaded
+          ? LiquidPullToRefresh(
+              onRefresh: getProfile,
+              color: widget.pageColor,
+              child: buildProfile(),
+            )
+          : circularProgress(color: widget.pageColor),
     );
   }
 }

@@ -1,6 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:intl/intl.dart";
 import "dart:math";
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 logBase(num x, num base) => log(x) / log(base);
 log10(num x) => log(x) / ln10;

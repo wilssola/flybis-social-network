@@ -1,16 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
 
-import 'package:flybis/models/Post.dart';
-import 'package:flybis/models/User.dart';
-import 'package:flybis/pages/Home.dart';
-import 'package:flybis/pages/Search.dart';
-import 'package:flybis/widgets/PostWidget.dart';
-import 'package:flybis/widgets/Progress.dart';
-import 'package:flybis/widgets/Header.dart';
-import 'package:flybis/widgets/Utils.dart';
-import 'package:flybis/widgets/Ads.dart';
+import "package:flybis/models/Post.dart";
+import "package:flybis/models/User.dart";
+import "package:flybis/pages/App.dart";
+import "package:flybis/pages/Search.dart";
+import "package:flybis/widgets/PostWidget.dart";
+import "package:flybis/widgets/Progress.dart";
+import "package:flybis/widgets/Header.dart";
+import "package:flybis/widgets/Utils.dart";
+import "package:flybis/widgets/Ads.dart";
+
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
 
 class Timeline extends StatefulWidget {
   final User currentUser;
@@ -23,163 +25,225 @@ class Timeline extends StatefulWidget {
   TimelineState createState() => TimelineState();
 }
 
-class TimelineState extends State<Timeline> {
-  bool isLoad = false;
+class TimelineState extends State<Timeline>
+    with AutomaticKeepAliveClientMixin<Timeline> {
   List<String> followingList = [];
+  List<PostWidget> postsList = [];
+
+  bool loaded = false;
 
   @override
   void initState() {
     super.initState();
 
-    getFollowing();
+    getTimeline();
+    streamPosts();
   }
 
-  getFollowing() async {
+  void streamPosts() {
+    timelineRef
+        .document(widget.currentUser.uid)
+        .collection("createdPosts")
+        .orderBy("timestamp", descending: true)
+        .snapshots()
+        .listen((event) {
+      List<PostWidget> posts = [];
+
+      event.documentChanges.forEach((element) {
+        if (element.type == DocumentChangeType.added) {
+          print("Post Adicionado: " + element.document.documentID);
+
+          timelineRef
+              .document(widget.currentUser.uid)
+              .collection("timelinePosts")
+              .document(element.document.documentID)
+              .get()
+              .then((value) {
+            addPosts(value, posts);
+            print("Doc Adicionado: " + value.documentID);
+          });
+        } else if (element.type == DocumentChangeType.removed) {
+          print("Post Deletado: " + element.document.documentID);
+
+          setState(() {
+            removePosts(element.document.documentID, this.postsList);
+          });
+        }
+      });
+
+      setState(() {
+        this.postsList.addAll(posts);
+      });
+    });
+  }
+
+  Future<void> getTimeline() async {
+    setState(() {
+      postsList = [];
+    });
+
+    await getFollowing();
+    await getPosts();
+
+    if (mounted && !loaded) {
+      setState(() {
+        loaded = true;
+      });
+    }
+
+    return null;
+  }
+
+  Future<void> getFollowing() async {
     QuerySnapshot snapshot = await followingRef
-        .document(currentUser.id)
-        .collection('userFollowing')
+        .document(currentUser.uid)
+        .collection("userFollowing")
         .getDocuments();
 
     if (mounted) {
-      setState(() {
-        followingList = snapshot.documents.map((doc) => doc.documentID).toList();
-      });
+      if (mounted) {
+        setState(() {
+          this.followingList =
+              snapshot.documents.map((doc) => doc.documentID).toList();
+        });
+      }
     }
   }
 
-  buildTimeline() {
-    return StreamBuilder(
-      stream: timelineRef
-          .document(widget.currentUser.id)
-          .collection('timelinePosts')
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        Future.delayed(Duration(seconds: 1)).then((_) {
-          if (mounted) {
-            setState(() {
-              isLoad = true;
-            });
-          }
-        });
+  Future<void> getPosts() async {
+    QuerySnapshot snapshot = await timelineRef
+        .document(widget.currentUser.uid)
+        .collection("timelinePosts")
+        .orderBy("timestamp", descending: true)
+        .limit(10)
+        .getDocuments();
 
-        if (!snapshot.hasData || !isLoad) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: circularProgress(
-              color: widget.pageColor,
-            ),
-          );
-        } else {
-          if (snapshot.data.documents.length == 0) {
-            return buildUsersToFollow();
-          }
+    List<PostWidget> posts = [];
 
-          List<Widget> posts = [];
+    snapshot.documents.forEach((doc) {
+      addPosts(doc, posts);
+    });
 
-          snapshot.data.documents.forEach((doc) {
-            PostWidget searchResult;
+    setState(() {
+      this.postsList = posts;
+    });
+  }
 
-            Post post = Post.fromDocument(doc);
-            searchResult = PostWidget(post: post, pageColor: widget.pageColor);
+  void addPosts(DocumentSnapshot doc, List<PostWidget> list) {
+    PostWidget post = PostWidget(
+      Post.fromDocument(doc),
+      PostType.LIST,
+      pageColor: widget.pageColor,
+    );
 
-            final manualValidity = Post.checkValidity(
-              doc['timestampDuration'],
-              doc['timestampPopularity'],
-            );
+    final localValidity = Post.checkValidity(
+      doc["timestampDuration"],
+      doc["timestampPopularity"],
+    );
 
-            final validity = doc['validity'];
+    final serverValidity = doc["validity"];
 
-            if (manualValidity && validity) {
-              posts.add(searchResult);
-            }
-          });
+    if (localValidity && serverValidity) {
+      list.add(post);
+    }
+  }
 
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              return posts[index];
-            },
-          );
-        }
-      },
+  void removePosts(String id, List<PostWidget> list) {
+    list.removeWhere((element) => element.post.id == id);
+  }
+
+  ListView buildTimeline() {
+    return ListView(
+      children: <Widget>[
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: postsList.length,
+          itemBuilder: (context, index) {
+            return postsList[index];
+          },
+        ),
+      ],
     );
   }
 
-  buildUsersToFollow() {
-    return FutureBuilder(
-      future:
-          usersRef.orderBy('timestamp', descending: true).limit(25).getDocuments(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: circularProgress(
-              color: widget.pageColor,
-            ),
-          );
-        }
+  ListView buildUsersToFollow() {
+    return ListView(
+      children: <Widget>[
+        FutureBuilder(
+          future: usersRef
+              .orderBy("timestamp", descending: true)
+              .limit(25)
+              .getDocuments(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return listViewContainer(
+                  context, circularProgress(color: widget.pageColor));
+            }
 
-        List<Widget> userResults = [];
-        snapshot.data.documents.forEach((doc) {
-          User user = User.fromDocument(doc);
+            List<Widget> users = [];
 
-          final bool isAuthUser = currentUser.id == user.id;
-          final bool isFollowingUser = followingList.contains(user.id);
+            snapshot.data.documents.forEach((doc) {
+              User user = User.fromDocument(doc);
 
-          if (isAuthUser) {
-            return;
-          } else if (isFollowingUser) {
-            return;
-          } else {
-            UserResult userResult = UserResult(user: user);
-            userResults.add(userResult);
-          }
-        });
+              final bool isAuthUser = currentUser.uid == user.uid;
+              final bool isFollowingUser = followingList.contains(user.uid);
 
-        if (!kIsWeb) {
-          if (userResults.length > 0) {
-            userResults.insert(
-              0,
-              UserResult(
-                child: bannerMedia(),
-              ),
+              if (isAuthUser) {
+                return;
+              } else if (isFollowingUser) {
+                return;
+              } else {
+                UserResult userResult = UserResult(user: user);
+                users.add(userResult);
+              }
+            });
+
+            if (users.length > 0) {
+              //bannerToList(users, 5, bannerMedia());
+            } else {
+              return listViewContainer(
+                context,
+                infoText("Nenhum usuário encontrado"),
+              );
+            }
+
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return users[index];
+              },
             );
-          } else {
-            return infoCenterText("Nenhum usuário encontrado");
-          }
-        }
-
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: userResults.length,
-          itemBuilder: (context, index) {
-            return userResults[index];
           },
-        );
-      },
+        ),
+      ],
     );
   }
 
   @override
-  Widget build(context) {
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       appBar: header(
         context,
-        isAppTitle: true,
         scaffoldKey: widget.scaffoldKey,
+        isAppTitle: true,
         pageColor: widget.pageColor,
       ),
-      body: ListView(
-        children: <Widget>[
-          buildTimeline(),
-        ],
-      ),
+      body: loaded
+          ? LiquidPullToRefresh(
+              onRefresh: getTimeline,
+              color: widget.pageColor,
+              child:
+                  postsList.length > 0 ? buildTimeline() : buildUsersToFollow(),
+            )
+          : circularProgress(color: widget.pageColor),
     );
   }
 }

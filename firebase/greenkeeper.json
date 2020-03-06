@@ -1,9 +1,9 @@
 {
-    "groups": {
-      "default": {
-        "packages": [
-          "functions/package.json"
-        ]
-      }
+  "groups": {
+    "default": {
+      "packages": [
+        "functions/package.json"
+      ]
     }
   }
+}

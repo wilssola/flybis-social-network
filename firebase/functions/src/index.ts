@@ -1,9 +1,9 @@
-import admin from "firebase-admin";
-import * as functions from "firebase-functions";
 import { user } from "firebase-functions/lib/providers/auth";
 
-import { app } from "./app";
-import { generateVirgilJwt } from "./generate-virgil-jwt";
+import * as functions from 'firebase-functions';
+import admin from 'firebase-admin';
+import { app } from './app';
+import { generateVirgilJwt } from './generate-virgil-jwt';
 
 admin.initializeApp();
 
@@ -15,8 +15,8 @@ export const api = functions.https.onRequest(app);
 export const getVirgilJwt = functions.https.onCall((_data, context) => {
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError("unauthenticated", "The function must be called " +
-      "while authenticated.");
+    throw new functions.https.HttpsError('unauthenticated', 'The function must be called ' +
+      'while authenticated.');
   }
 
   return {
@@ -27,7 +27,7 @@ export const getVirgilJwt = functions.https.onCall((_data, context) => {
 export const onCreateFollower = functions.firestore
   .document("/followers/{userId}/userFollowers/{followerId}")
   .onCreate(async (snapshot, context) => {
-    console.log("Follower Created", snapshot.data());
+    //console.log("Follower Created", snapshot.data());
     const userId = context.params.userId;
     const followerId = context.params.followerId;
 
@@ -47,7 +47,7 @@ export const onCreateFollower = functions.firestore
 
     // 3. Get the followed user"s posts.
     const querySnapshot = await followedUserPostsRef.get();
-    console.log("QuerySnapshot", querySnapshot.size);
+    //console.log("QuerySnapshot", querySnapshot.size);
 
     // 4. Add each user post to following user"s timeline.
     querySnapshot.forEach(doc => {
@@ -64,7 +64,7 @@ export const onCreateFollower = functions.firestore
 export const onDeleteFollower = functions.firestore
   .document("/followers/{userId}/userFollowers/{followerId}")
   .onDelete(async (snapshot, context) => {
-    console.log("Follower Deleted", snapshot.id);
+    //console.log("Follower Deleted", snapshot.id);
     const userId = context.params.userId;
     const followerId = context.params.followerId;
 
@@ -73,7 +73,7 @@ export const onDeleteFollower = functions.firestore
       .collection("timeline")
       .doc(followerId)
       .collection("timelinePosts")
-      .where("ownerId", "==", userId);
+      .where("uid", "==", userId);
 
     const querySnapshot = await timelinePostsRef.get();
     querySnapshot.forEach(doc => {
@@ -120,7 +120,7 @@ const MINIMUM_POST_DURATION = 24 * 60 * 60 * 1000;
 export const onCreatePost = functions.firestore
   .document("/posts/{userId}/userPosts/{postId}")
   .onCreate(async (snapshot, context) => {
-    console.log("Post Created", snapshot.data());
+    //console.log("Post Created", snapshot.data());
     const postCreated = snapshot.data();
     const userId = context.params.userId;
     const postId = context.params.postId;
@@ -158,6 +158,14 @@ export const onCreatePost = functions.firestore
         .firestore()
         .collection("timeline")
         .doc(followerId)
+        .collection("createdPosts")
+        .doc(postId)
+        .set({ timestamp: postCreated.timestamp });
+
+      admin
+        .firestore()
+        .collection("timeline")
+        .doc(followerId)
         .collection("timelinePosts")
         .doc(postId)
         .update({ timestampDuration: timestampDuration });
@@ -167,7 +175,7 @@ export const onCreatePost = functions.firestore
 export const onUpdatePost = functions.firestore
   .document("/posts/{userId}/userPosts/{postId}")
   .onUpdate(async (change, context) => {
-    console.log("Post Updated", change.after.data());
+    //console.log("Post Updated", change.after.data());
     const postUdpated = change.after.data();
     const userId = context.params.userId;
     const postId = context.params.postId;
@@ -181,7 +189,7 @@ export const onUpdatePost = functions.firestore
         }
       });
     }
-    console.log("Post Likes", likesCount);
+    //console.log("Post Likes", likesCount);
 
     const dislikes = postUdpated.dislikes;
     let dislikesCount = 0;
@@ -192,24 +200,24 @@ export const onUpdatePost = functions.firestore
         }
       });
     }
-    console.log("Post Dislikes", dislikesCount);
+    //console.log("Post Dislikes", dislikesCount);
 
     const total = likesCount + dislikesCount;
-    console.log("Post Total Likes And Dislikes", total);
+    //console.log("Post Total Likes And Dislikes", total);
 
     const popularity = calculatePopularityOfPost(likesCount, total, 0.95);
-    console.log("Post Popularity", popularity);
+    //console.log("Post Popularity", popularity);
 
     const timestamp = postUdpated.timestamp;
     const timestampFormated = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000;
-    console.log("Post Timestamp", postUdpated.timestamp);
+    //console.log("Post Timestamp", postUdpated.timestamp);
 
     const timestampDuration = postUdpated.timestampDuration;
-    console.log("Post Timestamp Duration", timestampDuration);
+    //console.log("Post Timestamp Duration", timestampDuration);
     const timestampDurationFormated = timestampDuration.seconds * 1000 + timestampDuration.nanoseconds / 1000000;
 
     const timestampPopularity = admin.firestore.Timestamp.fromDate(new Date(calculateDurationOfPost(likesCount, dislikesCount, popularity, timestampFormated, timestampDurationFormated)));
-    console.log("Post Timestamp Popularity", timestampPopularity);
+    //console.log("Post Timestamp Popularity", timestampPopularity);
     const timestampPopularityFormated = timestampPopularity.seconds * 1000 + timestampPopularity.nanoseconds / 1000000;
 
     const timeLeft = (timestampDurationFormated + timestampPopularityFormated) - Date.now();
@@ -217,10 +225,10 @@ export const onUpdatePost = functions.firestore
     const timeLeftMinute = timeLeft * 60 * 1000;
     const timeLeftSecond = timeLeft * 1000;
     const TimeLeftFormat = timeLeftHour + "h:" + timeLeftMinute + "m:" + timeLeftSecond + "s";
-    console.log("Post Time Left", TimeLeftFormat);
+    //console.log("Post Time Left", TimeLeftFormat);
 
     const validity = checkValidityOfPost(timestampDurationFormated, timestampPopularityFormated);
-    console.log("Post Validity", validity);
+    //console.log("Post Validity", validity);
 
     admin
       .firestore()
@@ -265,40 +273,13 @@ export const onUpdatePost = functions.firestore
         }).catch(error => {
           return;
         });
-
-      admin
-        .firestore()
-        .collection("posts")
-        .doc(userId).collection("userPosts").doc(postId).collection("likes").get().then((docChildTwo) => {
-          const docs = docChildTwo.docs;
-
-          docs.forEach(docChildThree => {
-            admin
-              .firestore()
-              .collection("timeline")
-              .doc(followerId).collection("timelinePosts").doc(postId).collection("likes").doc(docChildThree.id).set({});
-          });
-        });
-      admin
-        .firestore()
-        .collection("posts")
-        .doc(userId).collection("userPosts").doc(postId).collection("dislikes").get().then((docChildTwo) => {
-          const docs = docChildTwo.docs;
-
-          docs.forEach(docChildThree => {
-            admin
-              .firestore()
-              .collection("timeline")
-              .doc(followerId).collection("timelinePosts").doc(postId).collection("dislikes").doc(docChildThree.id).set({});
-          });
-        });
     });
   });
 
 export const onDeletePost = functions.firestore
   .document("/posts/{userId}/userPosts/{postId}")
   .onDelete(async (snapshot, context) => {
-    console.log("Post Deleted", snapshot.data());
+    //console.log("Post Deleted", snapshot.data());
     const postUdpated = snapshot.data();
     const userId = context.params.userId;
     const postId = context.params.postId;
@@ -327,6 +308,13 @@ export const onDeletePost = functions.firestore
         }).catch(error => {
           return;
         });
+
+      admin
+        .firestore()
+        .collection("timeline")
+        .doc(followerId)
+        .collection("createdPosts")
+        .doc(postId).delete();
     });
   });
 
@@ -366,7 +354,7 @@ function checkValidityOfPost(timestampPopularityFormated, timestampDurationForma
 export const onCreateActivityFeedItem = functions.firestore
   .document("/feed/{userId}/feedItems/{activityFeedItem}")
   .onCreate(async (snapshot, context) => {
-    console.log("Activity Feed Item Created", snapshot.data());
+    //console.log("Activity Feed Item Created", snapshot.data());
     // Get user connected to the feed.
     const userId = context.params.userId;
     const userRef = admin.firestore().doc(`users/${userId}`);
@@ -378,16 +366,25 @@ export const onCreateActivityFeedItem = functions.firestore
       // Send notification.
       sendNotification(androidNotificationToken, snapshot.data());
 
-      console.log("With token for user, notification can be send", androidNotificationToken, snapshot.data());
+      //console.log("With Notification Token", androidNotificationToken, snapshot.data());
     } else {
-      console.log("Without token for user, cannot send notification");
+      //console.log("Without Notification Token");
     }
 
     function sendNotification(androidNotificationTokenChild, activityFeedItem) {
       let body;
+
       switch (activityFeedItem.type) {
+        case "friend":
+          body = `@${activityFeedItem.username} want be your friend`;
+          break;
+
+        case "message":
+          body = `@${activityFeedItem.username} talked: ${activityFeedItem.data}`;
+          break;
+
         case "comment":
-          body = `@${activityFeedItem.username} replied: ${activityFeedItem.commentData}`;
+          body = `@${activityFeedItem.username} replied: ${activityFeedItem.data}`;
           break;
 
         case "like":
@@ -399,6 +396,7 @@ export const onCreateActivityFeedItem = functions.firestore
           break;
 
         default:
+          body = `you has new notifications`;
           break;
       }
 
@@ -416,33 +414,32 @@ export const onCreateActivityFeedItem = functions.firestore
         .messaging()
         .send(message)
         .then(response => {
-          console.log("Successsfully sent message", response);
+          //console.log("Notification Sended", response);
           return;
         })
-        .catch(error => console.log("Error sending notification", error));
+      //.catch(error => console.log("Notification Send Error", error));
     }
   });
 
 export const onCreateUser = functions.firestore
   .document("/users/{userId}")
   .onCreate(async (snapshot, context) => {
-    console.log("User Created", snapshot.data());
-
-    const ownerId = context.params.userId;
+    //console.log("User Created", snapshot.data());
+    const uid = context.params.userId;
     const doc = snapshot.data();
 
     admin
       .firestore()
       .collection("usernames")
       .doc(doc.username).set({
-        ownerId: ownerId,
+        uid: uid,
       });
   });
 
 export const onUpdateUser = functions.firestore
   .document("/users/{userId}")
   .onUpdate(async (change, context) => {
-    console.log("User Updated", change.after.data());
+    //console.log("User Updated", change.after.data());
     const userUdpated = change.after.data();
     const userId = context.params.userId;
 
@@ -454,10 +451,10 @@ export const onUpdateUser = functions.firestore
     })
       .then(function (userRecord) {
         // See the UserRecord reference doc for the contents of userRecord.
-        console.log("Successfully updated user", userRecord.toJSON());
+        //console.log("Auth User Updated", userRecord.toJSON());
       })
       .catch(function (error) {
-        console.log("Error updating user:", error);
+        //console.log("Auth User Update Error", error);
       });
 
     const feedRef = admin
@@ -477,7 +474,7 @@ export const onUpdateUser = functions.firestore
           if (docChild.exists) {
             docChild.ref.update({
               username: userUdpated.username,
-              userProfileImg: userUdpated.photoUrl
+              photoUrl: userUdpated.photoUrl
             });
           }
           return;
@@ -505,7 +502,7 @@ export const onUpdateUser = functions.firestore
                 .doc(commentPostId)
                 .collection("comments").doc(docChildChild.id).update({
                   username: userUdpated.username,
-                  avatarUrl: userUdpated.photoUrl
+                  photoUrl: userUdpated.photoUrl
                 });
             }
           });
@@ -516,9 +513,7 @@ export const onUpdateUser = functions.firestore
     });
   });
 
-/*
-* Text Moderation Filter
-*/
+/// Text Moderation Filter
 const capitalizeSentence = require("capitalize-sentence");
 const badWords = require("bad-words");
 const filter = new badWords();
@@ -527,19 +522,20 @@ const filter = new badWords();
 export const onCreateMessage = functions.firestore
   .document("/messages/{groupId}/userMessages/{messageId}")
   .onCreate(async (snapshot, context) => {
+    //console.log("Message Created", snapshot.data());
     const message = snapshot.data();
     const groupId = context.params.groupId;
     const messageId = context.params.messageId;
 
-    if (message && !message.sanitized && message.type == 0) {
+    if (message && !message.sanitized && message.type === 0) {
       // Retrieved the message values.
-      console.log("Retrieved message content:", message.content);
+      //console.log("Message Retrieved", message.content);
 
       // Run moderation checks on on the message and moderate if needed.
       const moderatedMessage = moderateMessage(message.content);
 
-      // Update the Firebase DB with checked message.
-      console.log("Message has been moderated. Saving to Firestore:", moderatedMessage);
+      // Update the Firestore with checked message.
+      //console.log("Message Moderated", moderatedMessage);
       admin.firestore().collection("messages")
         .doc(groupId)
         .collection("userMessages").doc(messageId).update({
@@ -558,13 +554,13 @@ function moderateMessage(message) {
 
   // Re-capitalize if the user is Shouting.
   if (isShouting(message)) {
-    console.log("User is shouting. Fixing sentence case...");
+    //console.log("Shouting Fixing");
     messageLocal = stopShouting(message);
   }
 
   // Moderate if the user uses SwearWords.
   if (containsSwearwords(message)) {
-    console.log("User is swearing. Moderating...");
+    //console.log("Swearing Moderating");
     messageLocal = moderateSwearwords(message);
   }
 
@@ -588,15 +584,11 @@ function isShouting(message) {
 
 // Correctly capitalize the string as a sentence (e.g. uppercase after dots) and remove exclamation points.
 function stopShouting(message) {
-  return capitalizeSentence(message.toLowerCase()).replace(/!+/g, ".");
+  return capitalizeSentence(message.toLowerCase()).replace(/!+/g, "");
 }
-/*
-* Text Moderation Filter - End
-*/
+/// Text Moderation Filter - End
 
-/*
-* Image Moderation Filter
-*/
+/// Image Moderation Filter
 const mkdirp = require("mkdirp-promise");
 const vision = require("@google-cloud/vision");
 const spawn = require("child-process-promise").spawn;
@@ -613,7 +605,7 @@ const nude = require('nude');
 export const blurOffensiveImages = functions.storage.object().onFinalize(async (object) => {
   // Ignore things we"ve already blurred.
   if (object.name.startsWith(`${BLURRED_FOLDER}/`)) {
-    console.log(`Ignoring upload "${object.name}" because it was already blurred.`);
+    //console.log("Blurred Image Ignored", object.name);
     return null;
   }
 
@@ -625,7 +617,7 @@ export const blurOffensiveImages = functions.storage.object().onFinalize(async (
   );
 
   const safeSearch = data[0].safeSearchAnnotation;
-  console.log("SafeSearch results on image", safeSearch);
+  //console.log("SafeSearch results on image", safeSearch);
 
   // Tune these detection likelihoods to suit your app.
   // The current settings show the most strict configuration.
@@ -637,7 +629,7 @@ export const blurOffensiveImages = functions.storage.object().onFinalize(async (
     safeSearch.violence !== VERY_UNLIKELY ||
     safeSearch.racy !== VERY_UNLIKELY
   ) {
-    console.log("Offensive image found. Blurring.");
+    //console.log("Offensive image found. Blurring");
     return blurImage(object.name, object.bucket, object.metadata);
   }
   */
@@ -645,22 +637,23 @@ export const blurOffensiveImages = functions.storage.object().onFinalize(async (
   const tempLocalFile = path.join(os.tmpdir(), object.name);
   const tempLocalDir = path.dirname(tempLocalFile);
   const bucket = admin.storage().bucket(object.bucket);
+
   // Create the temp directory where the storage file will be downloaded.
   await mkdirp(tempLocalDir);
-  console.log("Temporary directory has been created", tempLocalDir);
+  //console.log("Temporary Directory Created", tempLocalDir);
+
   // Download file from bucket.
   await bucket.file(object.name).download({ destination: tempLocalFile });
-  console.log("The file has been downloaded to:", tempLocalFile);
-  let result;
-  nude.scan(tempLocalFile, function (res) {
-    result = res;
-  });
-  if (result) {
-    console.log("Offensive Image Found. Blurring.");
-    return blurImage(object.name, object.bucket, object.metadata);
-  }
+  //console.log("File Downloaded", tempLocalFile);
 
-  return null;
+  nude.scan(tempLocalFile, function (result) {
+    if (result) {
+      //console.log("Offensive Image Blurring");
+      return blurImage(object.name, object.bucket, object.metadata);
+    }
+
+    return null;
+  });
 });
 
 // Blurs the given image located in the given bucket using ImageMagick.
@@ -671,27 +664,25 @@ async function blurImage(filePath, bucketName, metadata) {
 
   // Create the temp directory where the storage file will be downloaded.
   await mkdirp(tempLocalDir);
-  console.log("Temporary directory has been created", tempLocalDir);
+  //console.log("Temporary Directory Created", tempLocalDir);
 
   // Download file from bucket.
   await bucket.file(filePath).download({ destination: tempLocalFile });
-  console.log("The file has been downloaded to:", tempLocalFile);
+  //console.log("File Downloaded", tempLocalFile);
 
   // Blur the image using ImageMagick.
   await spawn("convert", [tempLocalFile, "-channel", "RGBA", "-blur", "0x8", tempLocalFile]);
-  console.log("Blurred image created at:", tempLocalFile);
+  //console.log("Blurred Image Created", tempLocalFile);
 
   // Uploading the Blurred image.
   await bucket.upload(tempLocalFile, {
     destination: `${BLURRED_FOLDER}/${filePath}`,
     metadata: { metadata: metadata }, // Keeping custom metadata.
   });
-  console.log("Blurred image uploaded to Storage at", filePath);
+  //console.log("Blurred Image Uploaded", filePath);
 
   // Clean up the local file.
   fs.unlinkSync(tempLocalFile);
-  console.log("Deleted local file:", filePath);
+  //console.log("Local File Deleted", filePath);
 }
-/*
-* Image Moderation Filter - End
-*/
+/// Image Moderation Filter - End

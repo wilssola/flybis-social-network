@@ -41,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:paddingLeft="4dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@android:color/black"
@@ -71,11 +72,11 @@
             app:layout_constraintBottom_toBottomOf="@id/flutter_native_ad_icon"
             app:layout_constraintRight_toRightOf="parent" />
 
-        <!-- android:background="@drawable/rounded_corner" -->
-        <TextView
+        <!--<TextView
             android:id="@+id/flutter_native_ad_call_to_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
             android:ellipsize="middle"
             android:gravity="center"
             android:includeFontPadding="false"
@@ -86,9 +87,8 @@
             style="@android:style/TextAppearance.Material.Button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flutter_native_ad_media" />
+            app:layout_constraintTop_toBottomOf="@id/flutter_native_ad_media" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.gms.ads.formats.UnifiedNativeAdView>
-

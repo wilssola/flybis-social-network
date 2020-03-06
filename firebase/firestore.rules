@@ -6,19 +6,34 @@ service cloud.firestore {
       allow write: if request.auth.uid == userId;
     }
     
+    match /posts/{userId} {
+			allow read;
+      allow write: if request.auth.uid == userId;
+    }
+    
     match /timeline/{userId} {
 			allow read: if request.auth.uid == userId;
       allow write: if request.auth.uid == userId;
     }
     
-    match /followers/{userId} {
+    match /followers/{userId}/userFollowers/{followerId} {
 			allow read;
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid != userId && request.auth.uid == followerId && userId != followerId;
     }
     
-    match /following/{userId} {
+    match /following/{userId}/userFollowing/{followingId} {
 			allow read;
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid == userId && userId != followingId;
+    }
+    
+    match /friends/{userId}/userRequests/{requesterId} {
+			allow read;
+      allow write: if request.auth.uid == userId || request.auth.uid == requesterId && userId != requesterId;
+    }
+    
+    match /friends/{userId}/userFriends/{friendId} {
+			allow read;
+      allow write: if request.auth.uid == userId || (request.auth.uid == friendId && (exists(/databases/$(database)/documents/friends/$(userId)/userFriends/$(friendId)) || exists(/databases/$(database)/documents/friends/$(userId)/userRequests/$(friendId)))) && userId != friendId;
     }
     
     match /users/{userId} {
@@ -29,6 +44,7 @@ service cloud.firestore {
 
     match /usernames/{username} {
       allow get: if isValidUsername(username);
+      allow create;
     }  
      
     match /{document=**} {

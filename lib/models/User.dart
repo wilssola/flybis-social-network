@@ -1,7 +1,9 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String id;
+  final String uid;
   final String email;
 
   final String username;
@@ -15,7 +17,7 @@ class User {
   final int following;
 
   User({
-    this.id,
+    this.uid,
     this.email,
 
     this.username,
@@ -31,7 +33,7 @@ class User {
 
   factory User.fromDocument(DocumentSnapshot doc) {
     return User(
-      id: doc['id'] != null ? doc['id'] : "",
+      uid: doc['uid'] != null ? doc['uid'] : "",
       email: doc['email'] != null ? doc['email'] : "",
 
       username: doc['username'] != null ? doc['username'] : "",

@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flybis/widgets/Progress.dart';
 
-import 'package:flybis/widgets/Text.dart';
+import 'package:flybis/widgets/Utils.dart';
 
-import 'package:admob_flutter/admob_flutter.dart';
+import 'package:native_ads/native_ad_param.dart';
+import 'package:native_ads/native_ad_view.dart';
 
 String getBannerAdUnitId() {
   if (Platform.isIOS) {
@@ -12,79 +13,23 @@ String getBannerAdUnitId() {
   } else if (Platform.isAndroid) {
     return 'ca-app-pub-3940256099942544/6300978111';
   }
+
+  return null;
 }
 
 Widget banner() {
-  return Padding(padding: EdgeInsets.zero,);
-
-  return Stack(
-    children: <Widget>[
-      Positioned(
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        child: Center(
-          child: circularProgress(),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.all(15),
-        child: AdmobBanner(
-          adUnitId: getBannerAdUnitId(),
-          adSize: AdmobBannerSize.BANNER,
-        ),
-      ),
-    ],
-  );
+  return NativeAdViewWrapper();
 }
 
 Widget bannerGrid() {
-  return Padding(padding: EdgeInsets.zero,);
-
-  return Container(
-    child: Stack(
-      children: <Widget>[
-        AdmobBanner(
-          adUnitId: getBannerAdUnitId(),
-          adSize: AdmobBannerSize.MEDIUM_RECTANGLE,
-        ),
-      ],
-    ),
-  );
+  return TileNativeAdViewWrapper();
 }
 
 Widget bannerMedia() {
-  return Padding(padding: EdgeInsets.zero,);
-
-  return Padding(
-    padding: EdgeInsets.all(15),
-    child: Stack(
-      children: <Widget>[
-        Positioned(
-          left: 0,
-          top: 0,
-          right: 0,
-          bottom: 0,
-          child: Center(
-            child: circularProgress(),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(15),
-          child: AdmobBanner(
-            adUnitId: getBannerAdUnitId(),
-            adSize: AdmobBannerSize.MEDIUM_RECTANGLE,
-          ),
-        ),
-      ],
-    ),
-  );
+  return NativeAdViewWrapper();
 }
 
 bannerToList(List list, int diference, Widget child) {
-  return null;
-
   if (diference > 0) {
     for (var i = 0; i < list.length; i++) {
       if (i % (diference + 1) == 0) {
@@ -106,6 +51,101 @@ bannerWithChild(String text, {List list}) {
         bannerMedia(),
         infoText(text),
       ],
+    );
+  }
+}
+
+class NativeAdViewWrapper extends StatefulWidget {
+  const NativeAdViewWrapper();
+
+  @override
+  NativeAdViewWrapperState createState() => NativeAdViewWrapperState();
+}
+
+class NativeAdViewWrapperState extends State<NativeAdViewWrapper>
+    with AutomaticKeepAliveClientMixin {
+  NativeAdViewController _controller;
+
+  bool onAdFailedToLoad = false;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: 350,
+        child: NativeAdView(
+          onParentViewCreated: (_) {},
+          androidParam: AndroidParam()
+            ..placementId = "ca-app-pub-3940256099942544/2247696110"
+            ..packageName = "com.tecwolf.flybis"
+            ..layoutName = "native_ad_layout"
+            ..attributionText = "",
+          iosParam: IOSParam()
+            ..placementId = "ca-app-pub-3940256099942544/3986624511"
+            ..bundleId = "com.tecwolf.flybis"
+            ..layoutName = "UnifiedNativeAdView"
+            ..attributionText = "",
+          onAdImpression: () => print("onAdImpression"),
+          onAdClicked: () => print("onAdClicked"),
+          onAdFailedToLoad: (Map<String, dynamic> error) {
+            print("onAdFailedToLoad: $error");
+
+            setState(() {
+              onAdFailedToLoad = true;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class TileNativeAdViewWrapper extends StatefulWidget {
+  const TileNativeAdViewWrapper();
+
+  @override
+  TileNativeAdViewWrapperState createState() => TileNativeAdViewWrapperState();
+}
+
+class TileNativeAdViewWrapperState extends State<TileNativeAdViewWrapper>
+    with AutomaticKeepAliveClientMixin {
+  NativeAdViewController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: NativeAdView(
+          onParentViewCreated: (_) {},
+          androidParam: AndroidParam()
+            ..placementId = "ca-app-pub-3940256099942544/2247696110"
+            ..packageName = "com.tecwolf.flybis"
+            ..layoutName = "small_ad_layout"
+            ..attributionText = "",
+          iosParam: IOSParam()
+            ..placementId = "ca-app-pub-3940256099942544/3986624511"
+            ..bundleId = "com.tecwolf.flybis"
+            ..layoutName = "UnifiedNativeAdView"
+            ..attributionText = "",
+          onAdImpression: () => print("onAdImpression"),
+          onAdClicked: () => print("onAdClicked"),
+          onAdFailedToLoad: (Map<String, dynamic> error) =>
+              print("onAdFailedToLoad: $error"),
+        ),
+      ),
     );
   }
 }

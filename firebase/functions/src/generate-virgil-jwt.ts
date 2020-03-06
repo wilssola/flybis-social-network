@@ -15,4 +15,4 @@ const generator = new JwtGenerator({
 
 export function generateVirgilJwt(identity: string) {
   return generator.generateToken(identity);
-} 
+}

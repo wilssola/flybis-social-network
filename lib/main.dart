@@ -1,19 +1,15 @@
-import "dart:io";
-
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/foundation.dart";
 
 import "package:firebase_analytics/observer.dart";
-import "package:firebase_admob/firebase_admob.dart";
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:firebase_crashlytics/firebase_crashlytics.dart";
 
 import "package:flutter_phoenix/flutter_phoenix.dart";
 
-import "package:flybis/pages/Home.dart";
-import 'package:flybis/const.dart';
+import "package:flybis/pages/App.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +27,6 @@ void main() {
       [
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight
       ],
     );
     SystemChrome.setSystemUIOverlayStyle(
@@ -40,38 +34,14 @@ void main() {
         statusBarColor: Colors.transparent,
       ),
     );
-
-    hideNavigationBar();
-
-    FirebaseAdMob.instance.initialize(appId: getAdmobAppId());
   }
 
   runApp(
-    Phoenix(
-      child: App(),
-    ),
+    Phoenix(child: Main()),
   );
 }
 
-void hideNavigationBar() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
-}
-
-Widget home() {
-  return Container(
-    color: Colors.white,
-    child: Padding(
-      padding: EdgeInsets.only(bottom: 50),
-      child: GestureDetector(
-        onTap: hideNavigationBar,
-        onDoubleTap: hideNavigationBar,
-        child: Home(),
-      ),
-    ),
-  );
-}
-
-class App extends StatelessWidget {
+class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,16 +50,15 @@ class App extends StatelessWidget {
         primaryColor: Colors.black,
         accentColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
-        highlightColor: Colors.grey[50],
-        hoverColor: Colors.grey[50],
-        splashColor: Colors.grey[200],
       ),
-      home: home(),
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(
-          analytics: FirebaseAnalytics(),
-        ),
-      ],
+      home: App(),
+      navigatorObservers: !kIsWeb
+          ? [
+              FirebaseAnalyticsObserver(
+                analytics: FirebaseAnalytics(),
+              ),
+            ]
+          : [],
       debugShowCheckedModeBanner: false,
     );
   }

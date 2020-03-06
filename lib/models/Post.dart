@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
-  final String postId;
-  final String ownerId;
+  final String id;
+  final String uid;
   final String username;
+  final String title;
   final String location;
   final String description;
-  final String mediaUrl;
+  final String contentUrl;
 
   final Map likes;
   final int likesCount;
@@ -18,13 +19,22 @@ class Post {
   final Timestamp timestampDuration;
   final Timestamp timestampPopularity;
 
+  final String contentType;
+
   Post({
-    this.postId,
-    this.ownerId,
+    this.id,
+    // Owner
+    this.uid,
     this.username,
+
+    // Post
+    this.title,
     this.location,
     this.description,
-    this.mediaUrl,
+
+    // Content
+    this.contentUrl,
+    this.contentType,
 
     // Likes
     this.likes,
@@ -42,12 +52,19 @@ class Post {
 
   factory Post.fromDocument(DocumentSnapshot doc) {
     return Post(
-      postId: doc['postId'],
-      ownerId: doc['ownerId'],
+      // Owner
+      uid: doc['uid'],
       username: doc['username'],
+
+      // Post
+      id: doc['id'],
+      title: doc['title'],
       location: doc['location'],
       description: doc['description'],
-      mediaUrl: doc['mediaUrl'],
+
+      // Content
+      contentUrl: doc['contentUrl'],
+      contentType: doc['contentType'] != null ? doc['contentType'] : "image",
 
       // Likes
       likes: doc["likes"] != null ? doc["likes"] : {},
@@ -98,10 +115,7 @@ class Post {
   }
 
   static checkValidity(duration, popularity) {
-    final endTimestamp = Post.checkTimestamp(
-      duration,
-      popularity,
-    );
+    final endTimestamp = Post.checkTimestamp(duration, popularity);
 
     final nowTimestamp = DateTime.now().millisecondsSinceEpoch;
 

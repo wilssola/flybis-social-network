@@ -1,35 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed {
+  // Owner
+  final String uid;
   final String username;
-  final String userId;
-  final String type; // Types: like, follow, comment.
-  final String mediaUrl;
-  final String postId;
-  final String userProfileImg;
-  final String commentData;
+  final String photoUrl;
+
+  // Content
+  final String id;
+  final String contentUrl;
+  final String contentType;
+
+  // Feed
+  final String type; // like, follow, comment, message
+  final String data;
   final Timestamp timestamp;
 
   Feed({
+    // Owner
+    this.uid,
     this.username,
-    this.userId,
+    this.photoUrl,
+
+    // Content
+    this.id,
+    this.contentUrl,
+    this.contentType,
+
+    // Feed
     this.type,
-    this.mediaUrl,
-    this.postId,
-    this.userProfileImg,
-    this.commentData,
+    this.data,
     this.timestamp,
   });
 
   factory Feed.fromDocument(DocumentSnapshot doc) {
     return Feed(
+      // Owner
+      uid: doc['uid'],
       username: doc['username'],
-      userId: doc['userId'],
+      photoUrl: doc['photoUrl'],
+
+      // Content
+      id: doc['id'],
+      contentUrl: doc['contentUrl'],
+      contentType: doc['contentType'],
+
+      // Feed
       type: doc['type'],
-      mediaUrl: doc['mediaUrl'],
-      postId: doc['postId'],
-      userProfileImg: doc['userProfileImg'],
-      commentData: doc['commentData'],
+      data: doc['data'],
       timestamp: doc['timestamp'],
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -8,14 +8,16 @@ import 'package:flutter/foundation.dart';
 // flybis
 import 'package:flybis/models/Post.dart';
 import 'package:flybis/models/User.dart';
-import 'package:flybis/pages/Home.dart';
+import 'package:flybis/pages/App.dart';
 import 'package:flybis/pages/Comments.dart';
 import 'package:flybis/pages/Activity.dart';
 import 'package:flybis/widgets/Progress.dart';
-import 'package:flybis/widgets/CustomImage.dart';
+import 'package:flybis/widgets/Utils.dart';
+import 'package:flybis/widgets/VideoWidget.dart';
 import 'package:flybis/widgets/ViewPhoto.dart';
 
 import 'package:flybis/plugins/image_network/image_network.dart';
+import 'package:flybis/widgets/ViewPost.dart';
 // flybis - End
 
 import 'package:intl/intl.dart';
@@ -24,20 +26,27 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import 'package:flybis/plugins/format.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path/path.dart';
+
+import '../const.dart';
+import 'ImageWidget.dart';
+
 class PostWidget extends StatefulWidget {
   final Post post;
   final Color pageColor;
+  final PostType type;
 
-  final Widget child;
-
-  PostWidget({this.post, this.child, this.pageColor});
+  PostWidget(this.post, this.type, {this.pageColor = Colors.black});
 
   @override
-  _PostWidgetState createState() => _PostWidgetState();
+  PostWidgetState createState() => PostWidgetState();
 }
 
-class _PostWidgetState extends State<PostWidget> {
-  String currentUserId = currentUser?.id;
+enum PostType { LIST, GRID }
+
+class PostWidgetState extends State<PostWidget> {
+  String currentUserId = currentUser?.uid;
 
   int likeCount = 0;
   int dislikeCount = 0;
@@ -46,7 +55,6 @@ class _PostWidgetState extends State<PostWidget> {
 
   Map likes;
   Map dislikes;
-
   bool showIcon = false;
 
   IconData iconData;
@@ -55,17 +63,14 @@ class _PostWidgetState extends State<PostWidget> {
   @override
   void initState() {
     super.initState();
+    likes = widget.post.likes;
+    dislikes = widget.post.dislikes;
 
-    if (widget.child == null) {
-      likes = widget.post.likes;
-      dislikes = widget.post.dislikes;
+    likeCount = widget.post.getLikeOrDislikeCount(widget.post.likes);
+    dislikeCount = widget.post.getLikeOrDislikeCount(widget.post.dislikes);
 
-      likeCount = widget.post.getLikeOrDislikeCount(widget.post.likes);
-      dislikeCount = widget.post.getLikeOrDislikeCount(widget.post.dislikes);
-
-      isLiked = likes[currentUserId] == true;
-      isDisliked = dislikes[currentUserId] == true;
-    }
+    isLiked = likes[currentUserId] == true;
+    isDisliked = dislikes[currentUserId] == true;
   }
 
   TextStyle countStyle() {
@@ -77,11 +82,16 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   checkLikeOrDislike(String userId) async {
-    if (mounted) {
-      setState(() {
-        isLiked = likes[userId] == true;
-        isDisliked = dislikes[userId] == true;
-      });
+    bool localIsLiked = likes[userId] == true;
+    bool localIsDisliked = dislikes[userId] == true;
+
+    if (localIsLiked != isLiked || localIsDisliked != isDisliked) {
+      if (mounted) {
+        setState(() {
+          isLiked = likes[userId] == true;
+          isDisliked = dislikes[userId] == true;
+        });
+      }
     }
   }
 
@@ -91,16 +101,18 @@ class _PostWidgetState extends State<PostWidget> {
 
     if (_isLiked) {
       postsRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('userPosts')
-          .document(widget.post.postId)
-          .updateData({
-        'likes.$currentUserId': false,
-      });
+          .document(widget.post.id)
+          .updateData(
+        {
+          'likes.$currentUserId': false,
+        },
+      );
 
       if (mounted) {
         setState(() {
-          likeCount -= 1;
+          likeCount--;
           isLiked = false;
           likes[currentUserId] = false;
         });
@@ -109,9 +121,9 @@ class _PostWidgetState extends State<PostWidget> {
       removeLikeToActivityFeed();
     } else if (!_isLiked && !_isDisliked) {
       postsRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('userPosts')
-          .document(widget.post.postId)
+          .document(widget.post.id)
           .updateData({
         'likes.$currentUserId': true,
       });
@@ -120,7 +132,7 @@ class _PostWidgetState extends State<PostWidget> {
 
       if (mounted) {
         setState(() {
-          likeCount += 1;
+          likeCount++;
           isLiked = true;
           iconColor = Colors.green;
           iconData = FeatherIcons.thumbsUp;
@@ -156,16 +168,16 @@ class _PostWidgetState extends State<PostWidget> {
 
     if (_isDisliked) {
       postsRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('userPosts')
-          .document(widget.post.postId)
+          .document(widget.post.id)
           .updateData({
         'dislikes.$currentUserId': false,
       });
 
       if (mounted) {
         setState(() {
-          dislikeCount -= 1;
+          dislikeCount--;
           isDisliked = false;
           dislikes[currentUserId] = false;
         });
@@ -174,9 +186,9 @@ class _PostWidgetState extends State<PostWidget> {
       // removeLikeToActivityFeed();
     } else if (!_isDisliked && !_isLiked) {
       postsRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('userPosts')
-          .document(widget.post.postId)
+          .document(widget.post.id)
           .updateData({
         'dislikes.$currentUserId': true,
       });
@@ -184,7 +196,7 @@ class _PostWidgetState extends State<PostWidget> {
       // addLikeToActivityFeed();
       if (mounted) {
         setState(() {
-          dislikeCount += 1;
+          dislikeCount++;
           isDisliked = true;
           iconColor = Colors.red;
           iconData = FeatherIcons.thumbsDown;
@@ -203,32 +215,32 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   addLikeToActivityFeed() {
-    bool isNotPostOwner = (currentUserId != widget.post.ownerId);
+    bool isNotPostOwner = (currentUserId != widget.post.uid);
     if (isNotPostOwner) {
       activityFeedRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('feedItems')
-          .document(widget.post.postId)
+          .document(widget.post.id)
           .setData({
         "type": 'like',
         "username": currentUser.username,
-        "userId": currentUser.id,
-        "userProfileImg": currentUser.photoUrl,
-        "postId": widget.post.postId,
-        "mediaUrl": widget.post.mediaUrl,
+        "userId": currentUser.uid,
+        "photoUrl": currentUser.photoUrl,
+        "id": widget.post.id,
+        "contentUrl": widget.post.contentUrl,
         "timestamp": FieldValue.serverTimestamp()
       });
     }
   }
 
   removeLikeToActivityFeed() {
-    bool isNotPostOwner = (currentUserId != widget.post.ownerId);
+    bool isNotPostOwner = (currentUserId != widget.post.uid);
     if (isNotPostOwner) {
       activityFeedRef
-          .document(widget.post.ownerId)
+          .document(widget.post.uid)
           .collection('feedItems')
-          .document(widget.post.postId)
-          .get(source: Source.serverAndCache)
+          .document(widget.post.id)
+          .get()
           .then((doc) {
         if (doc.exists) {
           doc.reference.delete();
@@ -241,9 +253,7 @@ class _PostWidgetState extends State<PostWidget> {
     const double kHeaderHeight = 80;
 
     return FutureBuilder(
-      future: usersRef
-          .document(widget.post.ownerId)
-          .get(source: Source.serverAndCache),
+      future: usersRef.document(widget.post.uid).get(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(
@@ -253,10 +263,12 @@ class _PostWidgetState extends State<PostWidget> {
         }
 
         User user = User.fromDocument(snapshot.data);
-        bool isPostOwner = currentUserId == widget.post.ownerId;
+        bool isPostOwner = currentUserId == widget.post.uid;
 
         return Container(
           height: kHeaderHeight,
+          width:
+              !kIsWeb ? MediaQuery.of(context).size.width : widthWeb(context),
           child: ListTile(
             leading: CircleAvatar(
               backgroundImage: ImageNetwork.cachedNetworkImageProvider(
@@ -266,7 +278,7 @@ class _PostWidgetState extends State<PostWidget> {
             ),
             title: GestureDetector(
               onTap: () => showProfile(context,
-                  profileId: widget.post.ownerId, pageColor: widget.pageColor),
+                  profileId: widget.post.uid, pageColor: widget.pageColor),
               child: Text(
                 '@' + user.username,
                 style:
@@ -288,7 +300,7 @@ class _PostWidgetState extends State<PostWidget> {
     return showDialog(
       context: parentContext,
       builder: (context) => SimpleDialog(
-        title: Text("Remove this post ?"),
+        title: Text("Opções do Post"),
         children: <Widget>[
           isPostOwner
               ? SimpleDialogOption(
@@ -296,56 +308,48 @@ class _PostWidgetState extends State<PostWidget> {
                     Navigator.pop(context);
                     deletePost();
                   },
-                  child: Text(
-                    'Deletar Post',
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  child: Text('Deletar'),
                 )
-              : Text(''),
+              : Padding(padding: EdgeInsets.zero),
           SimpleDialogOption(
             onPressed: () {
               Navigator.pop(context);
-              // deletePost();
             },
-            child: Text(
-              'Reportar Post',
-              style: TextStyle(color: Colors.yellow),
-            ),
+            child: Text('Denunciar'),
           ),
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('Cancelar'),
           )
         ],
       ),
     );
   }
 
-  // To delete a post, ownerId and currentUserId must be equal.
+  // To delete a post, uid and currentUserId must be equal.
   deletePost() async {
+    // Delete uploaded content from the post.
+    StorageReference ref = await storageUrlRef(widget.post.contentUrl);
+    ref.delete();
+    //storageRef.child(widget.post.uid + '/posts/${widget.post.contentType}s/${widget.post.id}.jpg').delete();
+
     // Delete post itself.
     postsRef
-        .document(widget.post.ownerId)
+        .document(widget.post.uid)
         .collection('userPosts')
-        .document(widget.post.postId)
-        .get(source: Source.serverAndCache)
+        .document(widget.post.id)
+        .get()
         .then((doc) {
       if (doc.exists) {
         doc.reference.delete();
       }
     });
 
-    // Delete uploaded image from the post.
-    storageUrlRef(widget.post.mediaUrl).then((ref) => ref.delete());
-    /*storageRef
-        .child(widget.post.ownerId + '/post_${widget.post.postId}.jpg')
-        .delete();*/
-
     // Delete all activity field notifications.
     QuerySnapshot activityFeedSnapshot = await activityFeedRef
-        .document(widget.post.ownerId)
+        .document(widget.post.uid)
         .collection('feedItems')
-        .where('postId', isEqualTo: widget.post.postId)
+        .where('id', isEqualTo: widget.post.id)
         .getDocuments();
     activityFeedSnapshot.documents.forEach((doc) {
       if (doc.exists) {
@@ -355,7 +359,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     // Delete all comments.
     QuerySnapshot commentsSnapshot = await commentsRef
-        .document(widget.post.postId)
+        .document(widget.post.id)
         .collection('comments')
         .getDocuments();
     commentsSnapshot.documents.forEach((doc) {
@@ -365,47 +369,29 @@ class _PostWidgetState extends State<PostWidget> {
     });
   }
 
-  Widget adaptiveImage(url) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        //minWidth: MediaQuery.of(context).size.width,
-        //maxHeight: !kIsWeb
-        //? double.infinity
-        //: MediaQuery.of(context).size.height * 0.5,
-        minWidth: MediaQuery.of(context).size.width,
-        maxWidth: MediaQuery.of(context).size.width,
-        minHeight: MediaQuery.of(context).size.height * 0.5,
-        maxHeight: MediaQuery.of(context).size.height * 0.5,
-      ),
-      child: FittedBox(
-        fit: BoxFit.cover,
-        child: cachedNetworkImage(url),
-      ),
-    );
-  }
-
-  buildPostImage() {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ViewPhoto(
-            url: widget.post.mediaUrl,
-            pageColor: widget.pageColor,
-          ),
-        ),
-      ),
-      onDoubleTap: handleLikes,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          adaptiveImage(widget.post.mediaUrl),
-          showIcon
-              ? likeAnimation(
-                  iconData, iconColor, MediaQuery.of(context).size.width * 0.25)
-              : Text('')
-        ],
-      ),
+  buildPostContent(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        widget.post.contentType == "image"
+            ? ImageWidget(
+                url: widget.post.contentUrl,
+                onDoubleTap: handleLikes,
+              )
+            : VideoWidget(
+                url: widget.post.contentUrl,
+                onDoubleTap: handleLikes,
+              ),
+        showIcon
+            ? likeAnimation(
+                iconData,
+                iconColor,
+                !kIsWeb
+                    ? MediaQuery.of(context).size.width * 0.25
+                    : MediaQuery.of(context).size.width * 0.125,
+              )
+            : Padding(padding: EdgeInsets.zero),
+      ],
     );
   }
 
@@ -426,110 +412,113 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  buildPostFooter() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                top: 50.0,
-                bottom: 25.0,
-                left: 15.0,
+  buildPostFooter(BuildContext context) {
+    return Container(
+      width: !kIsWeb ? MediaQuery.of(context).size.width : widthWeb(context),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 50.0,
+                  bottom: 25.0,
+                  left: 15.0,
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: handleLikePost,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  showIcon && isLiked
-                      ? likeAnimation(FeatherIcons.thumbsUp, Colors.green, 35.0)
-                      : Icon(
-                          FeatherIcons.thumbsUp,
-                          color: isLiked ? Colors.green : Colors.black,
-                          size: 35.0,
-                        ),
-                  Padding(
-                      padding: EdgeInsets.only(
-                    right: 5,
-                  )),
-                  Text(formatCompactNumber(likeCount)),
-                ],
-              ),
-            ),
-            Padding(padding: EdgeInsets.only(right: 5)),
-            GestureDetector(
-              onTap: handleDisLikePost,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  showIcon && isDisliked
-                      ? likeAnimation(FeatherIcons.thumbsDown, Colors.red, 35.0)
-                      : Icon(
-                          FeatherIcons.thumbsDown,
-                          color: isDisliked ? Colors.red : Colors.black,
-                          size: 35.0,
-                        ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5),
-                  ),
-                  Text(formatCompactNumber(dislikeCount)),
-                ],
-              ),
-            ),
-            Spacer(),
-            streamTimestamp(),
-            Spacer(),
-            GestureDetector(
-              onTap: () => showComments(
-                context,
-                postId: widget.post.postId,
-                ownerId: widget.post.ownerId,
-                mediaUrl: widget.post.mediaUrl,
-              ),
-              child: Icon(
-                FeatherIcons.messageCircle,
-                size: 35.0,
-                color: Colors.black,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 15.0),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.start,
-        ),
-        widget.post.description.length > 0
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          widget.post.description != ""
-                              ? '@${widget.post.username}'
-                              : '',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: handleLikePost,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    showIcon && isLiked
+                        ? likeAnimation(
+                            FeatherIcons.thumbsUp, Colors.green, 35.0)
+                        : Icon(
+                            FeatherIcons.thumbsUp,
+                            color: isLiked ? Colors.green : Colors.black,
+                            size: 35.0,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 5),
-                        ),
-                        Text(
-                          widget.post.description,
-                          style: TextStyle(color: Colors.black),
-                        )
-                      ],
+                    Padding(
+                        padding: EdgeInsets.only(
+                      right: 5,
+                    )),
+                    Text(formatCompactNumber(likeCount)),
+                  ],
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(right: 5)),
+              GestureDetector(
+                onTap: handleDisLikePost,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    showIcon && isDisliked
+                        ? likeAnimation(
+                            FeatherIcons.thumbsDown, Colors.red, 35.0)
+                        : Icon(
+                            FeatherIcons.thumbsDown,
+                            color: isDisliked ? Colors.red : Colors.black,
+                            size: 35.0,
+                          ),
+                    Padding(padding: EdgeInsets.only(right: 5)),
+                    Text(formatCompactNumber(dislikeCount)),
+                  ],
+                ),
+              ),
+              Spacer(),
+              streamTimestamp(),
+              Spacer(),
+              GestureDetector(
+                onTap: () => showComments(
+                  context,
+                  id: widget.post.id,
+                  uid: widget.post.uid,
+                  contentUrl: widget.post.contentUrl,
+                ),
+                child: Icon(
+                  FeatherIcons.messageCircle,
+                  size: 35.0,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(right: 15.0)),
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          widget.post.description.length > 0
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.only(left: 15.0)),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            widget.post.description != ""
+                                ? "@${widget.post.username}"
+                                : "",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 5)),
+                          Text(
+                            widget.post.description != ""
+                                ? widget.post.description
+                                : "",
+                            style: TextStyle(color: Colors.black),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-            : Padding(padding: EdgeInsets.zero),
-      ],
+                    Padding(padding: EdgeInsets.only(right: 15.0)),
+                  ],
+                )
+              : Padding(padding: EdgeInsets.zero),
+        ],
+      ),
     );
   }
 
@@ -581,40 +570,60 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
+  void showPost(context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostScreen(
+          postId: widget.post.id,
+          userId: widget.post.uid,
+        ),
+      ),
+    );
+  }
+
+  void showComments(
+    BuildContext context, {
+    String id,
+    String uid,
+    String contentUrl,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Comments(
+            postId: id,
+            postOwnerId: uid,
+            postcontentUrl: contentUrl,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.child == null) {
+    if (widget.type == PostType.LIST) {
       return Container(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          buildPostHeader(),
-          buildPostImage(),
-          buildPostFooter(),
-        ],
-      ));
-    } else {
-      return widget.child;
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            buildPostHeader(),
+            buildPostContent(context),
+            buildPostFooter(context),
+          ],
+        ),
+      );
     }
-  }
-}
 
-showComments(
-  BuildContext context, {
-  String postId,
-  String ownerId,
-  String mediaUrl,
-}) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) {
-        return Comments(
-          postId: postId,
-          postOwnerId: ownerId,
-          postMediaUrl: mediaUrl,
-        );
-      },
-    ),
-  );
+    return GridTile(
+      child: GestureDetector(
+        onTap: () => showPost(context),
+        child: widget.post.contentType == "image"
+            ? adaptiveImage(context, widget.post.contentUrl)
+            : Text("Vídeo"),
+      ),
+    );
+  }
 }

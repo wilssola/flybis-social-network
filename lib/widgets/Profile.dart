@@ -1,51 +1,46 @@
-import 'dart:io';
+import "dart:io";
+import "package:flutter/material.dart";
+import "package:flutter/foundation.dart";
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import "package:flybis/pages/App.dart";
 
-import 'package:flybis/pages/Home.dart';
+import "package:image_picker/image_picker.dart";
+import "package:firebase_storage/firebase_storage.dart";
 
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import '../plugins/image_network/image_network.dart';
 
-Future<String> uploadFile(file, userId) async {
-  if (!kIsWeb) {
-    StorageUploadTask uploadTask;
+class Profile {
+  Future<String> photoUpload(File file, String userId, String fileId) async {
+    if (!kIsWeb) {
+      StorageUploadTask uploadTask;
 
-    uploadTask = storageRef.child(userId + "/$userId.jpg").putFile(file);
+      uploadTask = storageRef.child(userId + "/$fileId.jpg").putFile(file);
 
-    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+      StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
 
-    String downloadUrl = await storageSnap.ref.getDownloadURL();
+      String downloadUrl = await storageSnap.ref.getDownloadURL();
 
-    usersRef.document(userId).updateData({'photoUrl': downloadUrl});
+      usersRef
+          .document(userId)
+          .updateData({"${fileId.split("-")[0]}Url": downloadUrl});
 
-    return downloadUrl;
+      return downloadUrl;
+    }
+
+    return null;
   }
 
-  return null;
-}
+  Future<File> photoCamera(String userId, String fileId) async {
+    File file = await ImagePicker.pickImage(source: ImageSource.camera);
+    photoUpload(file, userId, fileId);
 
-handleTakePhoto(context, userId) async {
-  Navigator.pop(context);
+    return file;
+  }
 
-  File file = await ImagePicker.pickImage(source: ImageSource.camera);
-  String url = await uploadFile(file, userId);
+  Future<File> photoGallery(String userId, String fileId) async {
+    File file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    photoUpload(file, userId, fileId);
 
-  return {
-    'photoFile': file,
-    'photoUrl': url,
-  };
-}
-
-handleChooseFromGallery(context, userId) async {
-  Navigator.pop(context);
-
-  File file = await ImagePicker.pickImage(source: ImageSource.gallery);
-  String url = await uploadFile(file, userId);
-
-  return {
-    'photoFile': file,
-    'photoUrl': url,
-  };
+    return file;
+  }
 }

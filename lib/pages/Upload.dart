@@ -1,25 +1,29 @@
-import 'dart:io';
+import "dart:io";
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flybis/packages/photofilters/lib/photofilters.dart';
-import 'package:flybis/plugins/image_network/image_network.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:image/image.dart' as Im;
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flybis/plugins/photofilters/photofilters.dart";
+import "package:flybis/plugins/image_network/image_network.dart";
+import "package:firebase_storage/firebase_storage.dart";
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:geolocator/geolocator.dart";
+import "package:image/image.dart" as Im;
+import "package:image_picker/image_picker.dart";
+import "package:path_provider/path_provider.dart";
+import "package:progress_dialog/progress_dialog.dart";
+import "package:uuid/uuid.dart";
 
-import 'package:flybis/models/User.dart';
-import 'package:flybis/widgets/Progress.dart';
-import 'package:flybis/pages/Home.dart';
+import "package:flybis/models/User.dart";
+import "package:flybis/widgets/Progress.dart";
+import "package:flybis/pages/App.dart";
+import "package:flybis/widgets/Utils.dart";
 
-import 'package:camera/camera.dart';
-import 'package:video_player/video_player.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import "package:flybis/widgets/VideoWidget.dart";
+
+import "package:camera/camera.dart";
+import "package:video_player/video_player.dart";
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 
 class Upload extends StatefulWidget {
   final User currentUser;
@@ -32,17 +36,15 @@ class Upload extends StatefulWidget {
   _UploadState createState() => _UploadState();
 }
 
-enum FileMode { IMAGE, VIDEO }
-
 class _UploadState extends State<Upload>
     with AutomaticKeepAliveClientMixin<Upload> {
   File file;
   String imagePath;
   String videoPath;
-  FileMode fileMode;
+  String contentType;
   bool isUploading = false;
 
-  String postId = Uuid().v4();
+  String postId;
   TextEditingController captionControler = TextEditingController();
   TextEditingController locationControler = TextEditingController();
 
@@ -56,11 +58,15 @@ class _UploadState extends State<Upload>
   VideoPlayerController videoPlayerController;
   //ChewieController chewieController;
 
+  ProgressDialog progressDialog;
+
   @override
   void initState() {
     super.initState();
 
-    initCamera();
+    if (!kIsWeb) {
+      initCamera();
+    }
   }
 
   void initCamera() {
@@ -68,9 +74,11 @@ class _UploadState extends State<Upload>
       cameras = availableCameras;
 
       if (cameras.length > 0) {
-        setState(() {
-          indexCamera = 0;
-        });
+        if (mounted) {
+          setState(() {
+            indexCamera = 0;
+          });
+        }
         initCameraController(cameras[indexCamera]);
         print("Has ${cameras.length.toString()} Cameras Availables");
       } else {
@@ -82,10 +90,9 @@ class _UploadState extends State<Upload>
 
     if (cameraController != null) {
       cameraController.initialize().then((_) {
-        if (!mounted) {
-          return;
+        if (mounted) {
+          setState(() {});
         }
-        setState(() {});
       });
     }
   }
@@ -95,30 +102,25 @@ class _UploadState extends State<Upload>
       await cameraController.dispose();
     }
 
-    // 3
     cameraController = CameraController(
       cameraDescription,
-      ResolutionPreset.ultraHigh,
+      ResolutionPreset.high,
     );
 
     // If the controller is updated then update the UI.
-    // 4
     cameraController.addListener(() {
-      // 5
       if (mounted) {
         setState(() {});
       }
 
       if (cameraController.value.hasError) {
-        print('Camera error ${cameraController.value.errorDescription}');
+        print("Camera error ${cameraController.value.errorDescription}");
       }
     });
 
-    // 6
     try {
       await cameraController.initialize();
     } on CameraException catch (error) {
-      // _showCameraException(e);
       print(error);
     }
 
@@ -147,11 +149,11 @@ class _UploadState extends State<Upload>
           label: Text(
             lensDirection
                     .toString()
-                    .substring(lensDirection.toString().indexOf('.') + 1)[0]
+                    .substring(lensDirection.toString().indexOf(".") + 1)[0]
                     .toUpperCase() +
                 lensDirection
                     .toString()
-                    .substring(lensDirection.toString().indexOf('.') + 1)
+                    .substring(lensDirection.toString().indexOf(".") + 1)
                     .substring(1),
             style: TextStyle(
               color: Colors.white,
@@ -196,7 +198,7 @@ class _UploadState extends State<Upload>
       child: Align(
         alignment: Alignment.centerRight,
         child: FlatButton.icon(
-          onPressed: handleChooseFromGallery,
+          onPressed: gallerySelect,
           icon: Icon(
             FeatherIcons.image,
             color: Colors.white,
@@ -210,6 +212,10 @@ class _UploadState extends State<Upload>
         ),
       ),
     );
+  }
+
+  setUuid() {
+    postId = Uuid().v4();
   }
 
   Widget cameraButton() {
@@ -255,31 +261,25 @@ class _UploadState extends State<Upload>
   }
 
   void onCaptureImage(context) async {
+    setUuid();
+
     try {
-      imagePath =
-          (await getTemporaryDirectory()).path + '/' + '${DateTime.now()}.jpg';
+      imagePath = (await getTemporaryDirectory()).path + "/$postId.jpg";
 
       await cameraController.takePicture(imagePath);
 
-      fileMode = FileMode.IMAGE;
+      contentType = "image";
       file = File(imagePath);
-
-      /*Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Image.file(File(imagePath)),
-        ),
-      );*/
-
     } catch (error) {
       print(error);
     }
   }
 
   void startCaptureVideo() async {
+    setUuid();
+
     try {
-      videoPath =
-          (await getTemporaryDirectory()).path + '/' + '${DateTime.now()}.mp4';
+      videoPath = (await getTemporaryDirectory()).path + "/$postId.mp4";
 
       await cameraController.startVideoRecording(videoPath);
 
@@ -295,11 +295,12 @@ class _UploadState extends State<Upload>
 
       cameraIconColor = Colors.white;
 
-      fileMode = FileMode.VIDEO;
+      contentType = "video";
       file = File(videoPath);
 
       videoPlayerController = VideoPlayerController.file(File(videoPath))
         ..initialize();
+      videoPlayerController.setLooping(true);
       videoPlayerController.play();
     } catch (error) {
       print(error);
@@ -308,51 +309,88 @@ class _UploadState extends State<Upload>
 
   @override
   void dispose() {
-    cameraController?.dispose();
+    if (!kIsWeb) {
+      cameraController?.dispose();
+    }
 
     super.dispose();
   }
 
-  handleTakePhoto() async {
+  galleryVideo() async {
+    setUuid();
+
     Navigator.pop(context);
-    File file = await ImagePicker.pickImage(
-        source: ImageSource.camera, maxWidth: 960, maxHeight: 675);
-    setState(() {
-      this.file = file;
-    });
+
+    File file = await ImagePicker.pickVideo(source: ImageSource.gallery);
+
+    if (mounted) {
+      setState(() {
+        this.contentType = "video";
+        this.file = file;
+      });
+    }
   }
 
-  handleChooseFromGallery() async {
+  galleryImage() async {
+    setUuid();
+
     Navigator.pop(context);
-    File file = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxWidth: 960, maxHeight: 675);
-    setState(() {
-      this.file = file;
-    });
+
+    File file = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (mounted) {
+      setState(() {
+        this.contentType = "image";
+        this.file = file;
+      });
+    }
   }
 
-  selectImage(parentContext) {
+  gallerySelect() {
     return showDialog(
-        context: parentContext,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text('Create Post'),
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Row(
             children: <Widget>[
-              SimpleDialogOption(
-                child: Text('Photo with Camera'),
-                onPressed: handleTakePhoto,
-              ),
-              SimpleDialogOption(
-                child: Text('Image from Gallery'),
-                onPressed: handleChooseFromGallery,
-              ),
-              SimpleDialogOption(
-                child: Text('Cancel'),
-                onPressed: () => Navigator.pop(context),
-              )
+              Icon(FeatherIcons.image),
+              Padding(padding: EdgeInsets.all(5)),
+              Text("Galeria"),
             ],
-          );
-        });
+          ),
+          children: <Widget>[
+            SimpleDialogOption(
+                child: Row(
+                  children: <Widget>[
+                    Icon(FeatherIcons.camera),
+                    Padding(padding: EdgeInsets.all(5)),
+                    Text("Imagem"),
+                  ],
+                ),
+                onPressed: galleryImage),
+            SimpleDialogOption(
+                child: Row(
+                  children: <Widget>[
+                    Icon(FeatherIcons.video),
+                    Padding(padding: EdgeInsets.all(5)),
+                    Text("Vídeo"),
+                  ],
+                ),
+                onPressed: galleryVideo),
+            SimpleDialogOption(
+              child: Row(
+                children: <Widget>[
+                  Icon(FeatherIcons.x),
+                  Padding(padding: EdgeInsets.all(5)),
+                  Text("Cancelar"),
+                ],
+              ),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
   }
 
   Container buildSplashScreen() {
@@ -361,16 +399,16 @@ class _UploadState extends State<Upload>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SvgPicture.asset('assets/images/upload.svg', height: 260),
+          SvgPicture.asset("assets/images/upload.svg", height: 260),
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: RaisedButton(
-              onPressed: () => selectImage(context),
+              onPressed: gallerySelect,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Text(
-                'Upload Image',
+                "Upload Image",
                 style: TextStyle(color: Colors.white, fontSize: 22.0),
               ),
               color: Colors.deepOrange,
@@ -385,48 +423,58 @@ class _UploadState extends State<Upload>
     if (!kIsWeb) {
       StorageUploadTask uploadTask;
 
-      if (fileMode == FileMode.IMAGE) {
-        uploadTask = storageRef
-            .child(widget.currentUser.id + "/posts/images/post_$postId.jpg")
-            .putFile(file);
-      } else if (fileMode == FileMode.VIDEO) {
-        uploadTask = storageRef
-            .child(widget.currentUser.id + "/posts/videos/post_$postId.mp4")
-            .putFile(file);
+      if (contentType == "image") {
+        try {
+          uploadTask = storageRef
+              .child(widget.currentUser.uid + "/posts/images/$postId.jpg")
+              .putFile(file, StorageMetadata(contentType: "image/jpeg"));
+        } catch (error) {
+          print("Image upload error: $error");
+        }
+      } else if (contentType == "video") {
+        try {
+          uploadTask = storageRef
+              .child(widget.currentUser.uid + "/posts/videos/$postId.mp4")
+              .putFile(file, StorageMetadata(contentType: "video/mp4"));
+        } catch (error) {
+          print("Video upload error: $error");
+        }
       }
 
       StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
-
       String downloadUrl = await storageSnap.ref.getDownloadURL();
 
       return downloadUrl;
+    } else {
+      return null;
     }
-
-    return null;
   }
 
   Future filterImage(context) async {
     var fileName = file.path.split("/").last;
     var image = Im.decodeImage(file.readAsBytesSync());
     image = Im.copyResize(image, width: 600);
+
     Map imagefile = await Navigator.push(
       context,
-      new MaterialPageRoute(
-        builder: (context) => new PhotoFilterSelector(
-          title: Text("Photo Filter Example"),
-          image: image,
-          filters: presetFiltersList,
-          filename: fileName,
-          loader: Center(child: CircularProgressIndicator()),
-          fit: BoxFit.contain,
-        ),
+      MaterialPageRoute(
+        builder: (context) => PhotoFilterSelector(
+            title: Text("Photo Filter Example"),
+            image: image,
+            filters: presetFiltersList,
+            filename: fileName,
+            loader: Center(child: CircularProgressIndicator()),
+            fit: BoxFit.contain,
+            backgroundColor: widget.pageColor),
       ),
     );
-    if (imagefile != null && imagefile.containsKey('image_filtered')) {
-      setState(() {
-        file = imagefile['image_filtered'];
-      });
-      print(file.path);
+
+    if (imagefile != null && imagefile.containsKey("image_filtered")) {
+      if (mounted) {
+        setState(() {
+          file = imagefile["image_filtered"];
+        });
+      }
     }
   }
 
@@ -453,19 +501,20 @@ class _UploadState extends State<Upload>
   }
 
   createPostInFirestore({
-    String mediaUrl,
+    String contentUrl,
     String location,
     String description,
   }) {
     postsRef
-        .document(widget.currentUser.id)
-        .collection('userPosts')
+        .document(widget.currentUser.uid)
+        .collection("userPosts")
         .document(postId)
         .setData({
-      "postId": postId,
-      "ownerId": widget.currentUser.id,
+      "id": postId,
+      "uid": widget.currentUser.uid,
       "username": widget.currentUser.username,
-      "mediaUrl": mediaUrl,
+      "contentUrl": contentUrl,
+      "contentType": contentType,
       "description": description,
       "location": location,
       "timestamp": FieldValue.serverTimestamp(),
@@ -477,43 +526,57 @@ class _UploadState extends State<Upload>
   }
 
   handleSubmit() async {
-    setState(() {
-      isUploading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isUploading = true;
+      });
+    }
 
-    await compressImage();
-    String mediaUrl = await uploadFile(file);
+    progressDialog.show();
+
+    //await compressImage();
+    String contentUrl = await uploadFile(file);
 
     createPostInFirestore(
-      mediaUrl: mediaUrl,
+      contentUrl: contentUrl,
       location: locationControler.text,
       description: captionControler.text,
     );
     captionControler.clear();
     locationControler.clear();
+    if (mounted) {
+      setState(() {
+        file = null;
+        isUploading = false;
+        postId = Uuid().v4();
+      });
+    }
 
-    setState(() {
-      file = null;
-      isUploading = false;
-      postId = Uuid().v4();
-    });
+    progressDialog.hide();
   }
 
   compressImage() async {
     final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
+
     Im.Image imageFile = Im.decodeImage(file.readAsBytesSync());
-    final compressedImageFile = File('$path/img_$postId.jpg')
+
+    final compressedImageFile = File("$path/img_$postId.jpg")
       ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
-    setState(() {
-      file = compressedImageFile;
-    });
+
+    if (mounted) {
+      setState(() {
+        file = compressedImageFile;
+      });
+    }
   }
 
   clearImage() {
-    setState(() {
-      file = null;
-    });
+    if (mounted) {
+      setState(() {
+        file = null;
+      });
+    }
   }
 
   Scaffold buildUploadForm() {
@@ -522,54 +585,75 @@ class _UploadState extends State<Upload>
         backgroundColor: widget.pageColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.black,
           onPressed: clearImage,
         ),
-        title: Text(
-          "Caption Post",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text("Caption Post"),
         actions: <Widget>[
           FlatButton(
-            child: Text(
-              'Post',
-              style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0),
-            ),
+            child: Text("Post"),
             onPressed: isUploading ? null : () => handleSubmit(),
           )
         ],
       ),
       body: ListView(
         children: <Widget>[
-          isUploading ? linearProgress() : Padding(padding: EdgeInsets.zero),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: fileMode == FileMode.IMAGE
-                ? AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: FileImage(file),
-                        ),
-                      ),
-                    ),
-                  )
-                : (fileMode == FileMode.VIDEO
+          Stack(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: contentType == "image"
                     ? AspectRatio(
-                        aspectRatio:
-                            videoPlayerController.value.aspectRatio * 0.7,
-                        child: Container(
-                          child: VideoPlayer(
-                            videoPlayerController,
-                          ),
+                        aspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height * 0.5),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(file),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                width: 200.0,
+                                height: 100.0,
+                                alignment: Alignment.center,
+                                child: RaisedButton.icon(
+                                  color: Colors.blue,
+                                  icon: Icon(
+                                    FeatherIcons.eye,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text(
+                                    "Aplicar Filtros",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  onPressed: () {
+                                    filterImage(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       )
-                    : Text("")),
+                    : (contentType == "video"
+                        ? VideoWidget(
+                            file: file,
+                          ) //adaptiveVideo(context, videoPlayerController)
+                        : Text("")),
+              ),
+              isUploading
+                  ? linearProgress()
+                  : Padding(padding: EdgeInsets.zero),
+            ],
           ),
           Padding(
             padding: EdgeInsets.only(top: 10.0),
@@ -585,69 +669,46 @@ class _UploadState extends State<Upload>
               child: TextField(
                 controller: captionControler,
                 decoration: InputDecoration(
-                    hintText: 'Write a caption', border: InputBorder.none),
+                  hintText: "Write a caption",
+                  border: InputBorder.none,
+                ),
               ),
             ),
           ),
           Divider(),
           ListTile(
-            leading: Icon(
-              Icons.pin_drop,
-              color: Colors.orange,
-              size: 35,
-            ),
-            title: Container(
-              width: 280,
-              child: TextField(
-                controller: locationControler,
-                decoration: InputDecoration(
-                    hintText: 'Where was this photo taken ?',
-                    border: InputBorder.none),
-              ),
-            ),
-          ),
-          Container(
-            width: 200.0,
-            height: 100.0,
-            alignment: Alignment.center,
-            child: RaisedButton.icon(
-              color: Colors.blue,
-              icon: Icon(
-                Icons.my_location,
-                color: Colors.white,
-              ),
-              label: Text(
-                'Use Current Location',
-                style: TextStyle(color: Colors.white),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              onPressed: getUserLocation,
+            leading: Icon(FeatherIcons.mapPin, color: Colors.black, size: 35),
+            title: Row(
+              children: <Widget>[
+                Container(
+                  width: 190,
+                  child: TextField(
+                    controller: locationControler,
+                    decoration: InputDecoration(
+                      hintText: "Where was this photo taken ?",
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                RaisedButton.icon(
+                  color: Colors.blue,
+                  icon: Icon(
+                    Icons.my_location,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "Get Now",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: getUserLocation,
+                ),
+              ],
             ),
           ),
-          Container(
-            width: 200.0,
-            height: 100.0,
-            alignment: Alignment.center,
-            child: RaisedButton.icon(
-              color: Colors.blue,
-              icon: Icon(
-                FeatherIcons.star,
-                color: Colors.white,
-              ),
-              label: Text(
-                "Filtrar Imagem",
-                style: TextStyle(color: Colors.white),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              onPressed: () {
-                filterImage(context);
-              },
-            ),
-          )
         ],
       ),
     );
@@ -657,12 +718,7 @@ class _UploadState extends State<Upload>
     final Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0),
-        child: AppBar(
-          backgroundColor: widget.pageColor,
-        ),
-      ),
+      appBar: appBar(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -704,11 +760,39 @@ class _UploadState extends State<Upload>
     );
   }
 
+  buildProgressDialog(BuildContext context) {
+    progressDialog = new ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+    );
+
+    progressDialog.style(
+      message: "Uploading file...",
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+    );
+  }
+
+  Widget appBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(0),
+      child: AppBar(
+        elevation: 0,
+        backgroundColor: widget.pageColor,
+      ),
+    );
+  }
+
+  @override
   get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    buildProgressDialog(context);
 
     if (file == null) {
       if (!kIsWeb) {
@@ -716,15 +800,8 @@ class _UploadState extends State<Upload>
           return buildCamera();
         } else {
           return Scaffold(
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(0),
-              child: AppBar(
-                backgroundColor: widget.pageColor,
-              ),
-            ),
-            body: Container(
-              color: Colors.black,
-            ),
+            appBar: appBar(),
+            body: Container(color: Colors.black),
           );
         }
       } else {

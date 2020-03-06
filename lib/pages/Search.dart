@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flybis/plugins/format.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import 'package:flybis/models/User.dart';
-import 'package:flybis/pages/Home.dart';
+import 'package:flybis/pages/App.dart';
 import 'package:flybis/pages/Activity.dart';
 import 'package:flybis/widgets/Ads.dart';
 import 'package:flybis/widgets/Utils.dart';
@@ -16,6 +15,8 @@ import 'package:flybis/widgets/PostWidget.dart';
 import 'package:async/async.dart';
 
 import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Search extends StatefulWidget {
   final Color pageColor;
@@ -40,15 +41,16 @@ class _SearchState extends State<Search>
 
     Stream<QuerySnapshot> usersByUsername =
         usersRef.where('username', isGreaterThanOrEqualTo: query).snapshots();
-
-    setState(() {
-      searchResultsFuture = StreamGroup.merge([
-        usersByUsername,
-        //usersByUsernameLowercase,
-        usersByDisplayName,
-        //usersByDisplayNameLowercase,
-      ]);
-    });
+    if (mounted) {
+      setState(() {
+        searchResultsFuture = StreamGroup.merge([
+          usersByUsername,
+          //usersByUsernameLowercase,
+          usersByDisplayName,
+          //usersByDisplayNameLowercase,
+        ]);
+      });
+    }
   }
 
   clearSearch() {
@@ -102,7 +104,7 @@ class _SearchState extends State<Search>
           );
         } else {
           if (snapshot.data.documents.length == 0) {
-            return infoCenterText('Nenhum resultado encontrado');
+            return infoText('Nenhum resultado encontrado');
           }
 
           List<PostWidget> posts = [];
@@ -134,7 +136,7 @@ class _SearchState extends State<Search>
           }
 
           if (snapshot.data.documents.length == 0) {
-            return infoCenterText('Nenhum resultados encontrado');
+            return infoText('Nenhum resultados encontrado');
           }
 
           List<UserResult> searchResults = [];
@@ -186,7 +188,7 @@ class UserResult extends StatelessWidget {
           children: <Widget>[
             Divider(height: 1),
             GestureDetector(
-              onTap: () => showProfile(context, profileId: user.id),
+              onTap: () => showProfile(context, profileId: user.uid),
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundImage: ImageNetwork.cachedNetworkImageProvider(

@@ -3,18 +3,24 @@ import 'package:photo_view/photo_view.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 
 class ViewPhoto extends StatelessWidget {
+  final String title;
   final String url;
   final Color pageColor;
 
-  ViewPhoto({Key key, @required this.url, @required this.pageColor}) : super(key: key);
+  ViewPhoto({
+    Key key,
+    this.title = "Imagem",
+    this.url,
+    this.pageColor = Colors.black,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text("Imagem"),
+        title: Text(title),
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: pageColor,
       ),
       body: ViewPhotoScreen(url: url),
@@ -45,6 +51,8 @@ class ViewPhotoScreenState extends State<ViewPhotoScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: PhotoView(
+        minScale: 0.25,
+        maxScale: 2.25,
         imageProvider: ImageNetwork.cachedNetworkImageProvider(url),
       ),
     );

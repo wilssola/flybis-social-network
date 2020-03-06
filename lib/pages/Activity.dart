@@ -1,74 +1,70 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:flybis/const.dart';
 
 // flybis
 import "package:flybis/models/Feed.dart";
-import "package:flybis/pages/Home.dart";
+import "package:flybis/pages/App.dart";
 import "package:flybis/pages/Profile.dart";
-import "package:flybis/pages/ViewPost.dart";
 import "package:flybis/widgets/Utils.dart";
 import "package:flybis/widgets/Header.dart";
 import "package:flybis/widgets/Progress.dart";
 
 import "package:flybis/plugins/image_network/image_network.dart";
+
+import "package:flybis/widgets/ViewPost.dart";
 // flybis - End
 
 import "package:flybis/plugins/timeago.dart";
 
 class Activity extends StatefulWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey;
   final Color pageColor;
-  final scaffoldKey;
 
-  Activity({this.pageColor, this.scaffoldKey});
+  Activity({
+    this.scaffoldKey,
+    this.pageColor,
+  });
 
   @override
   ActivityState createState() => ActivityState();
 }
 
-class ActivityState extends State<Activity> {
-  bool isLoad = false;
-
+class ActivityState extends State<Activity>
+    with AutomaticKeepAliveClientMixin<Activity> {
   Widget streamFeed() {
     return StreamBuilder(
       stream: activityFeedRef
-          .document(currentUser.id)
+          .document(currentUser.uid)
           .collection("feedItems")
           .orderBy("timestamp", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        Future.delayed(Duration(seconds: 1)).then((_) {
-          if (mounted) {
-            setState(() {
-              isLoad = true;
-            });
-          }
+        if (!snapshot.hasData) {
+          return circularProgress(color: widget.pageColor);
+        }
+
+        if (snapshot.data.documents.length == 0) {
+          return infoText("Nenhuma notificação encontrada");
+        }
+
+        List<ActivityItem> feedItems = [];
+        snapshot.data.documents.forEach((doc) {
+          feedItems.add(ActivityItem(feed: Feed.fromDocument(doc)));
         });
 
-        if (!snapshot.hasData || !isLoad) {
-          return circularProgress(
-            color: widget.pageColor,
-          );
-        } else {
-          if (snapshot.data.documents.length == 0) {
-            return infoCenterText("Nenhuma notificação encontrada");
-          }
-
-          List<ActivityItem> feedItems = [];
-          snapshot.data.documents.forEach((doc) {
-            feedItems.add(ActivityItem(feed: Feed.fromDocument(doc)));
-          });
-
-          return ListView.builder(
-            itemCount: feedItems.length,
-            itemBuilder: (context, index) {
-              return feedItems[index];
-            },
-          );
-        }
+        return ListView.builder(
+          itemCount: feedItems.length,
+          itemBuilder: (context, index) {
+            return feedItems[index];
+          },
+        );
       },
     );
   }
+
+  @override
+  get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +90,7 @@ class ActivityItem extends StatelessWidget {
   ActivityItem({this.feed, this.child});
 
   showPost(context, {String postId, String profileId}) {
+    print(postId);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -108,11 +105,9 @@ class ActivityItem extends StatelessWidget {
   configureMediaPreview(context) {
     if (feed.type == "like" || feed.type == "comment") {
       mediaPreview = GestureDetector(
-        onTap: () => showPost(
-          context,
-          postId: feed.postId,
-          profileId: feed.userId,
-        ),
+        onTap: () => showPost(context,
+            postId: feed.id, profileId: currentUser.uid //feed.userId,
+            ),
         child: Container(
           width: 50.0,
           height: 50.0,
@@ -123,7 +118,7 @@ class ActivityItem extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: ImageNetwork.cachedNetworkImageProvider(
-                    feed.mediaUrl != null ? feed.mediaUrl : "",
+                    feed.contentUrl != null ? feed.contentUrl : "",
                   ),
                 ),
               ),
@@ -140,7 +135,7 @@ class ActivityItem extends StatelessWidget {
     } else if (feed.type == "follow") {
       activityItemText = "is following you";
     } else if (feed.type == "comment") {
-      activityItemText = "replied ${feed.commentData}";
+      activityItemText = "replied ${feed.data}";
     } else {
       activityItemText = "Error: Unknown type ${feed.type}";
     }
@@ -155,50 +150,31 @@ class ActivityItem extends StatelessWidget {
     if (child == null) {
       configureMediaPreview(context);
 
-      return Padding(
-        padding: EdgeInsets.only(bottom: 2.0),
-        child: Container(
-          color: Colors.white,
-          child: ListTile(
-            title: GestureDetector(
-              onTap: () => showProfile(
-                context,
-                profileId: feed.userId,
-              ),
-              child: RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "@" + feed.username,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " $activityItemText",
-                      ),
-                    ]),
-              ),
+      return Container(
+        child: ListTile(
+          title: GestureDetector(
+            onTap: () => showProfile(context, profileId: feed.uid),
+            child: Row(
+              children: <Widget>[
+                usernameText(feed.username),
+                Container(
+                  width: 200,
+                  child: Text(
+                    " $activityItemText",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-            leading: CircleAvatar(
-              backgroundColor: Colors.grey[200],
-              backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                feed.userProfileImg != null ? feed.userProfileImg : "",
-              ),
-            ),
-            subtitle: Text(
-              timeUntil(feed.timestamp.toDate(),
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: mediaPreview,
           ),
+          leading: CircleAvatar(
+            backgroundColor: avatarBackground,
+            backgroundImage: ImageNetwork.cachedNetworkImageProvider(
+              feed.photoUrl != null ? feed.photoUrl : "",
+            ),
+          ),
+          subtitle: Text(timeUntil(feed.timestamp.toDate())),
+          trailing: mediaPreview,
         ),
       );
     } else {
@@ -207,14 +183,20 @@ class ActivityItem extends StatelessWidget {
   }
 }
 
-showProfile(BuildContext context, {@required String profileId, Color pageColor = Colors.black}) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => Profile(
-        profileId: profileId,
-        pageColor: pageColor,
+showProfile(
+  BuildContext context, {
+  @required String profileId,
+  Color pageColor = Colors.black,
+}) {
+  if (profileId != currentUser.uid) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Profile(
+          profileId: profileId,
+          pageColor: pageColor,
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

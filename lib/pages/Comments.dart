@@ -1,35 +1,38 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flybis/plugins/timeago.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 
-import 'package:flybis/pages/Home.dart';
+import 'package:flybis/pages/App.dart';
 import 'package:flybis/widgets/Header.dart';
 import 'package:flybis/widgets/Progress.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flybis/models/Comment.dart';
 
 class Comments extends StatefulWidget {
   final String postId;
   final String postOwnerId;
-  final String postMediaUrl;
+  final String postcontentUrl;
 
-  Comments({this.postId, this.postMediaUrl, this.postOwnerId});
+  Comments({this.postId, this.postcontentUrl, this.postOwnerId});
 
   @override
   CommentsState createState() => CommentsState(
       postId: this.postId,
       postOwnerId: this.postOwnerId,
-      postMediaUrl: this.postMediaUrl);
+      postcontentUrl: this.postcontentUrl);
 }
 
 class CommentsState extends State<Comments> {
   final String postId;
   final String postOwnerId;
-  final String postMediaUrl;
+  final String postcontentUrl;
   TextEditingController commentController = TextEditingController();
 
-  CommentsState({this.postId, this.postMediaUrl, this.postOwnerId});
+  CommentsState({this.postId, this.postcontentUrl, this.postOwnerId});
 
   buildComments() {
     return StreamBuilder(
@@ -58,10 +61,10 @@ class CommentsState extends State<Comments> {
       'username': currentUser.username,
       'comment': commentController.text,
       'timestamp': FieldValue.serverTimestamp(),
-      'avatarUrl': currentUser.photoUrl,
-      'userId': currentUser.id
+      'photoUrl': currentUser.photoUrl,
+      'userId': currentUser.uid
     });
-    bool isNotCommentOwner = postOwnerId != currentUser.id;
+    bool isNotCommentOwner = postOwnerId != currentUser.uid;
     if (isNotCommentOwner) {
       activityFeedRef.document(postOwnerId).collection('feedItems').add({
         'type': 'comment',
@@ -69,9 +72,9 @@ class CommentsState extends State<Comments> {
         'timestamp': FieldValue.serverTimestamp(),
         'postId': postId,
         'username': currentUser.username,
-        'userId': currentUser.id,
-        'userProfileImg': currentUser.photoUrl,
-        "mediaUrl": postMediaUrl,
+        'userId': currentUser.uid,
+        'photoUrl': currentUser.photoUrl,
+        "contentUrl": postcontentUrl,
       });
     }
     commentController.clear();
@@ -100,57 +103,6 @@ class CommentsState extends State<Comments> {
           )
         ],
       ),
-    );
-  }
-}
-
-class Comment extends StatelessWidget {
-  final String username;
-  final String userId;
-  final String avatarUrl;
-  final String comment;
-  final timestamp;
-
-  Comment({
-    this.username,
-    this.userId,
-    this.avatarUrl,
-    this.comment,
-    this.timestamp,
-  });
-
-  factory Comment.fromDocument(DocumentSnapshot doc) {
-    return Comment(
-      username: doc['username'],
-      userId: doc['userId'],
-      comment: doc['comment'],
-      timestamp: doc['timestamp'],
-      avatarUrl: doc['avatarUrl'],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          title: Text(comment),
-          leading: CircleAvatar(
-            backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                avatarUrl != null ? avatarUrl : ""),
-          ),
-          subtitle: Text(
-            timestamp != null
-                ? timeUntil(
-                    !kIsWeb
-                        ? timestamp.toDate()
-                        : Timestamp.fromDate(timestamp).toDate(),
-                  )
-                : '',
-          ),
-        ),
-        Divider(),
-      ],
     );
   }
 }
