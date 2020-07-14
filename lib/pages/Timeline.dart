@@ -1,5 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_native_admob/flutter_native_admob.dart';
 
 import "package:flybis/models/Post.dart";
 import "package:flybis/models/User.dart";
@@ -9,7 +10,7 @@ import "package:flybis/widgets/PostWidget.dart";
 import "package:flybis/widgets/Progress.dart";
 import "package:flybis/widgets/Header.dart";
 import "package:flybis/widgets/Utils.dart";
-import "package:flybis/widgets/Ads.dart";
+import "package:flybis/services/Admob.dart";
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart";
@@ -153,17 +154,21 @@ class TimelineState extends State<Timeline>
   }
 
   ListView buildTimeline() {
-    return ListView(
+    return /*ListView(
       children: <Widget>[
+        Admob(
+          type: NativeAdmobType.banner,
+          color: widget.pageColor,
+        ),*/
         ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: postsList.length,
-          itemBuilder: (context, index) {
-            return postsList[index];
-          },
-        ),
-      ],
+      shrinkWrap: true,
+      //physics: NeverScrollableScrollPhysics(),
+      itemCount: postsList.length,
+      itemBuilder: (context, index) {
+        return postsList[index];
+      },
+      //),
+      //],
     );
   }
 
@@ -200,11 +205,24 @@ class TimelineState extends State<Timeline>
             });
 
             if (users.length > 0) {
-              //bannerToList(users, 5, bannerMedia());
+              bannerToList(
+                users,
+                5,
+                Admob(),
+              );
             } else {
               return listViewContainer(
                 context,
-                infoText("Nenhum usuário encontrado"),
+                Stack(
+                  children: [
+                    infoText("Nenhum usuário encontrado"),
+                    Admob(
+                      type: NativeAdmobType.banner,
+                      height: 100,
+                      color: widget.pageColor,
+                    ),
+                  ],
+                ),
               );
             }
 

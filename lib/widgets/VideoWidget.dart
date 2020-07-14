@@ -9,11 +9,17 @@ import "package:flutter_widgets/flutter_widgets.dart";
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class VideoWidget extends StatefulWidget {
+  final bool hls;
   final String url;
   final File file;
   final Function onDoubleTap;
 
-  VideoWidget({this.url, this.file, this.onDoubleTap});
+  VideoWidget({
+    this.hls = true,
+    this.url,
+    this.file,
+    this.onDoubleTap,
+  });
 
   @override
   VideoWidgetState createState() => VideoWidgetState();
@@ -37,8 +43,13 @@ class VideoWidgetState extends State<VideoWidget> {
 
   void prepareVideo() async {
     if (widget.url != null) {
-      FileInfo fileInfo = await DefaultCacheManager().downloadFile(widget.url);
-      controller = VideoPlayerController.file(fileInfo.file);
+      if (widget.hls) {
+        controller = VideoPlayerController.network(widget.url);
+      } else {
+        FileInfo fileInfo =
+            await DefaultCacheManager().downloadFile(widget.url);
+        controller = VideoPlayerController.file(fileInfo.file);
+      }
     } else if (widget.file != null) {
       controller = VideoPlayerController.file(widget.file);
     }
@@ -61,7 +72,11 @@ class VideoWidgetState extends State<VideoWidget> {
 
   void checkVideo() {
     if (controller.value.position ==
-        Duration(seconds: 0, minutes: 0, hours: 0)) {
+        Duration(
+          seconds: 0,
+          minutes: 0,
+          hours: 0,
+        )) {
       setState(() {
         videoEnded = false;
       });
@@ -137,7 +152,9 @@ class VideoWidgetState extends State<VideoWidget> {
           bottom: 0,
           left: 0,
           right: 0,
-          child: Center(child: CircularProgressIndicator()),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ],
     );
@@ -219,7 +236,9 @@ class VideoWidgetState extends State<VideoWidget> {
                                 ),
                               ),
                             )
-                          : Padding(padding: EdgeInsets.zero),
+                          : Padding(
+                              padding: EdgeInsets.zero,
+                            ),
                       Positioned(
                         bottom: 0,
                         left: 0,

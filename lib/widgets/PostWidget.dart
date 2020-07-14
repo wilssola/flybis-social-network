@@ -14,10 +14,10 @@ import 'package:flybis/pages/Activity.dart';
 import 'package:flybis/widgets/Progress.dart';
 import 'package:flybis/widgets/Utils.dart';
 import 'package:flybis/widgets/VideoWidget.dart';
-import 'package:flybis/widgets/ViewPhoto.dart';
+import 'package:flybis/widgets/PhotoView.dart';
 
 import 'package:flybis/plugins/image_network/image_network.dart';
-import 'package:flybis/widgets/ViewPost.dart';
+import 'package:flybis/widgets/PostView.dart';
 // flybis - End
 
 import 'package:intl/intl.dart';
@@ -37,7 +37,11 @@ class PostWidget extends StatefulWidget {
   final Color pageColor;
   final PostType type;
 
-  PostWidget(this.post, this.type, {this.pageColor = Colors.black});
+  PostWidget(
+    this.post,
+    this.type, {
+    this.pageColor = Colors.black,
+  });
 
   @override
   PostWidgetState createState() => PostWidgetState();
@@ -281,11 +285,13 @@ class PostWidgetState extends State<PostWidget> {
                   profileId: widget.post.uid, pageColor: widget.pageColor),
               child: Text(
                 '@' + user.username,
-                style:
-                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            subtitle: Text(widget.post.location),
+            subtitle: Text(user.displayName), //Text(widget.post.location),
             trailing: GestureDetector(
               onTap: () => handleDeletePost(context, isPostOwner),
               child: Icon(FeatherIcons.moreVertical, color: Colors.black),

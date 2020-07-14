@@ -24,6 +24,14 @@ Instruções básicas para uso do Git:
 
     git pull
 
+# Flutter
+
+Instruções básicas para uso do Flutter:
+
+## Compilar build APK
+
+    flutter build apk --release --tree-shake-icons --shrink --split-debug-info=./.debug_info/android/ --obfuscate
+
 # Requisitos
 
 Esses são os requisitos necessários para a utilização do projeto:

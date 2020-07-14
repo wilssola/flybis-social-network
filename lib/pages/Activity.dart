@@ -1,18 +1,20 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flybis/const.dart';
 
 // flybis
 import "package:flybis/models/Feed.dart";
 import "package:flybis/pages/App.dart";
 import "package:flybis/pages/Profile.dart";
+import 'package:flybis/services/Admob.dart';
 import "package:flybis/widgets/Utils.dart";
 import "package:flybis/widgets/Header.dart";
 import "package:flybis/widgets/Progress.dart";
 
 import "package:flybis/plugins/image_network/image_network.dart";
 
-import "package:flybis/widgets/ViewPost.dart";
+import "package:flybis/widgets/PostView.dart";
 // flybis - End
 
 import "package:flybis/plugins/timeago.dart";
@@ -33,7 +35,14 @@ class Activity extends StatefulWidget {
 class ActivityState extends State<Activity>
     with AutomaticKeepAliveClientMixin<Activity> {
   Widget streamFeed() {
-    return StreamBuilder(
+    return /*ListView(
+      children: [
+        Admob(
+          type: NativeAdmobType.banner,
+          height: 100,
+          color: widget.pageColor,
+        ),*/
+        StreamBuilder(
       stream: activityFeedRef
           .document(currentUser.uid)
           .collection("feedItems")
@@ -45,21 +54,29 @@ class ActivityState extends State<Activity>
         }
 
         if (snapshot.data.documents.length == 0) {
-          return infoText("Nenhuma notificação encontrada");
+          return Admob(
+            type: NativeAdmobType.full,
+            height: 500,
+            color: widget.pageColor,
+          ); //infoText("Nenhuma notificação encontrada");
         }
 
-        List<ActivityItem> feedItems = [];
+        List<Widget> feedItems = [];
         snapshot.data.documents.forEach((doc) {
           feedItems.add(ActivityItem(feed: Feed.fromDocument(doc)));
         });
 
         return ListView.builder(
+          shrinkWrap: true,
+          //physics: NeverScrollableScrollPhysics(),
           itemCount: feedItems.length,
           itemBuilder: (context, index) {
             return feedItems[index];
           },
         );
       },
+      //),
+      //],
     );
   }
 
@@ -67,6 +84,7 @@ class ActivityState extends State<Activity>
   get wantKeepAlive => true;
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(
@@ -183,7 +201,7 @@ class ActivityItem extends StatelessWidget {
   }
 }
 
-showProfile(
+void showProfile(
   BuildContext context, {
   @required String profileId,
   Color pageColor = Colors.black,

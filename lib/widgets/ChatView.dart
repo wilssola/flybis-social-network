@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flybis/widgets/ViewPhoto.dart';
+import 'package:flybis/widgets/PhotoView.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -202,12 +202,16 @@ class ChatScreenState extends State<ChatScreen> {
           isLoading = false;
         });
       }
+
       Fluttertoast.showToast(msg: 'This file is not an image');
     });
   }
 
-  Future<void> onSendMessage(String content, int type,
-      {String customId}) async {
+  Future<void> onSendMessage(
+    String content,
+    int type, {
+    String customId,
+  }) async {
     // type: 0 = text, 1 = image, 2 = sticker
 
     // Encrypt Content
@@ -247,10 +251,15 @@ class ChatScreenState extends State<ChatScreen> {
         'color': Random().nextInt(pageColors.length)
       });*/
 
-      messagesRef.document(groupChatId).setData({
-        'lastMessageContent': content.trim(),
-        'lastMessageType': type,
-        'lastMessageTimestamp': FieldValue.serverTimestamp()
+      messagesRef.document(groupChatId).get().then((doc) {
+        int peerIdMessageCount = doc.data['${peerId}MessageCount'];
+
+        messagesRef.document(groupChatId).updateData({
+          'lastMessageContent': content.trim(),
+          'lastMessageType': type,
+          'lastMessageTimestamp': FieldValue.serverTimestamp(),
+          '${peerId}MessageCount': peerIdMessageCount + 1,
+        });
       });
 
       /*messagesRef.document(groupChatId).get().then((doc) {

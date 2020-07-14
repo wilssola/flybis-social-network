@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flybis/plugins/format.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flybis/models/User.dart';
 import 'package:flybis/pages/App.dart';
 import 'package:flybis/pages/Activity.dart';
-import 'package:flybis/widgets/Ads.dart';
+import 'package:flybis/services/Admob.dart';
 import 'package:flybis/widgets/Utils.dart';
 import 'package:flybis/widgets/Progress.dart';
 import 'package:flybis/widgets/PostWidget.dart';
@@ -104,7 +105,11 @@ class _SearchState extends State<Search>
           );
         } else {
           if (snapshot.data.documents.length == 0) {
-            return infoText('Nenhum resultado encontrado');
+            return Admob(
+              type: NativeAdmobType.banner,
+              height: 100,
+              color: widget.pageColor,
+            ); //infoText('Nenhum resultado encontrado');
           }
 
           List<PostWidget> posts = [];
@@ -136,7 +141,7 @@ class _SearchState extends State<Search>
           }
 
           if (snapshot.data.documents.length == 0) {
-            return infoText('Nenhum resultados encontrado');
+            return infoText('Nenhum resultado encontrado');
           }
 
           List<UserResult> searchResults = [];

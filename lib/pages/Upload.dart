@@ -1,17 +1,21 @@
 import "dart:io";
+import 'dart:math';
 
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:flybis/models/VideoInfo.dart';
 import "package:flybis/plugins/photofilters/photofilters.dart";
 import "package:flybis/plugins/image_network/image_network.dart";
 import "package:firebase_storage/firebase_storage.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:flutter_svg/svg.dart";
+import 'package:flybis/services/EncodingProvider.dart';
+import 'package:flybis/services/VideoProvider.dart';
 import "package:geolocator/geolocator.dart";
 import "package:image/image.dart" as Im;
 import "package:image_picker/image_picker.dart";
 import "package:path_provider/path_provider.dart";
 import "package:progress_dialog/progress_dialog.dart";
+import 'package:torch_compat/torch_compat.dart';
 import "package:uuid/uuid.dart";
 
 import "package:flybis/models/User.dart";
@@ -24,6 +28,8 @@ import "package:flybis/widgets/VideoWidget.dart";
 import "package:camera/camera.dart";
 import "package:video_player/video_player.dart";
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
+
+import 'package:path/path.dart' as p;
 
 class Upload extends StatefulWidget {
   final User currentUser;
@@ -60,12 +66,233 @@ class _UploadState extends State<Upload>
 
   ProgressDialog progressDialog;
 
+  final thumbWidth = 100;
+  final thumbHeight = 150;
+  List<VideoInfo> _videos = <VideoInfo>[];
+  bool _imagePickerActive = false;
+  bool _processing = false;
+  bool _canceled = false;
+  double _progress = 0.0;
+  int _videoDuration = 0;
+  String _processPhase = '';
+  final bool _debugMode = false;
+
+  Widget _getProgressBar() {
+    return Container(
+      padding: EdgeInsets.all(30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 30.0),
+            child: Text(_processPhase),
+          ),
+          LinearProgressIndicator(
+            value: _progress,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<String> _takeVideo(var videoFile) async {
+    //if (_debugMode) {
+    //videoFile = File(
+    //'/storage/emulated/0/Android/data/com.learningsomethingnew.fluttervideo.flutter_video_sharing/files/Pictures/ebbafabc-dcbe-433b-93dd-80e7777ee4704451355941378265171.mp4');
+    //} else {
+    //if (_imagePickerActive) return;
+
+    //_imagePickerActive = true;
+    //videoFile = await ImagePicker.pickVideo(source: ImageSource.camera);
+    //_imagePickerActive = false;
+
+    if (videoFile == null) return null;
+    //}
+    setState(() {
+      _processing = true;
+    });
+
+    String contentUrl;
+
+    try {
+      contentUrl = await _processVideo(videoFile);
+    } catch (e) {
+      print('${e.toString()}');
+    } finally {
+      setState(() {
+        _processing = false;
+      });
+    }
+
+    return contentUrl;
+  }
+
+  Future<String> _processVideo(File rawVideoFile) async {
+    final String rand = '${new Random().nextInt(10000)}';
+    final videoName = postId; //'video$rand';
+    final Directory extDir = await getApplicationDocumentsDirectory();
+    final outDirPath = '${extDir.path}/Videos/$videoName';
+    final videosDir = new Directory(outDirPath);
+    videosDir.createSync(recursive: true);
+
+    final rawVideoPath = rawVideoFile.path;
+    final info = await EncodingProvider.getMediaInformation(rawVideoPath);
+    final aspectRatio = EncodingProvider.getAspectRatio(info);
+
+    setState(() {
+      _processPhase = 'Generating thumbnail';
+      _videoDuration = EncodingProvider.getDuration(info);
+      _progress = 0.0;
+    });
+
+    final thumbFilePath =
+        await EncodingProvider.getThumb(rawVideoPath, thumbWidth, thumbHeight);
+
+    setState(() {
+      _processPhase = 'Encoding video';
+      _progress = 0.0;
+    });
+
+    final encodedFilesDir =
+        await EncodingProvider.encodeHLS(rawVideoPath, outDirPath);
+
+    setState(() {
+      _processPhase = 'Uploading thumbnail to firebase storage';
+      _progress = 0.0;
+    });
+    final thumbUrl =
+        await _uploadFile(thumbFilePath, videoName); //'thumbnail');
+    final videoUrl = await _uploadHLSFiles(encodedFilesDir, videoName);
+
+    final videoInfo = VideoInfo(
+      contentUrl: videoUrl,
+      thumbUrl: thumbUrl,
+      coverUrl: thumbUrl,
+      aspectRatio: aspectRatio,
+      //uploadedAt: DateTime.now().millisecondsSinceEpoch,
+      fileName: videoName,
+    );
+
+    setState(() {
+      _processPhase = 'Saving video metadata to cloud firestore';
+      _progress = 0.0;
+    });
+
+    await VideoProvider.saveVideo(videoInfo);
+
+    setState(() {
+      _processPhase = '';
+      _progress = 0.0;
+      _processing = false;
+    });
+
+    return videoUrl;
+  }
+
+  Future<String> _uploadHLSFiles(dirPath, videoName) async {
+    final videosDir = Directory(dirPath);
+
+    var playlistUrl = '';
+
+    final files = videosDir.listSync();
+    int i = 1;
+    for (FileSystemEntity file in files) {
+      final fileName = p.basename(file.path);
+      final fileExtension = getFileExtension(fileName);
+      if (fileExtension == 'm3u8') _updatePlaylistUrls(file, videoName);
+
+      setState(() {
+        _processPhase = 'Uploading video file $i out of ${files.length}';
+        _progress = 0.0;
+      });
+
+      final downloadUrl = await _uploadFile(file.path, videoName);
+
+      if (fileName == 'master.m3u8') {
+        playlistUrl = downloadUrl;
+      }
+      i++;
+    }
+
+    return playlistUrl;
+  }
+
+  void _updatePlaylistUrls(File file, String videoName) {
+    final lines = file.readAsLinesSync();
+    var updatedLines = List<String>();
+
+    for (final String line in lines) {
+      var updatedLine = line;
+      if (line.contains('.ts') || line.contains('.m3u8')) {
+        updatedLine = "${widget.currentUser.uid}%2Fposts%2Fvideos%2F" +
+            '$videoName%2F$line?alt=media';
+      }
+      updatedLines.add(updatedLine);
+    }
+    final updatedContents =
+        updatedLines.reduce((value, element) => value + '\n' + element);
+
+    file.writeAsStringSync(updatedContents);
+  }
+
+  String getFileExtension(String fileName) {
+    final exploded = fileName.split('.');
+    return exploded[exploded.length - 1];
+  }
+
+  Future<String> _uploadFile(filePath, folderName) async {
+    final file = new File(filePath);
+    final basename = p.basename(filePath);
+
+    final StorageReference ref = FirebaseStorage.instance
+        .ref()
+        .child(widget.currentUser.uid + "/posts/videos/")
+        .child(folderName)
+        .child(basename);
+    StorageUploadTask uploadTask = ref.putFile(file);
+    uploadTask.events.listen(_onUploadProgress);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    String videoUrl = await taskSnapshot.ref.getDownloadURL();
+    return videoUrl;
+  }
+
   @override
   void initState() {
+    /*VideoProvider.listenToVideos((newVideos) {
+      setState(() {
+        _videos = newVideos;
+      });
+    });*/
+
+    EncodingProvider.enableStatisticsCallback((int time,
+        int size,
+        double bitrate,
+        double speed,
+        int videoFrameNumber,
+        double videoQuality,
+        double videoFps) {
+      if (_canceled) return;
+
+      setState(() {
+        _progress = time / _videoDuration;
+      });
+    });
+
     super.initState();
 
     if (!kIsWeb) {
       initCamera();
+    }
+  }
+
+  void _onUploadProgress(event) {
+    if (event.type == StorageTaskEventType.progress) {
+      final double progress =
+          event.snapshot.bytesTransferred / event.snapshot.totalByteCount;
+      setState(() {
+        _progress = progress;
+      });
     }
   }
 
@@ -173,7 +400,9 @@ class _UploadState extends State<Upload>
       child: Align(
         alignment: Alignment.centerRight,
         child: FlatButton.icon(
-          onPressed: onFlash,
+          onPressed: () {
+            TorchCompat.turnOn();
+          }, //onFlash,
           icon: Icon(
             FeatherIcons.sun,
             color: Colors.white,
@@ -253,11 +482,14 @@ class _UploadState extends State<Upload>
   }
 
   void onFlash() {
-    if (enableFlash) {
+    TorchCompat.turnOn();
+    /*if (enableFlash) {
+      TorchCompat.turnOff();
       enableFlash = false;
     } else if (!enableFlash) {
+      TorchCompat.turnOn();
       enableFlash = true;
-    }
+    }*/
   }
 
   void onCaptureImage(context) async {
@@ -311,6 +543,7 @@ class _UploadState extends State<Upload>
   void dispose() {
     if (!kIsWeb) {
       cameraController?.dispose();
+      TorchCompat.dispose();
     }
 
     super.dispose();
@@ -399,7 +632,6 @@ class _UploadState extends State<Upload>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SvgPicture.asset("assets/images/upload.svg", height: 260),
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: RaisedButton(
@@ -440,6 +672,8 @@ class _UploadState extends State<Upload>
           print("Video upload error: $error");
         }
       }
+
+      uploadTask.events.listen(_onUploadProgress);
 
       StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
       String downloadUrl = await storageSnap.ref.getDownloadURL();
@@ -534,8 +768,14 @@ class _UploadState extends State<Upload>
 
     progressDialog.show();
 
-    //await compressImage();
-    String contentUrl = await uploadFile(file);
+    String contentUrl;
+
+    if (contentType == 'video') {
+      contentUrl = await _takeVideo(file);
+    } else {
+      //await compressImage();
+      contentUrl = await uploadFile(file);
+    }
 
     createPostInFirestore(
       contentUrl: contentUrl,
@@ -767,7 +1007,7 @@ class _UploadState extends State<Upload>
     );
 
     progressDialog.style(
-      message: "Uploading file...",
+      message: _processPhase, //"Uploading file...",
       borderRadius: 10.0,
       backgroundColor: Colors.white,
       elevation: 10.0,

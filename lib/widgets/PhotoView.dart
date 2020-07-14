@@ -51,8 +51,6 @@ class ViewPhotoScreenState extends State<ViewPhotoScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: PhotoView(
-        minScale: 0.25,
-        maxScale: 2.25,
         imageProvider: ImageNetwork.cachedNetworkImageProvider(url),
       ),
     );

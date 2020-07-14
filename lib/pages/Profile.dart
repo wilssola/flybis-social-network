@@ -1,9 +1,9 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import "package:flutter_svg/svg.dart";
+import 'package:flutter_native_admob/flutter_native_admob.dart';
 
-import "package:flybis/widgets/Ads.dart";
+import "package:flybis/services/Admob.dart";
 import "package:flybis/widgets/Header.dart";
 import "package:flybis/widgets/Progress.dart";
 import "package:flybis/widgets/PostWidget.dart";
@@ -629,7 +629,6 @@ class ProfileState extends State<Profile>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SvgPicture.asset("assets/images/no_content.svg", height: 260),
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
@@ -647,7 +646,7 @@ class ProfileState extends State<Profile>
     }
 
     if (postOrientation == "grid") {
-      List<PostWidget> gridTiles = [];
+      List<Widget> gridTiles = [];
 
       postsList.forEach((post) {
         gridTiles.add(PostWidget(
@@ -657,22 +656,31 @@ class ProfileState extends State<Profile>
         ));
       });
 
-      return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: !kIsWeb ? 3 : 4,
-          childAspectRatio: 1,
-          mainAxisSpacing: 1.5,
-          crossAxisSpacing: 1.5,
-        ),
-        itemCount: gridTiles.length,
-        itemBuilder: (context, index) {
-          return gridTiles[index];
-        },
-        physics: NeverScrollableScrollPhysics(),
+      return Column(
+        children: <Widget>[
+          Admob(
+            type: NativeAdmobType.banner,
+            height: 100,
+            color: widget.pageColor,
+          ),
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: !kIsWeb ? 3 : 4,
+              childAspectRatio: 1,
+              mainAxisSpacing: 1.5,
+              crossAxisSpacing: 1.5,
+            ),
+            itemCount: gridTiles.length,
+            itemBuilder: (context, index) {
+              return gridTiles[index];
+            },
+            physics: NeverScrollableScrollPhysics(),
+          ),
+        ],
       );
     } else if (postOrientation == "list") {
-      List<PostWidget> listTiles = [];
+      List<Widget> listTiles = [];
 
       postsList.forEach((post) {
         listTiles.add(PostWidget(
@@ -681,6 +689,15 @@ class ProfileState extends State<Profile>
           pageColor: widget.pageColor,
         ));
       });
+
+      bannerToList(
+        listTiles,
+        2,
+        Admob(
+          height: 350,
+          color: widget.pageColor,
+        ),
+      );
 
       return ListView.builder(
         shrinkWrap: true,
@@ -761,7 +778,9 @@ class ProfileState extends State<Profile>
               color: widget.pageColor,
               child: buildProfile(),
             )
-          : circularProgress(color: widget.pageColor),
+          : circularProgress(
+              color: widget.pageColor,
+            ),
     );
   }
 }

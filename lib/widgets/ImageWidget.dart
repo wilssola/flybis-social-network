@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 
 import 'package:flybis/const.dart';
 import 'package:flybis/widgets/Utils.dart';
-import 'package:flybis/widgets/ViewPhoto.dart';
+import 'package:flybis/widgets/PhotoView.dart';
 
 class ImageWidget extends StatefulWidget {
   final String url;
@@ -13,7 +13,12 @@ class ImageWidget extends StatefulWidget {
   final Color pageColor;
   final Function onDoubleTap;
 
-  ImageWidget({this.url, this.file, this.pageColor, this.onDoubleTap});
+  ImageWidget({
+    this.url,
+    this.file,
+    this.pageColor,
+    this.onDoubleTap,
+  });
 
   @override
   ImageWidgetState createState() => ImageWidgetState();
@@ -50,7 +55,9 @@ class ImageWidgetState extends State<ImageWidget> {
         ),
         child: FittedBox(
           fit: BoxFit.cover,
-          child: cachedNetworkImage(widget.url),
+          child: cachedNetworkImage(
+            widget.url,
+          ),
         ),
       ),
     );

@@ -12,7 +12,7 @@ import 'package:flybis/pages/App.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 import 'package:flybis/widgets/Progress.dart';
 import 'package:intl/intl.dart';
-import 'package:flybis/widgets/ViewChat.dart';
+import 'package:flybis/widgets/ChatView.dart';
 import './Chat/Settings.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
@@ -180,7 +180,35 @@ class ChatState extends State<Chat> with AutomaticKeepAliveClientMixin<Chat> {
                         document['photoUrl'],
                       ),
                     ),
-                    title: usernameText(document['username']),
+                    title: Row(
+                      children: <Widget>[
+                        usernameText(document['username']),
+                        Spacer(),
+                        StreamBuilder(
+                          stream: messagesRef
+                              .document(checkHasCode(currentUserId, peerId))
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Text("");
+                            } else if (snapshot.data.exists) {
+                              int messageCount = snapshot.data[
+                                          '${currentUserId}MessageCount'] !=
+                                      null
+                                  ? snapshot
+                                      .data['${currentUserId}MessageCount']
+                                  : 0;
+                              if (messageCount > 0) {
+                                return Text(messageCount.toString());
+                              } else {
+                                return Text('');
+                              }
+                            }
+                            return Text("");
+                          },
+                        ),
+                      ],
+                    ),
                     subtitle: StreamBuilder(
                       stream: messagesRef
                           .document(checkHasCode(currentUserId, peerId))
@@ -220,7 +248,7 @@ class ChatState extends State<Chat> with AutomaticKeepAliveClientMixin<Chat> {
                           );
                         }
 
-                        return Text(document['displayName']);
+                        return Text(""); //Text(document['displayName']);
                       },
                     ),
                   ),
