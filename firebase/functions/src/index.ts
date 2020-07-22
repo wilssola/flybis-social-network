@@ -24,6 +24,36 @@ export const getVirgilJwt = functions.https.onCall((_data, context) => {
   };
 });
 
+const md5 = require("md5");
+
+export const getAgoraSignalingToken = functions.https.onCall((_data, context) => {
+  if(context.auth.uid != null) {
+    const expiredTime = parseInt((new Date().getTime() / 1000).toString()) + 3600 * 24;
+
+    const account = context.auth.uid;
+    const appId = process.env['AGORA_APP_ID'];
+    const appCertificate = process.env['AGORA_PRIMARY_CERTIFICATE'];
+
+    var token_items = [];
+
+    // append SDK VERSION
+    token_items.push("1");
+
+    // append appid
+    token_items.push(appId);
+
+    // expired time
+    token_items.push(expiredTime);
+
+    // md5 account + appid + appcertificate + expiredtime
+    token_items.push(md5(account + appId + appCertificate + expiredTime));
+
+    return token_items.join(":");
+  }
+
+  return "Not Authorized";
+});
+
 export const onCreateFollower = functions.firestore
   .document("/followers/{userId}/userFollowers/{followerId}")
   .onCreate(async (snapshot, context) => {
@@ -380,7 +410,14 @@ export const onCreateActivityFeedItem = functions.firestore
           break;
 
         case "message":
-          body = `@${activityFeedItem.username} talked: ${activityFeedItem.data}`;
+          switch(activityFeedItem.contentType) {
+            case "image":
+              body = `@${activityFeedItem.username} talked: ${activityFeedItem.content}`;
+              break;
+            default:
+              body = `@${activityFeedItem.username} talked: ${activityFeedItem.content}`;
+              break;
+          }
           break;
 
         case "comment":
@@ -588,6 +625,7 @@ function stopShouting(message) {
 }
 /// Text Moderation Filter - End
 
+/*
 /// Image Moderation Filter
 const mkdirp = require("mkdirp-promise");
 const vision = require("@google-cloud/vision");
@@ -634,6 +672,7 @@ export const blurOffensiveImages = functions.storage.object().onFinalize(async (
   }
   */
 
+  /*
   const tempLocalFile = path.join(os.tmpdir(), object.name);
   const tempLocalDir = path.dirname(tempLocalFile);
   const bucket = admin.storage().bucket(object.bucket);
@@ -686,3 +725,4 @@ async function blurImage(filePath, bucketName, metadata) {
   //console.log("Local File Deleted", filePath);
 }
 /// Image Moderation Filter - End
+*/

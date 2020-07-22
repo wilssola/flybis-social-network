@@ -3,7 +3,7 @@ service cloud.firestore {
     
     match /feed/{userId} {
 			allow read: if request.auth.uid == userId;
-      allow write: if request.auth.uid == userId;
+      allow write: if request.auth.uid != null && request.auth.uid == request.resource.data.uid && (request.resource.data.type == 'like' || request.resource.data.type == 'follow' || request.resource.data.type == 'friend' || request.resource.data.type == 'comment' || request.resource.data.type == 'message') && (request.resource.data.contentType == null || request.resource.data.contentType == 'text' || request.resource.data.contentType == 'image' || request.resource.data.contentType == 'video' || request.resource.data.contentType == 'gif');
     }
     
     match /posts/{userId} {
@@ -13,7 +13,6 @@ service cloud.firestore {
     
     match /timeline/{userId} {
 			allow read: if request.auth.uid == userId;
-      allow write: if request.auth.uid == userId;
     }
     
     match /followers/{userId}/userFollowers/{followerId} {
@@ -39,7 +38,7 @@ service cloud.firestore {
     match /users/{userId} {
 			allow read;
       allow create: if request.auth.uid != null && isUsernameAvailable(request.resource.data.username);
-      allow update: if (request.auth.uid == userId && request.resource.data.username == resource.data.username) || (request.auth.uid == userId && isUsernameAvailable(request.resource.data.username));      
+      allow update: if (request.auth.uid == userId && request.resource.data.username == resource.data.username); //|| (request.auth.uid == userId && isUsernameAvailable(request.resource.data.username));      
     }
 
     match /usernames/{username} {
