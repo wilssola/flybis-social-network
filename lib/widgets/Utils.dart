@@ -103,7 +103,8 @@ TextStyle usernameStyle() {
 // Username - End
 
 // Snackbar
-showSnackbar(GlobalKey<ScaffoldState> scaffoldKey, String content, {int duration = 4}) {
+showSnackbar(GlobalKey<ScaffoldState> scaffoldKey, String content,
+    {int duration = 4}) {
   final SnackBar snackbar = SnackBar(
     content: Text(content),
     duration: Duration(seconds: duration),

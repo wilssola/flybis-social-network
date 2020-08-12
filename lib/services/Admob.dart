@@ -1,23 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flybis/widgets/Progress.dart';
-
-void bannerToList(List list, int diference, Widget child) {
-  if (diference > 0) {
-    for (var i = 0; i < list.length; i++) {
-      if (i % (diference + 1) == 0) {
-        list.insert(i, child);
-      }
-    }
-  } else {
-    list.insert(0, child);
-  }
-}
 
 class Admob extends StatefulWidget {
   final NativeAdmobType type;
@@ -46,16 +35,24 @@ class AdmobState extends State<Admob> {
 
   StreamSubscription subscription;
 
+  AdvertisingService advertisingService = AdvertisingService();
+
   @override
   void initState() {
-    subscription = nativeAdController.stateChanged.listen(onStateChanged);
+    if (!kIsWeb) {
+      subscription = nativeAdController.stateChanged.listen(onStateChanged);
+    }
+
     super.initState();
   }
 
   @override
   void dispose() {
-    subscription.cancel();
-    nativeAdController.dispose();
+    if (!kIsWeb) {
+      subscription.cancel();
+      nativeAdController.dispose();
+    }
+
     super.dispose();
   }
 
@@ -73,65 +70,75 @@ class AdmobState extends State<Admob> {
         });
         break;
 
+      case AdLoadState.loadError:
+        setState(() {
+          //height = 0;
+          nativeAdController.reloadAd();
+        });
+        break;
+
       default:
         break;
     }
   }
 
-  AdvertisingService advertisingService = AdvertisingService();
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      padding: EdgeInsets.only(
-        top: widget.paddingTop,
-        bottom: widget.paddingBottom,
-        left: widget.paddingLeft,
-        right: widget.paddingRight,
-      ),
-      margin: EdgeInsets.zero,
-      child: NativeAdmob(
-        adUnitID: advertisingService.nativeAdId(),
-        controller: nativeAdController,
-        loading: circularProgress(color: widget.color),
-        error: Container(),
-        type: widget.type,
-        options: NativeAdmobOptions(
-          callToActionStyle: NativeTextStyle(
-            backgroundColor: Color(widget.color.value),
-            isVisible: widget.showButton,
-          ),
-          adLabelTextStyle: NativeTextStyle(
-            backgroundColor: Color(widget.color.value),
+    if (!kIsWeb) {
+      return Container(
+        height: height,
+        color: Colors.white,
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.only(
+          top: widget.paddingTop,
+          bottom: widget.paddingBottom,
+          left: widget.paddingLeft,
+          right: widget.paddingRight,
+        ),
+        child: NativeAdmob(
+          controller: nativeAdController,
+          adUnitID: advertisingService.nativeAdId(),
+          loading: circularProgress(color: widget.color),
+          error: circularProgress(color: Colors.black),
+          type: widget.type,
+          options: NativeAdmobOptions(
+            callToActionStyle: NativeTextStyle(
+              backgroundColor: Color(widget.color.value),
+              isVisible: widget.showButton,
+            ),
+            adLabelTextStyle: NativeTextStyle(
+              backgroundColor: Color(widget.color.value),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return Text('');
   }
 }
 
 class AdvertisingService {
   // Generic Test AD ID from https://developers.google.com/admob/android/native/start
   String testAdId = 'ca-app-pub-3940256099942544/2247696110';
-  String androidAdId = 'ca-app-pub-8623599289446269/4433503877';
-  String iosAdId = '';
+
+  // Flybis Native AD ID
+  String androidAdId = 'ca-app-pub-5982775373849971/8842878947';
+  String iosAdId = 'ca-app-pub-5982775373849971/2711024365';
 
   String nativeAdId() {
-    if (isInDebugMode) {
+    if (!kReleaseMode) {
       return testAdId;
+    } else {
+      if (Platform.isIOS) {
+        return iosAdId;
+      }
+
+      if (Platform.isAndroid) {
+        return androidAdId;
+      }
     }
 
-    if (Platform.isIOS) {
-      return iosAdId;
-    }
-
-    return androidAdId;
-  }
-
-  bool get isInDebugMode {
-    bool inDebugMode = false;
-    assert(inDebugMode = true);
-    return inDebugMode;
+    return null;
   }
 }

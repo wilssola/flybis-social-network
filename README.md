@@ -32,6 +32,18 @@ Instruções básicas para uso do Flutter:
 
     flutter build apk --release --tree-shake-icons --shrink --split-debug-info=./.debug_info/android/ --obfuscate
 
+## Compilar build APPBUNDLE
+
+    flutter build appbundle --release --tree-shake-icons --shrink --split-debug-info=./.debug_info/android/ --obfuscate --target-platform android-arm,android-arm64,android-x64
+
+## Ativar build WEB
+
+    flutter config --enable-web
+
+## Definir config do functions localmente
+
+    firebase functions:config:get > .runtimeconfig.json
+
 # Requisitos
 
 Esses são os requisitos necessários para a utilização do projeto:

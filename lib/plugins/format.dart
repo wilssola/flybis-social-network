@@ -1,5 +1,5 @@
-import "package:intl/intl.dart";
-import "dart:math";
+import 'package:intl/intl.dart';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -7,7 +7,7 @@ logBase(num x, num base) => log(x) / log(base);
 log10(num x) => log(x) / ln10;
 
 String formatCompactNumber(value) {
-  var f = NumberFormat.compact(locale: "en_US");
+  var f = NumberFormat.compact(locale: 'en_US');
   return f.format(value).toString();
 }
 
@@ -39,17 +39,17 @@ String lastMessageContentFormat(
       break;
     case 1:
       {
-        lastMessage = "Imagem";
+        lastMessage = 'Imagem';
       }
       break;
     case 2:
       {
-        lastMessage = "Sticker";
+        lastMessage = 'Sticker';
       }
       break;
     default:
       {
-        lastMessage = "";
+        lastMessage = '';
       }
   }
 

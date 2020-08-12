@@ -1,33 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
-  final String id;
+  // Owner
   final String uid;
   final String username;
+
+  // Post
+  final String id;
   final String title;
   final String location;
   final String description;
-  final String contentUrl;
 
+  // Content
+  final String contentUrl;
+  final String contentType;
+
+  // Likes
   final Map likes;
   final int likesCount;
 
+  // Dislikes
   final Map dislikes;
   final int dislikesCount;
 
+  // Timestamps
   final Timestamp timestamp;
   final Timestamp timestampDuration;
   final Timestamp timestampPopularity;
 
-  final String contentType;
+  // BlurHash
+  final String blurHash;
 
   Post({
-    this.id,
     // Owner
     this.uid,
     this.username,
 
     // Post
+    this.id,
     this.title,
     this.location,
     this.description,
@@ -48,6 +58,9 @@ class Post {
     this.timestamp,
     this.timestampDuration,
     this.timestampPopularity,
+
+    // BlurHash
+    this.blurHash,
   });
 
   factory Post.fromDocument(DocumentSnapshot doc) {
@@ -64,15 +77,15 @@ class Post {
 
       // Content
       contentUrl: doc['contentUrl'],
-      contentType: doc['contentType'] != null ? doc['contentType'] : "image",
+      contentType: doc['contentType'] != null ? doc['contentType'] : 'image',
 
       // Likes
-      likes: doc["likes"] != null ? doc["likes"] : {},
-      likesCount: doc["likesCount"] != null ? doc["likesCount"] : 0,
+      likes: doc['likes'] != null ? doc['likes'] : {},
+      likesCount: doc['likesCount'] != null ? doc['likesCount'] : 0,
 
       // Dislikes
-      dislikes: doc["dislikes"] != null ? doc["dislikes"] : {},
-      dislikesCount: doc["dislikesCount"] != null ? doc["dislikesCount"] : 0,
+      dislikes: doc['dislikes'] != null ? doc['dislikes'] : {},
+      dislikesCount: doc['dislikesCount'] != null ? doc['dislikesCount'] : 0,
 
       // Timestamps
       timestamp: doc['timestamp'] != null
@@ -84,6 +97,9 @@ class Post {
       timestampPopularity: doc['timestampPopularity'] != null
           ? doc['timestampPopularity']
           : Timestamp.fromDate(DateTime.now()),
+
+      // BlurHash
+      blurHash: doc['blurHash'],
     );
   }
 

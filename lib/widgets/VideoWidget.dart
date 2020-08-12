@@ -10,8 +10,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class VideoWidget extends StatefulWidget {
   final bool hls;
-  final String url;
   final File file;
+  final String url;
   final Function onDoubleTap;
 
   VideoWidget({

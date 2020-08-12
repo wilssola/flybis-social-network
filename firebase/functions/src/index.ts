@@ -2,56 +2,59 @@ import { user } from "firebase-functions/lib/providers/auth";
 
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
-import { app } from './app';
 import { generateVirgilJwt } from './generate-virgil-jwt';
 
 admin.initializeApp();
 
-// This HTTPS endpoint can only be accessed by your Firebase Users.
-// Requests need to be authorized by providing an `Authorization` HTTP header
-// with value `Bearer <Firebase ID Token>`.
-export const api = functions.https.onRequest(app);
-
-export const getVirgilJwt = functions.https.onCall((_data, context) => {
+export const getVirgilJwt = functions.https.onCall(async (_data, context) => {
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
     throw new functions.https.HttpsError('unauthenticated', 'The function must be called ' +
       'while authenticated.');
   }
+  
+  // You can use context.auth.token.email, context.auth.token.phone_number or any unique value for identity
+  const identity = context.auth.token.uid;
+
+  const token = await generateVirgilJwt(identity);
 
   return {
-    token: generateVirgilJwt(context.auth.uid).toString()
+    token: token.toString()
   };
 });
 
 const md5 = require("md5");
 
 export const getAgoraSignalingToken = functions.https.onCall((_data, context) => {
-  if(context.auth.uid != null) {
-    const expiredTime = parseInt((new Date().getTime() / 1000).toString()) + 3600 * 24;
-
-    const account = context.auth.uid;
-    const appId = process.env['AGORA_APP_ID'];
-    const appCertificate = process.env['AGORA_PRIMARY_CERTIFICATE'];
-
-    var token_items = [];
-
-    // append SDK VERSION
-    token_items.push("1");
-
-    // append appid
-    token_items.push(appId);
-
-    // expired time
-    token_items.push(expiredTime);
-
-    // md5 account + appid + appcertificate + expiredtime
-    token_items.push(md5(account + appId + appCertificate + expiredTime));
-
-    return token_items.join(":");
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unauthenticated', 'The function must be called ' +
+      'while authenticated.');
   }
 
-  return "Not Authorized";
+  const expiredTime = parseInt((new Date().getTime() / 1000).toString()) + 3600 * 24;
+
+  const account = context.auth.uid;
+  const appId = process.env['AGORA_APP_ID'];
+  const appCertificate = process.env['AGORA_PRIMARY_CERTIFICATE'];
+
+  var token_items = [];
+
+  // append SDK VERSION
+  token_items.push("1");
+
+  // append appid
+  token_items.push(appId);
+
+  // expired time
+  token_items.push(expiredTime);
+
+  // md5 account + appid + appcertificate + expiredtime
+  token_items.push(md5(account + appId + appCertificate + expiredTime));
+
+  return { 
+    token: token_items.join(":").toString() 
+  };
 });
 
 export const onCreateFollower = functions.firestore
@@ -549,180 +552,3 @@ export const onUpdateUser = functions.firestore
         });
     });
   });
-
-/// Text Moderation Filter
-const capitalizeSentence = require("capitalize-sentence");
-const badWords = require("bad-words");
-const filter = new badWords();
-
-// Moderates messages by lowering all uppercase messages and removing swearwords.
-export const onCreateMessage = functions.firestore
-  .document("/messages/{groupId}/userMessages/{messageId}")
-  .onCreate(async (snapshot, context) => {
-    //console.log("Message Created", snapshot.data());
-    const message = snapshot.data();
-    const groupId = context.params.groupId;
-    const messageId = context.params.messageId;
-
-    if (message && !message.sanitized && message.type === 0) {
-      // Retrieved the message values.
-      //console.log("Message Retrieved", message.content);
-
-      // Run moderation checks on on the message and moderate if needed.
-      const moderatedMessage = moderateMessage(message.content);
-
-      // Update the Firestore with checked message.
-      //console.log("Message Moderated", moderatedMessage);
-      admin.firestore().collection("messages")
-        .doc(groupId)
-        .collection("userMessages").doc(messageId).update({
-          content: moderatedMessage,
-          sanitized: true,
-          moderated: message.content !== moderatedMessage,
-        });
-    }
-
-    return null;
-  });
-
-// Moderates the given message if appropriate.
-function moderateMessage(message) {
-  let messageLocal = message;
-
-  // Re-capitalize if the user is Shouting.
-  if (isShouting(message)) {
-    //console.log("Shouting Fixing");
-    messageLocal = stopShouting(message);
-  }
-
-  // Moderate if the user uses SwearWords.
-  if (containsSwearwords(message)) {
-    //console.log("Swearing Moderating");
-    messageLocal = moderateSwearwords(message);
-  }
-
-  return messageLocal;
-}
-
-// Returns true if the string contains swearwords.
-function containsSwearwords(message) {
-  return message !== filter.clean(message);
-}
-
-// Hide all swearwords. e.g: Crap => ****.
-function moderateSwearwords(message) {
-  return filter.clean(message);
-}
-
-// Detect if the current message is shouting. i.e. there are too many Uppercase characters or exclamation points.
-function isShouting(message) {
-  return message.replace(/[^A-Z]/g, "").length > message.length / 2 || message.replace(/[^!]/g, "").length >= 3;
-}
-
-// Correctly capitalize the string as a sentence (e.g. uppercase after dots) and remove exclamation points.
-function stopShouting(message) {
-  return capitalizeSentence(message.toLowerCase()).replace(/!+/g, "");
-}
-/// Text Moderation Filter - End
-
-/*
-/// Image Moderation Filter
-const mkdirp = require("mkdirp-promise");
-const vision = require("@google-cloud/vision");
-const spawn = require("child-process-promise").spawn;
-const path = require("path");
-const os = require("os");
-const fs = require("fs");
-
-const VERY_UNLIKELY = "VERY_UNLIKELY";
-const BLURRED_FOLDER = "blurred";
-
-const nude = require('nude');
-
-// When an image is uploaded we check if it is flagged as Adult or Violence by the Cloud Vision API and if it is we blur it using ImageMagick.
-export const blurOffensiveImages = functions.storage.object().onFinalize(async (object) => {
-  // Ignore things we"ve already blurred.
-  if (object.name.startsWith(`${BLURRED_FOLDER}/`)) {
-    //console.log("Blurred Image Ignored", object.name);
-    return null;
-  }
-
-  /*
-  // Check the image content using the Cloud Vision API.
-  const visionClient = new vision.ImageAnnotatorClient();
-  const data = await visionClient.safeSearchDetection(
-    `gs://${object.bucket}/${object.name}`
-  );
-
-  const safeSearch = data[0].safeSearchAnnotation;
-  //console.log("SafeSearch results on image", safeSearch);
-
-  // Tune these detection likelihoods to suit your app.
-  // The current settings show the most strict configuration.
-  // Docs: https://cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1#google.cloud.vision.v1.SafeSearchAnnotation
-  if (
-    safeSearch.adult !== VERY_UNLIKELY ||
-    safeSearch.spoof !== VERY_UNLIKELY ||
-    safeSearch.medical !== VERY_UNLIKELY ||
-    safeSearch.violence !== VERY_UNLIKELY ||
-    safeSearch.racy !== VERY_UNLIKELY
-  ) {
-    //console.log("Offensive image found. Blurring");
-    return blurImage(object.name, object.bucket, object.metadata);
-  }
-  */
-
-  /*
-  const tempLocalFile = path.join(os.tmpdir(), object.name);
-  const tempLocalDir = path.dirname(tempLocalFile);
-  const bucket = admin.storage().bucket(object.bucket);
-
-  // Create the temp directory where the storage file will be downloaded.
-  await mkdirp(tempLocalDir);
-  //console.log("Temporary Directory Created", tempLocalDir);
-
-  // Download file from bucket.
-  await bucket.file(object.name).download({ destination: tempLocalFile });
-  //console.log("File Downloaded", tempLocalFile);
-
-  nude.scan(tempLocalFile, function (result) {
-    if (result) {
-      //console.log("Offensive Image Blurring");
-      return blurImage(object.name, object.bucket, object.metadata);
-    }
-
-    return null;
-  });
-});
-
-// Blurs the given image located in the given bucket using ImageMagick.
-async function blurImage(filePath, bucketName, metadata) {
-  const tempLocalFile = path.join(os.tmpdir(), filePath);
-  const tempLocalDir = path.dirname(tempLocalFile);
-  const bucket = admin.storage().bucket(bucketName);
-
-  // Create the temp directory where the storage file will be downloaded.
-  await mkdirp(tempLocalDir);
-  //console.log("Temporary Directory Created", tempLocalDir);
-
-  // Download file from bucket.
-  await bucket.file(filePath).download({ destination: tempLocalFile });
-  //console.log("File Downloaded", tempLocalFile);
-
-  // Blur the image using ImageMagick.
-  await spawn("convert", [tempLocalFile, "-channel", "RGBA", "-blur", "0x8", tempLocalFile]);
-  //console.log("Blurred Image Created", tempLocalFile);
-
-  // Uploading the Blurred image.
-  await bucket.upload(tempLocalFile, {
-    destination: `${BLURRED_FOLDER}/${filePath}`,
-    metadata: { metadata: metadata }, // Keeping custom metadata.
-  });
-  //console.log("Blurred Image Uploaded", filePath);
-
-  // Clean up the local file.
-  fs.unlinkSync(tempLocalFile);
-  //console.log("Local File Deleted", filePath);
-}
-/// Image Moderation Filter - End
-*/

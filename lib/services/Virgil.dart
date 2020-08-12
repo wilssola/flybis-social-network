@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:e3kit/e3kit.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
 
-import 'Log.dart';
+import 'log.dart';
 
 class Device {
   EThree eThree;
@@ -17,33 +19,10 @@ class Device {
     log('[$identity] $e');
   }
 
-  initialize() async {
-    final host = Platform.isAndroid ? 'https://us-central1-flysit-console.cloudfunctions.net/' : 'https://us-central1-flysit-console.cloudfunctions.net/';
-
-    //# start of snippet: e3kit_authenticate
-    final authCallback = () async {
-      final response = (await http.post(
-        '$host/authenticate',
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'identity': identity})
-      )).body;
-
-      return json.decode(response)['authToken'];
-    };
-    //# end of snippet: e3kit_authenticate
-
+  initialize(String virgilJwt) async {
     //# start of snippet: e3kit_jwt_callback
-    final tokenCallback = () async { 
-      final authToken = await authCallback();
-
-      final response = (await http.get(
-        '$host/virgil-jwt',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken'}
-      )).body;
-
-      return json.decode(response)['virgilToken'];
+    final tokenCallback = () async {
+      return virgilJwt;
     };
     //# end of snippet: e3kit_jwt_callback
 
@@ -52,7 +31,7 @@ class Device {
       this.eThree = await EThree.init(identity, tokenCallback);
       //# end of snippet: e3kit_initialize
       _log('Initialized');
-    } catch(err) {
+    } catch (err) {
       _log('Failed initializing: $err');
     }
   }
@@ -70,18 +49,18 @@ class Device {
 
     try {
       await eThree.cleanUp();
-    } catch(err) { }
+    } catch (err) {}
 
     try {
       //# start of snippet: e3kit_register
       await eThree.register();
       //# end of snippet: e3kit_register
       _log('Registered');
-    } on PlatformException catch(err) { 
-      _log('Failed registering: $err'); 
+    } on PlatformException catch (err) {
+      _log('Failed registering: $err');
       if (err.code == 'user_is_already_registered') {
-          await eThree.rotatePrivateKey();
-          _log('Rotated private key instead');
+        await eThree.rotatePrivateKey();
+        _log('Rotated private key instead');
       }
     }
   }
@@ -95,7 +74,7 @@ class Device {
       //# end of snippet: e3kit_find_users
       _log('Looked up $identities\'s public key');
       return result;
-    } catch(err) {
+    } catch (err) {
       _log('Failed looking up $identities\'s public key: $err');
     }
   }
@@ -110,7 +89,7 @@ class Device {
       encryptedText = await eThree.encrypt(text, users);
       //# end of snippet: e3kit_sign_and_encrypt
       _log('Encrypted and signed: \'$encryptedText\'.');
-    } catch(err) {
+    } catch (err) {
       _log('Failed encrypting and signing: $err');
     }
 
@@ -127,7 +106,7 @@ class Device {
       decryptedText = await eThree.decrypt(text, user);
       //# end of snippet: e3kit_decrypt_and_verify
       _log('Decrypted and verified: \'$decryptedText');
-    } catch(err) {
+    } catch (err) {
       _log('Failed decrypting and verifying: $err');
     }
 
@@ -142,7 +121,7 @@ class Device {
       await eThree.backupPrivateKey(password);
       //# end of snippet: e3kit_backup_private_key
       _log('Backed up private key');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed backing up private key: $err');
       if (err.code == 'entry_already_exists') {
         await eThree.resetPrivateKeyBackup();
@@ -160,7 +139,7 @@ class Device {
       await eThree.changePassword(oldPassword, newPassword);
       //# end of snippet: e3kit_change_password
       _log('Changed password');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed changing password: $err');
     }
   }
@@ -173,7 +152,7 @@ class Device {
       await eThree.restorePrivateKey(password);
       //# end of snippet: e3kit_restore_private_key
       _log('Restored private key');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed restoring private key: $err');
       if (err.code == 'keychain_error') {
         await eThree.cleanUp();
@@ -191,7 +170,7 @@ class Device {
       await eThree.resetPrivateKeyBackup();
       //# end of snippet: e3kit_reset_private_key_backup
       _log('Reset private key backup');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed resetting private key backup: $err');
     }
   }
@@ -204,7 +183,7 @@ class Device {
       await eThree.rotatePrivateKey();
       //# end of snippet: e3kit_rotate_private_key
       _log('Rotated private key');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed rotating private key: $err');
       if (err.code == 'private_key_exists') {
         await eThree.cleanUp();
@@ -222,7 +201,7 @@ class Device {
       await eThree.cleanUp();
       //# end of snippet: e3kit_cleanup
       _log('Cleaned up');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed cleaning up: $err');
     }
   }
@@ -235,7 +214,7 @@ class Device {
       await eThree.unregister();
       //# end of snippet: e3kit_unregister
       _log('Unregistered');
-    } on PlatformException catch(err) {
+    } on PlatformException catch (err) {
       _log('Failed unregistering: $err');
     }
   }

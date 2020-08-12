@@ -1,51 +1,56 @@
 // Dart
-import "dart:developer";
-import "dart:async";
-import "dart:io";
-import "dart:ui";
+import 'dart:developer';
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
 
 // Flutter
-import "package:flutter/cupertino.dart";
-import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
+import 'package:admob_consent/admob_consent.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 // Virgil
-import "package:e3kit/e3kit.dart";
+import 'package:e3kit/e3kit.dart';
 
 // Firebase
-import "package:firebase_auth/firebase_auth.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 
-import "package:firebase_storage/firebase_storage.dart";
-import "package:firebase_messaging/firebase_messaging.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // Flybis
-import "package:flybis/pages/Register.dart";
-import "package:flybis/pages/Chat.dart";
-import "package:flybis/pages/Activity.dart";
-import "package:flybis/pages/Timeline.dart";
-import "package:flybis/pages/Profile.dart";
-import "package:flybis/pages/Search.dart";
-import "package:flybis/pages/Upload.dart";
+import 'package:flybis/pages/Others/CreateProfile.dart';
+import 'package:flybis/pages/App/Timeline.dart';
+import 'package:flybis/pages/App/Bell.dart';
+import 'package:flybis/pages/App/Camera.dart';
+import 'package:flybis/pages/App/Profile.dart';
+import 'package:flybis/pages/App/Chat.dart';
+import 'package:flybis/pages/App/Search.dart';
 
-import "package:flybis/models/User.dart";
+import 'package:flybis/models/User.dart';
 
-import "package:flybis/widgets/Progress.dart";
+import 'package:flybis/widgets/Progress.dart';
 
-import "package:flybis/services/Auth.dart";
-import "package:flybis/services/Virgil.dart";
+import 'package:flybis/services/Auth.dart';
+import 'package:flybis/services/Virgil.dart';
 
-import "package:flybis/plugins/image_network/image_network.dart";
+import 'package:flybis/plugins/image_network/image_network.dart';
 // Flybis - End
 
 // Others
-import "package:flutter_feather_icons/flutter_feather_icons.dart";
-import "package:bubble_bottom_bar/bubble_bottom_bar.dart";
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/Progress.dart';
 
 import './Login.dart';
+
+final CloudFunctions functions = CloudFunctions.instance;
 
 // Auth
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -56,29 +61,29 @@ Future<StorageReference> storageUrlRef(url) async =>
     await FirebaseStorage.instance.getReferenceFromUrl(url);
 
 // Firestore
-final CollectionReference usersRef = Firestore.instance.collection("users");
-final CollectionReference usernamesRef =
-    Firestore.instance.collection("usernames");
-final CollectionReference postsRef = Firestore.instance.collection("posts");
-final CollectionReference commentsRef =
-    Firestore.instance.collection("comments");
-final CollectionReference activityFeedRef =
-    Firestore.instance.collection("feed");
-final CollectionReference followersRef =
-    Firestore.instance.collection("followers");
-final CollectionReference followingRef =
-    Firestore.instance.collection("following");
-final CollectionReference friendsRef = Firestore.instance.collection("friends");
-final CollectionReference timelineRef =
-    Firestore.instance.collection("timeline");
-final CollectionReference messagesRef =
-    Firestore.instance.collection("messages");
+final firestore = Firestore.instance;
+final CollectionReference usersRef = firestore.collection('users');
+final CollectionReference usernamesRef = firestore.collection('usernames');
+final CollectionReference postsRef = firestore.collection('posts');
+final CollectionReference commentsRef = firestore.collection('comments');
+final CollectionReference activityFeedRef = firestore.collection('feed');
+final CollectionReference followersRef = firestore.collection('followers');
+final CollectionReference followingRef = firestore.collection('following');
+final CollectionReference friendsRef = firestore.collection('friends');
+final CollectionReference timelineRef = firestore.collection('timeline');
+final CollectionReference messagesRef = firestore.collection('messages');
 
 // Messaging
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
 User currentUser;
 Device eThree;
+
+String agoraIo;
+String virgilJwt;
+
+// Admob
+final AdmobConsent admobConsent = AdmobConsent();
 
 class App extends StatefulWidget {
   App();
@@ -98,10 +103,75 @@ class AppState extends State<App> {
   void initState() {
     super.initState();
 
-    auth.setLanguageCode("pt");
+    if (!kIsWeb) {
+      admobConsent.show(
+        publisherId: 'pub-5982775373849971',
+        privacyURL: 'https://flybis.tecwolf.com.br/privacy/',
+      );
+      admobConsent.onConsentFormClosed.listen((bool status) {
+        // Status true if personalized
+        // Handle it, ie. set targetingInfo
+      });
+    }
+
+    auth.setLanguageCode('pt');
     auth.onAuthStateChanged.listen((user) {
       handleSignIn(user);
     });
+  }
+
+  configureVirgilJwt() async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    //String localVirgilJwt = prefs.getString('VirgilJwt');
+
+    //if (localVirgilJwt == null) {
+    final HttpsCallable callableVirgil =
+        functions.getHttpsCallable(functionName: 'getVirgilJwt');
+
+    final HttpsCallableResult result = await callableVirgil.call();
+
+    virgilJwt = result.data['token'];
+
+    print('VirgilJwt: ' + virgilJwt);
+
+    /*if (result.data['token'] != null) {
+        print('Setting VirgilJwt to Shared Preferences');
+
+        await prefs.setString('VirgilJwt', result.data['token']);
+      }*/
+    /*} else {
+      print('Getting VirgilJwt from Shared Preferences');
+      virgilJwt = localVirgilJwt;
+      print('VirgilJwt: ' + virgilJwt);
+    }*/
+  }
+
+  configureAgoraIo() async {
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    //String localAgoraIo = prefs.getString('AgoraIo');
+
+    //if (localAgoraIo == null) {
+    final HttpsCallable callableAgora =
+        functions.getHttpsCallable(functionName: 'getAgoraSignalingToken');
+
+    final HttpsCallableResult result = await callableAgora.call();
+
+    agoraIo = result.data['token'];
+
+    print('AgoraIo: ' + agoraIo);
+
+    /*if (result.data['token'] != null) {
+        print('Setting AgoraIo to Shared Preferences');
+
+        await prefs.setString('AgoraIo', result.data['token']);
+      }*/
+    /*} else {
+      print('Getting AgoraIo from Shared Preferences');
+      agoraIo = localAgoraIo;
+      print('AgoraIo: ' + agoraIo);
+    }*/
   }
 
   handleSignIn(account) async {
@@ -113,12 +183,27 @@ class AppState extends State<App> {
         });
       }
 
+      await configureAgoraIo();
+      await configureVirgilJwt();
+
       configurePushNotifications();
 
-      // initialize E3Kit
-      // eThree = Device(currentUser.id);
-      // await eThree.initialize();
-      // await eThree.register();
+      // Initialize E3Kit
+      /*
+      eThree = Device(currentUser.uid);
+      await eThree.initialize(virgilJwt);
+      await eThree.register();
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (prefs.getBool('virgilPrivateKey') == true) {
+        await eThree.backupPrivateKey(currentUser.uid);
+        prefs.setBool('virgilPrivateKey', true);
+      } else {
+        await eThree.restorePrivateKey(currentUser.uid);
+      }
+      */
+      // Initialize E3Kit - End
     } else {
       if (mounted) {
         setState(() {
@@ -143,10 +228,10 @@ class AppState extends State<App> {
       if (Platform.isIOS) getiOSPermission();
 
       firebaseMessaging.getToken().then((token) {
-        print("Firebase Messaging Token, $token");
+        print('Firebase Messaging Token, $token');
 
         usersRef.document(user.uid).updateData({
-          "androidNotificationToken": token,
+          'androidNotificationToken': token,
         });
       });
 
@@ -154,13 +239,13 @@ class AppState extends State<App> {
         onLaunch: (Map<String, dynamic> message) async {},
         onResume: (Map<String, dynamic> message) async {},
         onMessage: (Map<String, dynamic> message) async {
-          print("onMessage: $message");
+          print('onMessage: $message');
 
-          final String recipientId = message["data"]["recipent"];
-          final String body = message["notification"]["body"];
+          final String recipientId = message['data']['recipent'];
+          final String body = message['notification']['body'];
 
           if (recipientId == user.uid) {
-            print("Notification shown");
+            print('Notification shown');
 
             SnackBar snackbar = SnackBar(
               content: Text(
@@ -171,7 +256,7 @@ class AppState extends State<App> {
 
             scaffoldKey.currentState.showSnackBar(snackbar);
           } else {
-            print("Notification not shown");
+            print('Notification not shown');
           }
         },
       );
@@ -185,7 +270,7 @@ class AppState extends State<App> {
       sound: true,
     ));
     firebaseMessaging.onIosSettingsRegistered.listen(
-      (settings) => print("Settings registered: $settings"),
+      (settings) => print('Settings registered: $settings'),
     );
   }
 
@@ -195,15 +280,15 @@ class AppState extends State<App> {
     // Check if user already exists in users collection DB, according to his ID
     DocumentSnapshot doc = await usersRef.document(user.uid).get();
 
-    // If the user doesn"t exist, go to CreateAccount page
+    // If the user doesn't exist, go to CreateAccount page
     if (!doc.exists) {
       final String dataResult = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CreateAccount(user.uid)),
+        MaterialPageRoute(builder: (context) => CreateProfile(user.uid)),
       );
 
       if (dataResult != null) {
-        final dataSplit = dataResult.split("-");
+        final dataSplit = dataResult.split('-');
 
         UserUpdateInfo userUpdate = new UserUpdateInfo();
         userUpdate.displayName = dataSplit[1];
@@ -214,19 +299,19 @@ class AppState extends State<App> {
 
         // Get username from createAccount, use it to make new user in usersCollection.
         usersRef.document(user.uid).setData({
-          "uid": user.uid,
-          "username": dataSplit[0],
-          "photoUrl": dataSplit[3],
-          "email": user.email,
-          "displayName": dataSplit[1],
-          "bio": dataSplit[2],
-          "bannerUrl": dataSplit[4],
-          "timestamp": FieldValue.serverTimestamp(),
+          'uid': user.uid,
+          'username': dataSplit[0],
+          'photoUrl': dataSplit[3],
+          'email': user.email,
+          'displayName': dataSplit[1],
+          'bio': dataSplit[2],
+          'bannerUrl': dataSplit[4],
+          'timestamp': FieldValue.serverTimestamp(),
         });
 
         await followersRef
             .document(user.uid)
-            .collection("userFollowers")
+            .collection('userFollowers')
             .document(user.uid)
             .setData({});
         doc = await usersRef.document(user.uid).get();
@@ -257,7 +342,7 @@ class AppState extends State<App> {
       key: scaffoldKey,
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn"t enough vertical
+        // through the options in the drawer if there isn't enough vertical
         // space to fit everything.
 
         elevation: 0,
@@ -277,15 +362,18 @@ class AppState extends State<App> {
 
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: Colors.white,
                         backgroundImage:
                             ImageNetwork.cachedNetworkImageProvider(
                           user.photoUrl,
                         ),
                       ),
                       title: Text(
-                        "@${user.username}",
-                        style: TextStyle(color: Colors.white),
+                        '@${user.username}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       subtitle: Text(
                         user.displayName,
@@ -303,11 +391,11 @@ class AppState extends State<App> {
                 children: <Widget>[
                   ListTile(
                     leading: Icon(FeatherIcons.settings),
-                    title: Text("Configurações"),
+                    title: Text('Configurações'),
                   ),
                   ListTile(
                     leading: Icon(FeatherIcons.logOut),
-                    title: Text("Sair"),
+                    title: Text('Sair'),
                     onTap: () async {
                       await signOut(context);
                     },
@@ -320,30 +408,31 @@ class AppState extends State<App> {
       ),
       body: PageView(
         children: <Widget>[
-          Timeline(
-            currentUser: currentUser,
+          TimelinePage(
             scaffoldKey: scaffoldKey,
+            currentUser: currentUser,
             pageColor: pageColors[0],
           ),
-          Activity(
+          BellPage(
             pageColor: pageColors[1],
             scaffoldKey: scaffoldKey,
           ),
-          Upload(
+          CameraPage(
+            scaffoldKey: scaffoldKey,
             currentUser: currentUser,
             pageColor: pageColors[2],
           ),
-          Profile(
-            profileId: currentUser?.uid,
+          ProfilePage(
             scaffoldKey: scaffoldKey,
+            profileId: currentUser?.uid,
             pageColor: pageColors[3],
           ),
-          Chat(
+          ChatPage(
+            scaffoldKey: scaffoldKey,
             currentUserId: currentUser.uid,
             pageColor: pageColors[4],
-            scaffoldKey: scaffoldKey,
           ),
-          Search(
+          SearchPage(
             pageColor: pageColors[5],
           )
         ],
@@ -352,26 +441,27 @@ class AppState extends State<App> {
         physics: !kIsWeb ? ClampingScrollPhysics() : ClampingScrollPhysics(),
         scrollDirection: Axis.horizontal,
       ),
-      bottomNavigationBar: !kIsWeb
-          ? BubbleBottomBar(
-              backgroundColor: Colors.white,
-              currentIndex: pageIndex,
-              onTap: onTap,
-              elevation: 0,
-              hasNotch: true,
-              hasInk: true,
-              opacity: 0,
-              iconSize: 25,
-              items: <BubbleBottomBarItem>[
-                barItem(pageColors[0], FeatherIcons.home, "Início"),
-                barItem(pageColors[1], FeatherIcons.bell, "Sino"),
-                barItem(pageColors[2], FeatherIcons.aperture, "Câmera"),
-                barItem(pageColors[3], FeatherIcons.user, "Perfil"),
-                barItem(pageColors[4], FeatherIcons.messageCircle, "Chat"),
-                barItem(pageColors[5], FeatherIcons.search, "Busca"),
-              ],
-            )
-          : null,
+      bottomNavigationBar:
+          !kIsWeb || (kIsWeb && MediaQuery.of(context).size.width <= 720)
+              ? BubbleBottomBar(
+                  backgroundColor: Colors.white,
+                  currentIndex: pageIndex,
+                  onTap: onTap,
+                  elevation: 0,
+                  hasNotch: true,
+                  hasInk: true,
+                  opacity: 0,
+                  iconSize: 25,
+                  items: <BubbleBottomBarItem>[
+                    barItem(pageColors[0], FeatherIcons.home, 'Início'),
+                    barItem(pageColors[1], FeatherIcons.bell, 'Sino'),
+                    barItem(pageColors[2], FeatherIcons.aperture, 'Câmera'),
+                    barItem(pageColors[3], FeatherIcons.user, 'Perfil'),
+                    barItem(pageColors[4], FeatherIcons.messageCircle, 'Chat'),
+                    barItem(pageColors[5], FeatherIcons.search, 'Busca'),
+                  ],
+                )
+              : null,
     );
   }
 
@@ -518,12 +608,12 @@ List<Icon> pageIcons = [
 ];
 
 List<Text> pageTexts = [
-  Text("Início"),
-  Text("Sino"),
-  Text("Câmera"),
-  Text("Perfil"),
-  Text("Chat"),
-  Text("Busca"),
+  Text('Início'),
+  Text('Sino'),
+  Text('Câmera'),
+  Text('Perfil'),
+  Text('Chat'),
+  Text('Busca'),
 ];
 
 List<Color> pageColors = [

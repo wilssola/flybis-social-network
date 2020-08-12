@@ -5,11 +5,13 @@ class ImageNetwork {
   ImageNetwork._();
 
   static Widget cachedNetworkImage({
-    imageUrl,
+    String imageUrl,
     placeholder,
     errorWidget,
-    alignment,
-    fit,
+    Alignment alignment,
+    BoxFit fit,
+    bool showIconError,
+    Color color,
   }) {
     throw 'Platform Not Supported';
   }

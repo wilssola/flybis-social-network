@@ -7,16 +7,25 @@ class ImageNetwork {
   ImageNetwork._();
 
   static Widget cachedNetworkImage({
-    imageUrl,
+    String imageUrl,
     placeholder,
     errorWidget,
-    alignment: Alignment.center,
-    fit,
+    Alignment alignment: Alignment.center,
+    BoxFit fit,
+    bool showIconError = true,
+    Color color = Colors.white,
   }) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+      placeholder: (context, url) =>
+          Text(''), // Adicionar o BlurHash aqui futuramente.
+      errorWidget: (context, url, error) => showIconError
+          ? Icon(Icons.error)
+          : Container(
+              color: color,
+              width: 1,
+              height: 1,
+            ),
       alignment: alignment,
       fit: fit,
     );

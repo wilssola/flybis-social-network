@@ -9,15 +9,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flybis/models/Post.dart';
 import 'package:flybis/models/User.dart';
 import 'package:flybis/pages/App.dart';
-import 'package:flybis/pages/Comments.dart';
-import 'package:flybis/pages/Activity.dart';
+import 'package:flybis/views/CommentView.dart';
+import 'package:flybis/pages/App/Bell.dart';
 import 'package:flybis/widgets/Progress.dart';
 import 'package:flybis/widgets/Utils.dart';
 import 'package:flybis/widgets/VideoWidget.dart';
-import 'package:flybis/widgets/PhotoView.dart';
+import 'package:flybis/views/PhotoView.dart';
 
 import 'package:flybis/plugins/image_network/image_network.dart';
-import 'package:flybis/widgets/PostView.dart';
+import 'package:flybis/views/PostView.dart';
 // flybis - End
 
 import 'package:intl/intl.dart';
@@ -67,6 +67,7 @@ class PostWidgetState extends State<PostWidget> {
   @override
   void initState() {
     super.initState();
+
     likes = widget.post.likes;
     dislikes = widget.post.dislikes;
 
@@ -167,17 +168,19 @@ class PostWidgetState extends State<PostWidget> {
   }
 
   handleDisLikePost() async {
-    bool _isLiked = likes[currentUserId] == true;
-    bool _isDisliked = dislikes[currentUserId] == true;
+    bool isLiked = likes[currentUserId] == true;
+    bool isDisliked = dislikes[currentUserId] == true;
 
-    if (_isDisliked) {
+    if (isDisliked) {
       postsRef
           .document(widget.post.uid)
           .collection('userPosts')
           .document(widget.post.id)
-          .updateData({
-        'dislikes.$currentUserId': false,
-      });
+          .updateData(
+        {
+          'dislikes.$currentUserId': false,
+        },
+      );
 
       if (mounted) {
         setState(() {
@@ -186,18 +189,17 @@ class PostWidgetState extends State<PostWidget> {
           dislikes[currentUserId] = false;
         });
       }
-
-      // removeLikeToActivityFeed();
-    } else if (!_isDisliked && !_isLiked) {
+    } else if (!isDisliked && !isLiked) {
       postsRef
           .document(widget.post.uid)
           .collection('userPosts')
           .document(widget.post.id)
-          .updateData({
-        'dislikes.$currentUserId': true,
-      });
+          .updateData(
+        {
+          'dislikes.$currentUserId': true,
+        },
+      );
 
-      // addLikeToActivityFeed();
       if (mounted) {
         setState(() {
           dislikeCount++;
@@ -220,36 +222,48 @@ class PostWidgetState extends State<PostWidget> {
 
   addLikeToActivityFeed() {
     bool isNotPostOwner = (currentUserId != widget.post.uid);
+
     if (isNotPostOwner) {
       activityFeedRef
           .document(widget.post.uid)
           .collection('feedItems')
           .document(widget.post.id)
-          .setData({
-        "type": 'like',
-        "username": currentUser.username,
-        "userId": currentUser.uid,
-        "photoUrl": currentUser.photoUrl,
-        "id": widget.post.id,
-        "contentUrl": widget.post.contentUrl,
-        "timestamp": FieldValue.serverTimestamp()
-      });
+          .setData(
+        {
+          // User
+          "uid": currentUser.uid,
+          "username": currentUser.username,
+          "photoUrl": currentUser.photoUrl,
+
+          // Post
+          "type": 'like',
+          "id": widget.post.id,
+          "content": widget.post.contentUrl,
+          "timestamp": FieldValue.serverTimestamp(),
+
+          // Owner
+          "ownerUid": widget.post.uid,
+        },
+      );
     }
   }
 
   removeLikeToActivityFeed() {
     bool isNotPostOwner = (currentUserId != widget.post.uid);
+
     if (isNotPostOwner) {
       activityFeedRef
           .document(widget.post.uid)
           .collection('feedItems')
           .document(widget.post.id)
           .get()
-          .then((doc) {
-        if (doc.exists) {
-          doc.reference.delete();
-        }
-      });
+          .then(
+        (doc) {
+          if (doc.exists) {
+            doc.reference.delete();
+          }
+        },
+      );
     }
   }
 
@@ -278,11 +292,14 @@ class PostWidgetState extends State<PostWidget> {
               backgroundImage: ImageNetwork.cachedNetworkImageProvider(
                 user.photoUrl != null ? user.photoUrl : "",
               ),
-              backgroundColor: Colors.grey,
+              backgroundColor: avatarBackground,
             ),
             title: GestureDetector(
-              onTap: () => showProfile(context,
-                  profileId: widget.post.uid, pageColor: widget.pageColor),
+              onTap: () => showProfile(
+                context,
+                profileId: widget.post.uid,
+                pageColor: widget.pageColor,
+              ),
               child: Text(
                 '@' + user.username,
                 style: TextStyle(
@@ -293,8 +310,14 @@ class PostWidgetState extends State<PostWidget> {
             ),
             subtitle: Text(user.displayName), //Text(widget.post.location),
             trailing: GestureDetector(
-              onTap: () => handleDeletePost(context, isPostOwner),
-              child: Icon(FeatherIcons.moreVertical, color: Colors.black),
+              onTap: () => handleDeletePost(
+                context,
+                isPostOwner,
+              ),
+              child: Icon(
+                FeatherIcons.moreVertical,
+                color: Colors.black,
+              ),
             ),
           ),
         );
@@ -449,7 +472,8 @@ class PostWidgetState extends State<PostWidget> {
                         padding: EdgeInsets.only(
                       right: 5,
                     )),
-                    Text(formatCompactNumber(likeCount)),
+                    Text(formatCompactNumber(widget.post.getLikeOrDislikeCount(
+                        widget.post.likes))) //likeCount)),
                   ],
                 ),
               ),
@@ -468,7 +492,8 @@ class PostWidgetState extends State<PostWidget> {
                             size: 35.0,
                           ),
                     Padding(padding: EdgeInsets.only(right: 5)),
-                    Text(formatCompactNumber(dislikeCount)),
+                    Text(formatCompactNumber(widget.post.getLikeOrDislikeCount(
+                        widget.post.dislikes))) //dislikeCount)),
                   ],
                 ),
               ),
@@ -598,10 +623,11 @@ class PostWidgetState extends State<PostWidget> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return Comments(
+          return CommentView(
             postId: id,
             postOwnerId: uid,
             postcontentUrl: contentUrl,
+            pageColor: widget.pageColor,
           );
         },
       ),
@@ -628,7 +654,13 @@ class PostWidgetState extends State<PostWidget> {
         onTap: () => showPost(context),
         child: widget.post.contentType == "image"
             ? adaptiveImage(context, widget.post.contentUrl)
-            : Text("Vídeo"),
+            : adaptiveImage(
+                context,
+                widget.post.contentUrl.replaceFirst(
+                  'master.m3u8',
+                  widget.post.id + '.mp4.jpg',
+                ),
+              ),
       ),
     );
   }

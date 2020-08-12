@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 
 import 'package:flybis/const.dart';
 import 'package:flybis/widgets/Utils.dart';
-import 'package:flybis/widgets/PhotoView.dart';
+import 'package:flybis/views/PhotoView.dart';
 
 class ImageWidget extends StatefulWidget {
   final String url;

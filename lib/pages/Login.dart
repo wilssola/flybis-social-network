@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:particles_flutter/particles_flutter.dart';
 
 import '../services/Auth.dart';
 import '../widgets/Utils.dart';
@@ -27,11 +30,12 @@ class LoginState extends State<Login> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isLoad = false;
-  String errorMessage = "";
+  String errorMessage = '';
 
   showSignupForm() {
     formKey.currentState.reset();
-    errorMessage = "";
+    errorMessage = '';
+
     if (mounted) {
       setState(() {
         formMode = FormMode.SIGNUP;
@@ -41,7 +45,8 @@ class LoginState extends State<Login> {
 
   showLoginForm() {
     formKey.currentState.reset();
-    errorMessage = "";
+    errorMessage = '';
+
     if (mounted) {
       setState(() {
         formMode = FormMode.SIGNIN;
@@ -52,7 +57,7 @@ class LoginState extends State<Login> {
   validateAndSubmit() async {
     if (mounted) {
       setState(() {
-        errorMessage = "";
+        errorMessage = '';
         isLoad = true;
       });
     }
@@ -63,6 +68,7 @@ class LoginState extends State<Login> {
         } else {
           await signUp(formEmail, formPassword);
         }
+
         if (mounted) {
           setState(() {
             //isLoad = false;
@@ -93,6 +99,7 @@ class LoginState extends State<Login> {
 
   bool validateAndSave() {
     final form = formKey.currentState;
+
     if (form.validate()) {
       form.save();
       return true;
@@ -145,14 +152,14 @@ class LoginState extends State<Login> {
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: InputDecoration(
-          labelText: "Email",
+          labelText: 'Email',
           fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(),
           ),
         ),
-        validator: (value) => value.isEmpty ? "Email cannot be empty" : null,
+        validator: (value) => value.isEmpty ? 'Email cannot be empty' : null,
         onChanged: (value) => formEmail = value.trim(),
       ),
     );
@@ -166,14 +173,14 @@ class LoginState extends State<Login> {
         obscureText: true,
         autofocus: false,
         decoration: InputDecoration(
-          labelText: "Password",
+          labelText: 'Password',
           fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25.0),
             borderSide: BorderSide(),
           ),
         ),
-        validator: (value) => value.isEmpty ? "Password cannot be empty" : null,
+        validator: (value) => value.isEmpty ? 'Password cannot be empty' : null,
         onChanged: (value) => formPassword = value.trim(),
       ),
     );
@@ -189,11 +196,11 @@ class LoginState extends State<Login> {
         color: Colors.blue,
         child: formMode == FormMode.SIGNIN
             ? Text(
-                "Signin",
+                'Signin',
                 style: TextStyle(fontSize: 20.0, color: Colors.white),
               )
             : Text(
-                "Signup",
+                'Signup',
                 style: TextStyle(fontSize: 20.0, color: Colors.white),
               ),
         onPressed: validateAndSubmit,
@@ -206,8 +213,8 @@ class LoginState extends State<Login> {
   Widget secondaryButton() {
     return FlatButton(
       child: formMode == FormMode.SIGNIN
-          ? Text("Signup a account", style: TextStyle(fontSize: 18.0))
-          : Text("Signin a account", style: TextStyle(fontSize: 18.0)),
+          ? Text('Signup a account', style: TextStyle(fontSize: 18.0))
+          : Text('Signin a account', style: TextStyle(fontSize: 18.0)),
       onPressed: formMode == FormMode.SIGNIN ? showSignupForm : showLoginForm,
     );
   }
@@ -219,19 +226,51 @@ class LoginState extends State<Login> {
     }
 
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            logoText(widget.pageColors),
-            Container(width: 350, child: formWidget()),
-            primaryButton(),
-            secondaryButton(),
-            errorWidget(),
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          CircularParticle(
+            key: UniqueKey(),
+            awayRadius: 75,
+            numberOfParticles: 150,
+            speedOfParticles: 1,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            onTapAnimation: true,
+            particleColor: Colors.white.withAlpha(150),
+            awayAnimationDuration: Duration(milliseconds: 500),
+            maxParticleSize: 8,
+            isRandSize: true,
+            isRandomColor: true,
+            randColorList: widget.pageColors,
+            awayAnimationCurve: Curves.easeInOutBack,
+            enableHover: true,
+            hoverColor:
+                widget.pageColors[Random().nextInt(widget.pageColors.length)],
+            hoverRadius: 75,
+            connectDots: false, //not recommended
+          ),
+          Align(
+            alignment: !kIsWeb ? Alignment.center : Alignment.centerLeft,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.white,
+              alignment: Alignment.center,
+              width: 350,
+              height: !kIsWeb ? 450 : MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  logoText(widget.pageColors),
+                  Container(width: 350, child: formWidget()),
+                  primaryButton(),
+                  secondaryButton(),
+                  errorWidget(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

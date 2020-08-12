@@ -7,11 +7,13 @@ class ImageNetwork {
   ImageNetwork._();
 
   static Widget cachedNetworkImage({
-    imageUrl,
+    String imageUrl,
     placeholder,
     errorWidget,
-    alignment,
-    fit,
+    Alignment alignment,
+    BoxFit fit,
+    bool showIconError,
+    Color color,
   }) {
     return FadeInImage.memoryNetwork(
       placeholder: kTransparentImage,
