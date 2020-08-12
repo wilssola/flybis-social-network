@@ -204,6 +204,7 @@ class CommentState extends State<CommentView> {
       }
 
       commentController.clear();
+      scrollController.jumpTo(0);
     }
   }
 
@@ -227,6 +228,9 @@ class CommentState extends State<CommentView> {
                   labelText: 'Write a comment',
                   border: InputBorder.none,
                 ),
+                onSubmitted: (String text) {
+                  addComment();
+                },
               ),
               trailing: Transform.rotate(
                 angle: 45 * pi / 180,

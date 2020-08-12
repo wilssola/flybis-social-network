@@ -903,6 +903,9 @@ class ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.all(0),
               height: 42,
               child: TextField(
+                onSubmitted: (String content) {
+                  onSendMessage(content, 0);
+                },
                 controller: textEditingController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
