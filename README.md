@@ -44,6 +44,23 @@ Instruções básicas para uso do Flutter:
 
     firebase functions:config:get > .runtimeconfig.json
 
+# Gcloud
+
+Instruções básicas para uso do Gcloud:
+
+## Iniciar projeto Gcloud
+
+    gcloud init
+
+## Instalar SDK (PowerShell)
+
+    (New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp\GoogleCloudSDKInstaller.exe")
+    & $env:Temp\GoogleCloudSDKInstaller.exe
+
+## Setar cors.json usando o gsutil
+
+    gsutil cors set cors.json gs://flybis.appspot.com
+
 # Requisitos
 
 Esses são os requisitos necessários para a utilização do projeto:

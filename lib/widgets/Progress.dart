@@ -1,19 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-Container linearProgress(
+Container linearProgress(BuildContext context,
     {Color valueColor = Colors.black, Color backgroundColor = Colors.white}) {
   return Container(
     child: LinearProgressIndicator(
       valueColor: AlwaysStoppedAnimation(Colors.black),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     ),
   );
 }
 
-Container circularProgress({Color color = Colors.black}) {
+Container circularProgress(BuildContext context, {Color color = Colors.black}) {
   return Container(
-    color: Colors.white,
+    color: Theme.of(context).scaffoldBackgroundColor,
     child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(color)),
     alignment: Alignment(0.0, 0.0),
   );
@@ -35,6 +35,7 @@ Container centerCircularProgress(
     width: MediaQuery.of(context).size.width,
     height: bodyHeight,
     child: circularProgress(
+      context,
       color: color,
     ),
   );

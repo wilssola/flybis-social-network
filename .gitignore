@@ -50,3 +50,12 @@ build/
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+### Firebase ###
+**/node_modules/*
+config.json
+.firebaserc
+.vscode
+#.env
+functions/src/lib/*
+firebase-debug.log

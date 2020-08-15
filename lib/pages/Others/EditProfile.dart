@@ -221,7 +221,7 @@ class EditProfileState extends State<EditProfile> {
         ],
       ),
       body: isLoading
-          ? circularProgress(color: widget.pageColor)
+          ? circularProgress(context, color: widget.pageColor)
           : ListView(
               children: <Widget>[
                 Container(

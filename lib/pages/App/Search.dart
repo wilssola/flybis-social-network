@@ -102,6 +102,7 @@ class SearchState extends State<SearchPage>
 
         if (!snapshot.hasData || !isLoad) {
           return circularProgress(
+            context,
             color: widget.pageColor,
           );
         } else {
@@ -138,7 +139,9 @@ class SearchState extends State<SearchPage>
         stream: searchResultsFuture,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return circularProgress();
+            return circularProgress(
+              context,
+            );
           }
 
           if (snapshot.data.documents.length == 0) {

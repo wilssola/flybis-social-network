@@ -143,7 +143,7 @@ class ChatState extends State<ChatPage>
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return circularProgress(color: widget.pageColor);
+          return circularProgress(context, color: widget.pageColor);
         } else {
           return ListView.builder(
             shrinkWrap: true,

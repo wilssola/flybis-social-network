@@ -1,0 +1,21 @@
+{
+  "name": "flybis-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "TecWolf",
+  "license": "TecWolf",
+  "devDependencies": {
+    "electron": "^9.2.0"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.5",
+    "electron-push-receiver": "^2.1.3",
+    "electron-store": "^6.0.0",
+    "toastify-js": "^1.9.1",
+    "v8-compile-cache": "^2.1.1"
+  }
+}

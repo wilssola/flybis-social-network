@@ -44,7 +44,7 @@ class EncodingProvider {
 
     final String outPath = '$videoPath.jpg';
     final arguments =
-        '-y -i $videoPath -vframes 1 -an -s ${width}x${height} -ss 1 $outPath';
+        '-y -i $videoPath -vframes 1 -an -s ${width}x$height -ss 1 $outPath';
 
     final int rc = await _encoder.execute(arguments);
     assert(rc == 0);

@@ -1,4 +1,6 @@
-// Set Firebase Configuration
+console.log("flybis.js loaded");
+
+// Set Firebase Configuration.
 const firebaseConfig = {
   apiKey: "AIzaSyDVPjDNuRCFqq7UmbdNM0EOPqSC_pUgDMc",
   authDomain: "flybis.firebaseapp.com",
@@ -10,13 +12,14 @@ const firebaseConfig = {
   measurementId: "G-FCENZTTDYN",
 };
 
-// Initialize Firebase
+// Initialize Firebase.
 firebase.initializeApp(firebaseConfig);
+// Initialize Firebase Analytics.
 firebase.analytics();
-// Initialize Performance Monitoring
+// Initialize Firebase Performance Monitoring.
 firebase.performance();
 
-// Enable Firestore Cache
+// Enable Firestore Cache.
 firebase.firestore().settings({
   cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
 });
@@ -25,95 +28,155 @@ firebase
   .enablePersistence()
   .catch(function (error) {
     if (error.code == "failed-precondition") {
-      // Multiple tabs open, persistence can only be enabled in one tab at a a time
-      console.log("Persistence work only in one tab", error);
+      // Multiple tabs open, persistence can only be enabled in one tab at a a time.
+      console.log("Persistence work only in one tab ", error);
     } else if (error.code == "unimplemented") {
-      // The current browser does not support all of the features required to enable persistence
-      console.log("Browser not support persistence", error);
+      // The current browser does not support all of the features required to enable persistence.
+      console.log("Browser not support persistence ", error);
     } else {
-      console.log("Enable persistence results a error", error);
+      console.log("Enable persistence results a error ", error);
     }
   });
 
-// Get Firebase Messaging
-var messagingToken;
-firebase
-  .messaging()
-  .usePublicVapidKey(
-    "BO3GVEHUf9LIgu0tyOlyDvPX91D3LQOd0JsDh4881BkDwR4uhdIiB8bI9gdpoyynOLGwyNi49tpgUFOIyZPXf78"
-  );
-firebase
-  .messaging()
-  .requestPermission()
-  .then(() => {
-    console.log("FCM Request Success");
+// Firebase Auth vars.
+var authUser;
+var hasUser = false;
 
+// Use Firebase Messaging for Browsers.
+if (navigator.userAgent.toLowerCase().indexOf("electron") === -1) {
+  firebase
+    .messaging()
+    .usePublicVapidKey(
+      "BO3GVEHUf9LIgu0tyOlyDvPX91D3LQOd0JsDh4881BkDwR4uhdIiB8bI9gdpoyynOLGwyNi49tpgUFOIyZPXf78"
+    );
+  firebase
+    .messaging()
+    .requestPermission()
+    .then(() => {
+      console.log("FCM Request Success");
+
+      firebase
+        .messaging()
+        .getToken()
+        .then((currentToken) => {
+          if (currentToken) {
+            window.messagingToken = currentToken;
+
+            writeTokenFCM(window.messagingToken);
+
+            console.log("FCM: " + currentToken);
+          } else {
+            console.log("No Instance FCM token available");
+          }
+        })
+        .catch((error) => {
+          console.log("An error occurred while retrieving token ", error);
+        });
+    })
+    .catch((error) => {
+      window.messagingToken = null;
+
+      console.log("FCM Request Error ", error);
+    });
+
+  // Callback fired if Instance ID token is updated.
+  firebase.messaging().onTokenRefresh(() => {
     firebase
       .messaging()
       .getToken()
-      .then((currentToken) => {
-        messagingToken = currentToken;
+      .then((refreshedToken) => {
+        if (refreshedToken) {
+          window.messagingToken = refreshedToken;
 
-        console.log("FCM: " + currentToken);
+          writeTokenFCM(window.messagingToken);
+
+          console.log("FCM Refreshed: " + refreshedToken);
+        } else {
+          console.log("No Instance FCM token available");
+        }
+      })
+      .catch((error) => {
+        console.log("Unable to retrieve refreshed token ", error);
       });
-  })
-  .catch((error) => {
-    messagingToken = null;
-
-    console.log("FCM Request Error", error);
   });
 
-// Check Firebase Auth
-var hasUser = false;
+  // Handle incoming messages. Called when:
+  // - A message is received while the app has focus.
+  // - The user clicks on an app notification created by a service worker `messaging.setBackgroundMessageHandler` handler.
+  firebase.messaging().onMessage((payload) => {
+    console.log("Message received ", payload);
+
+    Toastify({
+      avatar: "",
+      text: payload.notification.body,
+      duration: 5000,
+      close: true,
+      gravity: "bottom",
+      position: "left",
+      backgroundColor: "black",
+      stopOnFocus: true,
+      onClick: () => {},
+    }).showToast();
+  });
+}
+
+// Check Firebase Auth.
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
-    if (messagingToken != null) {
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(user.uid)
-        .collection("tokens")
-        .doc("fcm")
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(user.uid)
-              .collection("tokens")
-              .doc("fcm")
-              .update({
-                webToken: messagingToken,
-              });
-          } else {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(user.uid)
-              .collection("tokens")
-              .doc("fcm")
-              .set({
-                webToken: messagingToken,
-              });
-          }
-        });
-    }
-
     hasUser = true;
+    authUser = user;
+
+    writeTokenFCM(window.messagingToken);
 
     console.log("UID: " + user.uid);
   } else {
-    // Fix to Phoenix logout
+    // Fix to Phoenix logout.
     if (hasUser) {
       document.location.reload();
     }
+
+    authUser = user;
   }
 });
 
-// Keyboard navigation with TAB
+// Keyboard navigation with TAB.
 document.addEventListener("keydown", function (event) {
   if (event.code == "Tab") {
     event.preventDefault();
   }
 });
+
+function writeTokenFCM(messagingToken) {
+  if (authUser && messagingToken != null) {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(authUser.uid)
+      .collection("tokens")
+      .doc("fcm")
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(authUser.uid)
+            .collection("tokens")
+            .doc("fcm")
+            .update({
+              webToken: messagingToken,
+            });
+        } else {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(authUser.uid)
+            .collection("tokens")
+            .doc("fcm")
+            .set({
+              webToken: messagingToken,
+            });
+        }
+      });
+  }
+}

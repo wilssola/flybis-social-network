@@ -1,0 +1,93 @@
+{
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ],
+    "source": "functions"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/cspreport",
+        "function": "cspReport"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src https: 'self'; object-src https: 'self'; img-src https: blob: 'self' https://firebasestorage.googleapis.com; media-src https: blob: 'self' https://firebasestorage.googleapis.com; script-src https: 'unsafe-inline' 'unsafe-eval' 'self' https://*.googlesyndication.com https://*.googletagmanager.com https://*.firebase.com https://*.firebaseio.com https://cdn.jsdelivr.net https://ajax.cloudflare.com; style-src https: 'unsafe-inline' 'self' https://cdn.jsdelivr.net; connect-src 'self' https://*.googleapis.com https://*.cloudfunctions.net https://*.google-analytics.com https://*.googlesyndication.com; report-uri /cspreport"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Feature-Policy",
+            "value": "autoplay 'self'; fullscreen 'self'; picture-in-picture 'self'; camera 'self'; microphone 'self'; geolocation 'self'; usb 'self'"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains; preload"
+          }
+        ]
+      }
+    ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 6000
+    },
+    "firestore": {
+      "host": "0.0.0.0",
+      "port": 8000
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 7000
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}

@@ -228,10 +228,31 @@ class AppState extends State<App> {
       if (Platform.isIOS) getiOSPermission();
 
       firebaseMessaging.getToken().then((token) {
-        print('Firebase Messaging Token, $token');
+        print('FCM: ' + token);
 
-        usersRef.document(user.uid).updateData({
-          'androidNotificationToken': token,
+        usersRef
+            .document(user.uid)
+            .collection('tokens')
+            .document('fcm')
+            .get()
+            .then((doc) {
+          if (!doc.exists) {
+            usersRef
+                .document(user.uid)
+                .collection('tokens')
+                .document('fcm')
+                .setData({
+              'androidToken': token,
+            });
+          } else {
+            usersRef
+                .document(user.uid)
+                .collection('tokens')
+                .document('fcm')
+                .updateData({
+              'androidToken': token,
+            });
+          }
         });
       });
 

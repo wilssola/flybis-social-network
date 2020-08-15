@@ -150,7 +150,9 @@ class CommentState extends State<CommentView> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return circularProgress();
+          return circularProgress(
+            context,
+          );
         }
 
         List<Comment> comments = [];
@@ -237,7 +239,10 @@ class CommentState extends State<CommentView> {
                 child: IconButton(
                   color: Colors.black,
                   onPressed: addComment,
-                  icon: Icon(FeatherIcons.send),
+                  icon: Icon(
+                    FeatherIcons.send,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                 ),
               ),
             ),

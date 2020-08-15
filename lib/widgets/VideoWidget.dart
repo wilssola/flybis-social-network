@@ -2,11 +2,14 @@ import "dart:io";
 
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import 'package:flybis/const.dart';
 import "package:video_player/video_player.dart";
 import "package:flutter_widgets/flutter_widgets.dart";
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
+import 'Header.dart';
 
 class VideoWidget extends StatefulWidget {
   final bool hls;
@@ -160,15 +163,7 @@ class VideoWidgetState extends State<VideoWidget> {
     );
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget videoPlayer(BuildContext context, bool fullscreen) {
     return VisibilityDetector(
       key: Key(widget.url != null ? widget.url : widget.file.path),
       onVisibilityChanged: (VisibilityInfo info) {
@@ -240,6 +235,38 @@ class VideoWidgetState extends State<VideoWidget> {
                               padding: EdgeInsets.zero,
                             ),
                       Positioned(
+                        bottom: 15,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (!fullscreen) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Scaffold(
+                                    appBar: header(context, titleText: ""),
+                                    body: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: videoPlayer(context, true),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Icon(
+                            !fullscreen
+                                ? FeatherIcons.maximize
+                                : FeatherIcons.minimize,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Positioned(
                         bottom: 0,
                         left: 0,
                         right: 0,
@@ -254,5 +281,17 @@ class VideoWidgetState extends State<VideoWidget> {
             : loadingVideo(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return videoPlayer(context, false);
   }
 }

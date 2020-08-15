@@ -786,6 +786,7 @@ class ProfileState extends State<ProfilePage>
               child: buildProfile(),
             )
           : circularProgress(
+              context,
               color: widget.pageColor,
             ),
     );

@@ -85,7 +85,7 @@ class PostScreenState extends State<PostScreen> {
                 ],
               ),
             )
-          : circularProgress(color: widget.pageColor),
+          : circularProgress(context, color: widget.pageColor),
     );
   }
 }

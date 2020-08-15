@@ -125,7 +125,7 @@ class BellState extends State<BellPage>
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return circularProgress(color: widget.pageColor);
+          return circularProgress(context, color: widget.pageColor);
         }
 
         if (snapshot.data.documents.length == 0) {
@@ -261,7 +261,7 @@ class ActivityItem extends StatelessWidget {
             children: <Widget>[
               usernameText(feed.username),
               Container(
-                width: 150,
+                width: MediaQuery.of(context).size.width * 0.35,
                 child: Text(
                   ' $activityItemText',
                   overflow: TextOverflow.ellipsis,

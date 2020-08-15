@@ -148,7 +148,7 @@ class TimelineState extends State<TimelinePage>
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return circularProgress(color: widget.pageColor);
+          return circularProgress(context, color: widget.pageColor);
         }
 
         List<PostWidget> posts = [];
@@ -197,7 +197,7 @@ class TimelineState extends State<TimelinePage>
               .getDocuments(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return circularProgress(color: widget.pageColor);
+              return circularProgress(context, color: widget.pageColor);
             }
 
             List<Widget> users = [];

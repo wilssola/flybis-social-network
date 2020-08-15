@@ -222,7 +222,9 @@ class LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     if (isLoad) {
-      return circularProgress();
+      return circularProgress(
+        context,
+      );
     }
 
     return Scaffold(
@@ -253,7 +255,7 @@ class LoginState extends State<Login> {
             alignment: !kIsWeb ? Alignment.center : Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.all(10),
-              color: Colors.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
               alignment: Alignment.center,
               width: 350,
               height: !kIsWeb ? 450 : MediaQuery.of(context).size.height,

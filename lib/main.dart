@@ -70,14 +70,16 @@ class Main extends StatelessWidget {
         primaryColor: Colors.black,
         splashColor: Colors.white,
         accentColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
+        //scaffoldBackgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.white,
         splashColor: Colors.black,
         accentColor: Colors.black,
-        scaffoldBackgroundColor: Colors.black,
+        //scaffoldBackgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       home: App(),
       navigatorObservers: [

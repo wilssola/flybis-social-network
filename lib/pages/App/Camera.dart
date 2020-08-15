@@ -943,7 +943,9 @@ class CameraState extends State<CameraPage>
                         : Text('')),
               ),
               isUploading
-                  ? linearProgress()
+                  ? linearProgress(
+                      context,
+                    )
                   : Padding(padding: EdgeInsets.zero),
             ],
           ),
@@ -969,7 +971,8 @@ class CameraState extends State<CameraPage>
           ),
           Divider(),
           ListTile(
-            leading: Icon(FeatherIcons.mapPin, color: Colors.black, size: 35),
+            leading: Icon(FeatherIcons.mapPin,
+                color: Theme.of(context).iconTheme.color, size: 35),
             title: Row(
               children: <Widget>[
                 Container(

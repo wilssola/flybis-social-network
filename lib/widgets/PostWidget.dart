@@ -276,7 +276,9 @@ class PostWidgetState extends State<PostWidget> {
         if (!snapshot.hasData) {
           return Container(
             height: kHeaderHeight,
-            child: circularProgress(),
+            child: circularProgress(
+              context,
+            ),
           );
         }
 
@@ -316,7 +318,7 @@ class PostWidgetState extends State<PostWidget> {
               ),
               child: Icon(
                 FeatherIcons.moreVertical,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
           ),
@@ -465,7 +467,9 @@ class PostWidgetState extends State<PostWidget> {
                             FeatherIcons.thumbsUp, Colors.green, 35.0)
                         : Icon(
                             FeatherIcons.thumbsUp,
-                            color: isLiked ? Colors.green : Colors.black,
+                            color: isLiked
+                                ? Colors.green
+                                : Theme.of(context).iconTheme.color,
                             size: 35.0,
                           ),
                     Padding(
@@ -488,7 +492,9 @@ class PostWidgetState extends State<PostWidget> {
                             FeatherIcons.thumbsDown, Colors.red, 35.0)
                         : Icon(
                             FeatherIcons.thumbsDown,
-                            color: isDisliked ? Colors.red : Colors.black,
+                            color: isDisliked
+                                ? Colors.red
+                                : Theme.of(context).iconTheme.color,
                             size: 35.0,
                           ),
                     Padding(padding: EdgeInsets.only(right: 5)),
@@ -510,7 +516,7 @@ class PostWidgetState extends State<PostWidget> {
                 child: Icon(
                   FeatherIcons.messageCircle,
                   size: 35.0,
-                  color: Colors.black,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
               Padding(padding: EdgeInsets.only(right: 15.0)),

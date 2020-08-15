@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 import '../plugins/image_network/image_network.dart';
@@ -42,7 +43,9 @@ Widget cachedNetworkImage(String contentUrl) {
     imageUrl: contentUrl != null ? contentUrl : "",
     fit: BoxFit.cover,
     placeholder: (context, url) => Padding(
-      child: circularProgress(),
+      child: circularProgress(
+        context,
+      ),
       padding: EdgeInsets.all(17.5),
     ),
     errorWidget: (context, url, error) => Icon(Icons.error),
@@ -121,3 +124,21 @@ removeSnackbar(GlobalKey<ScaffoldState> scaffoldKey) {
   scaffoldKey.currentState.removeCurrentSnackBar();
 }
 // Snackbar - End
+
+Widget selectableText(String content, TextStyle style) {
+  return RawKeyboardListener(
+    focusNode: FocusNode(),
+    onKey: (keyEvent) {
+      /// If user presses Cmd + C
+      if (keyEvent.physicalKey == PhysicalKeyboardKey.keyC &&
+          keyEvent.isMetaPressed) {
+        /// Copy data to clipboard
+        Clipboard.setData(ClipboardData(text: content));
+      }
+    },
+    child: SelectableText(
+      content,
+      style: style,
+    ),
+  );
+}

@@ -879,7 +879,7 @@ class ChatScreenState extends State<ChatScreen> {
               child: new IconButton(
                 icon: new Icon(FeatherIcons.image),
                 onPressed: getImage,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
             color: Colors.white,
@@ -890,7 +890,7 @@ class ChatScreenState extends State<ChatScreen> {
               child: new IconButton(
                 icon: new Icon(FeatherIcons.gift),
                 onPressed: getSticker,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
             color: Colors.white,
@@ -941,7 +941,7 @@ class ChatScreenState extends State<ChatScreen> {
                 child: IconButton(
                   icon: Icon(FeatherIcons.send),
                   onPressed: () => onSendMessage(textEditingController.text, 0),
-                  color: Colors.black,
+                  color: Theme.of(context).iconTheme.color,
                 ),
               ),
             ),

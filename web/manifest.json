@@ -1,0 +1,21 @@
+{
+  "name": "Flybis",
+  "short_name": "Flybis",
+  "description": "A Social Network",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "icons": [
+    {
+      "src": "/icon.png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.tecwolf.flybis"
+    }
+  ],
+  "prefer_related_applications": true
+}

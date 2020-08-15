@@ -30,11 +30,10 @@ class Admob extends StatefulWidget {
 }
 
 class AdmobState extends State<Admob> {
-  final nativeAdController = NativeAdmobController();
+  final nativeAdController = !kIsWeb ? NativeAdmobController() : null;
   double height = 0;
 
   StreamSubscription subscription;
-
   AdvertisingService advertisingService = AdvertisingService();
 
   @override
@@ -98,8 +97,8 @@ class AdmobState extends State<Admob> {
         child: NativeAdmob(
           controller: nativeAdController,
           adUnitID: advertisingService.nativeAdId(),
-          loading: circularProgress(color: widget.color),
-          error: circularProgress(color: Colors.black),
+          loading: circularProgress(context, color: widget.color),
+          error: circularProgress(context, color: Colors.black),
           type: widget.type,
           options: NativeAdmobOptions(
             callToActionStyle: NativeTextStyle(

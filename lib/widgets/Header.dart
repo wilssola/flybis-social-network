@@ -16,7 +16,10 @@ AppBar header(
     leading: scaffoldKey != null
         ? Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(
+                Icons.menu,
+                color: Theme.of(context).iconTheme.color,
+              ),
               onPressed: () => scaffoldKey.currentState.openDrawer(),
             ),
           )
