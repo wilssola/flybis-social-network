@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505131215378",
+    "firebase_url": "https://flybis.firebaseio.com",
+    "project_id": "flybis",
+    "storage_bucket": "flybis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505131215378:android:83947faee99288448d06cb",
+        "android_client_info": {
+          "package_name": "com.tecwolf.flybis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505131215378-nf99j7or240dj48llmf3uqc6tiqeuhlb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYOnR1xGnnZoIHg73JLbpA9QocURRhGZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505131215378-nf99j7or240dj48llmf3uqc6tiqeuhlb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

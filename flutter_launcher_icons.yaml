@@ -1,0 +1,9 @@
+flutter_icons:
+    android: true
+    ios: true
+    remove_alpha_ios: true
+    #image_path: "assets/icons/flybis_icon.png"
+    image_path_android: "assets/icons/flybis_icon.png"
+    image_path_ios: "assets/icons/flybis_icon_square.png"
+    adaptive_icon_background: "assets/icons/flybis_icon_background.png"
+    adaptive_icon_foreground: "assets/icons/flybis_icon_foreground.png"

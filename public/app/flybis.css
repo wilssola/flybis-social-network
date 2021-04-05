@@ -1,0 +1,22 @@
+* {
+    /*box-shadow: none !important;*/
+}
+
+html, html a {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
+
+p, flt-glass-pane {
+    image-rendering: pixelated;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}

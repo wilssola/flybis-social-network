@@ -1,0 +1,76 @@
+.App {
+  text-align: center;
+}
+
+.App h1 {
+  font-size: 2.5rem;
+}
+
+.App-logo {
+  height: 50px;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 1rem;
+  color: white;
+}
+.App-header ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+}
+.App-header ul li {
+  margin: 25px;
+}
+.App-header-item {
+  display: inline;
+}
+
+.App-link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.App-button {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 10px;
+  border-radius: 25px;
+  margin: 15px;
+  text-decoration: none;
+  vertical-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+  .App-header {
+    font-size: 0.85rem;
+  }
+
+  .App-logo {
+    height: 25px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .App-header-item {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .App-logo {
+    margin-left: 50px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .App-logo {
+    margin-left: 75px;
+  }
+}

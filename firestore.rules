@@ -1,0 +1,185 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    //match /{document=**} {
+      //allow read;
+      //allow write;
+    //}
+
+    match /flybis/public/{tagId} {
+      allow read;
+    }
+
+    match /flybis/public/{tagId}/{childId} {
+      allow read;
+    }
+
+    match /lives {
+      allow read;
+    }
+
+    match /lives/{userId} {
+      allow read;
+      allow write: if userExists(request.auth.uid) && request.auth.uid == userId;
+    }
+
+    match /bells/{userId}/bells {
+			allow read: if userExists(request.auth.uid) && request.auth.uid == userId;
+    }
+
+    match /bells/{userId}/bells/{bellId} {
+			allow read: if userExists(request.auth.uid) && request.auth.uid == userId;
+      allow create: if userExists(request.auth.uid) && request.auth.uid != userId && request.auth.uid == request.resource.data.sender && request.resource.data.receiver == userId && (request.resource.data.mode == 'like' || request.resource.data.mode == 'follow' || request.resource.data.mode == 'friend' || request.resource.data.mode == 'comment' || request.resource.data.mode == 'message') && (request.resource.data.type == 'default' || request.resource.data.type == 'text' || request.resource.data.type == 'image' || request.resource.data.type == 'video' || request.resource.data.type == 'gif');
+      allow delete: if userExists(request.auth.uid) && request.auth.uid != userId && request.auth.uid == resource.data.sender;
+    }
+
+    match /comments/{userId}/posts/{postId}/comments/{commentId} {
+			allow read;
+      allow write: if userExists(request.auth.uid) && request.auth.uid != null && request.auth.uid == request.resource.data.userId && isUuid(commentId);
+    }
+    
+    match /followers/{userId}/followers/{followerId} {
+			allow read;
+      allow write: if userExists(request.auth.uid) && request.auth.uid != null && request.auth.uid == followerId;
+    }
+    
+    match /followings/{userId}/followings/{followingId} {
+			allow read;
+      allow write: if userExists(request.auth.uid) && request.auth.uid == userId && userId != followingId;
+    }
+    
+    match /friends/{userId}/requests/{requesterId} {
+			allow read;
+      allow create: if userExists(request.auth.uid) && request.auth.uid != userId && request.auth.uid == requesterId && userId != requesterId;
+      allow delete: if userExists(request.auth.uid) && (request.auth.uid == userId || request.auth.uid == requesterId) && userId != requesterId;
+    }
+    
+    match /friends/{userId}/friends/{friendId} {
+			allow read;
+      allow create: if userExists(request.auth.uid) && (request.auth.uid == userId || (request.auth.uid == friendId && isFriendRequested(userId, friendId))) && userId != friendId;
+      allow delete: if userExists(request.auth.uid) && (request.auth.uid == userId || (request.auth.uid == friendId && isFriend(userId, friendId))) && userId != friendId;
+    }
+
+    match /chats/{chatId} {
+			allow read: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]);
+      allow create: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && (request.resource.data.chatId == chatId); //&& (!request.resource.data.keys().hasAny(['key']));      
+      allow update: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && (request.resource.data.chatId == chatId) && (request.resource.data.chatKey == resource.data.chatKey);
+    }
+
+    match /chats/{chatId}/messages/{messageId} {
+			allow read: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]);
+      allow write: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && request.auth.uid == request.resource.data.userId  && request.resource.data.messageContent.size() <= 5000 && isUuid(messageId);
+    }
+
+    match /posts/{userId} {
+      allow read;
+      allow write: if userExists(request.auth.uid) && request.auth.uid == userId;
+    }
+    
+    match /posts/{userId}/posts/{postId} {
+			allow read;
+      allow create: if userExists(request.auth.uid) && request.auth.uid == userId && isUuid(postId);
+      allow update: if userExists(request.auth.uid) && request.auth.uid == userId && isUuid(postId);
+    }
+
+    match /posts/{userId}/posts/{postId}/likes/{senderId} {
+			allow read;
+      allow create: if userExists(request.auth.uid) && request.auth.uid == senderId && !dislikeExists(userId, postId, senderId);
+      allow delete: if userExists(request.auth.uid) && request.auth.uid == senderId;
+    }
+
+    match /posts/{userId}/posts/{postId}/dislikes/{senderId} {
+			allow read;
+      allow create: if userExists(request.auth.uid) && request.auth.uid == senderId && !likeExists(userId, postId, senderId);
+      allow delete: if userExists(request.auth.uid) && request.auth.uid == senderId;
+    }
+
+    match /status/{userId} {
+      allow read;
+			allow write: if request.auth.uid == userId;
+    }
+
+    match /timelines/{userId} {
+			allow read: if userExists(request.auth.uid) && request.auth.uid == userId;
+    }
+
+    match /timelines/{userId}/posts {
+			allow read: if userExists(request.auth.uid) && request.auth.uid == userId;
+    }
+    
+    match /timelines/{userId}/posts/{postId} {
+			allow read: if userExists(request.auth.uid) && request.auth.uid == userId; //&& isUuid(postId);
+    }
+
+    match /usernames/{username} {
+      allow get;
+      allow create: if userExists(request.auth.uid) && request.auth.uid != null && request.resource.data.uid == request.auth.uid && isValidUsername(username);
+    }
+    
+    match /users/{userId} {
+			allow read;
+      allow create: if request.auth.uid != null && request.resource.data.uid == request.auth.uid && isUsernameAvailable(request.resource.data.username);
+      allow update: if (request.auth.uid == userId && request.resource.data.uid == request.auth.uid && request.resource.data.username == resource.data.username) && userExists(request.auth.uid); //|| (request.auth.uid == userId && isUsernameAvailable(request.resource.data.username));      
+    }
+
+    match /users/{userId}/tokens/{tokenId} {
+			allow read: if request.auth.uid == userId;
+			allow write: if request.auth.uid == userId;
+    }    
+
+    // Stripe
+    match /customers/{uid} {
+      allow read: if request.auth.uid == uid;
+
+      match /checkout_sessions/{id} {
+        allow read, write: if request.auth.uid == uid;
+      }
+      match /subscriptions/{id} {
+        allow read: if request.auth.uid == uid;
+      }
+    }
+    match /products/{id} {
+      allow read: if true;
+
+      match /prices/{id} {
+        allow read: if true;
+      }
+
+      match /tax_rates/{id} {
+        allow read: if true;
+      }
+    }
+
+    function isFriendRequested(userId, friendId) {
+      return exists(/databases/$(database)/documents/friends/$(friendId)/requests/$(userId));
+    }
+
+    function isFriend(userId, friendId) {
+      return exists(/databases/$(database)/documents/friends/$(userId)/friends/$(friendId));
+    }
+    
+    function isValidUsername(username){
+      return username.matches('^([a-zA-Z0-9_.]){5,15}$');
+    }
+
+    function isUsernameAvailable(username){
+      return isValidUsername(username) && !exists(/databases/$(database)/documents/usernames/$(username));
+    }
+    
+    function userExists(uid) {
+      return exists(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function likeExists(userId, postId, senderId) {
+      return exists(/databases/$(database)/documents/posts/$(userId)/posts/$(postId)/likes/$(senderId));
+    }
+
+    function dislikeExists(userId, postId, senderId) {
+      return exists(/databases/$(database)/documents/posts/$(userId)/posts/$(postId)/dislikes/$(senderId));
+    }
+
+    function isUuid(uuid) {
+      return uuid.matches('^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$');
+      //return uuid.matches('^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$');
+    }
+  }
+}

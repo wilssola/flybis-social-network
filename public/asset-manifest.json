@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ded27cfd.chunk.css",
+    "main.js": "/static/js/main.7a8b3b8a.chunk.js",
+    "main.js.map": "/static/js/main.7a8b3b8a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.84a29ec8.js",
+    "runtime-main.js.map": "/static/js/runtime-main.84a29ec8.js.map",
+    "static/js/2.a404fedd.chunk.js": "/static/js/2.a404fedd.chunk.js",
+    "static/js/2.a404fedd.chunk.js.map": "/static/js/2.a404fedd.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.11d39542e94a27420a6045b3ed95f06b.js": "/precache-manifest.11d39542e94a27420a6045b3ed95f06b.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.ded27cfd.chunk.css.map": "/static/css/main.ded27cfd.chunk.css.map",
+    "static/js/2.a404fedd.chunk.js.LICENSE.txt": "/static/js/2.a404fedd.chunk.js.LICENSE.txt",
+    "static/media/flybis-logo-256x68.png": "/static/media/flybis-logo-256x68.8eb9bebb.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.84a29ec8.js",
+    "static/js/2.a404fedd.chunk.js",
+    "static/css/main.ded27cfd.chunk.css",
+    "static/js/main.7a8b3b8a.chunk.js"
+  ]
+}

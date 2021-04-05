@@ -1,0 +1,25 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - before: >
+      source ~/.bashrc
+    init: |
+      echo "Wait for the installation"
+      yes | sdk i java 8.0.232-open
+      sdk i kotlin
+      sdkmanager --update
+      yes | sdkmanager --licenses
+      flutter pub get
+      flutter run -d web-server --no-resident
+    command: >
+      echo "Ready!"
+ports:
+  - port: 8080
+    onOpen: open-preview
+  - port: 5037
+    onOpen: ignore
+vscode:
+  extensions:
+    - Dart-Code.flutter@3.8.1:cytqQi/+kpu802ZOaJwayw==
+    - Dart-Code.dart-code@3.8.1:+5Rq24Mq46eJa5w39WY0bA==

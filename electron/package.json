@@ -1,0 +1,56 @@
+{
+  "name": "flybis",
+  "version": "1.0.0",
+  "description": "A Social Network",
+  "author": {
+    "name": "TecWolf",
+    "email": "email@tecwolf.com.br",
+    "url": "https://tecwolf.com.br"
+  },
+  "license": "UNLICENSED",
+  "main": "main.js",
+  "private": true,
+  "homepage": "https://flybis.tecwolf.com.br",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WolfTheZelda/FlybisElectron.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build": "electron-builder build --windows --publish never",
+    "deploy": "electron-builder build --windows --publish always",
+    "build-mac": "electron-builder build --mac --publish never",
+    "deploy-mac": "electron-builder build --mac --publish always",
+    "build-linux": "electron-builder build --linux --publish never",
+    "deploy-linux": "electron-builder build --linux --publish always",
+    "build-all": "electron-builder build -mwl --publish never",
+    "deploy-all": "electron-builder build -mwl --publish always"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.5",
+    "electron-push-receiver": "^2.1.3",
+    "electron-store": "^6.0.0",
+    "electron-updater": "^4.3.4",
+    "toastify-js": "^1.9.1",
+    "v8-compile-cache": "^2.1.1"
+  },
+  "devDependencies": {
+    "electron": "^9.4.4",
+    "electron-builder": "^22.8.0"
+  },
+  "build": {
+    "productName": "Flybis",
+    "appId": "com.tecwolf.flybis",
+    "copyright": "Copyright © 2020 ${author}",
+    "mac": {
+      "category": "public.app-category.social-networking"
+    },
+    "publish": {
+      "provider": "github",
+      "token": "f4b1184718acb8376f5fb39529608cb2a6a6415f"
+    },
+    "compression": "maximum"
+  }
+}

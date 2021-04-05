@@ -1,0 +1,112 @@
+{
+  "rulesFile": "database.rules.json",
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ]
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "appAssociation": "AUTO",
+    "rewrites": [{
+      "source": "/link/**",
+      "dynamicLinks": true
+    }, {
+      "source": "/app/**",
+      "destination": "/app/index.html"
+    }],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; img-src https: blob: data: 'self' https://firebasestorage.googleapis.com; media-src https: blob: data: 'self' https://firebasestorage.googleapis.com; script-src 'self' 'unsafe-eval' https://*.gstatic.com https://*.goadopt.io https://*.googlesyndication.com https://*.googletagmanager.com https://*.firebase.com https://*.firebaseio.com https://*.jsdelivr.net https://*.cloudflare.com https://unpkg.com https://*.googleadservices.com https://*.googletagservices.com https://*.google.com https://*.google.com.br; style-src 'self' 'unsafe-inline' https://*.jsdelivr.net; connect-src blob: 'self' https://*.sentry.io https://*.goadopt.io https://*.gstatic.com https://*.giphy.com https://*.googleapis.com https://*.cloudfunctions.net https://*.google-analytics.com https://*.googlesyndication.com https://*.cloudflare.com https://*.jsdelivr.net https://*.googletagmanager.com https://unpkg.com; frame-src 'self' https://*.doubleclick.net https://*.googlesyndication.com; child-src 'self' https://*.doubleclick.net https://*.googlesyndication.com;"
+          },
+          {
+            "key": "X-Webkit-CSP",
+            "value": "default-src 'none'"
+          },
+          {
+            "key": "X-Content-Security-Policy",
+            "value": "sandbox"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Feature-Policy",
+            "value": "autoplay 'self'; fullscreen 'self'; picture-in-picture 'self'; camera 'self'; microphone 'self'; geolocation 'self'; usb 'self'"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },          
+          {
+            "key": "Permissions-Policy",
+            "value": "autoplay=(self \"https://flybis.net\"), fullscreen=(self \"https://flybis.net\"), picture-in-picture=(self \"https://flybis.net\"), camera=(self \"https://flybis.net\"), microphone=(self \"https://flybis.net\"), geolocation=(self \"https://flybis.net\"), usb=(self \"https://flybis.net\")"
+          },
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains; preload"
+          },
+          {
+            "key": "Link",
+            "value": "<https://flybis.net/>; rel='canonical'"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "max-age=86400"
+          }
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "emulators": {
+    "functions": {
+      "port": 6000
+    },
+    "firestore": {
+      "host": "0.0.0.0",
+      "port": 8000
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 7000
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
