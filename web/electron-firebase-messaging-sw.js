@@ -68,12 +68,12 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, (_, payload) => {
     // Payload has no body, so consider it silent (and just consider the data portion).
     console.log(
       "No body use the key/value pairs in the payload data",
-      payload.data,
+      payload.data
     );
   }
 });
 
 // Start service.
 const senderId = "505131215378"; // FCM sender ID from FCM web admin under Settings -> Cloud Messaging.
-console.log("FCM Request Success");
 ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
+console.log("FCM Request Success");

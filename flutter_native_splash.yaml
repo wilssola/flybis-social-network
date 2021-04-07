@@ -1,4 +1,10 @@
 flutter_native_splash:
+    web: false
+    #android_disable_fullscreen: false
+    fullscreen: true
     image: "assets/images/flybis_splash.png"
-    color: "ffffff"
-    android_disable_fullscreen: false
+    #color: "#FAFAFA"
+    background_image: "assets/images/flybis_background.png"
+    image_dark: "assets/images/flybis_splash.png"
+    #color_dark: "#303030"
+    background_image_dark: "assets/images/flybis_background_dark.png"

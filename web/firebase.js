@@ -1,110 +1,92 @@
 console.log("firebase.js loaded");
 
-const domain = "flybis.net";
+function loadFirebase() {
+  const firebaseVersion = "7.16.1";
 
-const isDomain = location.hostname.indexOf(domain) >= 0;
-const isLocalHost = location.hostname.indexOf("localhost") >= 0;
-const isElectron = navigator.userAgent.toLowerCase().indexOf("electron") >= 0;
+  if (window.isDomain) {
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-app.js", false);
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-auth.js", true);
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-firestore.js", true);
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-functions.js", true);
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-storage.js", true);
+    loadJS(
+      "/__/firebase/" + firebaseVersion + "/firebase-performance.js",
+      true
+    );
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-database.js", true);
+    loadJS("/__/firebase/" + firebaseVersion + "/firebase-analytics.js", true);
+  }
 
-if (!isDomain && !isLocalHost && !isElectron) {
-  location.href = "https://" + domain + "/app/#" + window.location.pathname;
-}
-
-const firebaseVersion = "7.16.1";
-
-if (isDomain) {
-  document.write(
-    unescape(
-      '%3Cscript src="/__/firebase/' +
+  if (window.isLocalHost || window.isElectron) {
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-app.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-app.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-auth.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-auth.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-firestore.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-firestore.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-functions.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-functions.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-storage.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-storage.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-performance.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-performance.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-database.js"%3E %3C/script%3E' +
-        '%3Cscript src="/__/firebase/' +
+        "/firebase-database.js",
+      true
+    );
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
-        '/firebase-analytics.js"%3E %3C/script%3E'
-    )
-  );
-}
-
-if (isLocalHost || isElectron) {
-  document.write(
-    unescape(
-      '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-app.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-auth.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-firestore.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-functions.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-storage.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-performance.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-database.js"%3E %3C/script%3E' +
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-analytics.js"%3E %3C/script%3E'
-    )
-  );
-}
-
-if (!isElectron) {
-  if (isDomain) {
-    document.write(
-      unescape(
-        '%3Cscript src="/__/firebase/' +
-          firebaseVersion +
-          '/firebase-messaging.js"%3E %3C/script%3E'
-      )
+        "/firebase-analytics.js",
+      true
     );
   }
 
-  if (isLocalHost) {
-    document.write(
-      unescape(
-        '%3Cscript src="https://www.gstatic.com/firebasejs/' +
+  if (!window.isElectron) {
+    if (window.isDomain) {
+      loadJS(
+        "/__/firebase/" + firebaseVersion + "/firebase-messaging.js",
+        true
+      );
+    }
+
+    if (window.isLocalHost) {
+      loadJS(
+        "https://www.gstatic.com/firebasejs/" +
           firebaseVersion +
-          '/firebase-messaging.js"%3E %3C/script%3E'
-      )
-    );
+          "/firebase-messaging.js",
+        true
+      );
+    }
+  } else {
+    loadJS("./electron-firebase-messaging-sw.js", true);
   }
-} else {
-  document.write(
-    unescape(
-      '%3Cscript src="https://www.gstatic.com/firebasejs/' +
-        firebaseVersion +
-        '/firebase-messaging.js"%3E %3C/script%3E'
-    )
-  );
-  document.write(
-    unescape(
-      '%3Cscript src="./electron-firebase-messaging-sw.js"%3E %3C/script%3E'
-    )
-  );
 }
+
+loadFirebase();

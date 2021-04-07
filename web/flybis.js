@@ -1,20 +1,18 @@
 console.log("flybis.js loaded");
 
-// Set Firebase Configuration.
-const firebaseConfig = {
-  apiKey: "AIzaSyDVPjDNuRCFqq7UmbdNM0EOPqSC_pUgDMc",
-  authDomain: "flybis.firebaseapp.com",
-  databaseURL: "https://flybis.firebaseio.com",
-  projectId: "flybis",
-  storageBucket: "flybis.appspot.com",
-  messagingSenderId: "505131215378",
-  appId: "1:505131215378:web:e06f953492488ed38d06cb",
-  measurementId: "G-FCENZTTDYN",
-};
-
-initializeFirebase();
-
 function initializeFirebase() {
+  // Set Firebase Configuration.
+  const firebaseConfig = {
+    apiKey: "AIzaSyDVPjDNuRCFqq7UmbdNM0EOPqSC_pUgDMc",
+    authDomain: "flybis.firebaseapp.com",
+    databaseURL: "https://flybis.firebaseio.com",
+    projectId: "flybis",
+    storageBucket: "flybis.appspot.com",
+    messagingSenderId: "505131215378",
+    appId: "1:505131215378:web:e06f953492488ed38d06cb",
+    measurementId: "G-FCENZTTDYN",
+  };
+
   let authUser;
   let hasUser = false;
 
@@ -26,7 +24,7 @@ function initializeFirebase() {
   firebase.performance();
 
   // Use Firebase Messaging for Browsers.
-  if (!isElectron) {
+  if (!window.isElectron) {
     firebase
       .messaging()
       .usePublicVapidKey(
@@ -45,7 +43,7 @@ function initializeFirebase() {
             if (currentToken) {
               window.messagingToken = currentToken;
 
-              writeTokenFCM(window.messagingToken);
+              writeTokenFCM(authUser, window.messagingToken);
 
               console.log("FCM: " + currentToken);
             } else {
@@ -71,7 +69,7 @@ function initializeFirebase() {
           if (refreshedToken) {
             window.messagingToken = refreshedToken;
 
-            writeTokenFCM(window.messagingToken);
+            writeTokenFCM(authUser, window.messagingToken);
 
             console.log("FCM Refreshed: " + refreshedToken);
           } else {
@@ -109,7 +107,7 @@ function initializeFirebase() {
       hasUser = true;
       authUser = user;
 
-      writeTokenFCM(window.messagingToken);
+      writeTokenFCM(authUser, window.messagingToken);
 
       console.log("UID: " + user.uid);
     } else {
@@ -151,44 +149,44 @@ function initializeFirebase() {
   db.onerror = () => {
     console.log("Persistence dont enabled");
   };
+}
 
-  function writeTokenFCM(messagingToken) {
-    if (authUser && messagingToken != null) {
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(authUser.uid)
-        .collection("tokens")
-        .doc("fcm")
-        .get()
-        .then((doc) => {
-          let platformToken;
+function writeTokenFCM(user, messagingToken) {
+  if (user && messagingToken != null) {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .collection("tokens")
+      .doc("fcm")
+      .get()
+      .then((doc) => {
+        let platformToken;
 
-          if (!isElectron) {
-            platformToken = { webToken: messagingToken };
-          } else {
-            platformToken = { electronToken: messagingToken };
-          }
+        if (!window.isElectron) {
+          platformToken = { webToken: messagingToken };
+        } else {
+          platformToken = { electronToken: messagingToken };
+        }
 
-          if (doc.exists) {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(authUser.uid)
-              .collection("tokens")
-              .doc("fcm")
-              .update(platformToken);
-          } else {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(authUser.uid)
-              .collection("tokens")
-              .doc("fcm")
-              .set(platformToken);
-          }
-        });
-    }
+        if (doc.exists) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("tokens")
+            .doc("fcm")
+            .update(platformToken);
+        } else {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("tokens")
+            .doc("fcm")
+            .set(platformToken);
+        }
+      });
   }
 }
 
@@ -198,3 +196,5 @@ document.addEventListener("keydown", function (event) {
     event.preventDefault();
   }
 });
+
+initializeFirebase();

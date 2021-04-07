@@ -8,17 +8,15 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build-web-electron": "flutter build web --release && terser build/web/head.js -o build/web/head.js && terser build/web/dark.js -o build/web/dark.js && terser build/web/firebase.js -o build/web/firebase.js && terser build/web/flybis.js -o build/web/flybis.js && terser build/web/public/firebase-messaging-sw.js -o build/web/public/firebase-messaging-sw.js && terser build/web/electron-firebase-messaging-sw.js -o build/web/electron-firebase-messaging-sw.js && terser build/web/main.dart.js -o build/web/main.dart.js && terser build/web/flutter_service_worker.js -o build/web/flutter_service_worker.js && terser build/web/worker.js -o build/web/worker.js && terser build/web/adsense.js -o build/web/adsense.js && cd react && npm run build && cd ../ && npm run start",
-    "deploy-web": "npm run build-web-electron && firebase deploy --only hosting",
+    "start": "npm link",
+    "deploy": "flybis web-build && firebase deploy",
+    "deploy-web": "flybis web-build && firebase deploy --only hosting",
     "deploy-functions": "firebase deploy --only functions",
-    "deploy-firebase": "npm run deploy-web && npm run deploy-functions",
-    "run-cache": "flutter run --profile --cache-sksl --purge-persistent-cache",
-    "build-apk": "flutter build apk --release --tree-shake-icons --shrink --obfuscate --split-per-abi --split-debug-info=./.debug_info/android/",
-    "build-appbundle": "flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --release --tree-shake-icons --shrink --obfuscate --split-debug-info=./.debug_info/android/",
-    "generate-icons": "flutter pub run flutter_launcher_icons:main",
-    "generate-splash": "flutter pub run flutter_native_splash:create",
+    "android-run-cache": "flutter run --profile --cache-sksl --purge-persistent-cache",
+    "android-build-apk": "flutter build apk --release --tree-shake-icons --shrink --obfuscate --split-per-abi --split-debug-info=./.debug_info/android/",
+    "android-build-appbundle": "flutter build appbundle --target-platform android-arm, android-arm64, android-x64 --release --tree-shake-icons --shrink --obfuscate --split-debug-info=./.debug_info/android/",
+    "flutter-launcher-icons": "flutter pub run flutter_launcher_icons:main",
+    "flutter-native-splash": "flutter pub run flutter_native_splash:create",
     "import-sorter": "flutter pub run import_sorter:main"
   },
   "repository": {
@@ -32,9 +30,12 @@
   },
   "homepage": "https://github.com/WolfTheZelda/Flybis",
   "dependencies": {
-    "@pobedit/sri": "^0.0.1",
+    "commander": "^7.2.0",
     "copy-dir": "^1.3.0",
-    "replace-in-file": "^6.2.0",
+    "fs-extra": "^9.1.0",
     "terser": "^5.3.3"
+  },
+  "bin": {
+    "flybis": "main.js"
   }
 }

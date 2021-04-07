@@ -1,1 +1,1 @@
-(adsbygoogle=window.adsbygoogle||[]).push({});
+undefined
