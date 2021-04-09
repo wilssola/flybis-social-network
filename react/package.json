@@ -20,6 +20,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-brunch": "brunch build -p",
+    "build-browserify": "browserify ./index.js -g [ envify --NODE_ENV production ] -g uglifyify | terser --compress --mangle > ./bundle.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,5 +39,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "envify": "^4.1.0",
+    "terser": "^5.6.1",
+    "terser-brunch": "^4.0.0",
+    "uglifyify": "^5.0.2"
   }
 }

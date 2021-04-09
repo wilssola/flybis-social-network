@@ -8,7 +8,6 @@ function loadJS(src, async) {
   s0.parentNode.insertBefore(script, s0);
 }
 
-loadJS("./head.js", false);
 loadJS("./dark.js", false);
 loadJS("./firebase.js", false);
 

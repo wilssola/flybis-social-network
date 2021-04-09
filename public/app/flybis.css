@@ -1,13 +1,18 @@
-* {
-    /*box-shadow: none !important;*/
-}
-
-html, html a {
+html,
+html a {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
-p, flt-glass-pane {
+p,
+flt-glass-pane {
     image-rendering: pixelated;
+}
+
+/* Detect mobile device screen */
+@media only screen and (hover: none) and (pointer: coarse) {
+    * {
+        box-shadow: none !important;
+    }
 }

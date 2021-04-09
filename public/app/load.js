@@ -1,1 +1,1 @@
-undefined
+function loadJS(e,t){let a=document.createElement("script");a.async=t,a.src=e,a.type="text/javascript";let o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(a,o)}loadJS("./dark.js",!1),loadJS("./firebase.js",!1),window.onload=function(){loadJS("./flybis.js",!0),loadJS("./main.dart.js",!0),loadJS("./worker.js",!0)};

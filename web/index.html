@@ -195,31 +195,34 @@
     />
     <link rel="manifest" href="https://flybis.net/manifest.json" />
 
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "Organization",
-        "name": "Flybis",
-        "url": "https://flybis.net",
-        "address": "Brazil",
-        "sameAs": [
-          "https://facebook.com/flybis.net",
-          "https://instagram.com/flybisnet"
-          "https://twitter.com/flybisnet"
-        ]
-      }
-    </script>
-
     <script
+      async
+      src="https://flybis.net/app/head.js"
+      type="application/javascript"
+    ></script>
+    <script
+      async
+      src="https://flybis.net/app/schema.js"
+      type="application/javascript"
+    ></script>
+    <script
+      async
+      src="https://flybis.net/app/dark.js"
+      type="application/javascript"
+    ></script>
+
+    <!--<script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       data-ad-client="ca-pub-5982775373849971"
-    ></script>
+    ></script>-->
 
+    <link rel="preload" href="./flybis.css" as="style" />
+    <link rel="preload" href="./splash/style.css" as="style" />
     <link rel="stylesheet" href="./flybis.css" />
     <link rel="stylesheet" href="./splash/style.css" />
   </head>
-  <body id="app">
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     <script async src="./load.js" type="application/javascript"></script>

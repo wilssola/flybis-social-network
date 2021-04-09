@@ -12,119 +12,176 @@ program.version(package.version);
 program
   .command("web-build")
   .description("Compilar builds Web.")
-  .action(() => {
-    exec("flutter build web --release", (error, stdout, stderr) => {
-      console.log("📦 FLUTTER BUILD");
+  .action(async () => {
+    exec("flybis icon-generate", (error, stdout, stderr) => {
+      console.log("📦 FLUTTER ICON GENERATE");
       console.log(stdout);
 
-      exec("cd react && npm run build", (error, stdout, stderr) => {
-        console.log("📦 REACT BUILD");
-        console.log(stdout);
-
-        exec("flybis web-minify", (error, stdout, stderr) => {
-          console.log("📦 WEB MINIFY");
+      exec(
+        "flutter build web --release --web-renderer auto",
+        (error, stdout, stderr) => {
+          console.log("📦 FLUTTER BUILD");
           console.log(stdout);
 
-          exec("flybis web-copy", (error, stdout, stderr) => {
-            console.log("📦 WEB COPY");
+          exec("cd react && npm run build", (error, stdout, stderr) => {
+            console.log("📦 REACT BUILD");
             console.log(stdout);
+
+            exec("flybis web-minify", (error, stdout, stderr) => {
+              console.log("📦 WEB MINIFY");
+              console.log(stdout);
+
+              exec("flybis web-minify", (error, stdout, stderr) => {
+                console.log("📦 WEB MINIFY CONFIRM");
+                console.log(stdout);
+
+                exec("flybis web-copy", (error, stdout, stderr) => {
+                  console.log("📦 WEB COPY");
+                  console.log(stdout);
+                });
+              });
+            });
           });
-        });
-      });
+        }
+      );
     });
   });
 
 program
   .command("web-minify")
   .description("Minimizar scripts da build Web.")
-  .action(() => {
+  .action(async () => {
     const terser = require("terser");
 
-    const files = [
-      "/build/web/adsense.js",
-      "/build/web/dark.js",
-      "/build/web/electron-firebase-messaging-sw.js",
-      "/build/web/public/firebase-messaging-sw.js",
-      "/build/web/firebase.js",
-      "/build/web/flybis.js",
-      "/build/web/head.js",
-      "/build/web/load.js",
-      "/build/web/worker.js",
-      "/build/web/main.dart.js",
-      "/build/web/flutter_service_worker.js",
-    ];
+    const folder = "/build/web/";
 
-    files.forEach(async (file) => {
-      let location = path.join(__dirname, file);
+    fs.readdir(path.join(__dirname, folder), async (error, files) => {
+      if (error) {
+        return console.log("Unable to scan directory: " + error);
+      }
 
-      let original = await fs.promises.readFile(location, "utf-8");
+      files.forEach(async (file) => {
+        if (path.extname(file) == ".js") {
+          let location = path.join(__dirname, folder, file);
 
-      console.log({ original });
+          let original = await fs.promises.readFile(location, "utf-8");
 
-      let minify = await terser.minify(original, {
-        sourceMap: true,
-        mangle: true,
-        compress: true,
-        toplevel: true,
-        ie8: true,
-      }).code;
+          await terser
+            .minify(original, {
+              compress: true,
+              ie8: true,
+              keep_classnames: path.basename(file).includes("main")
+                ? false
+                : true,
+              keep_fnames: path.basename(file).includes("main") ? false : true,
+              mangle: true,
+              module: true,
+            })
+            .then(async (res) => {
+              await fs.promises.writeFile(location, res.code);
 
-      console.log({ minify });
-
-      await fs.promises.writeFile(location, minify);
-
-      console.log({ location });
+              console.log({
+                original: `${original.length} Characters`,
+                minify: `${res.code.length} Characters`,
+                location,
+              });
+            });
+        }
+      });
     });
   });
 
 program
   .command("web-copy")
   .description("Copiar build Web para os diretórios corretos.")
-  .action(() => {
+  .action(async () => {
     const fsExtra = require("fs-extra");
     const copyDir = require("copy-dir");
 
+    const emptys = ["/public", "/electron/app"];
+
     const paths = [
+      {
+        input: "/react/build",
+        output: "/public",
+      },
+      {
+        input: "/build/web/public",
+        output: "/public",
+      },
       {
         input: "/build/web",
         output: "/public/app",
       },
       {
         input: "/build/web/public",
-        output: "/public",
-      },
-      {
-        input: "/react/build",
-        output: "/public",
+        output: "/electron/app",
       },
       {
         input: "/build/web",
         output: "/electron/app",
       },
-      {
-        input: "/build/web/public",
-        output: "/electron/app",
-      },
     ];
 
-    paths.forEach((directory) => {
-      fsExtra.emptyDir(path.join(__dirname, directory.output)).then(() => {
-        copyDir.sync(
-          path.join(__dirname, directory.input),
-          path.join(__dirname, directory.output),
-          {
-            utimes: true, // Keep add time and modify time.
-            mode: true, // Keep file mode.
-            cover: true, // Cover file when exists, default is true.
-          }
-        );
-
-        console.log({
-          input: path.join(__dirname, directory.input),
-          output: path.join(__dirname, directory.output),
+    emptys.forEach((empty) => {
+      fsExtra.emptyDir(path.join(__dirname, empty)).then(() => {
+        paths.forEach((directory) => {
+          copy(directory);
         });
       });
+
+      console.log({ empty });
     });
+
+    function copy(directory) {
+      copyDir.sync(
+        path.join(__dirname, directory.input),
+        path.join(__dirname, directory.output),
+        {
+          utimes: true, // Keep add time and modify time.
+          mode: true, // Keep file mode.
+          cover: true, // Cover file when exists, default is true.
+        }
+      );
+
+      console.log({
+        input: path.join(__dirname, directory.input),
+        output: path.join(__dirname, directory.output),
+      });
+    }
+  });
+
+program
+  .command("icon-generate")
+  .description("Gerar ícones para todas as plataformas.")
+  .action(async () => {
+    const copyDir = require("copy-dir");
+
+    copyDir.sync(
+      path.join(__dirname, "/assets/icons"),
+      path.join(__dirname, "/electron/assets/icons"),
+      {
+        utimes: true, // Keep add time and modify time.
+        mode: true, // Keep file mode.
+        cover: true, // Cover file when exists, default is true.
+      }
+    );
+
+    exec(
+      "flutter pub run flutter_launcher_icons:main",
+      (error, stdout, stderr) => {
+        console.log("📦 FLUTTER LAUNCHER ICONS");
+        console.log(stdout);
+
+        exec(
+          "flutter pub run flutter_native_splash:create",
+          (error, stdout, stderr) => {
+            console.log("📦 FLUTTER NATIVE SPLASH");
+            console.log(stdout);
+          }
+        );
+      }
+    );
   });
 
 program.parse(process.argv);

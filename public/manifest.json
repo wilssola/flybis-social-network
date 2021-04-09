@@ -7,14 +7,22 @@
   "theme_color": "#FFFFFF",
   "description": "The New Dynamic Social Network",
   "orientation": "portrait-primary",
-  "prefer_related_applications": false,
+  "prefer_related_applications": true,
+  "related_applications": [{
+    "platform": "play",
+    "url": "https://play.google.com/store/apps/details?id=com.tecwolf.flybis",
+    "id": "com.tecwolf.flybis"
+  }, {
+    "platform": "itunes",
+    "url": "https://itunes.apple.com/app/flybis/"
+  }],
   "icons": [{
-      "src": "https://flybis.net/assets/flybis-icon-512x512.png",
+      "src": "https://flybis.net/assets/flybis_icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://flybis.net/assets/flybis-icon-512x512.png",
+      "src": "https://flybis.net/assets/flybis_icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }

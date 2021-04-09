@@ -1,5 +1,14 @@
 console.log("flybis.js loaded");
 
+// Keyboard navigation with TAB.
+document.addEventListener("keydown", function (event) {
+  if (event.code == "Tab") {
+    event.preventDefault();
+  }
+});
+
+initializeFirebase();
+
 function initializeFirebase() {
   // Set Firebase Configuration.
   const firebaseConfig = {
@@ -189,12 +198,3 @@ function writeTokenFCM(user, messagingToken) {
       });
   }
 }
-
-// Keyboard navigation with TAB.
-document.addEventListener("keydown", function (event) {
-  if (event.code == "Tab") {
-    event.preventDefault();
-  }
-});
-
-initializeFirebase();

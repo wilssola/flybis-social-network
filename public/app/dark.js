@@ -1,1 +1,1 @@
-undefined
+!function darkMode(){window.matchMedia("(prefers-color-scheme: dark)").matches&&"false"!=localStorage.getItem("flutter.darkMode")&&(document.getElementsByTagName("body")[0].style.backgroundColor="#303030")}();

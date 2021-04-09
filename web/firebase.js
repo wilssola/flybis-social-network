@@ -1,7 +1,9 @@
 console.log("firebase.js loaded");
 
+loadFirebase();
+
 function loadFirebase() {
-  const firebaseVersion = "7.16.1";
+  const firebaseVersion = "7.18.0";
 
   if (window.isDomain) {
     loadJS("/__/firebase/" + firebaseVersion + "/firebase-app.js", false);
@@ -22,7 +24,7 @@ function loadFirebase() {
       "https://www.gstatic.com/firebasejs/" +
         firebaseVersion +
         "/firebase-app.js",
-      true
+      false
     );
     loadJS(
       "https://www.gstatic.com/firebasejs/" +
@@ -85,8 +87,13 @@ function loadFirebase() {
       );
     }
   } else {
+    loadJS(
+      "https://www.gstatic.com/firebasejs/" +
+        firebaseVersion +
+        "/firebase-messaging.js",
+      true
+    );
+
     loadJS("./electron-firebase-messaging-sw.js", true);
   }
 }
-
-loadFirebase();

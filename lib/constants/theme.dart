@@ -33,12 +33,12 @@ final ThemeData darkTheme = ThemeData(
 
 // Pages
 final List<Color> pageColors = [
-  pages[0].color,
-  pages[1].color,
-  pages[2].color,
-  pages[3].color,
-  pages[4].color,
-  pages[5].color,
+  Colors.red,
+  Colors.green,
+  Colors.blue,
+  Colors.cyan,
+  Colors.pink,
+  Colors.amber, //Colors.yellow[700]
 ];
 
 final List<PageModel> pages = [
@@ -47,41 +47,41 @@ final List<PageModel> pages = [
     icon: Icon(Icons.home),
     string: 'timeline'.tr,
     text: Text('timeline'.tr),
-    color: Colors.red,
+    color: pageColors[0],
   ),
   PageModel(
     iconData: Icons.notifications,
     icon: Icon(Icons.notifications),
     string: 'bell'.tr,
     text: Text('bell'.tr),
-    color: Colors.green,
+    color: pageColors[1],
   ),
   PageModel(
     iconData: Icons.camera,
     icon: Icon(Icons.camera),
     string: 'camera'.tr,
     text: Text('camera'.tr),
-    color: Colors.blue,
+    color: pageColors[2],
   ),
   PageModel(
     iconData: Icons.account_circle,
     icon: Icon(Icons.account_circle),
     string: 'profile'.tr,
     text: Text('profile'.tr),
-    color: Colors.cyan,
+    color: pageColors[3],
   ),
   PageModel(
     iconData: Icons.mail,
     icon: Icon(Icons.mail),
     string: 'chat'.tr,
     text: Text('chat'.tr),
-    color: Colors.pink,
+    color: pageColors[4],
   ),
   PageModel(
     iconData: Icons.search,
     icon: Icon(Icons.search),
     string: 'search'.tr,
     text: Text('search'.tr),
-    color: Colors.yellow[700],
+    color: pageColors[5],
   ),
 ];
