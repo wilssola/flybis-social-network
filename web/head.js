@@ -5,7 +5,7 @@ window.isLocalHost = location.hostname.indexOf("localhost") >= 0;
 window.isElectron = navigator.userAgent.toLowerCase().indexOf("electron") >= 0;
 window.flutterWebRenderer = !window.isElectron ? "html" : "canvaskit";
 
-redirect();
+//redirect();
 
 function redirect() {
   // Redirect to correct domain.

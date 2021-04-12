@@ -7,6 +7,7 @@ const {
   shell,
   ipcMain,
   ipcRenderer,
+  globalShortcut,
   nativeImage,
   BrowserWindow,
   Tray,
@@ -58,7 +59,7 @@ setTimeout(() => {
 
 // Make singleton instance.
 app.requestSingleInstanceLock();
-app.on('second-instance', (event, argv, cwd) => {
+app.on("second-instance", (event, argv, cwd) => {
   console.log(event, argv, cwd);
   app.quit();
 });
@@ -92,7 +93,11 @@ app.on("activate", () => {
 });
 
 function createTray() {
-  icon = new Tray(nativeImage.createFromPath(path.join(__dirname, "assets", "icons", "flybis_icon_tray.png")));
+  icon = new Tray(
+    nativeImage.createFromPath(
+      path.join(__dirname, "assets", "icons", "flybis_icon_tray.png")
+    )
+  );
 
   icon.setTitle("Flybis");
   icon.setToolTip("Flybis");
@@ -159,7 +164,9 @@ function createTray() {
 }
 
 function createWindow() {
-  const icon = nativeImage.createFromPath(path.join(__dirname, "assets", "icons", "flybis_icon.png"));
+  const icon = nativeImage.createFromPath(
+    path.join(__dirname, "assets", "icons", "flybis_icon.png")
+  );
 
   app.setAppUserModelId("com.tecwolf.flybis");
 
@@ -210,7 +217,7 @@ function createWindow() {
 
   // Load the app on Web.
   //window.loadURL("https://flybis.web.app/app", {
-    //extraHeaders: "Content-Security-Policy: default-src 'self'",
+  //extraHeaders: "Content-Security-Policy: default-src 'self'",
   //});
 
   window.loadFile(path.join(__dirname, "index.html"), {
@@ -234,5 +241,17 @@ function createWindow() {
       event.preventDefault();
       window.hide();
     }
+  });
+
+  const reload = () => {
+    window.reload();
+  };
+
+  globalShortcut.register("F5", reload);
+  globalShortcut.register("CommandOrControl+R", reload);
+  // Here is the fix bug #3778, if you know alternative ways, please write them.
+  window.addEventListener("beforeunload", () => {
+    globalShortcut.unregister("F5", reload);
+    globalShortcut.unregister("CommandOrControl+R", reload);
   });
 }

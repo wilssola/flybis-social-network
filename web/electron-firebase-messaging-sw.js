@@ -1,79 +1,82 @@
-console.log("electron-renderer.js loaded");
-
 // This file is required by the index.html file and will be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
+console.log("electron-firebase-messaging-sw.js loaded");
 
-const { ipcRenderer } = require("electron");
+loadMessaging();
 
-const {
-  START_NOTIFICATION_SERVICE,
-  NOTIFICATION_SERVICE_STARTED,
-  NOTIFICATION_SERVICE_ERROR,
-  NOTIFICATION_RECEIVED,
-  TOKEN_UPDATED,
-} = require("electron-push-receiver/src/constants");
+function loadMessaging() {
+  const { ipcRenderer } = require("electron");
 
-const Toastify = require("toastify-js");
+  const {
+    START_NOTIFICATION_SERVICE,
+    NOTIFICATION_SERVICE_STARTED,
+    NOTIFICATION_SERVICE_ERROR,
+    NOTIFICATION_RECEIVED,
+    TOKEN_UPDATED,
+  } = require("electron-push-receiver/src/constants");
 
-// Listen for service successfully started.
-ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
-  window.messagingToken = token;
+  const Toastify = require("toastify-js");
 
-  console.log("FCM: " + token);
-});
+  // Listen for service successfully started.
+  ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
+    window.messagingToken = token;
 
-// Handle notification errors.
-ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
-  console.log("FCM Request Error", error);
-});
+    console.log("FCM: " + token);
+  });
 
-// Send FCM token to backend.
-ipcRenderer.on(TOKEN_UPDATED, (_, refreshedToken) => {
-  window.messagingToken = refreshedToken;
+  // Handle notification errors.
+  ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
+    console.log("FCM Request Error", error);
+  });
 
-  console.log("FCM Refreshed: " + refreshedToken);
-});
+  // Send FCM token to backend.
+  ipcRenderer.on(TOKEN_UPDATED, (_, refreshedToken) => {
+    window.messagingToken = refreshedToken;
 
-// Display notification.
-ipcRenderer.on(NOTIFICATION_RECEIVED, (_, payload) => {
-  // Check to see if payload contains a body string, if it doesn't consider it a silent push.ssss
-  if (payload.notification.body) {
-    // Payload has a body, so show it to the user.
-    console.log("Message Received", payload);
+    console.log("FCM Refreshed: " + refreshedToken);
+  });
 
-    let notification = new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      image: payload.notification.image,
-      icon: payload.notification.icon,
-    });
+  // Display notification.
+  ipcRenderer.on(NOTIFICATION_RECEIVED, (_, payload) => {
+    // Check to see if payload contains a body string, if it doesn't consider it a silent push.ssss
+    if (payload.notification.body) {
+      // Payload has a body, so show it to the user.
+      console.log("Message Received", payload);
 
-    notification.onclick = () => {
-      console.log("Notification Clicked");
+      let notification = new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        image: payload.notification.image,
+        icon: payload.notification.icon,
+      });
 
-      ipcRenderer.send("notification_clicked");
-    };
+      notification.onclick = () => {
+        console.log("Notification Clicked");
 
-    Toastify({
-      avatar: "",
-      text: payload.notification.body,
-      duration: 5000,
-      close: true,
-      gravity: "bottom",
-      position: "left",
-      backgroundColor: "black",
-      stopOnFocus: true,
-      onClick: () => {},
-    }).showToast();
-  } else {
-    // Payload has no body, so consider it silent (and just consider the data portion).
-    console.log(
-      "No body use the key/value pairs in the payload data",
-      payload.data
-    );
-  }
-});
+        ipcRenderer.send("notification_clicked");
+      };
 
-// Start service.
-const senderId = "505131215378"; // FCM sender ID from FCM web admin under Settings -> Cloud Messaging.
-ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
-console.log("FCM Request Success");
+      Toastify({
+        avatar: "",
+        text: payload.notification.body,
+        duration: 5000,
+        close: true,
+        gravity: "bottom",
+        position: "left",
+        backgroundColor: "black",
+        stopOnFocus: true,
+        onClick: () => {},
+      }).showToast();
+    } else {
+      // Payload has no body, so consider it silent (and just consider the data portion).
+      console.log(
+        "No body use the key/value pairs in the payload data",
+        payload.data
+      );
+    }
+  });
+
+  // Start service.
+  const senderId = "505131215378"; // FCM sender ID from FCM web admin under Settings -> Cloud Messaging.
+  ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
+  console.log("FCM Request Success");
+}

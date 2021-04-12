@@ -129,3 +129,8 @@ export const onCreateChat = functions.firestore
 export const onCreateMessage = functions.firestore
   .document(messagesRef)
   .onCreate(flybisChat.createMessageEvent);
+
+import { app } from "./app";
+
+// Export redirect function
+export const onRequestApp = functions.https.onRequest(app);

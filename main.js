@@ -31,14 +31,9 @@ program
               console.log("📦 WEB MINIFY");
               console.log(stdout);
 
-              exec("flybis web-minify", (error, stdout, stderr) => {
-                console.log("📦 WEB MINIFY CONFIRM");
+              exec("flybis web-copy", (error, stdout, stderr) => {
+                console.log("📦 WEB COPY");
                 console.log(stdout);
-
-                exec("flybis web-copy", (error, stdout, stderr) => {
-                  console.log("📦 WEB COPY");
-                  console.log(stdout);
-                });
               });
             });
           });
@@ -50,43 +45,77 @@ program
 program
   .command("web-minify")
   .description("Minimizar scripts da build Web.")
-  .action(async () => {
+  .action(() => {
     const terser = require("terser");
+    const sri = require("sri-calc");
 
     const folder = "/build/web/";
+    const sriJson = path.join(__dirname, "/web/sri.json");
 
-    fs.readdir(path.join(__dirname, folder), async (error, files) => {
-      if (error) {
-        return console.log("Unable to scan directory: " + error);
-      }
-
-      files.forEach(async (file) => {
-        if (path.extname(file) == ".js") {
-          let location = path.join(__dirname, folder, file);
-
-          let original = await fs.promises.readFile(location, "utf-8");
-
-          await terser
-            .minify(original, {
-              compress: true,
-              ie8: true,
-              keep_classnames: path.basename(file).includes("main")
-                ? false
-                : true,
-              keep_fnames: path.basename(file).includes("main") ? false : true,
-              mangle: true,
-              module: true,
-            })
-            .then(async (res) => {
-              await fs.promises.writeFile(location, res.code);
-
-              console.log({
-                original: `${original.length} Characters`,
-                minify: `${res.code.length} Characters`,
-                location,
-              });
-            });
+    fs.writeFile(sriJson, '{"sri": []}', "utf-8", (error) => {
+      fs.readdir(path.join(__dirname, folder), (error, files) => {
+        if (error) {
+          return console.log("Unable to scan directory: " + error);
         }
+
+        files.forEach(async (file) => {
+          if (path.extname(file) == ".js") {
+            let location = path.join(__dirname, folder, file);
+
+            fs.promises.readFile(location, "utf-8").then((original) => {
+              terser
+                .minify(original, {
+                  compress: true,
+                  ie8: true,
+                  keep_classnames: path.basename(file).includes("main")
+                    ? false
+                    : true,
+                  keep_fnames: path.basename(file).includes("main")
+                    ? false
+                    : true,
+                  mangle: true,
+                  module: true,
+                })
+                .then((result) => {
+                  fs.writeFile(location, result.code, (error) => {});
+
+                  console.log({
+                    original: `${original.length} Characters`,
+                    minify: `${result.code.length} Characters`,
+                    location,
+                  });
+
+                  if (!path.basename(file).includes("part")) {
+                    fs.promises.readFile(sriJson, "utf-8").then((oldJson) => {
+                      let object = JSON.parse(oldJson);
+
+                      console.log({ oldJson, object });
+
+                      sri.hash(location, (error, hash) => {
+                        if (error) {
+                          throw error;
+                        }
+
+                        let file = path.basename(location);
+
+                        console.log({ file, hash });
+
+                        object.sri.push({ file, hash });
+
+                        console.log(object.sri);
+
+                        let newJson = JSON.stringify(object);
+
+                        console.log({ newJson, object });
+
+                        fs.writeFile(sriJson, newJson, "utf-8", (error) => {});
+                      });
+                    });
+                  }
+                });
+            });
+          }
+        });
       });
     });
   });

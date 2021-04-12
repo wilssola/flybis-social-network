@@ -48,6 +48,8 @@ class _VideoWidgetState extends State<VideoWidget> {
   BetterPlayerDataSource betterPlayerDataSource;
   BetterPlayerController _betterPlayerController;
 
+  html.VideoElement _videoElement = html.VideoElement();
+
   final Key _playerKey = GlobalKey();
 
   final bool isAndroidOrIos = !kIsWeb &&
@@ -172,15 +174,12 @@ class _VideoWidgetState extends State<VideoWidget> {
   Widget htmlPlayer() {
     final String hashCode = widget.source.hashCode.toString();
 
-    html.VideoElement iFrameWidgets;
-
-    iFrameWidgets = html.VideoElement();
-    iFrameWidgets.src = widget.source;
-    iFrameWidgets.controls = true;
+    _videoElement.src = widget.source;
+    _videoElement.controls = true;
 
     ui.platformViewRegistry.registerViewFactory(
       'videoElement_$hashCode',
-      (int viewId) => iFrameWidgets,
+      (int viewId) => _videoElement,
     );
 
     return HtmlElementView(
@@ -209,12 +208,14 @@ class _VideoWidgetState extends State<VideoWidget> {
           if (isAndroidOrIos && _betterPlayerController != null) {
             _betterPlayerController.pause();
           } else if (_chewieController != null) {
+            _videoElement.pause();
             _chewieController.pause();
           }
         } else {
           if (isAndroidOrIos && _betterPlayerController != null) {
             _betterPlayerController.play();
           } else if (_chewieController != null) {
+            _videoElement.play();
             _chewieController.play();
           }
         }
@@ -245,12 +246,12 @@ class _VideoWidgetState extends State<VideoWidget> {
                     key: _playerKey,
                     controller: _betterPlayerController,
                   )
-                : kIsWeb
-                    ? htmlPlayer()
-                    : Chewie(
-                        key: _playerKey,
-                        controller: _chewieController,
-                      ),
+                //: kIsWeb
+                //? htmlPlayer()
+                : Chewie(
+                    key: _playerKey,
+                    controller: _chewieController,
+                  ),
           ),
         ),
       ),

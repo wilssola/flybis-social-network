@@ -93,12 +93,17 @@ void initCrashlytics() {
       firebase_crashlytics.FirebaseCrashlytics.instance.recordFlutterError;
 }
 
-Future<void> initSentry(void runApp) async {
-  await SentryFlutter.init(
-    (SentryFlutterOptions options) => options.dsn =
-        'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368',
-    appRunner: () => runApp,
-  );
+Future<void> initSentry(Function runApp) async {
+  try {
+    await SentryFlutter.init(
+      (SentryFlutterOptions options) => options.dsn =
+          'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368',
+      appRunner: runApp,
+    );
+  } catch (error) {
+    logger.e(error);
+    runApp();
+  }
 }
 
 Future<InitializationStatus> initGoogleMobileAds() {
@@ -128,7 +133,7 @@ void main() async {
 
   MessagingService().initialize();
 
-  await initSentry(runApp(flutter_phoenix.Phoenix(child: Main())));
+  await initSentry(() => runApp(flutter_phoenix.Phoenix(child: Main())));
 }
 
 class Main extends StatefulWidget {

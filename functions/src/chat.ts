@@ -72,8 +72,8 @@ export async function createMessageEvent(
       flybisChatStatus.chatKey
     );
 
-    for (var i = 0; i < flybisChatStatus.chatUsers.length; i++) {
-      if (flybisChatStatus.chatUsers[i] != flybisChatMessage.userId) {
+    for (let i = 0; i < flybisChatStatus.chatUsers.length; i++) {
+      if (flybisChatStatus.chatUsers[i] !== flybisChatMessage.userId) {
         const flybisBell = {
           ref: ref,
           senderId: flybisChatMessage.userId,

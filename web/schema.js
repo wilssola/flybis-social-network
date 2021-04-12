@@ -1,3 +1,5 @@
+structuredData.init();
+
 var structuredData = {
   schema: {
     corporation: {
@@ -33,5 +35,3 @@ var structuredData = {
     (d.head || d.body).appendChild(o);
   },
 };
-
-structuredData.init();
