@@ -12,7 +12,7 @@ const baseUrl = "https://flybis.net/";
 
 app.use(helmet());
 
-// Redirect middleware
+// Redirect middleware.
 app.use((req, res, next) => {
   if (!domains.includes(req.headers.host)) {
     console.log("Redirecting");

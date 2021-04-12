@@ -1,5 +1,4 @@
 darkMode();
-
 function darkMode() {
   if (
     window.matchMedia("(prefers-color-scheme: dark)").matches &&

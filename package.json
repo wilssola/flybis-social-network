@@ -33,7 +33,6 @@
     "commander": "^7.2.0",
     "copy-dir": "^1.3.0",
     "fs-extra": "^9.1.0",
-    "sri-calc": "^1.0.9",
     "terser": "^5.3.3"
   },
   "bin": {

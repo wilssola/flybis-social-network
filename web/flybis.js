@@ -1,14 +1,16 @@
 console.log("flybis.js loaded");
 
-// Keyboard navigation with TAB.
-document.addEventListener("keydown", function (event) {
-  if (event.code == "Tab") {
-    event.preventDefault();
-  }
-});
+flutterWeb();
+function flutterWeb() {
+  // Keyboard navigation with TAB.
+  document.addEventListener("keydown", function (event) {
+    if (event.code == "Tab") {
+      event.preventDefault();
+    }
+  });
+}
 
 initializeFirebase();
-
 function initializeFirebase() {
   // Set Firebase Configuration.
   const firebaseConfig = {

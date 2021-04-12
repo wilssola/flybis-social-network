@@ -3,7 +3,6 @@
 console.log("electron-firebase-messaging-sw.js loaded");
 
 loadMessaging();
-
 function loadMessaging() {
   const { ipcRenderer } = require("electron");
 

@@ -12,26 +12,61 @@ program.version(package.version);
 program
   .command("web-build")
   .description("Compilar builds Web.")
-  .action(async () => {
+  .action(() => {
     exec("flybis icon-generate", (error, stdout, stderr) => {
+      if (error) {
+        console.error(error);
+      }
+      if (stderr) {
+        console.error(stderr);
+      }
+
       console.log("📦 FLUTTER ICON GENERATE");
       console.log(stdout);
 
       exec(
         "flutter build web --release --web-renderer auto",
         (error, stdout, stderr) => {
+          if (error) {
+            console.error(error);
+          }
+          if (stderr) {
+            console.error(stderr);
+          }
+
           console.log("📦 FLUTTER BUILD");
           console.log(stdout);
 
           exec("cd react && npm run build", (error, stdout, stderr) => {
+            if (error) {
+              console.error(error);
+            }
+            if (stderr) {
+              console.error(stderr);
+            }
+
             console.log("📦 REACT BUILD");
             console.log(stdout);
 
             exec("flybis web-minify", (error, stdout, stderr) => {
+              if (error) {
+                console.error(error);
+              }
+              if (stderr) {
+                console.error(stderr);
+              }
+
               console.log("📦 WEB MINIFY");
               console.log(stdout);
 
               exec("flybis web-copy", (error, stdout, stderr) => {
+                if (error) {
+                  console.error(error);
+                }
+                if (stderr) {
+                  console.error(stderr);
+                }
+
                 console.log("📦 WEB COPY");
                 console.log(stdout);
               });
@@ -47,75 +82,46 @@ program
   .description("Minimizar scripts da build Web.")
   .action(() => {
     const terser = require("terser");
-    const sri = require("sri-calc");
-
     const folder = "/build/web/";
-    const sriJson = path.join(__dirname, "/web/sri.json");
 
-    fs.writeFile(sriJson, '{"sri": []}', "utf-8", (error) => {
-      fs.readdir(path.join(__dirname, folder), (error, files) => {
-        if (error) {
-          return console.log("Unable to scan directory: " + error);
-        }
+    fs.readdir(path.join(__dirname, folder), (error, files) => {
+      if (error) {
+        return console.error("Unable to scan directory: ", error);
+      }
 
-        files.forEach(async (file) => {
-          if (path.extname(file) == ".js") {
-            let location = path.join(__dirname, folder, file);
+      files.forEach((file) => {
+        if (path.extname(file) == ".js") {
+          const location = path.join(__dirname, folder, file);
 
-            fs.promises.readFile(location, "utf-8").then((original) => {
-              terser
-                .minify(original, {
-                  compress: true,
-                  ie8: true,
-                  keep_classnames: path.basename(file).includes("main")
-                    ? false
-                    : true,
-                  keep_fnames: path.basename(file).includes("main")
-                    ? false
-                    : true,
-                  mangle: true,
-                  module: true,
-                })
-                .then((result) => {
-                  fs.writeFile(location, result.code, (error) => {});
+          fs.promises.readFile(location, "utf-8").then((original) => {
+            terser
+              .minify(original, {
+                compress: true,
+                ie8: true,
+                keep_classnames: path.basename(file).includes("main")
+                  ? false
+                  : true,
+                keep_fnames: path.basename(file).includes("main")
+                  ? false
+                  : true,
+                mangle: true,
+                module: true,
+              })
+              .then((minify) => {
+                fs.writeFile(location, minify.code, (error) => {
+                  if (error) {
+                    return console.error("Unable to minify file: ", error);
+                  }
 
                   console.log({
                     original: `${original.length} Characters`,
-                    minify: `${result.code.length} Characters`,
+                    minify: `${minify.code.length} Characters`,
                     location,
                   });
-
-                  if (!path.basename(file).includes("part")) {
-                    fs.promises.readFile(sriJson, "utf-8").then((oldJson) => {
-                      let object = JSON.parse(oldJson);
-
-                      console.log({ oldJson, object });
-
-                      sri.hash(location, (error, hash) => {
-                        if (error) {
-                          throw error;
-                        }
-
-                        let file = path.basename(location);
-
-                        console.log({ file, hash });
-
-                        object.sri.push({ file, hash });
-
-                        console.log(object.sri);
-
-                        let newJson = JSON.stringify(object);
-
-                        console.log({ newJson, object });
-
-                        fs.writeFile(sriJson, newJson, "utf-8", (error) => {});
-                      });
-                    });
-                  }
                 });
-            });
-          }
-        });
+              });
+          });
+        }
       });
     });
   });
@@ -123,7 +129,7 @@ program
 program
   .command("web-copy")
   .description("Copiar build Web para os diretórios corretos.")
-  .action(async () => {
+  .action(() => {
     const fsExtra = require("fs-extra");
     const copyDir = require("copy-dir");
 
@@ -132,23 +138,23 @@ program
     const paths = [
       {
         input: "/react/build",
-        output: "/public",
+        output: emptys[0],
       },
       {
         input: "/build/web/public",
-        output: "/public",
+        output: emptys[0],
       },
       {
         input: "/build/web",
-        output: "/public/app",
+        output: emptys[0] + "/app",
       },
       {
         input: "/build/web/public",
-        output: "/electron/app",
+        output: emptys[1],
       },
       {
         input: "/build/web",
-        output: "/electron/app",
+        output: emptys[1],
       },
     ];
 

@@ -1,25 +1,28 @@
-function loadJS(src, async) {
+function loadJS(src, async, defer, integrity) {
   let script = document.createElement("script");
-  script.async = async;
+  if (async !== undefined && async !== null && (defer === null || defer === false)) {
+    script.async = async;
+  }
+  if (defer !== undefined && defer !== null && (async === null || async === false)) {
+    script.defer = defer;
+  }
   script.src = src;
   script.type = "text/javascript";
-  //script.integrity = integrity;
+  if (integrity !== undefined && integrity !== null) {
+    script.integrity = integrity;
+  }
 
   let s0 = document.getElementsByTagName("script")[0];
   s0.parentNode.insertBefore(script, s0);
 }
 
-fetch("sri.json")
-  .then((response) => response.json())
-  .then((json) => {
-    console.log(json.sri.find(element => element.file == "dark.js"));
+load();
+function load() {
+  loadJS("./firebase.js", true);
 
-    loadJS("./dark.js", false);
-    loadJS("./firebase.js", false);
-
-    window.onload = function () {
-      loadJS("./flybis.js", true);
-      loadJS("./main.dart.js", true);
-      loadJS("./worker.js", true);
-    };
-  });
+  window.onload = function () {
+    loadJS("./flybis.js", null, true);
+    loadJS("./main.dart.js", null, true);
+    loadJS("./worker.js", null, true);
+  };
+}
