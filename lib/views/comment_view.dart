@@ -185,23 +185,31 @@ class _CommentViewState extends State<CommentView> {
         List<Widget> comments = [];
 
         snapshot.data.forEach((FlybisComment flybisComment) {
-          comments
-              .add(comment_widget.CommentWidget(flybisComment: flybisComment));
+          comments.add(
+            comment_widget.CommentWidget(
+              flybisComment: flybisComment,
+            ),
+          );
         });
 
-        return Scrollbar(
-          isAlwaysShown: kIsWeb,
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: comments.length,
-            itemBuilder: (
-              BuildContext context,
-              int index,
-            ) {
-              return comments[index];
-            },
-          ),
+        Widget listComments = ListView.builder(
+          controller: scrollController,
+          itemCount: comments.length,
+          itemBuilder: (
+            BuildContext context,
+            int index,
+          ) {
+            return comments[index];
+          },
         );
+
+        return !kIsWeb
+            ? listComments
+            : Scrollbar(
+                isAlwaysShown: true,
+                showTrackOnHover: true,
+                child: listComments,
+              );
       },
     );
   }

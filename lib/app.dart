@@ -56,6 +56,7 @@ import 'package:day_night_switcher/day_night_switcher.dart'
 
 Future<bool> loadLibraries() async {
   await login_view.loadLibrary();
+  
   await utils_widget.loadLibrary();
 
   await html.loadLibrary();
@@ -395,7 +396,7 @@ class _AppState extends State<App> {
   void configuraPageNotifications(Map<String, dynamic> message) {
     final FlybisBellData data = FlybisBellData.fromMap(message['data']);
 
-    switch (data.bellMode) {
+    switch (data.bell.bellMode) {
       case 'message':
         break;
       case 'comment':

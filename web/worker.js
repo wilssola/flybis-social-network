@@ -1,5 +1,4 @@
 loadWorker();
-
 function loadWorker() {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {

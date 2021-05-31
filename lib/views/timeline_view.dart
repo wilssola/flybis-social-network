@@ -560,9 +560,9 @@ class _TimelineViewState extends State<TimelineView>
         }
 
         Widget admobWidget = admob_service.AdmobService().showAdmob(
-          margin: EdgeInsets.only(top: 10),
           pageId: widget.pageId,
           pageColor: widget.pageColor,
+          margin: EdgeInsets.only(top: 15),
         );
 
         Widget timelineList = Column(
@@ -657,6 +657,7 @@ class _TimelineViewState extends State<TimelineView>
               ? timeline()
               : Scrollbar(
                   isAlwaysShown: true,
+                  showTrackOnHover: true,
                   controller: scrollController,
                   child: timeline(),
                 ),

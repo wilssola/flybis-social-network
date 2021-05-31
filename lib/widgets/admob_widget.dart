@@ -124,7 +124,7 @@ class _AdmobWidgetState extends State<AdmobWidget> {
         adUnitId: adUnitId, //widget.adUnitId,
         size: _size,
         request: AdRequest(),
-        listener: AdListener(
+        listener: BannerAdListener(
           onAdLoaded: (Ad ad) {
             if (mounted) {
               setState(() {
@@ -196,10 +196,10 @@ class _AdmobWidgetState extends State<AdmobWidget> {
                 ),
               )
             : Container(
-                width: _width,
-                height: _height,
+                width: _width * 1.1,
+                height: _height * 1.1,
                 margin: _margin,
-                padding: _padding.add(EdgeInsets.all(10)),
+                padding: _padding,
                 alignment: Alignment.center,
                 child: utils_widget.UtilsWidget()
                     .circularProgress(context, color: widget.pageColor),

@@ -742,8 +742,9 @@ class _ProfileViewState extends State<ProfileView> {
       body: !kIsWeb
           ? profile()
           : Scrollbar(
-              //isAlwaysShown: true,
-              //controller: scrollController,
+              isAlwaysShown: true,
+              showTrackOnHover: true,
+              controller: scrollController,
               child: profile(),
             ),
       floatingActionButton: !kNotIsWebOrScreenLittle(context)

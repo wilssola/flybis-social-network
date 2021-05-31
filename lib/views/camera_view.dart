@@ -569,7 +569,7 @@ class CameraViewState extends State<CameraView>
     if (imagefile != null && imagefile.containsKey('image_filtered')) {
       if (mounted) {
         setState(() {
-          files[0] = imagefile['image_filtered'];
+          files[0] = PickedFile((imagefile['image_filtered'] as File).path);
         });
       }
     }

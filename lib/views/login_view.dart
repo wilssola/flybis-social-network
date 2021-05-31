@@ -1,7 +1,6 @@
-// Dart
-
 // 🎯 Dart imports:
 import 'dart:math';
+import 'dart:ui';
 
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
@@ -35,21 +34,32 @@ class LoginView extends StatefulWidget {
   });
 
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _LoginViewState createState() => _LoginViewState(pageColors: this.pageColors);
 }
 
 class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   FormType formType = FormType.SIGNIN;
-
   String formEmail;
   String formPassword;
 
   bool isLoad = false;
   String errorMessage = '';
 
-  _LoginViewState();
+  final List<Color> pageColors;
+  Color pageColor = Colors.blue;
+
+  _LoginViewState({this.pageColors});
+
+  void initState() {
+    super.initState();
+
+    if (mounted) {
+      setState(() {
+        //this.pageColor = pageColors[Random().nextInt(pageColors.length)];
+      });
+    }
+  }
 
   showSignupForm() {
     formKey.currentState.reset();
@@ -247,6 +257,24 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    const double kWebLoginWidth = 350;
+
+    final Color backgroundColor =
+        widget.pageColors[Random().nextInt(widget.pageColors.length)];
+
+    final particleOptions = animated_background.ParticleOptions(
+      baseColor: widget.pageColors[Random().nextInt(widget.pageColors.length)],
+      spawnOpacity: 0,
+      opacityChangeRate: 0.25,
+      minOpacity: 0.15,
+      maxOpacity: 0.75,
+      spawnMinSpeed: 35,
+      spawnMaxSpeed: 75,
+      spawnMinRadius: 7.5,
+      spawnMaxRadius: 15,
+      particleCount: 50,
+    );
+
     return FutureBuilder(
       future: loadLibraries(),
       builder: (context, snapshot) {
@@ -258,58 +286,66 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
           return utils_widget.UtilsWidget().centerCircularProgress(context);
         }
 
-        final kWebLoginWidth = 350;
-
-        final particleOptions = animated_background.ParticleOptions(
-          baseColor:
-              widget.pageColors[Random().nextInt(widget.pageColors.length)],
-          spawnOpacity: 0,
-          opacityChangeRate: 0.25,
-          minOpacity: 0.15,
-          maxOpacity: 0.75,
-          spawnMinSpeed: 35,
-          spawnMaxSpeed: 75,
-          spawnMinRadius: 7.5,
-          spawnMaxRadius: 15,
-          particleCount: 50,
-        );
-
         return Scaffold(
           body: animated_background.AnimatedBackground(
             vsync: this,
             behaviour: animated_background.RandomParticleBehaviour(
               options: particleOptions,
             ),
-            child: Align(
-              alignment: !kIsWeb ? Alignment.center : Alignment.centerLeft,
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                alignment: Alignment.center,
-                width: !kIsWeb
-                    ? MediaQuery.of(context).size.width
-                    : kWebLoginWidth,
-                height: MediaQuery.of(context).size.height,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          utils_widget.UtilsWidget()
-                              .logoText(widget.pageColors),
-                          formWidget(),
-                          primaryButton(),
-                          secondaryButton(),
-                          errorWidget(),
-                        ],
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  width: !kIsWeb
+                      ? MediaQuery.of(context).size.width
+                      : kWebLoginWidth,
+                  height: MediaQuery.of(context).size.height,
+                  // Note: without ClipRect, the blur region will be expanded to full
+                  // size of the Image instead of custom size
+                  child: ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                      child: Container(
+                        color: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .withOpacity(0.65),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Align(
+                  alignment: !kIsWeb ? Alignment.center : Alignment.centerLeft,
+                  child: Container(
+                    //color: Theme.of(context).scaffoldBackgroundColor,
+                    alignment: Alignment.center,
+                    width: !kIsWeb
+                        ? MediaQuery.of(context).size.width
+                        : kWebLoginWidth,
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              utils_widget.UtilsWidget()
+                                  .logoText(widget.pageColors),
+                              formWidget(),
+                              primaryButton(),
+                              secondaryButton(),
+                              errorWidget(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );

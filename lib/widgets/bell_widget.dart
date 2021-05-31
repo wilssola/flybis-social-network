@@ -91,8 +91,8 @@ class _BellWidgetState extends State<BellWidget> {
       case 'message':
         trailingOnTap = () => Get.to(
               chat_message_view.ChatMessageView(
-                sender: flybisUserSender,
-                receiver: [flybisUserReceiver],
+                flybisUserSender: flybisUserSender,
+                flybisUserReceivers: [flybisUserReceiver],
                 pageColor: widget.pageColor,
               ),
             );

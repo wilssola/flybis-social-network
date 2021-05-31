@@ -160,8 +160,7 @@ class FlybisBellData {
   final String receiverId;
 
   // Bell
-  final FlybisBellContent bellContent;
-  final String bellMode; // comment, friend, follow, message, like
+  final FlybisBell bell;
 
   FlybisBellData({
     // Users
@@ -169,8 +168,7 @@ class FlybisBellData {
     @required this.receiverId,
 
     // Bell
-    @required this.bellContent,
-    @required this.bellMode, // comment, friend, follow, message, like
+    @required this.bell,
   });
 
   factory FlybisBellData.fromMap(
@@ -189,10 +187,9 @@ class FlybisBellData {
         receiverId: data['receiverId'],
 
         // Bell
-        bellContent: data['bellContent'] != null
-            ? FlybisBellContent.fromMap(data['bellContent'])
-            : FlybisBellContent(),
-        bellMode: data['bellMode'], // comment, friend, follow, message, like
+        bell: data['bell'] != null
+            ? FlybisBell.fromMap(data['bell'], '')
+            : FlybisBell(),
       );
     } catch (error) {
       logger.e('FlybisBellData.fromMap: ' + error.toString());
@@ -209,11 +206,7 @@ class FlybisBellData {
         'receiverId': this.receiverId ?? '',
 
         // Bell
-        'bellContent': this.bellContent != null
-            ? this.bellContent.toMap()
-            : FlybisBellContent().toMap(),
-        'bellMode':
-            this.bellMode ?? '', // comment, friend, follow, message, like
+        'bell': this.bell != null ? this.bell.toMap() : FlybisBell().toMap(),
       };
     } catch (error) {
       logger.e('FlybisBellData.toMap: ' + error.toString());

@@ -64,5 +64,6 @@ Future<void> handleCameraMicrophone() async {
   await [
     Permission.camera,
     Permission.microphone,
+    Permission.storage,
   ].request();
 }

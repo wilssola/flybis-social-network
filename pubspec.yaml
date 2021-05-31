@@ -13,83 +13,87 @@ dependencies:
 
   # Firebase
   firebase: ^9.0.1 # WEB
-  firebase_core: ^1.0.3 # ANDROID IOS WEB
-  firebase_auth: ^1.0.3 # ANDROID IOS WEB
-  firebase_storage: ^8.0.3 # ANDROID IOS WEB
-  firebase_dynamic_links: ^0.8.0 # ANDROID IOS
-  firebase_messaging: ^9.1.1 # ANDROID IOS
-  firebase_in_app_messaging: ^0.4.0+1 # ANDROID IOS
-  firebase_performance: ^0.6.0+2 # ANDROID IOS
-  firebase_crashlytics: ^2.0.0 # ANDROID IOS
-  firebase_analytics: ^7.1.1 # ANDROID IOS WEB
-  firebase_database: ^6.1.2 # ANDROID IOS
-  firebase_remote_config: ^0.9.0-dev.2 # ANDROID IOS
-  #firebase_admob: ^0.11.0+1 # ANDROID IOS
-  cloud_firestore: ^1.0.4 # ANDROID IOS WEB
-  cloud_functions: ^1.0.3 # ANDROID IOS WEB
+  firebase_core: ^1.2.0 # ANDROID IOS WEB
+  firebase_auth: ^1.2.0 # ANDROID IOS WEB
+  firebase_storage: ^8.1.0 # ANDROID IOS WEB
+  firebase_dynamic_links: ^2.0.4 # ANDROID IOS
+  firebase_messaging: ^10.0.0 # ANDROID IOS
+  firebase_in_app_messaging: ^0.5.0+4 # ANDROID IOS
+  firebase_performance: ^0.7.0+3 # ANDROID IOS
+  firebase_crashlytics: ^2.0.4 # ANDROID IOS
+  firebase_analytics: ^8.1.0 # ANDROID IOS WEB
+  firebase_database: ^7.0.0 # ANDROID IOS
+  firebase_remote_config: ^0.10.0 # ANDROID IOS
+  cloud_firestore: ^2.2.0 # ANDROID IOS WEB
+  cloud_functions: ^1.1.0 # ANDROID IOS WEB
   # Firebase - End
 
   uuid: ^3.0.4 # ANDROID IOS WEB
   timeago: ^3.0.2 # ANDROID IOS WEB
-  path_provider: ^2.0.1 #1.6.14 # ANDROID IOS
-  geolocator: ^7.0.1 # ANDROID IOS
+  path_provider: ^2.0.2 #1.6.14 # ANDROID IOS
+  geolocator: ^7.0.3 # ANDROID IOS
   geocoding: ^2.0.0 # ANDROID IOS
   animator: ^3.0.0 # ANDROID IOS WEB
 
-  share: ^2.0.1 # ANDROID IOS
-  url_launcher: ^6.0.3 # ANDROID IOS WEB
+  share: ^2.0.4 # ANDROID IOS
+  url_launcher: ^6.0.4 # ANDROID IOS WEB
 
-  fluttertoast: ^8.0.3 # ANDROID IOS WEB
+  fluttertoast: ^8.0.7 # ANDROID IOS WEB
 
   # Widgets
   day_night_switcher: ^0.2.0+1 # ANDROID IOS WEB
   introduction_screen: ^2.1.0 # ANDROID IOS WEB
-  animated_background: ^1.0.5 # ANDROID IOS WEB
-  detectable_text_field: ^2.0.0 # ANDROID IOS WEB
+  simple_animations: ^3.1.1 # ANDROID IOS WEB
+  detectable_text_field: ^2.0.1 # ANDROID IOS WEB
   photo_view: ^0.11.1 # ANDROID IOS WEB
-  full_screen_menu: ^1.0.0
-  status_alert: ^1.0.0-nullsafety.1
 
-  # NULL SAFETY FIX
-  flutter_settings_screens: ^0.2.2+1
+  # yako.io
+  badges: ^2.0.1
+  settings_ui: ^1.0.0
+  status_alert: ^1.0.0-nullsafety.1  
+  full_screen_menu: ^1.0.0
+  
   flutter_easyloading: ^3.0.0
   flutter_snake_navigationbar: ^0.5.0
 
   image: ^3.0.2 # ANDROID IOS WEB
   image_cropper: ^1.4.0
   giphy_picker: ^2.0.0
-  image_picker: ^0.7.4 # ANDROID IOS
+  image_picker: ^0.7.5+3 # ANDROID IOS
   image_picker_for_web: ^2.0.0 # WEB
   transparent_image: ^2.0.0 # ANDROID IOS WEB
   cached_network_image: ^3.0.0 # ANDROID IOS
   photofilters:
-    git: https://github.com/WolfTheZelda/photofilters.git
+    path: C:/Users/WolfTheZelda/Flybis/lib/packages/photofilters
   #flutter_image_editor: ^1.2.0
   #image_collage_widget: ^1.0.0
   #image_editor_pro: ^1.0.9
 
   chewie: ^1.0.0
   better_player: ^0.0.63
-  video_player: ^2.1.1 # ANDROID IOS
-  video_player_web_hls: ^0.1.9 # WEB
+  video_player: ^2.1.4 # ANDROID IOS
+  video_player_web_hls: ^0.1.11+2 # WEB
 
-  agora_rtc_engine: ^4.0.0-rc.3 #1.0.15
-  agora_rtm: ^0.9.14
+  agora_rtc_engine: #^4.0.0-rc.3 #1.0.15
+    git:
+      url: https://github.com/AgoraIO/Agora-Flutter-SDK.git
+      ref: dev/flutter2
+  agora_rtm: ^1.0.0-rc.1
   callkeep: ^0.2.3+1
 
   wakelock: ^0.4.0 # ANDROID IOS WEB
-  local_auth: ^1.1.3 # ANDROID IOS
+  local_auth: ^1.1.6 # ANDROID IOS
   random_color: ^1.0.6-nullsafety # ANDROID IOS WEB
-  permission_handler: ^6.1.1
+  permission_handler: ^8.0.0+2
 
   path: ^1.8.0 # ANDROID IOS WEB
   async: ^2.5.0 # ANDROID IOS WEB
 
   flutter_phoenix: ^1.0.0 # ANDROID IOS WEB
-  flutter_cache_manager: ^3.0.1 # ANDROID IOS
+  flutter_cache_manager: ^3.0.2 # ANDROID IOS
   flutter_ffmpeg: ^0.4.0
-  flutter_better_camera: ^0.6.1 # ANDROID IOS
-  flutter_linkify: ^5.0.0
+  flutter_better_camera: ^1.0.0 # ANDROID IOS
+  flutter_linkify: ^5.0.2
   #flutter_unity_widget: ^4.0.0-alpha.4
 
   google_api_availability: ^3.0.1 # ANDROID
@@ -97,16 +101,16 @@ dependencies:
   universal_io: ^2.0.4
   universal_html: ^2.0.8 # ANDROID IOS WEB
 
-  shared_preferences: ^2.0.5
+  shared_preferences: ^2.0.6
 
-  connectivity: ^3.0.3 # ANDROID IOS WEB
+  connectivity: ^3.0.6 # ANDROID IOS WEB
   connectivity_for_web: ^0.4.0 # WEB
 
-  package_info: ^2.0.0
-  file_picker: ^3.0.1
+  package_info: ^2.0.2
+  file_picker: ^3.0.2+2
 
-  get: ^4.1.3
-  get_it: ^6.0.0
+  get: ^4.1.4
+  get_it: ^7.1.3
   logger: ^1.0.0
 
   visibility_detector: ^0.2.0
@@ -125,23 +129,22 @@ dependencies:
 
   flutter_funding_choices: ^0.2.0
 
-  just_audio: ^0.7.3 # ANDROID IOS MACOS WEB
+  just_audio: ^0.7.4+1 # ANDROID IOS MACOS WEB
 
-  app_tracking_transparency: ^2.0.0 #IOS
+  app_tracking_transparency: ^2.0.1 #IOS
   
   text_editor: ^0.4.0+1
 
   video_editor: ^1.1.0
-  helpers: ^1.1.1
+  helpers: ^1.1.3
 
-  story_view: ^0.13.0-nullsafety.1
+  story_view: ^0.13.1
 
-  fast_color_picker: ^0.0.2
+  fast_color_picker: ^0.1.0
   #story_painter: ^0.0.2
-  swipe_up: ^1.0.0
+  #swipe_up: ^1.0.0
 
-  # NULL SAFETY FIX
-  #gallery_saver: ^2.0.3
+  gallery_saver: ^2.0.3
 
   # Replace Slider
   dots_indicator: ^2.0.0
@@ -150,50 +153,60 @@ dependencies:
   #fzregex: ^1.0.3
   #frazile_algorithm: ^1.0.0
 
-  flutter_parsed_text: ^2.1.0
+  flutter_parsed_text: ^2.2.0
 
   youtube_player_iframe: ^2.0.0
 
   modal_bottom_sheet: ^2.0.0
 
-  animated_text_kit: ^4.1.1
+  animated_text_kit: ^4.2.1
 
   octo_image: ^1.0.0+1
 
-  blurhash_dart: ^1.0.0
+  blurhash_dart: ^1.0.2
 
-  flutter_local_notifications: ^5.0.0+1
+  flutter_local_notifications: ^5.0.0+4
 
-  google_mobile_ads: ^0.12.1
+  google_mobile_ads: ^0.13.0
 
   sentry_flutter: ^5.0.0
   
-  device_info: ^2.0.0
+  device_info: ^2.0.2
 
   cross_file: ^0.3.1+1
 
-  flutter_link_previewer: ^1.0.4
+  flutter_link_previewer: ^2.0.7
 
-  shimmer: ^2.0.0-nullsafety.0
+  shimmer: ^2.0.0
 
-  awesome_notifications: ^0.0.5+8
+  awesome_notifications: ^0.0.6+7
 
   stripe_sdk: ^5.0.0-nullsafety.0
   
   animated_stack: ^0.2.0
   auto_animated: ^3.0.0
   animations: ^2.0.0
+  
+  animated_background: ^2.0.0
 
   avatar_glow: ^2.0.1
 
   camera_deep_ar: ^0.0.1 # ANDROID IOS
+  
+  flutter_signin_button: ^2.0.0
+  
+  expandable: ^5.0.1
+
+  flutter_platform_widgets: ^1.9.0
+  
+  line_icons: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.0
-  flutter_native_splash: ^1.1.7+1
-  import_sorter: ^4.4.2
+  flutter_native_splash: ^1.1.8+4
+  import_sorter: ^4.5.1
 
 flutter:
   uses-material-design: true

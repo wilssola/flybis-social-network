@@ -1,5 +1,3 @@
-// Dart
-
 // 🎯 Dart imports:
 import 'dart:async';
 
@@ -21,11 +19,12 @@ import 'package:flybis/services/admob_service.dart';
 import 'package:flybis/services/chat_service.dart';
 import 'package:flybis/services/encryption_service.dart';
 import 'package:flybis/services/user_service.dart';
-import 'package:flybis/views/chat_message_view.dart' deferred as chat_view;
+import 'package:flybis/views/chat_message_view.dart'
+    deferred as chat_message_view;
 import 'package:flybis/widgets/utils_widget.dart' deferred as utils_widget;
 
 Future<bool> loadLibraries() async {
-  await chat_view.loadLibrary();
+  await chat_message_view.loadLibrary();
   await utils_widget.loadLibrary();
 
   return true;
@@ -138,7 +137,7 @@ class ChatViewState extends State<ChatView> {
 
         FlybisUser flybisUserReceiver = snapshot.data;
 
-        String chatId = chat_view.checkHasCode(
+        String chatId = chat_message_view.checkHasCode(
           flybisUserOwner.uid,
           flybisUserReceiver.uid,
         );
@@ -182,10 +181,12 @@ class ChatViewState extends State<ChatView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => chat_view.ChatMessageView(
-                        sender: flybisUserOwner,
-                        receiver: [flybisUserReceiver],
-                        status: flybisChatStatus,
+                      builder: (context) => chat_message_view.ChatMessageView(
+                        flybisUserSender: flybisUserOwner,
+                        flybisUserReceivers: [
+                          flybisUserReceiver,
+                        ],
+                        flybisChatStatus: flybisChatStatus,
                         pageColor: widget.pageColor,
                       ),
                     ),
@@ -357,6 +358,7 @@ class ChatViewState extends State<ChatView> {
               ? chats()
               : Scrollbar(
                   isAlwaysShown: true,
+                  showTrackOnHover: true,
                   controller: scrollController,
                   child: chats(),
                 ),

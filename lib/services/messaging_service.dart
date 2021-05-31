@@ -29,9 +29,7 @@ class MessagingService {
   final AwesomeNotifications _notifications = AwesomeNotifications();
 
   Future<void> initialize() async {
-    if (!kIsWeb &&
-        (defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS)) {
+    if (Platform.isAndroid || Platform.isIOS) {
       /// Update the iOS foreground notification presentation options to allow
       /// heads up notifications.
       await _messaging.setForegroundNotificationPresentationOptions(

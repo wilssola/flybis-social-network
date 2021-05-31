@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart' deferred as firebase_core;
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:universal_io/io.dart' deferred as io;
 import 'package:url_strategy/url_strategy.dart';
 
 // 🌎 Project imports:
@@ -51,6 +52,8 @@ Future<bool> loadLibraries() async {
   await firebase_crashlytics.loadLibrary();
 
   await flutter_phoenix.loadLibrary();
+
+  await io.loadLibrary();
 
   return true;
 }
@@ -93,6 +96,11 @@ void initCrashlytics() {
       firebase_crashlytics.FirebaseCrashlytics.instance.recordFlutterError;
 }
 
+Future<InitializationStatus> initGoogleMobileAds() {
+  // Initialize Google Mobile Ads SDK
+  return MobileAds.instance.initialize();
+}
+
 Future<void> initSentry(Function runApp) async {
   try {
     await SentryFlutter.init(
@@ -106,32 +114,29 @@ Future<void> initSentry(Function runApp) async {
   }
 }
 
-Future<InitializationStatus> initGoogleMobileAds() {
-  // Initialize Google Mobile Ads SDK
-  return MobileAds.instance.initialize();
-}
-
 void main() async {
   await loadLibraries();
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initFirebase();
-  initMessaging();
+  if (!io.Platform.isWindows && !io.Platform.isLinux) {
+    await initFirebase();
+    initMessaging();
 
-  if (!foundation.kIsWeb) {
-    initCrashlytics();
-    await initGoogleMobileAds();
+    if (!foundation.kIsWeb) {
+      initCrashlytics();
+      await initGoogleMobileAds();
 
-    setAllOrientations();
-    setNotificationBar();
+      setAllOrientations();
+      setNotificationBar();
+    }
+
+    MessagingService().initialize();
   }
 
   /// Here we set the URL strategy for our web app.
   /// It is safe to call this function when running on mobile or desktop as well.
   setPathUrlStrategy();
-
-  MessagingService().initialize();
 
   await initSentry(() => runApp(flutter_phoenix.Phoenix(child: Main())));
 }
@@ -146,34 +151,36 @@ class _MainState extends State<Main> {
   void initState() {
     super.initState();
 
-    MessagingService().getInitialMessage().then((var message) {
-      if (message != null) {
-        logger.i('getInitialMessage: $message');
-      }
-    });
-
-    firebase_messaging.FirebaseMessaging.onMessage.listen(
-      (var message) {
-        try {
-          var notification = message.notification;
-          var android = message.notification?.android;
-
-          if (notification != null && android != null) {
-            logger.i('onMessage: $notification');
-
-            MessagingService().showHighNotification(notification);
-          }
-        } catch (error) {
-          logger.e(error);
+    if (!io.Platform.isWindows && !io.Platform.isLinux) {
+      MessagingService().getInitialMessage().then((var message) {
+        if (message != null) {
+          logger.i('getInitialMessage: $message');
         }
-      },
-    );
+      });
 
-    firebase_messaging.FirebaseMessaging.onMessageOpenedApp.listen(
-      (var message) {
-        logger.i('onMessageOpenedApp: $message');
-      },
-    );
+      firebase_messaging.FirebaseMessaging.onMessage.listen(
+        (var message) {
+          try {
+            var notification = message.notification;
+            var android = message.notification?.android;
+
+            if (notification != null && android != null) {
+              logger.i('onMessage: $notification');
+
+              MessagingService().showHighNotification(notification);
+            }
+          } catch (error) {
+            logger.e(error);
+          }
+        },
+      );
+
+      firebase_messaging.FirebaseMessaging.onMessageOpenedApp.listen(
+        (var message) {
+          logger.i('onMessageOpenedApp: $message');
+        },
+      );
+    }
   }
 
   @override

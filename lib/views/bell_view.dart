@@ -170,6 +170,7 @@ class _BellViewState extends State<BellView> {
         Widget admobWidget = admob_service.AdmobService().showAdmob(
           pageId: BellView.pageId,
           pageColor: widget.pageColor,
+          margin: EdgeInsets.only(top: 15),
         );
 
         return Column(
@@ -232,6 +233,7 @@ class _BellViewState extends State<BellView> {
               ? bell()
               : Scrollbar(
                   isAlwaysShown: true,
+                  showTrackOnHover: true,
                   controller: scrollController,
                   child: bell(),
                 ),
