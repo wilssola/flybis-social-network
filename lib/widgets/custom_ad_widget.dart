@@ -14,7 +14,7 @@ import 'package:google_mobile_ads/src/ad_instance_manager.dart';
 // ORIGINAL: https://github.com/googleads/googleads-mobile-flutter/blob/master/packages/google_mobile_ads/lib/src/ad_containers.dart
 class CustomAdWidget extends StatefulWidget {
   const CustomAdWidget(
-      {Key key, @required this.ad, this.useVirtualDisplay = false})
+      {Key? key, required this.ad, this.useVirtualDisplay = false})
       : assert(ad != null),
         super(key: key);
 
@@ -31,7 +31,7 @@ class _CustomAdWidgetState extends State<CustomAdWidget> {
   @override
   void initState() {
     super.initState();
-    final int adId = instanceManager.adIdFor(widget.ad);
+    final int adId = instanceManager.adIdFor(widget.ad)!;
     if (instanceManager.isWidgetAdIdMounted(adId)) {
       _adIdAlreadyMounted = true;
     }
@@ -40,7 +40,7 @@ class _CustomAdWidgetState extends State<CustomAdWidget> {
 
   @override
   void dispose() {
-    final int adId = instanceManager.adIdFor(widget.ad);
+    final int adId = instanceManager.adIdFor(widget.ad)!;
     instanceManager.unmountWidgetAdId(adId);
 
     super.dispose();
@@ -74,7 +74,7 @@ class _CustomAdWidgetState extends State<CustomAdWidget> {
           surfaceFactory:
               (BuildContext context, PlatformViewController controller) {
             return AndroidViewSurface(
-              controller: controller,
+              controller: controller as AndroidViewController,
               gestureRecognizers: const <
                   Factory<OneSequenceGestureRecognizer>>{},
               hitTestBehavior: PlatformViewHitTestBehavior.opaque,

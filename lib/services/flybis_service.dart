@@ -14,7 +14,7 @@ class FlybisService {
 
   final DatabaseService _db = DatabaseService.instance;
 
-  Stream<List<FlybisIntroduction>> streamIntroductions() =>
+  Stream<List<FlybisIntroduction>>? streamIntroductions() =>
       _db.streamCollection(
         collectionPath: PathService.flybis('introductions'),
         builder: (data, documentId) =>
@@ -22,7 +22,7 @@ class FlybisService {
         queryBuilder: (query) => query.orderBy('page'),
       );
 
-  Future<List<Map<String, dynamic>>> streamMinimumPostDurations() =>
+  Future<List<Map<String, dynamic>?>?> streamMinimumPostDurations() =>
       _db.getCollection(
         collectionPath: PathService.flybis('minimumPostDurations'),
         builder: (data, documentId) => data,

@@ -4,19 +4,19 @@ import 'package:flybis/plugins/timestamp.dart';
 
 class FlybisPost {
   // User
-  final String userId;
+  final String? userId;
 
   // Post
-  final String postId;
-  final String postTitle;
-  final String postLocation;
+  final String? postId;
+  final String? postTitle;
+  final String? postLocation;
   final String postDescription;
-  final List<FlybisPostContent> postContents;
+  final List<FlybisPostContent>? postContents;
   final bool postValidity;
-  final double postPopularity;
-  final List<dynamic> postUrls;
-  final List<dynamic> postTags;
-  final List<dynamic> postMentions;
+  final double? postPopularity;
+  final List<dynamic>? postUrls;
+  final List<dynamic>? postTags;
+  final List<dynamic>? postMentions;
 
   // Likes
   final int likesCount;
@@ -58,12 +58,12 @@ class FlybisPost {
   });
 
   factory FlybisPost.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     try {
       if (data == null) {
-        return null;
+        return FlybisPost();
       }
 
       logger.i('FlybisPost.fromMap: ' + data.toString());
@@ -108,15 +108,15 @@ class FlybisPost {
     } catch (error) {
       logger.e('FlybisPost.fromMap: ' + error.toString());
 
-      return null;
+      return FlybisPost();
     }
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     try {
-      List<Map<String, dynamic>> postContents = [];
+      List<Map<String, dynamic>?> postContents = [];
       if (this.postContents != null) {
-        this.postContents.forEach((content) {
+        this.postContents!.forEach((content) {
           postContents.add(content.toMap());
         });
       }
@@ -129,19 +129,19 @@ class FlybisPost {
         'postId': this.postId ?? '',
         'postTitle': this.postTitle ?? '',
         'postLocation': this.postLocation ?? '',
-        'postDescription': this.postDescription ?? '',
+        'postDescription': this.postDescription,
         'postContents': postContents,
-        'postValidity': this.postValidity ?? false,
+        'postValidity': this.postValidity,
         'postPopularity': this.postPopularity ?? 0,
         'postUrls': this.postUrls ?? [],
         'postTags': this.postTags ?? [],
         'postMentions': this.postMentions ?? [],
 
         // Likes
-        'likesCount': this.likesCount ?? 0,
+        'likesCount': this.likesCount,
 
         // Dislikes
-        'dislikesCount': this.dislikesCount ?? 0,
+        'dislikesCount': this.dislikesCount,
 
         // Timestamp
         'timestamp': this.timestamp,
@@ -180,17 +180,17 @@ class FlybisPost {
 
 class FlybisPostContent {
   // Content
-  final String contentId;
-  final String contentUrl;
-  final String contentType; // text, image, video
-  final String contentThumbnail;
-  final double contentAspectRatio;
+  final String? contentId;
+  final String? contentUrl;
+  final String? contentType; // text, image, video
+  final String? contentThumbnail;
+  final double? contentAspectRatio;
 
   // BlurHash
-  final String blurHash;
+  final String? blurHash;
 
   // Process
-  final bool hasProcessed;
+  final bool? hasProcessed;
 
   FlybisPostContent({
     // Content
@@ -208,11 +208,11 @@ class FlybisPostContent {
   });
 
   factory FlybisPostContent.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
   ) {
     try {
       if (data == null) {
-        return null;
+        return FlybisPostContent();
       }
 
       logger.d('FlybisPostContent.fromMap: ' + data.toString());
@@ -238,11 +238,11 @@ class FlybisPostContent {
     } catch (error) {
       logger.e('FlybisPostContent.fromMap: ' + error.toString());
 
-      return null;
+      return FlybisPostContent();
     }
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     try {
       return {
         // Content

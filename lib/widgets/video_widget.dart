@@ -24,13 +24,13 @@ enum VideoSourceType { hls, url, file }
 
 class VideoWidget extends StatefulWidget {
   final VideoSourceType type;
-  final String source;
-  final String title, author, imageUrl;
-  final Function onDoubleTap;
+  final String? source;
+  final String? title, author, imageUrl;
+  final Function? onDoubleTap;
 
   VideoWidget({
-    @required this.type,
-    @required this.source,
+    required this.type,
+    required this.source,
     this.title,
     this.author,
     this.imageUrl,
@@ -42,11 +42,11 @@ class VideoWidget extends StatefulWidget {
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
-  VideoPlayerController _videoPlayerController;
-  ChewieController _chewieController;
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? _chewieController;
 
-  BetterPlayerDataSource betterPlayerDataSource;
-  BetterPlayerController _betterPlayerController;
+  BetterPlayerDataSource? betterPlayerDataSource;
+  BetterPlayerController? _betterPlayerController;
 
   html.VideoElement _videoElement = html.VideoElement();
 
@@ -71,7 +71,7 @@ class _VideoWidgetState extends State<VideoWidget> {
       if (isAndroidOrIos) {
         betterPlayerDataSource = BetterPlayerDataSource(
           BetterPlayerDataSourceType.network,
-          widget.source,
+          widget.source!,
           //videoFormat: BetterPlayerVideoFormat.hls,
           cacheConfiguration: BetterPlayerCacheConfiguration(
             useCache: true,
@@ -85,12 +85,12 @@ class _VideoWidgetState extends State<VideoWidget> {
         );
       } else {
         _videoPlayerController = VideoPlayerController.network(
-          widget.source,
+          widget.source!,
         );
       }
     } else if (widget.type == VideoSourceType.url) {
       FileInfo fileInfo = await DefaultCacheManager().downloadFile(
-        widget.source,
+        widget.source!,
       );
 
       if (isAndroidOrIos) {
@@ -114,12 +114,12 @@ class _VideoWidgetState extends State<VideoWidget> {
       if (isAndroidOrIos) {
         betterPlayerDataSource = BetterPlayerDataSource(
           BetterPlayerDataSourceType.file,
-          widget.source,
+          widget.source!,
           //videoFormat: BetterPlayerVideoFormat.other,
         );
       } else {
         _videoPlayerController = VideoPlayerController.file(
-          File(widget.source),
+          File(widget.source!),
         );
       }
     }
@@ -138,10 +138,10 @@ class _VideoWidgetState extends State<VideoWidget> {
                 "PiP",
                 () async {
                   try {
-                    if (await _betterPlayerController
+                    if (await _betterPlayerController!
                         .isPictureInPictureSupported()) {
-                      _betterPlayerController
-                          .enablePictureInPicture(_playerKey);
+                      _betterPlayerController!
+                          .enablePictureInPicture(_playerKey as GlobalKey<State<StatefulWidget>>);
                     }
                   } catch (error) {
                     logger.e(error);
@@ -155,26 +155,26 @@ class _VideoWidgetState extends State<VideoWidget> {
       );
 
       if (_betterPlayerController != null) {
-        _betterPlayerController
-            .setOverriddenAspectRatio(_betterPlayerController.getAspectRatio());
+        _betterPlayerController!
+            .setOverriddenAspectRatio(_betterPlayerController!.getAspectRatio()!);
       }
     } else {
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
+        videoPlayerController: _videoPlayerController!,
         autoPlay: true,
         looping: true,
       );
     }
 
     if (_videoPlayerController != null) {
-      await _videoPlayerController.initialize();
+      await _videoPlayerController!.initialize();
     }
   }
 
   Widget htmlPlayer() {
     final String hashCode = widget.source.hashCode.toString();
 
-    _videoElement.src = widget.source;
+    _videoElement.src = widget.source!;
     _videoElement.controls = true;
 
     ui.platformViewRegistry.registerViewFactory(
@@ -190,9 +190,9 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   void dispose() {
-    _betterPlayerController.dispose();
-    _videoPlayerController.dispose();
-    _chewieController.dispose();
+    _betterPlayerController!.dispose();
+    _videoPlayerController!.dispose();
+    _chewieController!.dispose();
 
     super.dispose();
   }
@@ -200,23 +200,23 @@ class _VideoWidgetState extends State<VideoWidget> {
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
-      key: Key(widget.source),
+      key: Key(widget.source!),
       onVisibilityChanged: (VisibilityInfo visibilityInfo) {
         final double visiblePercentage = visibilityInfo.visibleFraction * 100;
 
         if (visiblePercentage <= 50) {
           if (isAndroidOrIos && _betterPlayerController != null) {
-            _betterPlayerController.pause();
+            _betterPlayerController!.pause();
           } else if (_chewieController != null) {
             _videoElement.pause();
-            _chewieController.pause();
+            _chewieController!.pause();
           }
         } else {
           if (isAndroidOrIos && _betterPlayerController != null) {
-            _betterPlayerController.play();
+            _betterPlayerController!.play();
           } else if (_chewieController != null) {
             _videoElement.play();
-            _chewieController.play();
+            _chewieController!.play();
           }
         }
       },
@@ -235,22 +235,22 @@ class _VideoWidgetState extends State<VideoWidget> {
           child: AspectRatio(
             aspectRatio: isAndroidOrIos
                 ? _betterPlayerController != null
-                    ? _betterPlayerController
-                        .videoPlayerController.value.aspectRatio
+                    ? _betterPlayerController!
+                        .videoPlayerController!.value.aspectRatio
                     : 1
                 : _videoPlayerController != null
-                    ? _videoPlayerController.value.aspectRatio
+                    ? _videoPlayerController!.value.aspectRatio
                     : 1,
             child: isAndroidOrIos
                 ? BetterPlayer(
                     key: _playerKey,
-                    controller: _betterPlayerController,
+                    controller: _betterPlayerController!,
                   )
                 //: kIsWeb
                 //? htmlPlayer()
                 : Chewie(
                     key: _playerKey,
-                    controller: _chewieController,
+                    controller: _chewieController!,
                   ),
           ),
         ),

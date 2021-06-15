@@ -5,32 +5,32 @@ import 'package:flybis/global.dart';
 
 class FlybisUser {
   // Firebase Auth
-  final String uid;
-  String email;
-  String photoUrl;
-  String displayName;
-  final String displayNameQuery;
+  final String? uid;
+  String? email;
+  String? photoUrl;
+  String? displayName;
+  final String? displayNameQuery;
 
   // Flybis Auth
-  final String username;
-  final String usernameQuery;
-  String bio;
-  final String bioQuery;
-  final Map bioSentiment;
-  String bannerUrl;
+  final String? username;
+  final String? usernameQuery;
+  String? bio;
+  final String? bioQuery;
+  final Map? bioSentiment;
+  String? bannerUrl;
 
   // Counts
-  final int followersCount;
-  final int followingsCount;
-  final int friendsCount;
-  final int postsCount;
+  final int? followersCount;
+  final int? followingsCount;
+  final int? friendsCount;
+  final int? postsCount;
 
   // BlurHash
-  final String blurHash;
+  final String? blurHash;
 
   // Premium
-  final bool hasPremium;
-  final bool hasVerified;
+  final bool? hasPremium;
+  final bool? hasVerified;
 
   // Timestamp
   final dynamic timestamp;
@@ -71,13 +71,13 @@ class FlybisUser {
   });
 
   factory FlybisUser.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
       logger.i('FlybisUser.fromMap: null');
 
-      return null;
+      return FlybisUser();
     }
 
     FlybisUser result = FlybisUser(
@@ -161,7 +161,7 @@ class FlybisUser {
 }
 
 class FlybisUserStatus {
-  final String status;
+  final String? status;
   final dynamic timestamp;
 
   FlybisUserStatus({
@@ -170,11 +170,11 @@ class FlybisUserStatus {
   });
 
   factory FlybisUserStatus.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
-      return null;
+      return FlybisUserStatus();
     }
 
     logger.d('FlybisUserStatus.fromMap: ' + data.toString());

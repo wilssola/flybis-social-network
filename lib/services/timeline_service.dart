@@ -14,7 +14,7 @@ class TimelineService {
 
   final DatabaseService _db = DatabaseService.instance;
 
-  Stream<List<FlybisPost>> streamTimeline(String userId, int limit) =>
+  Stream<List<FlybisPost>>? streamTimeline(String? userId, int limit) =>
       _db.streamCollection(
         collectionPath: PathService.timelinePosts(userId),
         builder: (data, documentId) => FlybisPost.fromMap(data, documentId),

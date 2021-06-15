@@ -22,11 +22,11 @@ class UserService {
   FollowService followService = FollowService();
   Auth authService = Auth();
 
-  StreamSubscription streamSubscription;
+  StreamSubscription? streamSubscription;
 
-  Future<String> getUsername(String username) async => await _db.get(
+  Future<String?> getUsername(String username) async => await _db.get(
         documentPath: PathService.username(username),
-        builder: (data, documentId) => data != null ? data['uid'] : null,
+        builder: ((data, documentId) => data != null ? data['uid'] : null) as String Function(Map<String, dynamic>?, String),
       );
 
   Future<void> setUser(FlybisUser user) async => await _db.set(
@@ -34,20 +34,20 @@ class UserService {
         data: user.toMap(),
       );
 
-  Future<void> updateUser(String userId, FlybisUser user) async => await _db
+  Future<void> updateUser(String? userId, FlybisUser user) async => await _db
       .update(documentPath: PathService.user(userId), data: user.toMap());
 
-  Future<FlybisUser> getUser(String userId) async => await _db.get(
+  Future<FlybisUser?> getUser(String? userId) async => await _db.get(
         documentPath: PathService.user(userId),
         builder: (data, documentId) => FlybisUser.fromMap(data, documentId),
       );
 
-  Stream<FlybisUser> streamUser(String userId) => _db.streamDoc(
+  Stream<FlybisUser>? streamUser(String? userId) => _db.streamDoc(
         documentPath: PathService.user(userId),
         builder: (data, documentId) => FlybisUser.fromMap(data, documentId),
       );
 
-  Future<List<FlybisUser>> getUsersRecommendations() async =>
+  Future<List<FlybisUser>?> getUsersRecommendations() async =>
       await _db.getCollection(
         collectionPath: PathService.users(),
         builder: (data, documentId) => FlybisUser.fromMap(data, documentId),
@@ -114,15 +114,15 @@ class UserService {
 
   Future<void> configureUserFirestore(
     String uid,
-    String email,
+    String? email,
     Function profileCreateView,
     Function introductionView,
   ) async {
     if (streamSubscription != null) {
-      streamSubscription.cancel();
+      streamSubscription!.cancel();
     }
 
-    FlybisUser flybisUser = await getUser(uid);
+    FlybisUser? flybisUser = await getUser(uid);
 
     logger.i('profileCreateView: ' + flybisUser.toString());
 
@@ -160,7 +160,7 @@ class UserService {
 
       authService.setUserOffline(flybisUserOwner);
 
-      streamSubscription = streamUser(uid).listen(
+      streamSubscription = streamUser(uid)!.listen(
         (FlybisUser flybisUser) {
           if (flybisUser != null) {
             flybisUserOwner = flybisUser;

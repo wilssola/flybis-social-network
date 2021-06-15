@@ -20,13 +20,13 @@ import 'package:flybis/services/user_service.dart';
 import 'package:flybis/widgets/utils_widget.dart' as utils_widget;
 
 class ProfileEditView extends StatefulWidget {
-  final String owner;
-  final Color pageColor;
+  final String? owner;
+  final Color? pageColor;
   final Auth auth = new Auth();
 
   ProfileEditView(
     this.owner, {
-    @required this.pageColor,
+    required this.pageColor,
   });
 
   @override
@@ -43,18 +43,18 @@ class _ProfileEditViewState extends State<ProfileEditView> {
 
   bool isLoading = false;
 
-  FlybisUser user;
+  FlybisUser? user;
 
   bool _bioValid = true;
   bool _displayNameValid = true;
 
   // Photo
-  PickedFile photoFile;
-  String photoUrl = '';
+  PickedFile? photoFile;
+  String? photoUrl = '';
 
   // Banner
-  PickedFile bannerFile;
-  String bannerUrl = '';
+  PickedFile? bannerFile;
+  String? bannerUrl = '';
 
   photoFromGallery() async {
     var result = await profileService.photoGallery(
@@ -116,13 +116,13 @@ class _ProfileEditViewState extends State<ProfileEditView> {
 
     user = await UserService().getUser(widget.owner);
 
-    displayNameController.text = user.displayName;
-    bioController.text = user.bio;
+    displayNameController.text = user!.displayName!;
+    bioController.text = user!.bio!;
 
     if (mounted) {
       setState(() {
-        photoUrl = user.photoUrl;
-        bannerUrl = user.bannerUrl;
+        photoUrl = user!.photoUrl;
+        bannerUrl = user!.bannerUrl;
         isLoading = false;
       });
     }
@@ -185,7 +185,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             : _bioValid = true;
 
         if (_displayNameValid && _bioValid) {
-          FlybisUser userOwnerUpdate = flybisUserOwner;
+          FlybisUser userOwnerUpdate = flybisUserOwner!;
           userOwnerUpdate.displayName = displayNameController.text;
           userOwnerUpdate.bio = bioController.text;
 
@@ -242,9 +242,9 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                                 fit: BoxFit.cover,
                                 child: bannerFile == null
                                     ? ImageNetwork.cachedNetworkImage(
-                                        imageUrl: bannerUrl,
+                                        imageUrl: bannerUrl!,
                                       )
-                                    : Image.file(File(bannerFile.path)),
+                                    : Image.file(File(bannerFile!.path)),
                               ),
                             ),
                           ),
@@ -261,9 +261,9 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                                     backgroundImage: photoFile == null
                                         ? ImageNetwork
                                             .cachedNetworkImageProvider(
-                                            photoUrl,
+                                            photoUrl!,
                                           )
-                                        : Image.file(File(photoFile.path))
+                                        : Image.file(File(photoFile!.path))
                                             .image,
                                     radius: 50.0,
                                   ),

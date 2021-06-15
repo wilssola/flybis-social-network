@@ -16,17 +16,17 @@ Future<bool> loadLibraries() async {
 }
 
 class ImageWidget extends StatefulWidget {
-  final String url;
-  final String blurHash;
-  final Color pageColor;
-  final Function onDoubleTap;
+  final String? url;
+  final String? blurHash;
+  final Color? pageColor;
+  final Function? onDoubleTap;
 
   ImageWidget({
-    @required this.url,
-    @required this.blurHash,
+    required this.url,
+    required this.blurHash,
     this.pageColor,
     this.onDoubleTap,
-    @required Key key,
+    required Key key,
   }) : super(key: key);
 
   @override
@@ -59,15 +59,13 @@ class ImageWidgetState extends State<ImageWidget> {
         }
 
         return OpenContainer(
-          closedShape: null,
           closedBuilder: (BuildContext context, Function() action) {
             return utils_widget.UtilsWidget().adaptiveImage(
               context,
               widget.url,
-              widget.blurHash,
+              widget.blurHash!,
             );
           },
-          openShape: null,
           openBuilder: (BuildContext context, Function() action) {
             return photo_view.PhotoView(
               url: widget.url,
@@ -82,7 +80,7 @@ class ImageWidgetState extends State<ImageWidget> {
           child: utils_widget.UtilsWidget().adaptiveImage(
             context,
             widget.url,
-            widget.blurHash,
+            widget.blurHash!,
           ),
         );
       },

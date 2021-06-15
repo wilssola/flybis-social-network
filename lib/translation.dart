@@ -32,14 +32,14 @@ class Translation extends Translations {
       };
 
   // Gets locale from language, and updates the locale
-  void changeLocale(String lang) {
-    final locale = getLocaleFromLanguage(lang);
+  void changeLocale(String? lang) {
+    final locale = getLocaleFromLanguage(lang)!;
 
     Get.updateLocale(locale);
   }
 
   // Finds language in `langs` list and returns it as Locale
-  Locale getLocaleFromLanguage(String lang) {
+  Locale? getLocaleFromLanguage(String? lang) {
     for (int i = 0; i < langs.length; i++) {
       if (lang == langs[i]) {
         return locales[i];

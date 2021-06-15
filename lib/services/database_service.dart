@@ -21,11 +21,11 @@ class DatabaseService {
     return FieldValue.serverTimestamp();
   }
 
-  Future<List<T>> getCollection<T>({
-    @required String collectionPath,
-    @required T builder(Map<String, dynamic> data, String documentId),
-    Query queryBuilder(Query query),
-    int sort(T lhs, T rhs),
+  Future<List<T>?> getCollection<T>({
+    required String collectionPath,
+    required T builder(Map<String, dynamic>? data, String documentId),
+    Query queryBuilder(Query query)?,
+    int sort(T lhs, T rhs)?,
   }) async {
     try {
       Query query = _db.collection(collectionPath);
@@ -36,8 +36,9 @@ class DatabaseService {
       final QuerySnapshot snapshots = await query.get();
 
       final List<T> result = snapshots.docs
-          .map((DocumentSnapshot snapshot) =>
-              builder(snapshot.exists ? snapshot.data() : null, snapshot.id))
+          .map((DocumentSnapshot snapshot) => builder(
+              snapshot.exists ? snapshot.data() as Map<String, dynamic>? : null,
+              snapshot.id))
           .where((value) => value != null)
           .toList();
 
@@ -53,9 +54,9 @@ class DatabaseService {
     }
   }
 
-  Future<T> get<T>({
-    @required String documentPath,
-    @required T builder(Map<String, dynamic> data, String documentId),
+  Future<T?> get<T>({
+    required String documentPath,
+    required T builder(Map<String, dynamic>? data, String documentId),
     Source source = Source.serverAndCache,
   }) async {
     try {
@@ -67,7 +68,9 @@ class DatabaseService {
       logger.i(
           'get: $documentPath data: ${document.exists ? document.data() : false}');
 
-      return builder(document.exists ? document.data() : null, document.id);
+      return builder(
+          document.exists ? document.data() as Map<String, dynamic>? : null,
+          document.id);
     } catch (error) {
       logger.e(error);
 
@@ -76,8 +79,8 @@ class DatabaseService {
   }
 
   Future<void> set({
-    @required String documentPath,
-    @required Map<String, dynamic> data,
+    required String documentPath,
+    required Map<String, dynamic>? data,
     bool merge = false,
   }) async {
     try {
@@ -92,8 +95,8 @@ class DatabaseService {
   }
 
   Future<void> update({
-    @required String documentPath,
-    @required Map<String, dynamic> data,
+    required String documentPath,
+    required Map<String, dynamic> data,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -107,7 +110,7 @@ class DatabaseService {
   }
 
   Future<void> delete({
-    @required String documentPath,
+    required String documentPath,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -120,9 +123,9 @@ class DatabaseService {
     }
   }
 
-  Future<T> getTransaction<T>({
-    @required String documentPath,
-    @required T builder(Map<String, dynamic> data, String documentId),
+  Future<T?> getTransaction<T>({
+    required String documentPath,
+    required T builder(Map<String, dynamic>? data, String documentId),
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -137,15 +140,17 @@ class DatabaseService {
         );
       });
 
-      return builder(document.exists ? document.data() : null, document.id);
+      return builder(
+          document.exists ? document.data() as Map<String, dynamic>? : null,
+          document.id);
     } catch (error) {
       logger.e(error);
     }
   }
 
   Future<void> setTransaction({
-    @required String documentPath,
-    @required Map<String, dynamic> data,
+    required String documentPath,
+    required Map<String, dynamic>? data,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -166,8 +171,8 @@ class DatabaseService {
   }
 
   Future<void> updateTransaction({
-    @required String documentPath,
-    @required Map<String, dynamic> data,
+    required String documentPath,
+    required Map<String, dynamic> data,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -188,7 +193,7 @@ class DatabaseService {
   }
 
   Future<void> deleteTransaction({
-    @required String documentPath,
+    required String documentPath,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -207,9 +212,9 @@ class DatabaseService {
     }
   }
 
-  Future<String> add({
-    @required String collectionPath,
-    @required Map<String, dynamic> data,
+  Future<String?> add({
+    required String collectionPath,
+    required Map<String, dynamic> data,
   }) async {
     try {
       final CollectionReference reference = _db.collection(collectionPath);
@@ -229,9 +234,9 @@ class DatabaseService {
   }
 
   Future<void> setBatch({
-    @required String collectionPath,
-    @required Map<String, dynamic> data,
-    Query queryBuilder(Query query),
+    required String collectionPath,
+    required Map<String, dynamic> data,
+    Query queryBuilder(Query query)?,
     bool merge = false,
   }) async {
     try {
@@ -251,9 +256,9 @@ class DatabaseService {
   }
 
   Future updateBatch({
-    @required String collectionPath,
-    @required Map<String, dynamic> data,
-    Query queryBuilder(Query query),
+    required String collectionPath,
+    required Map<String, dynamic> data,
+    Query queryBuilder(Query query)?,
   }) async {
     try {
       final WriteBatch batch = _db.batch();
@@ -272,8 +277,8 @@ class DatabaseService {
   }
 
   Future<void> deleteBatch({
-    @required String collectionPath,
-    Query queryBuilder(Query query),
+    required String collectionPath,
+    Query queryBuilder(Query query)?,
   }) async {
     try {
       final WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -291,11 +296,11 @@ class DatabaseService {
     }
   }
 
-  Stream<List<T>> streamCollection<T>({
-    @required String collectionPath,
-    @required T builder(Map<String, dynamic> data, String documentId),
-    Query queryBuilder(Query query),
-    int sort(T lhs, T rhs),
+  Stream<List<T>>? streamCollection<T>({
+    required String collectionPath,
+    required T builder(Map<String, dynamic>? data, String documentId),
+    Query queryBuilder(Query query)?,
+    int sort(T lhs, T rhs)?,
   }) {
     try {
       Query query = _db.collection(collectionPath);
@@ -307,8 +312,11 @@ class DatabaseService {
 
       return snapshots.map((QuerySnapshot snapshot) {
         final List<T> result = snapshot.docs
-            .map((DocumentSnapshot snapshot) =>
-                builder(snapshot.exists ? snapshot.data() : null, snapshot.id))
+            .map((DocumentSnapshot snapshot) => builder(
+                snapshot.exists
+                    ? snapshot.data() as Map<String, dynamic>?
+                    : null,
+                snapshot.id))
             .where((value) => value != null)
             .toList();
 
@@ -327,9 +335,9 @@ class DatabaseService {
     }
   }
 
-  Stream<T> streamDoc<T>({
-    @required String documentPath,
-    @required T builder(Map<String, dynamic> data, String documentId),
+  Stream<T>? streamDoc<T>({
+    required String documentPath,
+    required T builder(Map<String, dynamic>? data, String documentId),
   }) {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -337,7 +345,7 @@ class DatabaseService {
 
       return snapshots.map(
         (DocumentSnapshot snapshot) => builder(
-          snapshot.exists ? snapshot.data() : null,
+          snapshot.exists ? snapshot.data() as Map<String, dynamic>? : null,
           snapshot.id,
         ),
       );
@@ -348,8 +356,8 @@ class DatabaseService {
   }
 
   Future<void> bulkSet({
-    @required String path,
-    @required List<Map<String, dynamic>> datas,
+    required String path,
+    required List<Map<String, dynamic>> datas,
     bool merge = false,
   }) async {
     final DocumentReference reference = _db.doc(path);

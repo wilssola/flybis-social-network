@@ -43,11 +43,11 @@ class CameraView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   final String pageId = 'Camera';
-  final Color pageColor;
+  final Color? pageColor;
   final bool pageHeaderWeb;
 
   CameraView({
-    @required this.scaffoldKey,
+    required this.scaffoldKey,
     this.pageColor,
     this.pageHeaderWeb = false,
   });
@@ -58,26 +58,26 @@ class CameraView extends StatefulWidget {
 
 class CameraViewState extends State<CameraView>
     with AutomaticKeepAliveClientMixin<CameraView> {
-  List<PickedFile> files = [];
+  List<PickedFile?> files = [];
 
-  String imagePath;
-  String videoPath;
-  String contentType;
+  late String imagePath;
+  late String videoPath;
+  String? contentType;
   bool isUploading = false;
 
-  String postId;
+  String? postId;
   TextEditingController captionControler = TextEditingController();
   TextEditingController locationControler = TextEditingController();
 
   bool cameraIsInitialized = false;
-  int indexCamera;
-  Color cameraIconColor;
+  late int indexCamera;
+  Color? cameraIconColor;
   bool hasCamera = false;
   bool enableFlash = false;
-  List<CameraDescription> cameras;
-  CameraController cameraController;
+  List<CameraDescription>? cameras;
+  CameraController? cameraController;
 
-  VideoPlayerController videoPlayerController;
+  late VideoPlayerController videoPlayerController;
 
   final thumbWidth = 100;
   final thumbHeight = 150;
@@ -139,16 +139,16 @@ class CameraViewState extends State<CameraView>
     availableCameras().then((List<CameraDescription> availableCameras) {
       cameras = availableCameras;
 
-      if (cameras.length > 0) {
+      if (cameras!.length > 0) {
         if (mounted) {
           setState(() {
             indexCamera = 0;
           });
         }
 
-        initCameraController(cameras[indexCamera]);
+        initCameraController(cameras![indexCamera]);
 
-        print('Has ${cameras.length.toString()} Cameras Availables');
+        print('Has ${cameras!.length.toString()} Cameras Availables');
       } else {
         print('No Cameras Availables');
       }
@@ -157,7 +157,7 @@ class CameraViewState extends State<CameraView>
     });
 
     if (cameraController != null) {
-      cameraController.initialize().then((_) {
+      cameraController!.initialize().then((_) {
         if (mounted) {
           setState(() {
             cameraController = cameraController;
@@ -173,7 +173,7 @@ class CameraViewState extends State<CameraView>
         cameraIsInitialized = false;
       });
 
-      await cameraController.dispose();
+      await cameraController!.dispose();
     }
 
     setState(() {
@@ -184,12 +184,12 @@ class CameraViewState extends State<CameraView>
     });
 
     // If the controller is updated then update the UI.
-    cameraController.addListener(() {
-      if (cameraController.value.hasError) {
-        print('Camera Error ${cameraController.value.errorDescription}');
+    cameraController!.addListener(() {
+      if (cameraController!.value.hasError) {
+        print('Camera Error ${cameraController!.value.errorDescription}');
       }
 
-      if (cameraController.value.isInitialized) {
+      if (cameraController!.value.isInitialized!) {
         setState(() {
           cameraIsInitialized = true;
         });
@@ -197,19 +197,19 @@ class CameraViewState extends State<CameraView>
     });
 
     try {
-      await cameraController.initialize();
+      await cameraController!.initialize();
     } on CameraException catch (error) {
       print(error);
     }
   }
 
   Widget cameraToggle() {
-    if (cameras == null || cameras.isEmpty) {
+    if (cameras == null || cameras!.isEmpty) {
       return Spacer();
     }
 
-    CameraDescription selectedCamera = cameras[indexCamera];
-    CameraLensDirection lensDirection = selectedCamera.lensDirection;
+    CameraDescription selectedCamera = cameras![indexCamera];
+    CameraLensDirection? lensDirection = selectedCamera.lensDirection;
 
     return Container(
       child: Align(
@@ -239,7 +239,7 @@ class CameraViewState extends State<CameraView>
   }
 
   Widget cameraFlash() {
-    if (cameras == null || cameras.isEmpty) {
+    if (cameras == null || cameras!.isEmpty) {
       return Spacer();
     }
 
@@ -266,7 +266,7 @@ class CameraViewState extends State<CameraView>
   }
 
   Widget cameraGallery() {
-    if (cameras == null || cameras.isEmpty) {
+    if (cameras == null || cameras!.isEmpty) {
       return Spacer();
     }
 
@@ -333,7 +333,7 @@ class CameraViewState extends State<CameraView>
     );
   }
 
-  IconData getCameraLensIcon(CameraLensDirection direction) {
+  IconData getCameraLensIcon(CameraLensDirection? direction) {
     switch (direction) {
       case CameraLensDirection.back:
         return Icons.camera_rear;
@@ -347,9 +347,9 @@ class CameraViewState extends State<CameraView>
   }
 
   void onSwitchCamera() {
-    indexCamera = indexCamera < cameras.length - 1 ? indexCamera + 1 : 0;
+    indexCamera = indexCamera < cameras!.length - 1 ? indexCamera + 1 : 0;
 
-    CameraDescription selectedCamera = cameras[indexCamera];
+    CameraDescription selectedCamera = cameras![indexCamera];
 
     initCameraController(selectedCamera);
   }
@@ -373,7 +373,7 @@ class CameraViewState extends State<CameraView>
 
     try {
       imagePath = (await getTemporaryDirectory()).path + '/$postId.jpg';
-      await cameraController.takePicture(imagePath);
+      await cameraController!.takePicture(imagePath);
 
       contentType = 'image';
       setState(() {
@@ -389,7 +389,7 @@ class CameraViewState extends State<CameraView>
 
     try {
       videoPath = (await getTemporaryDirectory()).path + '/$postId.mp4';
-      await cameraController.startVideoRecording(videoPath);
+      await cameraController!.startVideoRecording(videoPath);
 
       cameraIconColor = Colors.red;
     } catch (error) {
@@ -399,7 +399,7 @@ class CameraViewState extends State<CameraView>
 
   void stopCaptureVideo(context) async {
     try {
-      await cameraController.stopVideoRecording();
+      await cameraController!.stopVideoRecording();
 
       cameraIconColor = Colors.white;
 
@@ -435,7 +435,8 @@ class CameraViewState extends State<CameraView>
 
     Navigator.pop(context);
 
-    PickedFile file = await ImagePicker().getVideo(source: ImageSource.gallery);
+    PickedFile? file =
+        await ImagePicker().getVideo(source: ImageSource.gallery);
 
     if (mounted) {
       setState(() {
@@ -450,7 +451,8 @@ class CameraViewState extends State<CameraView>
 
     Navigator.pop(context);
 
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery);
+    PickedFile? file =
+        await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (mounted) {
       setState(() {
@@ -510,14 +512,14 @@ class CameraViewState extends State<CameraView>
   }
 
   Future<String> uploadFile(PickedFile file) async {
-    UploadTask uploadTask;
+    late UploadTask uploadTask;
 
     Uint8List fileData = await file.readAsBytes();
 
     if (contentType == 'image') {
       try {
         uploadTask = storage
-            .child(flybisUserOwner.uid + '/posts/images/$postId/$postId.jpg')
+            .child(flybisUserOwner!.uid! + '/posts/images/$postId/$postId.jpg')
             .putData(
               fileData,
               SettableMetadata(contentType: 'image/jpeg'),
@@ -528,7 +530,7 @@ class CameraViewState extends State<CameraView>
     } else if (contentType == 'video') {
       try {
         uploadTask = storage
-            .child(flybisUserOwner.uid + '/posts/videos/$postId/$postId.mp4')
+            .child(flybisUserOwner!.uid! + '/posts/videos/$postId/$postId.mp4')
             .putData(
               fileData,
               SettableMetadata(contentType: 'video/mp4'),
@@ -547,11 +549,12 @@ class CameraViewState extends State<CameraView>
   }
 
   Future filterImage(BuildContext context) async {
-    var fileName = files[0].path.split('/').last;
-    var imageDecode = image.decodeImage(File(files[0].path).readAsBytesSync());
+    var fileName = files[0]!.path.split('/').last;
+    var imageDecode =
+        image.decodeImage(File(files[0]!.path).readAsBytesSync())!;
     imageDecode = image.copyResize(imageDecode, width: 600);
 
-    Map imagefile = await Navigator.push(
+    Map? imagefile = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PhotoFilterSelector(
@@ -585,11 +588,11 @@ class CameraViewState extends State<CameraView>
     Placemark placemark = placemarks[0];
 
     String formatedAdress;
-    if (placemark.locality.length > 0 && placemark.country.length > 0) {
+    if (placemark.locality!.length > 0 && placemark.country!.length > 0) {
       formatedAdress = '${placemark.locality}, ${placemark.country}';
-    } else if (placemark.locality.length > 0) {
+    } else if (placemark.locality!.length > 0) {
       formatedAdress = '${placemark.locality}';
-    } else if (placemark.country.length > 0) {
+    } else if (placemark.country!.length > 0) {
       formatedAdress = '${placemark.country}';
     } else {
       formatedAdress = 'Desconhecido';
@@ -599,14 +602,14 @@ class CameraViewState extends State<CameraView>
   }
 
   void createPostInFirestore({
-    String contentUrl,
-    String postTitle,
-    String postLocation,
-    String postDescription,
+    String? contentUrl,
+    String? postTitle,
+    String? postLocation,
+    required String postDescription,
   }) {
     FlybisPost post = FlybisPost(
       // User
-      userId: flybisUserOwner.uid,
+      userId: flybisUserOwner!.uid,
       // Post
       postId: postId,
       postTitle: postTitle,
@@ -631,7 +634,7 @@ class CameraViewState extends State<CameraView>
 
     String contentUrl;
 
-    contentUrl = await uploadFile(files[0]);
+    contentUrl = await uploadFile(files[0]!);
 
     createPostInFirestore(
       contentUrl: contentUrl,
@@ -656,7 +659,7 @@ class CameraViewState extends State<CameraView>
     final path = tempDir.path;
 
     image.Image imageFile =
-        image.decodeImage(File(files[0].path).readAsBytesSync());
+        image.decodeImage(File(files[0]!.path).readAsBytesSync())!;
 
     final compressedImageFile = File('$path/img_$postId.jpg')
       ..writeAsBytesSync(image.encodeJpg(imageFile, quality: 85));
@@ -680,16 +683,16 @@ class CameraViewState extends State<CameraView>
     final Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      appBar: appBar(),
+      appBar: appBar() as PreferredSizeWidget?,
       body: Stack(
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: AspectRatio(
-              aspectRatio: cameraController.value.aspectRatio,
+              aspectRatio: cameraController!.value.aspectRatio,
               child: CameraPreview(
-                cameraController,
+                cameraController!,
               ),
             ),
           ),
@@ -781,8 +784,8 @@ class CameraViewState extends State<CameraView>
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: !kIsWeb
-                                      ? Image.file(File(files[0].path)).image
-                                      : Image.network(files[0].path).image,
+                                      ? Image.file(File(files[0]!.path)).image
+                                      : Image.network(files[0]!.path).image,
                                 ),
                               ),
                             ),
@@ -827,7 +830,7 @@ class CameraViewState extends State<CameraView>
                                 type: kIsWeb
                                     ? VideoSourceType.url
                                     : VideoSourceType.file,
-                                source: files[0].path,
+                                source: files[0]!.path,
                               ),
                               Positioned(
                                 left: 0,
@@ -851,7 +854,7 @@ class CameraViewState extends State<CameraView>
                                     ),
                                     onPressed: () {
                                       Get.to(VideoEditor(
-                                          file: File(files[0].path)));
+                                          file: File(files[0]!.path)));
                                     },
                                   ),
                                 ),
@@ -871,7 +874,7 @@ class CameraViewState extends State<CameraView>
           ListTile(
             leading: CircleAvatar(
               backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                flybisUserOwner.photoUrl,
+                flybisUserOwner!.photoUrl!,
               ),
             ),
             title: DetectableTextField(
@@ -950,7 +953,7 @@ class CameraViewState extends State<CameraView>
           return camera(context);
         } else {
           return Scaffold(
-            appBar: appBar(),
+            appBar: appBar() as PreferredSizeWidget?,
             body: Container(color: Colors.black),
           );
         }

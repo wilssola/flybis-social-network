@@ -52,15 +52,15 @@ Future<bool> loadLibraries() async {
 }
 
 class PostWidget extends StatefulWidget {
-  final FlybisPost flybisPost;
+  final FlybisPost? flybisPost;
   final PostWidgetType postWidgetType;
-  final Color pageColor;
+  final Color? pageColor;
 
   PostWidget({
-    @required this.flybisPost,
-    @required this.postWidgetType,
+    required this.flybisPost,
+    required this.postWidgetType,
     this.pageColor,
-    @required Key key,
+    required Key key,
   }) : super(key: key);
 
   @override
@@ -68,14 +68,14 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  FlybisUser _flybisUser = FlybisUser();
+  FlybisUser? _flybisUser = FlybisUser();
 
-  bool isLiked = false;
-  bool isDisliked = false;
+  bool? isLiked = false;
+  bool? isDisliked = false;
 
   bool iconShow = false;
-  Color iconColor;
-  IconData iconData;
+  Color? iconColor;
+  IconData? iconData;
 
   int _contentIndex = 0;
 
@@ -93,8 +93,8 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Future<void> getUser() async {
-    FlybisUser flybisUser =
-        await UserService().getUser(widget.flybisPost.userId);
+    FlybisUser? flybisUser =
+        await UserService().getUser(widget.flybisPost!.userId);
 
     if (mounted) {
       setState(() {
@@ -104,15 +104,15 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Future<void> getLikeOrDislike() async {
-    bool isLiked = await PostService().getLike(
-      widget.flybisPost.userId,
-      widget.flybisPost.postId,
-      flybisUserOwner.uid,
+    bool? isLiked = await PostService().getLike(
+      widget.flybisPost!.userId,
+      widget.flybisPost!.postId,
+      flybisUserOwner!.uid,
     );
-    bool isDisliked = await PostService().getDislike(
-      widget.flybisPost.userId,
-      widget.flybisPost.postId,
-      flybisUserOwner.uid,
+    bool? isDisliked = await PostService().getDislike(
+      widget.flybisPost!.userId,
+      widget.flybisPost!.postId,
+      flybisUserOwner!.uid,
     );
 
     if (mounted) {
@@ -136,11 +136,11 @@ class _PostWidgetState extends State<PostWidget> {
   void handleLike() async {
     logger.i('handleLike');
 
-    if (isLiked) {
+    if (isLiked!) {
       await PostService().deleteLike(
-        widget.flybisPost.userId,
-        widget.flybisPost.postId,
-        flybisUserOwner.uid,
+        widget.flybisPost!.userId,
+        widget.flybisPost!.postId,
+        flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -148,11 +148,11 @@ class _PostWidgetState extends State<PostWidget> {
           this.isLiked = false;
         });
       }
-    } else if (!isLiked && !isDisliked) {
+    } else if (!isLiked! && !isDisliked!) {
       await PostService().setLike(
-        widget.flybisPost.userId,
-        widget.flybisPost.postId,
-        flybisUserOwner.uid,
+        widget.flybisPost!.userId,
+        widget.flybisPost!.postId,
+        flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -171,11 +171,11 @@ class _PostWidgetState extends State<PostWidget> {
   void handleDislike() async {
     logger.i('handleDislike');
 
-    if (isDisliked) {
+    if (isDisliked!) {
       PostService().deleteDislike(
-        widget.flybisPost.userId,
-        widget.flybisPost.postId,
-        flybisUserOwner.uid,
+        widget.flybisPost!.userId,
+        widget.flybisPost!.postId,
+        flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -183,11 +183,11 @@ class _PostWidgetState extends State<PostWidget> {
           this.isDisliked = false;
         });
       }
-    } else if (!isDisliked && !isLiked) {
+    } else if (!isDisliked! && !isLiked!) {
       PostService().setDislike(
-        widget.flybisPost.userId,
-        widget.flybisPost.postId,
-        flybisUserOwner.uid,
+        widget.flybisPost!.userId,
+        widget.flybisPost!.postId,
+        flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -206,19 +206,19 @@ class _PostWidgetState extends State<PostWidget> {
   void handleLikes() {
     logger.i('handleLikes');
 
-    if (!isLiked && !isDisliked) {
+    if (!isLiked! && !isDisliked!) {
       handleLike();
-    } else if (isLiked && !isDisliked) {
+    } else if (isLiked! && !isDisliked!) {
       handleLike();
       handleDislike();
-    } else if (!isLiked && isDisliked) {
+    } else if (!isLiked! && isDisliked!) {
       handleDislike();
     }
   }
 
   Future<void> delete() async {
     await PostService()
-        .deletePost(widget.flybisPost.userId, widget.flybisPost.postId);
+        .deletePost(widget.flybisPost!.userId, widget.flybisPost!.postId);
   }
 
   Future<void> options(BuildContext context, bool isOwner) {
@@ -267,7 +267,7 @@ class _PostWidgetState extends State<PostWidget> {
   Widget header(BuildContext context) {
     const double kHeaderHeight = 80;
 
-    bool isOwner = flybisUserOwner.uid == widget.flybisPost.userId;
+    bool isOwner = flybisUserOwner!.uid == widget.flybisPost!.userId;
 
     return Container(
       height: kHeaderHeight,
@@ -277,7 +277,7 @@ class _PostWidgetState extends State<PostWidget> {
           backgroundColor: kAvatarBackground,
           backgroundImage:
               image_network.ImageNetwork.cachedNetworkImageProvider(
-            _flybisUser.photoUrl,
+            _flybisUser!.photoUrl!,
           ),
         ),
         title: MouseRegion(
@@ -285,19 +285,20 @@ class _PostWidgetState extends State<PostWidget> {
           child: GestureDetector(
             onTap: () => profile_view.showProfile(
               context,
-              uid: widget.flybisPost.userId,
+              uid: widget.flybisPost!.userId,
               pageColor: widget.pageColor,
             ),
-            child: _flybisUser.username.length > 0
-                ? utils_widget.UtilsWidget().usernameText(_flybisUser.username)
+            child: _flybisUser!.username!.length > 0
+                ? utils_widget.UtilsWidget()
+                    .usernameText(_flybisUser!.username!)
                 : utils_widget.UtilsWidget().shimmer(context, height: 17.5),
           ),
         ),
-        subtitle: _flybisUser.displayName.length > 0
+        subtitle: _flybisUser!.displayName!.length > 0
             ? Text(
-                widget.flybisPost.postLocation.length > 0
-                    ? widget.flybisPost.postLocation
-                    : _flybisUser.displayName,
+                widget.flybisPost!.postLocation!.length > 0
+                    ? widget.flybisPost!.postLocation!
+                    : _flybisUser!.displayName!,
               )
             : utils_widget.UtilsWidget().shimmer(context, height: 17.5),
         trailing: MouseRegion(
@@ -324,25 +325,25 @@ class _PostWidgetState extends State<PostWidget> {
 
     List<Widget> contents = [];
 
-    for (int i = 0; i < widget.flybisPost.postContents.length; i++) {
+    for (int i = 0; i < widget.flybisPost!.postContents!.length; i++) {
       Widget content;
 
-      if (widget.flybisPost.postContents[i].contentType == 'image') {
+      if (widget.flybisPost!.postContents![i].contentType == 'image') {
         content = image_widget.ImageWidget(
-          key: ValueKey(widget.flybisPost.postContents[i].contentUrl),
-          url: widget.flybisPost.postContents[i].contentUrl,
-          blurHash: widget.flybisPost.postContents[i].blurHash,
+          key: ValueKey(widget.flybisPost!.postContents![i].contentUrl),
+          url: widget.flybisPost!.postContents![i].contentUrl,
+          blurHash: widget.flybisPost!.postContents![i].blurHash,
           onDoubleTap: handleLikes,
         );
       } else {
         content = video_widget.VideoWidget(
           type: video_widget.VideoSourceType.hls,
-          source: widget.flybisPost.postContents[i].contentUrl,
-          title: widget.flybisPost.postTitle.length > 0
-              ? widget.flybisPost.postTitle
-              : widget.flybisPost.postId,
-          author: _flybisUser.displayName,
-          imageUrl: widget.flybisPost.postContents[i].contentThumbnail,
+          source: widget.flybisPost!.postContents![i].contentUrl,
+          title: widget.flybisPost!.postTitle!.length > 0
+              ? widget.flybisPost!.postTitle
+              : widget.flybisPost!.postId,
+          author: _flybisUser!.displayName,
+          imageUrl: widget.flybisPost!.postContents![i].contentThumbnail,
           onDoubleTap: handleLikes,
         );
       }
@@ -366,8 +367,8 @@ class _PostWidgetState extends State<PostWidget> {
                       enlargeCenterPage: true,
                       enableInfiniteScroll: false,
                       scrollPhysics: BouncingScrollPhysics(),
-                      aspectRatio: widget.flybisPost.postContents[_contentIndex]
-                          .contentAspectRatio,
+                      aspectRatio: widget.flybisPost!
+                          .postContents![_contentIndex].contentAspectRatio!,
                       onPageChanged: (int index, var reason) {
                         if (mounted) {
                           setState(() {
@@ -415,7 +416,7 @@ class _PostWidgetState extends State<PostWidget> {
       width: footerWidth,
       child: Column(
         children: <Widget>[
-          widget.flybisPost.postDescription.length > 0
+          widget.flybisPost!.postDescription.length > 0
               ? Container(
                   width: footerWidth,
                   padding: EdgeInsets.only(
@@ -426,7 +427,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   child: Container(
                     child: DetectableText(
-                      text: widget.flybisPost.postDescription,
+                      text: widget.flybisPost!.postDescription,
                       detectionRegExp: hashTagAtSignUrlRegExp,
                       detectedStyle:
                           TextStyle(fontSize: 15, color: Colors.blue),
@@ -459,8 +460,8 @@ class _PostWidgetState extends State<PostWidget> {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () => showPostComment(
-                      widget.flybisPost.userId,
-                      widget.flybisPost.postId,
+                      widget.flybisPost!.userId,
+                      widget.flybisPost!.postId,
                       widget.pageColor,
                     ),
                     child: Icon(
@@ -481,8 +482,8 @@ class _PostWidgetState extends State<PostWidget> {
 
   Widget streamTimestamp() {
     final endTimestamp = FlybisPost.checkTimestamp(
-      widget.flybisPost.timestampDuration,
-      widget.flybisPost.timestampPopularity,
+      widget.flybisPost!.timestampDuration,
+      widget.flybisPost!.timestampPopularity,
     );
 
     return StreamBuilder(
@@ -530,26 +531,26 @@ class _PostWidgetState extends State<PostWidget> {
 
   Widget likeOrDislike({
     String type = 'likes',
-    @required Function onTap,
+    required Function onTap,
   }) {
     return StreamBuilder(
       stream: PostService().streamLikeDislike(
-        widget.flybisPost.userId,
-        widget.flybisPost.postId,
+        widget.flybisPost!.userId,
+        widget.flybisPost!.postId,
         type,
-        flybisUserOwner.uid,
+        flybisUserOwner!.uid,
       ),
       builder: (
         BuildContext context,
         AsyncSnapshot<FlybisDocument> snapshot,
       ) {
-        Color defaultColor = Theme.of(context).iconTheme.color;
+        Color? defaultColor = Theme.of(context).iconTheme.color;
         Color activeColor = type == 'likes' ? Colors.green : Colors.red;
         IconData icon = type == 'likes' ? Icons.thumb_up : Icons.thumb_down;
 
         int count = type == 'likes'
-            ? widget.flybisPost.likesCount
-            : widget.flybisPost.dislikesCount;
+            ? widget.flybisPost!.likesCount
+            : widget.flybisPost!.dislikesCount;
         bool exists = snapshot.hasData;
 
         return MouseRegion(
@@ -581,8 +582,8 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget likeOrDislikeAnimation(
-    IconData icon,
-    Color color,
+    IconData? icon,
+    Color? color,
     double size,
   ) {
     return animator.Animator(
@@ -591,7 +592,7 @@ class _PostWidgetState extends State<PostWidget> {
       curve: Curves.elasticOut,
       cycles: 0,
       builder: (context, anim, child) => Transform.scale(
-        scale: anim.value,
+        scale: anim.value as double,
         child: Icon(
           icon,
           color: color,
@@ -617,19 +618,19 @@ class _PostWidgetState extends State<PostWidget> {
   Widget buildGrid() {
     Widget image;
 
-    switch (widget.flybisPost.postContents[0].contentType) {
+    switch (widget.flybisPost!.postContents![0].contentType) {
       case 'video':
         image = utils_widget.UtilsWidget().adaptiveImage(
           context,
-          widget.flybisPost.postContents[0].contentThumbnail,
-          widget.flybisPost.postContents[0].blurHash,
+          widget.flybisPost!.postContents![0].contentThumbnail,
+          widget.flybisPost!.postContents![0].blurHash!,
         );
         break;
       default:
         image = utils_widget.UtilsWidget().adaptiveImage(
           context,
-          widget.flybisPost.postContents[0].contentUrl,
-          widget.flybisPost.postContents[0].blurHash,
+          widget.flybisPost!.postContents![0].contentUrl,
+          widget.flybisPost!.postContents![0].blurHash!,
         );
         break;
     }
@@ -643,11 +644,9 @@ class _PostWidgetState extends State<PostWidget> {
           widget.pageColor,
         ),*/
         child: OpenContainer(
-          closedShape: null,
           closedBuilder: (BuildContext context, Function() action) {
             return GridTile(child: image);
           },
-          openShape: null,
           openBuilder: (BuildContext context, Function() action) {
             return post_view.PostView(
               flybisPost: widget.flybisPost,
@@ -689,9 +688,9 @@ void showPost(
 }
 
 void showPostComment(
-  String userId,
-  String postId,
-  Color pageColor,
+  String? userId,
+  String? postId,
+  Color? pageColor,
 ) {
   Get.to(
     comment_view.CommentView(

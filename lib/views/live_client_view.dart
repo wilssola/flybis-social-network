@@ -24,10 +24,10 @@ import 'package:flybis/services/user_service.dart';
 import 'package:flybis/setting.dart';
 
 class LiveClientView extends StatefulWidget {
-  final FlybisLive live;
+  final FlybisLive? live;
 
   const LiveClientView({
-    Key key,
+    Key? key,
     this.live,
   }) : super(key: key);
 
@@ -40,8 +40,8 @@ class _LiveClientViewState extends State<LiveClientView> {
   bool completed = false;
   static final _users = <int>[];
   bool muted = true;
-  int userNo = 0;
-  Map<String, String> userMap;
+  int? userNo = 0;
+  late Map<String?, String?> userMap;
   bool heart = false;
   bool requested = false;
 
@@ -52,23 +52,23 @@ class _LiveClientViewState extends State<LiveClientView> {
 
   final _infoStrings = <Message>[];
 
-  AgoraRtmClient _client;
-  AgoraRtmChannel _channel;
+  AgoraRtmClient? _client;
+  late AgoraRtmChannel _channel;
 
   //Love animation
   final _random = math.Random();
-  Timer _timer;
+  late Timer _timer;
   double height = 0.0;
   int _numConfetti = 10;
-  var len;
+  late var len;
   bool accepted = false;
   bool stop = false;
 
-  FlybisUser liveOwner;
+  FlybisUser? liveOwner;
 
-  RtcEngine engine;
+  late RtcEngine engine;
 
-  int uid;
+  int? uid;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _LiveClientViewState extends State<LiveClientView> {
     // initialize agora sdk
     initialize();
 
-    userMap = {flybisUserOwner.username: flybisUserOwner.photoUrl};
+    userMap = {flybisUserOwner!.username: flybisUserOwner!.photoUrl};
 
     _createClient();
   }
@@ -102,14 +102,14 @@ class _LiveClientViewState extends State<LiveClientView> {
       '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''',
     );
 
-    await engine.joinChannel(agoraIoToken, widget.live.liveId, null, 0);
+    await engine.joinChannel(agoraIoToken, widget.live!.liveId!, null, 0);
 
-    liveOwner = await UserService().getUser(widget.live.userId);
+    liveOwner = await UserService().getUser(widget.live!.userId);
   }
 
   /// Create agora sdk instance and initialize
   Future<void> _initAgoraRtcEngine() async {
-    engine = await RtcEngine.createWithConfig(RtcEngineConfig(AGORA_APP_ID));
+    engine = await RtcEngine.createWithContext(RtcEngineContext(AGORA_APP_ID));
 
     await engine.enableVideo();
     //await AgoraRtcEngine.muteLocalAudioStream(true);
@@ -164,13 +164,13 @@ class _LiveClientViewState extends State<LiveClientView> {
       if (uid == this.uid) {
         list.add(RtcRemoteView.SurfaceView(
           uid: uid,
-          channelId: widget.live.liveId,
+          channelId: widget.live!.liveId!,
         ));
       }
     });
     if (accepted == true) {
       list.add(RtcLocalView.SurfaceView(
-        channelId: widget.live.liveId,
+        channelId: widget.live!.liveId,
       ));
     }
 
@@ -291,7 +291,7 @@ class _LiveClientViewState extends State<LiveClientView> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return null;
+                return Padding(padding: EdgeInsets.zero);
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -306,7 +306,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             CachedNetworkImage(
-                              imageUrl: _infoStrings[index].image,
+                              imageUrl: _infoStrings[index].image!,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
                                 width: 32.0,
@@ -341,7 +341,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 CachedNetworkImage(
-                                  imageUrl: _infoStrings[index].image,
+                                  imageUrl: _infoStrings[index].image!,
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     width: 32.0,
@@ -362,7 +362,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                                         horizontal: 8,
                                       ),
                                       child: Text(
-                                        _infoStrings[index].user,
+                                        _infoStrings[index].user!,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 14,
@@ -377,7 +377,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                                         horizontal: 8,
                                       ),
                                       child: Text(
-                                        _infoStrings[index].message,
+                                        _infoStrings[index].message!,
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 14),
                                       ),
@@ -505,7 +505,7 @@ class _LiveClientViewState extends State<LiveClientView> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             CachedNetworkImage(
-              imageUrl: liveOwner.photoUrl,
+              imageUrl: liveOwner!.photoUrl!,
               imageBuilder: (context, imageProvider) => Container(
                 width: 30.0,
                 height: 30.0,
@@ -520,7 +520,7 @@ class _LiveClientViewState extends State<LiveClientView> {
               padding:
                   const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
               child: Text(
-                '${liveOwner.username}',
+                '${liveOwner!.username}',
                 style: TextStyle(
                     shadows: [
                       Shadow(
@@ -575,7 +575,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                           ),
                         ),
                         CachedNetworkImage(
-                          imageUrl: liveOwner.photoUrl,
+                          imageUrl: liveOwner!.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
                             width: 70.0,
                             height: 70.0,
@@ -604,7 +604,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                           ),
                         ),
                         CachedNetworkImage(
-                          imageUrl: liveOwner.photoUrl,
+                          imageUrl: liveOwner!.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
                             width: 70.0,
                             height: 70.0,
@@ -624,7 +624,7 @@ class _LiveClientViewState extends State<LiveClientView> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Text(
-                '${liveOwner.username} Wants You To Be In This Live Video.',
+                '${liveOwner!.username} Wants You To Be In This Live Video.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -656,7 +656,7 @@ class _LiveClientViewState extends State<LiveClientView> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Text(
-                    'Go Live with ${liveOwner.username}',
+                    'Go Live with ${liveOwner!.username}',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -846,7 +846,7 @@ class _LiveClientViewState extends State<LiveClientView> {
 
   void _logout() async {
     try {
-      await _client.logout();
+      await _client!.logout();
       // _log('Logout success.');
     } catch (errorCode) {
       //_log('Logout error: ' + errorCode.toString());
@@ -857,8 +857,8 @@ class _LiveClientViewState extends State<LiveClientView> {
     try {
       await _channel.leave();
       //_log('Leave channel success.');
-      _client.releaseChannel(_channel.channelId);
-      _channelMessageController.text = null;
+      _client!.releaseChannel(_channel.channelId!);
+      _channelMessageController.text = 'null';
     } catch (errorCode) {
       //_log('Leave channel error: ' + errorCode.toString());
     }
@@ -872,7 +872,7 @@ class _LiveClientViewState extends State<LiveClientView> {
     try {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-      _log(user: flybisUserOwner.username, info: text, type: 'message');
+      _log(user: flybisUserOwner!.username, info: text, type: 'message');
     } catch (errorCode) {
       //_log('Send channel message error: ' + errorCode.toString());
     }
@@ -885,7 +885,7 @@ class _LiveClientViewState extends State<LiveClientView> {
     try {
       _channelMessageController.clear();
       await _channel.sendMessage(AgoraRtmMessage.fromText(text));
-      _log(user: flybisUserOwner.username, info: text, type: 'message');
+      _log(user: flybisUserOwner!.username, info: text, type: 'message');
     } catch (errorCode) {
       //_log('Send channel message error: ' + errorCode.toString());
     }
@@ -894,21 +894,22 @@ class _LiveClientViewState extends State<LiveClientView> {
   void _createClient() async {
     _client =
         await AgoraRtmClient.createInstance('b42ce8d86225475c9558e478f1ed4e8e');
-    _client.onMessageReceived = (AgoraRtmMessage message, String peerId) async {
-      userMap.putIfAbsent(peerId, () => flybisUserOwner.photoUrl);
+    _client!.onMessageReceived =
+        (AgoraRtmMessage message, String peerId) async {
+      userMap.putIfAbsent(peerId, () => flybisUserOwner!.photoUrl);
       _log(user: peerId, info: message.text, type: 'message');
     };
-    _client.onConnectionStateChanged = (int state, int reason) {
+    _client!.onConnectionStateChanged = (int state, int reason) {
       if (state == 5) {
-        _client.logout();
+        _client!.logout();
         // _log('Logout.');
         setState(() {
           _isLogin = false;
         });
       }
     };
-    await _client.login(null, flybisUserOwner.username);
-    _channel = await _createChannel(widget.live.liveId);
+    await _client!.login(null, flybisUserOwner!.username!);
+    _channel = await _createChannel(widget.live!.liveId!);
     await _channel.join();
     var len;
     _channel.getMembers().then((value) {
@@ -920,9 +921,10 @@ class _LiveClientViewState extends State<LiveClientView> {
   }
 
   Future<AgoraRtmChannel> _createChannel(String name) async {
-    AgoraRtmChannel channel = await _client.createChannel(name);
+    AgoraRtmChannel channel =
+        await (_client!.createChannel(name) as FutureOr<AgoraRtmChannel>);
     channel.onMemberJoined = (AgoraRtmMember member) async {
-      userMap.putIfAbsent(member.userId, () => flybisUserOwner.photoUrl);
+      userMap.putIfAbsent(member.userId, () => flybisUserOwner!.photoUrl);
 
       _channel.getMembers().then((value) {
         len = value.length;
@@ -944,23 +946,23 @@ class _LiveClientViewState extends State<LiveClientView> {
     };
     channel.onMessageReceived =
         (AgoraRtmMessage message, AgoraRtmMember member) async {
-      userMap.putIfAbsent(member.userId, () => flybisUserOwner.photoUrl);
+      userMap.putIfAbsent(member.userId, () => flybisUserOwner!.photoUrl);
       _log(user: member.userId, info: message.text, type: 'message');
     };
     return channel;
   }
 
-  void _log({String info, String type, String user}) {
-    if (type == 'message' && info.contains('m1x2y3z4p5t6l7k8')) {
+  void _log({String? info, String? type, String? user}) {
+    if (type == 'message' && info!.contains('m1x2y3z4p5t6l7k8')) {
       popUp();
-    } else if (type == 'message' && info.contains('E1m2I3l4i5E6')) {
+    } else if (type == 'message' && info!.contains('E1m2I3l4i5E6')) {
       stopFunction();
     } else {
       Message m;
       var image = userMap[user];
-      if (info.contains('d1a2v3i4s5h6')) {
+      if (info!.contains('d1a2v3i4s5h6')) {
         var mess = info.split(' ');
-        if (mess[1] == flybisUserOwner.username) {
+        if (mess[1] == flybisUserOwner!.username) {
           /*m = new Message(
               message: 'working', type: type, user: user, image: image);*/
           setState(() {

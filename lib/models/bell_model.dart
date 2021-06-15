@@ -15,7 +15,7 @@ class FlybisBell {
 
   // Bell
   String bellId;
-  FlybisBellContent bellContent;
+  FlybisBellContent? bellContent;
   String bellMode; // comment, friend, follow, message
 
   // Timestamp
@@ -39,12 +39,12 @@ class FlybisBell {
   });
 
   factory FlybisBell.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     try {
       if (data == null) {
-        return null;
+        return FlybisBell();
       }
 
       logger.d('FlybisBell.fromMap: ' + data.toString());
@@ -70,26 +70,26 @@ class FlybisBell {
     } catch (error) {
       logger.e('FlybisBell.fromMap: ' + error.toString());
 
-      return null;
+      return FlybisBell();
     }
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     try {
       return {
         // Reference
         'ref': this.ref ?? null,
 
         // Users
-        'senderId': this.senderId ?? '',
-        'receiverId': this.receiverId ?? '',
+        'senderId': this.senderId,
+        'receiverId': this.receiverId,
 
         // Bell
-        'bellId': this.bellId ?? '',
+        'bellId': this.bellId,
         'bellContent': this.bellContent != null
-            ? this.bellContent.toMap()
+            ? this.bellContent!.toMap()
             : FlybisBellContent().toMap(),
-        'bellMode': this.bellMode ?? '', // comment, friend, follow, message
+        'bellMode': this.bellMode, // comment, friend, follow, message
 
         // Timestamp
         'timestamp': this.timestamp ?? timestampNow(),
@@ -116,11 +116,11 @@ class FlybisBellContent {
   });
 
   factory FlybisBellContent.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
   ) {
     try {
       if (data == null) {
-        return null;
+        return FlybisBellContent();
       }
 
       logger.d('FlybisBellContent.fromMap: ' + data.toString());
@@ -134,17 +134,17 @@ class FlybisBellContent {
     } catch (error) {
       logger.e('FlybisBellContent.fromMap: ' + error.toString());
 
-      return null;
+      return FlybisBellContent();
     }
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     try {
       return {
-        'contentId': this.contentId ?? '',
-        'contentType': this.contentType ?? '',
-        'contentText': this.contentText ?? '',
-        'contentImage': this.contentImage ?? '',
+        'contentId': this.contentId,
+        'contentType': this.contentType,
+        'contentText': this.contentText,
+        'contentImage': this.contentImage,
       };
     } catch (error) {
       logger.e('FlybisBellContent.toMap: ' + error.toString());
@@ -156,49 +156,49 @@ class FlybisBellContent {
 
 class FlybisBellData {
   // Users
-  final String senderId;
-  final String receiverId;
+  final String? senderId;
+  final String? receiverId;
 
   // Bell
   final FlybisBell bell;
 
   FlybisBellData({
     // Users
-    @required this.senderId,
-    @required this.receiverId,
+    required this.senderId,
+    required this.receiverId,
 
     // Bell
-    @required this.bell,
+    required this.bell,
   });
 
   factory FlybisBellData.fromMap(
     Map<String, dynamic> data,
   ) {
-    try {
-      if (data == null) {
-        return null;
-      }
+    //try {
+    //if (data == null) {
+    //return null;
+    //}
 
-      logger.d('FlybisBellData.fromMap: ' + data.toString());
+    logger.d('FlybisBellData.fromMap: ' + data.toString());
 
-      return FlybisBellData(
-        // Users
-        senderId: data['senderId'],
-        receiverId: data['receiverId'],
+    return FlybisBellData(
+      // Users
+      senderId: data['senderId'],
+      receiverId: data['receiverId'],
 
-        // Bell
-        bell: data['bell'] != null
-            ? FlybisBell.fromMap(data['bell'], '')
-            : FlybisBell(),
-      );
-    } catch (error) {
-      logger.e('FlybisBellData.fromMap: ' + error.toString());
+      // Bell
+      bell: data['bell'] != null
+          ? FlybisBell.fromMap(data['bell'], '')
+          : FlybisBell(),
+    );
+    //} catch (error) {
+    //logger.e('FlybisBellData.fromMap: ' + error.toString());
 
-      return null;
-    }
+    //return null;
+    //}
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>? toMap() {
     try {
       return {
         // Users
@@ -206,7 +206,7 @@ class FlybisBellData {
         'receiverId': this.receiverId ?? '',
 
         // Bell
-        'bell': this.bell != null ? this.bell.toMap() : FlybisBell().toMap(),
+        'bell': this.bell.toMap(),
       };
     } catch (error) {
       logger.e('FlybisBellData.toMap: ' + error.toString());

@@ -62,7 +62,7 @@ const String urlPattern =
     r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:_\+.~#?&//=]*)";
 final RegExp urlRegExp = RegExp(urlPattern);
 bool urlContains(String string) => string.contains(urlRegExp);
-String urlFromString(String string) => urlRegExp.firstMatch(string).group(0);
+String? urlFromString(String string) => urlRegExp.firstMatch(string)!.group(0);
 
 /// Phone Regex - A predefined type for handling Phone matching
 const String phonePattern =

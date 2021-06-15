@@ -18,8 +18,8 @@ class CallView extends StatefulWidget {
   final String chat, callId;
 
   CallView({
-    @required this.chat,
-    @required this.callId,
+    required this.chat,
+    required this.callId,
   });
 
   @override
@@ -30,10 +30,10 @@ class CallViewState extends State<CallView> {
   bool isInChannel = false;
   final infoStrings = <String>[];
 
-  static final _sessions = List<VideoSession>();
-  String dropdownValue = 'Off';
+  static final _sessions = List<VideoSession>.empty();
+  String? dropdownValue = 'Off';
 
-  final List<String> voices = [
+  final List<String?> voices = [
     'Off',
     'Oldman',
     'BabyBoy',
@@ -44,9 +44,9 @@ class CallViewState extends State<CallView> {
   ];
 
   /// remote user list
-  final _remoteUsers = List<int>();
+  final _remoteUsers = List<int>.empty();
 
-  RtcEngine engine;
+  late RtcEngine engine;
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class CallViewState extends State<CallView> {
   }
 
   Future<void> initAgoraRtcEngine() async {
-    engine = await RtcEngine.createWithConfig(RtcEngineConfig(AGORA_APP_ID));
+    engine = await RtcEngine.createWithContext(RtcEngineContext(AGORA_APP_ID));
 
     await engine.enableVideo();
     await engine.enableAudio();
@@ -158,7 +158,7 @@ class CallViewState extends State<CallView> {
       body: Center(
         child: DropdownButton<String>(
           value: dropdownValue,
-          onChanged: (String newValue) {
+          onChanged: (String? newValue) {
             setState(() {
               dropdownValue = newValue;
               AudioVoiceChanger voice =
@@ -166,10 +166,10 @@ class CallViewState extends State<CallView> {
               engine.setLocalVoiceChanger(voice);
             });
           },
-          items: voices.map<DropdownMenuItem<String>>((String value) {
+          items: voices.map<DropdownMenuItem<String>>((String? value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value!),
             );
           }).toList(),
         ),
@@ -217,6 +217,7 @@ class CallViewState extends State<CallView> {
     for (final uid in _remoteUsers) {
       yield RtcRemoteView.SurfaceView(
         uid: uid,
+        channelId: widget.callId,
       );
     }
   }
@@ -227,7 +228,7 @@ class CallViewState extends State<CallView> {
     });
   }
 
-  List<Widget> _getRenderViews() {
+  List<Widget?> _getRenderViews() {
     return _sessions.map((session) => session.view).toList();
   }
 
@@ -248,9 +249,9 @@ class CallViewState extends State<CallView> {
 }
 
 class VideoSession {
-  int uid;
-  Widget view;
-  int viewId;
+  int? uid;
+  Widget? view;
+  int? viewId;
 
   VideoSession(int uid, Widget view) {
     this.uid = uid;

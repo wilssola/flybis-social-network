@@ -90,7 +90,7 @@ class MessagingService {
     }
   }
 
-  Future<RemoteMessage> getInitialMessage() async {
+  Future<RemoteMessage?> getInitialMessage() async {
     return await _messaging.getInitialMessage();
   }
 
@@ -159,7 +159,7 @@ class MessagingService {
       sound: true,
     );
 
-    _messaging.getToken().then((String token) async {
+    _messaging.getToken().then((String? token) async {
       await configureToken(userId, token);
 
       print('getToken: (token=$token)');
@@ -172,10 +172,10 @@ class MessagingService {
     });
   }
 
-  Future<void> configureToken(String userId, String token) async {
+  Future<void> configureToken(String userId, String? token) async {
     const String tokenId = 'fcm';
 
-    FlybisTokenMessaging flybisTokenMessaging = await _db.get(
+    FlybisTokenMessaging? flybisTokenMessaging = await _db.get(
       documentPath: PathService.userToken(userId, tokenId),
       builder: (data, documentId) =>
           FlybisTokenMessaging.fromMap(data, documentId),

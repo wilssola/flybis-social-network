@@ -43,10 +43,10 @@ class FFmpegService {
 
   static double getAspectRatio(MediaInformation info) {
     final int width = info
-        .getStreams()[0]
+        .getStreams()![0]
         .getAllProperties()['width']; //info['streams'][0]['width'];
     final int height = info
-        .getStreams()[0]
+        .getStreams()![0]
         .getAllProperties()['height']; //info['streams'][0]['height'];
 
     final double aspect = height / width;
@@ -82,8 +82,8 @@ class FFmpegService {
     return await probe.getMediaInformation(path);
   }
 
-  static int getDuration(MediaInformation info) {
-    return info.getMediaProperties()['duration'];
+  static int? getDuration(MediaInformation info) {
+    return info.getMediaProperties()!['duration'];
   }
 
   static void enableLogCallback(

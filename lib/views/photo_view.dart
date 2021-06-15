@@ -16,12 +16,12 @@ Future<bool> loadLibraries() async {
 
 class PhotoView extends StatefulWidget {
   final String title;
-  final String url;
-  final Color pageColor;
+  final String? url;
+  final Color? pageColor;
 
   PhotoView({
     this.title = 'Imagem',
-    @required this.url,
+    required this.url,
     this.pageColor,
   });
 
@@ -53,7 +53,7 @@ class _PhotoViewState extends State<PhotoView> {
             child: photo_view.PhotoView(
               imageProvider:
                   image_network.ImageNetwork.cachedNetworkImageProvider(
-                widget.url,
+                widget.url!,
               ),
             ),
           ),

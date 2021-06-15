@@ -17,13 +17,13 @@ class LiveService {
   final DatabaseService _db = DatabaseService.instance;
   final RealtimeService _rt = RealtimeService.instance;
 
-  Future<void> startLive(String userId, FlybisLive live) async {
+  Future<void> startLive(String? userId, FlybisLive live) async {
     await configureLivePresence(userId);
 
     await setLive(userId, live);
   }
 
-  FlybisLive createLive(String userId) {
+  FlybisLive createLive(String? userId) {
     return FlybisLive(
       userId: userId,
       liveId: Uuid().v4(),
@@ -31,7 +31,7 @@ class LiveService {
     );
   }
 
-  Future<void> setLive(String userId, FlybisLive live) async {
+  Future<void> setLive(String? userId, FlybisLive live) async {
     await _db.set(
       documentPath: PathService.live(userId),
       data: live.toMap(),
@@ -44,14 +44,14 @@ class LiveService {
     );
   }
 
-  Stream<List<FlybisLive>> streamLives(int limit) => _db.streamCollection(
+  Stream<List<FlybisLive?>>? streamLives(int limit) => _db.streamCollection(
         collectionPath: PathService.lives(),
         builder: (data, documentId) => FlybisLive.fromMap(data, documentId),
         //queryBuilder: (query) =>
         //query.orderBy('timestamp', descending: true).limit(5 + limit),
       );
 
-  Future<void> configureLivePresence(String userId) async {
+  Future<void> configureLivePresence(String? userId) async {
     final String path = PathService.live(userId);
 
     FlybisLiveStatus isOfflineForDatabase = FlybisLiveStatus(

@@ -13,10 +13,10 @@ class PageModel {
   final Color color;
 
   PageModel({
-    @required this.iconData,
-    @required this.icon,
-    @required this.string,
-    @required this.text,
-    @required this.color,
+    required this.iconData,
+    required this.icon,
+    required this.string,
+    required this.text,
+    required this.color,
   });
 }

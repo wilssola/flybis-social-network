@@ -10,7 +10,7 @@ Logger logger = Logger(
   ),
 );
 
-FlybisUser flybisUserOwner;
+FlybisUser? flybisUserOwner;
 
 // Agora
-String agoraIoToken;
+String? agoraIoToken;

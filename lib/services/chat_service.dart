@@ -22,7 +22,7 @@ class ChatService {
       );
 
   Future<void> updateStatus(FlybisChatStatus flybisChatStatus) async {
-    FlybisChatStatus oldFlybisChatStatus = await _db.get(
+    FlybisChatStatus? oldFlybisChatStatus = await _db.get(
       documentPath: PathService.chat(flybisChatStatus.chatId),
       builder: (data, documentId) => FlybisChatStatus.fromMap(data, documentId),
     );
@@ -40,15 +40,15 @@ class ChatService {
     }
   }
 
-  Stream<FlybisChatStatus> streamStatus(String chatId) => _db.streamDoc(
+  Stream<FlybisChatStatus>? streamStatus(String chatId) => _db.streamDoc(
         documentPath: PathService.chat(chatId),
         builder: (data, documentId) =>
             FlybisChatStatus.fromMap(data, documentId),
       );
 
   Future<void> resetStatusCount({
-    @required String chatId,
-    @required String userId,
+    required String chatId,
+    required String? userId,
   }) async =>
       await _db.update(documentPath: PathService.chat(chatId), data: {
         'messageCounts.$userId': 0,
@@ -70,14 +70,14 @@ class ChatService {
         documentPath: PathService.message(message.chatId, message.messageId),
       );
 
-  Stream<FlybisChatMessage> streamMessage(String chatId, String messageId) =>
+  Stream<FlybisChatMessage>? streamMessage(String chatId, String messageId) =>
       _db.streamDoc(
         documentPath: PathService.message(chatId, messageId),
         builder: (data, documentId) =>
             FlybisChatMessage.fromMap(data, documentId),
       );
 
-  Stream<List<FlybisChatMessage>> streamMessages(String chatId, int limit) =>
+  Stream<List<FlybisChatMessage>>? streamMessages(String chatId, int limit) =>
       _db.streamCollection(
         collectionPath: PathService.messages(chatId),
         builder: (data, documentId) =>
@@ -99,7 +99,7 @@ class ChatService {
         collectionPath: PathService.messages(chatId),
       );
 
-  Stream<List<FlybisDocument>> streamChats(String userId, int limit) =>
+  Stream<List<FlybisDocument>>? streamChats(String? userId, int limit) =>
       _db.streamCollection(
         collectionPath: PathService.friends(userId),
         builder: (data, documentId) => FlybisDocument.fromMap(data, documentId),
@@ -107,12 +107,12 @@ class ChatService {
       );
 
   Future<String> addCall(String chatId) async {
-    String path = await _db.add(
+    String path = await (_db.add(
       collectionPath: PathService.calls(chatId),
       data: {
         'timestamp': _db.serverTimestamp(),
       },
-    );
+    ) as FutureOr<String>);
 
     List<String> split = path.split('/');
 

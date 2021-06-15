@@ -26,7 +26,7 @@ class Auth {
       password: password,
     );
 
-    String uid = result.user.uid;
+    String uid = result.user!.uid;
 
     return uid;
   }
@@ -37,9 +37,9 @@ class Auth {
       password: password,
     );
 
-    await result.user.sendEmailVerification();
+    await result.user!.sendEmailVerification();
 
-    String uid = result.user.uid;
+    String uid = result.user!.uid;
 
     return uid;
   }
@@ -48,18 +48,18 @@ class Auth {
     await auth.sendPasswordResetEmail(email: email);
   }
 
-  User getUser() {
-    User user = auth.currentUser;
+  User? getUser() {
+    User? user = auth.currentUser;
 
     return user;
   }
 
-  Future<FlybisUser> getUserOffline() async {
+  Future<FlybisUser?> getUserOffline() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       FlybisUser user =
-          FlybisUser.fromMap(jsonDecode(prefs.getString(key)), '');
+          FlybisUser.fromMap(jsonDecode(prefs.getString(key)!), '');
 
       return user;
     } catch (error) {
@@ -69,7 +69,7 @@ class Auth {
     }
   }
 
-  Future<void> setUserOffline(FlybisUser user) async {
+  Future<void> setUserOffline(FlybisUser? user) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 

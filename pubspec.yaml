@@ -5,7 +5,7 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.11.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -44,22 +44,22 @@ dependencies:
   day_night_switcher: ^0.2.0+1 # ANDROID IOS WEB
   introduction_screen: ^2.1.0 # ANDROID IOS WEB
   simple_animations: ^3.1.1 # ANDROID IOS WEB
-  detectable_text_field: ^2.0.1 # ANDROID IOS WEB
+  detectable_text_field: ^2.0.2 # ANDROID IOS WEB
   photo_view: ^0.11.1 # ANDROID IOS WEB
 
   # yako.io
   badges: ^2.0.1
   settings_ui: ^1.0.0
-  status_alert: ^1.0.0-nullsafety.1  
+  status_alert: ^1.0.0-nullsafety.1
   full_screen_menu: ^1.0.0
-  
+
   flutter_easyloading: ^3.0.0
   flutter_snake_navigationbar: ^0.5.0
 
   image: ^3.0.2 # ANDROID IOS WEB
   image_cropper: ^1.4.0
   giphy_picker: ^2.0.0
-  image_picker: ^0.7.5+3 # ANDROID IOS
+  image_picker: ^0.8.0+3 # ANDROID IOS
   image_picker_for_web: ^2.0.0 # WEB
   transparent_image: ^2.0.0 # ANDROID IOS WEB
   cached_network_image: ^3.0.0 # ANDROID IOS
@@ -81,7 +81,7 @@ dependencies:
   agora_rtm: ^1.0.0-rc.1
   callkeep: ^0.2.3+1
 
-  wakelock: ^0.4.0 # ANDROID IOS WEB
+  wakelock: ^0.5.2 # ANDROID IOS WEB
   local_auth: ^1.1.6 # ANDROID IOS
   random_color: ^1.0.6-nullsafety # ANDROID IOS WEB
   permission_handler: ^8.0.0+2
@@ -127,12 +127,12 @@ dependencies:
 
   url_strategy: ^0.2.0
 
-  flutter_funding_choices: ^0.2.0
+  flutter_funding_choices: ^0.3.0
 
   just_audio: ^0.7.4+1 # ANDROID IOS MACOS WEB
 
   app_tracking_transparency: ^2.0.1 #IOS
-  
+
   text_editor: ^0.4.0+1
 
   video_editor: ^1.1.0
@@ -165,12 +165,12 @@ dependencies:
 
   blurhash_dart: ^1.0.2
 
-  flutter_local_notifications: ^5.0.0+4
+  flutter_local_notifications: ^6.0.0
 
   google_mobile_ads: ^0.13.0
 
   sentry_flutter: ^5.0.0
-  
+
   device_info: ^2.0.2
 
   cross_file: ^0.3.1+1
@@ -182,23 +182,23 @@ dependencies:
   awesome_notifications: ^0.0.6+7
 
   stripe_sdk: ^5.0.0-nullsafety.0
-  
+
   animated_stack: ^0.2.0
   auto_animated: ^3.0.0
   animations: ^2.0.0
-  
+
   animated_background: ^2.0.0
 
   avatar_glow: ^2.0.1
 
   camera_deep_ar: ^0.0.1 # ANDROID IOS
-  
+
   flutter_signin_button: ^2.0.0
-  
+
   expandable: ^5.0.1
 
   flutter_platform_widgets: ^1.9.0
-  
+
   line_icons: ^2.0.1
 
 dev_dependencies:

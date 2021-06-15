@@ -32,14 +32,14 @@ enum AdmobSize {
 }
 
 class AdmobWidget extends StatefulWidget {
-  final String adUnitId;
+  final String? adUnitId;
   final AdmobSize size;
-  final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry padding;
-  final Color pageColor;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  final Color? pageColor;
 
   AdmobWidget({
-    @required this.adUnitId,
+    required this.adUnitId,
     this.size = AdmobSize.largeBanner,
     this.margin,
     this.padding,
@@ -51,12 +51,12 @@ class AdmobWidget extends StatefulWidget {
 }
 
 class _AdmobWidgetState extends State<AdmobWidget> {
-  BannerAd _ad;
-  AdSize _size;
-  double _width, _height;
+  BannerAd? _ad;
+  late AdSize _size;
+  double? _width, _height;
   bool _loaded = false;
-  EdgeInsetsGeometry _margin = EdgeInsets.zero;
-  EdgeInsetsGeometry _padding = EdgeInsets.zero;
+  EdgeInsetsGeometry? _margin = EdgeInsets.zero;
+  EdgeInsetsGeometry? _padding = EdgeInsets.zero;
 
   bool _useVirtualDisplay = false;
 
@@ -129,8 +129,8 @@ class _AdmobWidgetState extends State<AdmobWidget> {
             if (mounted) {
               setState(() {
                 _loaded = true;
-                _width = _ad.size.width.toDouble() * 1.1;
-                _height = _ad.size.height.toDouble() * 1.1;
+                _width = _ad!.size.width.toDouble() * 1.1;
+                _height = _ad!.size.height.toDouble() * 1.1;
                 _margin = widget.margin != null ? widget.margin : _margin;
                 _padding = widget.padding != null ? widget.padding : _padding;
               });
@@ -155,7 +155,7 @@ class _AdmobWidgetState extends State<AdmobWidget> {
       );
 
       //  Load an ad
-      _ad.load();
+      _ad!.load();
     } else {
       if (mounted) {
         setState(() {
@@ -191,13 +191,13 @@ class _AdmobWidgetState extends State<AdmobWidget> {
                 padding: _padding,
                 alignment: Alignment.center,
                 child: custom_ad_widget.CustomAdWidget(
-                  ad: _ad,
+                  ad: _ad!,
                   useVirtualDisplay: _useVirtualDisplay,
                 ),
               )
             : Container(
-                width: _width * 1.1,
-                height: _height * 1.1,
+                width: _width! * 1.1,
+                height: _height! * 1.1,
                 margin: _margin,
                 padding: _padding,
                 alignment: Alignment.center,

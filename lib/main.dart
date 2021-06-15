@@ -106,7 +106,7 @@ Future<void> initSentry(Function runApp) async {
     await SentryFlutter.init(
       (SentryFlutterOptions options) => options.dsn =
           'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368',
-      appRunner: runApp,
+      appRunner: runApp as Future<void> Function()?,
     );
   } catch (error) {
     logger.e(error);
@@ -191,10 +191,10 @@ class _MainState extends State<Main> {
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
       //home: app.App(),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return ScrollConfiguration(
           behavior: no_glow_on_list_view.NoGlowOnListView(),
-          child: child,
+          child: child!,
         );
       },
       initialRoute: initialRoute,

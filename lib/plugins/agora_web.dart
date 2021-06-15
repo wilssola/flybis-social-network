@@ -12,7 +12,7 @@ import 'package:flybis/plugins/ui/ui.dart' as ui;
 class AgoraWeb {
   bool hostPresent = false;
   bool videoPlaying = false;
-  int hostUid;
+  int? hostUid;
 
   void registerVideoPlayer() {
     // ignore:undefined_prefixed_name
@@ -24,7 +24,7 @@ class AgoraWeb {
     });
   }
 
-  void callJsMethod({String method, List<String> args}) {
+  void callJsMethod({required String method, List<String>? args}) {
     print("Calling method: $method");
     js.context.callMethod(method, args);
   }
@@ -34,11 +34,11 @@ class AgoraWeb {
   }
 
   Future<void> joinSession({
-    @required String sessionId,
-    @required String token,
-    @required String clientType,
-    @required String clientAccount,
-    Function hostJoinCallback,
+    required String sessionId,
+    required String token,
+    required String clientType,
+    required String clientAccount,
+    Function? hostJoinCallback,
   }) async {
     callJsMethod(
       method: 'joinSession',

@@ -13,9 +13,9 @@ import 'package:flybis/constants/const.dart';
 import 'package:flybis/services/user_service.dart';
 
 class ProfileService {
-  Future<String> photoUpload(
-    PickedFile file,
-    String userId,
+  Future<String?> photoUpload(
+    PickedFile? file,
+    String? userId,
     String fileId,
   ) async {
     if (!kIsWeb) {
@@ -23,7 +23,7 @@ class ProfileService {
 
       uploadTask = storage
           .child('$userId/$fileId.jpg')
-          .putData(await file.readAsBytes());
+          .putData(await file!.readAsBytes());
 
       TaskSnapshot storageSnap = await uploadTask; //.onComplete;
 
@@ -39,16 +39,16 @@ class ProfileService {
     return null;
   }
 
-  Future<PickedFile> photoCamera(String userId, String fileId) async {
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.camera);
+  Future<PickedFile?> photoCamera(String? userId, String fileId) async {
+    PickedFile? file = await ImagePicker().getImage(source: ImageSource.camera);
 
     await photoUpload(file, userId, fileId);
 
     return file;
   }
 
-  Future<PickedFile> photoGallery(String userId, String fileId) async {
-    PickedFile file = await ImagePicker().getImage(source: ImageSource.gallery);
+  Future<PickedFile?> photoGallery(String? userId, String fileId) async {
+    PickedFile? file = await ImagePicker().getImage(source: ImageSource.gallery);
 
     await photoUpload(file, userId, fileId);
 

@@ -18,7 +18,7 @@ import 'package:flybis/views/profile_view.dart';
 import 'package:flybis/widgets/post_widget.dart';
 import 'package:flybis/widgets/utils_widget.dart' as utils_widget;
 
-void openQuery(String searchQuery, Color pageColor) {
+void openQuery(String searchQuery, Color? pageColor) {
   Get.to(
     SearchView(
       searchQuery: searchQuery,
@@ -29,10 +29,10 @@ void openQuery(String searchQuery, Color pageColor) {
 
 class SearchView extends StatefulWidget {
   final String pageId = 'Search';
-  final Color pageColor;
+  final Color? pageColor;
   final bool pageHeaderWeb;
 
-  final String searchQuery;
+  final String? searchQuery;
 
   SearchView({
     this.searchQuery,
@@ -48,7 +48,7 @@ class _SearchViewState extends State<SearchView>
     with AutomaticKeepAliveClientMixin<SearchView> {
   TextEditingController controller = TextEditingController();
   List<Widget> results = [];
-  List<String> uids = [];
+  List<String?> uids = [];
   int limit = 25;
 
   @override
@@ -56,7 +56,7 @@ class _SearchViewState extends State<SearchView>
     super.initState();
 
     if (widget.searchQuery != null) {
-      search(widget.searchQuery);
+      search(widget.searchQuery!);
     }
   }
 
@@ -79,24 +79,24 @@ class _SearchViewState extends State<SearchView>
           String username = query.replaceAll('@', '');
 
           if (!GetUtils.isUsername(username)) {
-            List<FlybisUser> usersByDisplayName =
+            List<FlybisUser>? usersByDisplayName =
                 await SearchService().getUserByDisplayName(username, limit);
 
             addUserWidget(usersByDisplayName, uids);
           } else {
-            List<FlybisUser> usersByUsernameLowercase =
+            List<FlybisUser>? usersByUsernameLowercase =
                 await SearchService().getUserByDisplayName(username, limit);
 
             addUserWidget(usersByUsernameLowercase, uids);
           }
         }
 
-        List<FlybisUser> usersByBio =
+        List<FlybisUser>? usersByBio =
             await SearchService().getUserByDisplayName(query, limit);
 
         addUserWidget(usersByBio, uids);
       } else {
-        List<FlybisUser> usersByEmail =
+        List<FlybisUser>? usersByEmail =
             await SearchService().getUserByDisplayName(query, limit);
 
         addUserWidget(usersByEmail, uids);
@@ -125,7 +125,7 @@ class _SearchViewState extends State<SearchView>
     }
   }
 
-  void addUserWidget(List<FlybisUser> users, List<String> uids) {
+  void addUserWidget(List<FlybisUser>? users, List<String?> uids) {
     if (users != null && users.length > 0) {
       users.forEach((FlybisUser flybisUser) {
         if (flybisUser != null) {
@@ -148,11 +148,11 @@ class _SearchViewState extends State<SearchView>
     }
   }
 
-  void addPostWidget(QuerySnapshot snapshot, List<String> ids) {
+  void addPostWidget(QuerySnapshot snapshot, List<String?> ids) {
     if (snapshot.docs.isNotEmpty) {
       snapshot.docs.forEach((DocumentSnapshot doc) {
         if (doc.exists) {
-          FlybisPost flybisPost; //= FlybisPost.fromDocument(doc);
+          final FlybisPost flybisPost = FlybisPost(); //.fromDocument(doc);
 
           if (!ids.contains(flybisPost.postId)) {
             ids.add(flybisPost.postId);
@@ -245,7 +245,7 @@ class _SearchViewState extends State<SearchView>
     super.build(context);
 
     return Scaffold(
-      appBar: form(),
+      appBar: form() as PreferredSizeWidget?,
       body: results.isEmpty ? listDefault() : listResults(),
     );
   }
@@ -254,11 +254,11 @@ class _SearchViewState extends State<SearchView>
 class UserResult extends StatelessWidget {
   final FlybisUser user;
 
-  final Color pageColor;
+  final Color? pageColor;
 
   UserResult({
-    @required this.user,
-    @required this.pageColor,
+    required this.user,
+    required this.pageColor,
   });
 
   @override
@@ -276,12 +276,12 @@ class UserResult extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: kAvatarBackground,
               backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                user.photoUrl,
+                user.photoUrl!,
               ),
             ),
             title: Row(
               children: <Widget>[
-                utils_widget.UtilsWidget().usernameText(user.username),
+                utils_widget.UtilsWidget().usernameText(user.username!),
                 Spacer(),
                 Text(
                   formatCompactNumber(user.followersCount) + ' followers',
@@ -289,7 +289,7 @@ class UserResult extends StatelessWidget {
                 ),
               ],
             ),
-            subtitle: Text(user.displayName),
+            subtitle: Text(user.displayName!),
           ),
         ),
       ),

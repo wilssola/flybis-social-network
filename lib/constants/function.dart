@@ -50,7 +50,7 @@ void setNotificationBar() {
   );
 }
 
-void onTapUsernameHashtagText(String text, Color pageColor) {
+void onTapUsernameHashtagText(String text, Color? pageColor) {
   logger.d('onTapUserHashText: ' + text);
 
   if (text.contains('@')) {

@@ -2,7 +2,7 @@
 import 'package:flybis/global.dart';
 
 class FlybisTokenMessaging {
-  String androidToken, electronToken, iosToken, webToken;
+  String? androidToken, electronToken, iosToken, webToken;
 
   FlybisTokenMessaging({
     this.androidToken: '',
@@ -12,11 +12,11 @@ class FlybisTokenMessaging {
   });
 
   factory FlybisTokenMessaging.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
-      return null;
+      return FlybisTokenMessaging();
     }
 
     logger.d('FlybisTokenMessaging.fromMap: ' + data.toString());

@@ -25,7 +25,7 @@ Future<bool> loadLibraries() async {
 enum FormType { SIGNIN, SIGNUP }
 
 class LoginView extends StatefulWidget {
-  final List<Color> pageColors;
+  final List<Color>? pageColors;
 
   final Auth auth = new Auth();
 
@@ -40,13 +40,13 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   FormType formType = FormType.SIGNIN;
-  String formEmail;
-  String formPassword;
+  late String formEmail;
+  late String formPassword;
 
   bool isLoad = false;
-  String errorMessage = '';
+  String? errorMessage = '';
 
-  final List<Color> pageColors;
+  final List<Color>? pageColors;
   Color pageColor = Colors.blue;
 
   _LoginViewState({this.pageColors});
@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   showSignupForm() {
-    formKey.currentState.reset();
+    formKey.currentState!.reset();
     errorMessage = '';
 
     if (mounted) {
@@ -73,7 +73,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   showLoginForm() {
-    formKey.currentState.reset();
+    formKey.currentState!.reset();
     errorMessage = '';
 
     if (mounted) {
@@ -109,9 +109,9 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
             isLoad = false;
             if (!kIsWeb) {
               if (Platform.isIOS) {
-                errorMessage = error.details;
+                //errorMessage = error.details.toString();
               } else {
-                errorMessage = error.message;
+                //errorMessage = error.message.toString();
               }
             }
           });
@@ -127,7 +127,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   bool validateAndSave() {
-    final form = formKey.currentState;
+    final form = formKey.currentState!;
 
     if (form.validate()) {
       form.save();
@@ -138,9 +138,9 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   Widget errorWidget() {
-    if (errorMessage.length > 0 && errorMessage != null) {
+    if (errorMessage!.length > 0 && errorMessage != null) {
       return new Text(
-        errorMessage,
+        errorMessage!,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 13.0,
@@ -183,7 +183,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
             borderSide: BorderSide(),
           ),
         ),
-        validator: (value) => value.isEmpty ? 'Email cannot be empty' : null,
+        validator: (value) => value!.isEmpty ? 'Email cannot be empty' : null,
         onChanged: (value) => formEmail = value.trim(),
       ),
     );
@@ -204,7 +204,8 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
             borderSide: BorderSide(),
           ),
         ),
-        validator: (value) => value.isEmpty ? 'Password cannot be empty' : null,
+        validator: (value) =>
+            value!.isEmpty ? 'Password cannot be empty' : null,
         onChanged: (value) => formPassword = value.trim(),
         onFieldSubmitted: (String string) {
           validateAndSubmit();
@@ -260,10 +261,11 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
     const double kWebLoginWidth = 350;
 
     final Color backgroundColor =
-        widget.pageColors[Random().nextInt(widget.pageColors.length)];
+        widget.pageColors![Random().nextInt(widget.pageColors!.length)];
 
     final particleOptions = animated_background.ParticleOptions(
-      baseColor: widget.pageColors[Random().nextInt(widget.pageColors.length)],
+      baseColor:
+          widget.pageColors![Random().nextInt(widget.pageColors!.length)],
       spawnOpacity: 0,
       opacityChangeRate: 0.25,
       minOpacity: 0.15,
@@ -333,7 +335,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               utils_widget.UtilsWidget()
-                                  .logoText(widget.pageColors),
+                                  .logoText(widget.pageColors!),
                               formWidget(),
                               primaryButton(),
                               secondaryButton(),

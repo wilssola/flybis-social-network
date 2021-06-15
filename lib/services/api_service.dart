@@ -9,7 +9,7 @@ class ApiService {
   ApiService._();
   static final ApiService instance = ApiService._();
 
-  Future<String> getErrorGiphy() async {
+  Future<String?> getErrorGiphy() async {
     const String authority = 'api.giphy.com';
     const String unencodedPath = '/v1/gifs/random';
 
@@ -23,7 +23,7 @@ class ApiService {
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    String gif = jsonDecode(response.body)['data']['images']
+    String? gif = jsonDecode(response.body)['data']['images']
         ['fixed_height_small']['url'];
 
     print('Response gif: $gif');
@@ -31,7 +31,7 @@ class ApiService {
     return gif;
   }
 
-  Future<String> getErrorTenor() async {
+  Future<String?> getErrorTenor() async {
     final int random = new Random().nextInt(100);
 
     const String authority = 'g.tenor.com';
@@ -52,7 +52,7 @@ class ApiService {
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    String gif =
+    String? gif =
         jsonDecode(response.body)['results'][0]['media'][0]['tinygif']['url'];
 
     print('Response gif: $gif');

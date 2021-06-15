@@ -38,8 +38,8 @@ class BellWidget extends StatefulWidget {
   final Color pageColor;
 
   BellWidget({
-    @required this.flybisBell,
-    @required this.pageColor,
+    required this.flybisBell,
+    required this.pageColor,
   });
 
   @override
@@ -48,44 +48,44 @@ class BellWidget extends StatefulWidget {
 
 class _BellWidgetState extends State<BellWidget> {
   Future<Widget> switchBell(BuildContext context) async {
-    Function trailingOnTap;
-    String trailingImage;
+    Function? trailingOnTap;
+    String? trailingImage;
     String bellText;
 
-    FlybisUser flybisUserSender =
+    FlybisUser? flybisUserSender =
         await user_service.UserService().getUser(widget.flybisBell.senderId);
-    FlybisUser flybisUserReceiver =
+    FlybisUser? flybisUserReceiver =
         await user_service.UserService().getUser(widget.flybisBell.receiverId);
 
     switch (widget.flybisBell.bellMode) {
       case 'like':
         trailingOnTap = () => showPost(
               context,
-              userId: flybisUserOwner.uid,
-              postId: widget.flybisBell.bellContent.contentId,
+              userId: flybisUserOwner!.uid,
+              postId: widget.flybisBell.bellContent!.contentId,
             );
-        trailingImage = widget.flybisBell.bellContent.contentImage;
+        trailingImage = widget.flybisBell.bellContent!.contentImage;
         bellText = 'liked your post';
         break;
 
       case 'follow':
         trailingOnTap = () => profile_view.showProfile(
               context,
-              uid: flybisUserReceiver.uid,
+              uid: flybisUserReceiver!.uid,
               pageColor: widget.pageColor,
             );
-        trailingImage = flybisUserReceiver.photoUrl;
+        trailingImage = flybisUserReceiver!.photoUrl;
         bellText = 'followed you';
         break;
 
       case 'comment':
         trailingOnTap = () => showPost(
               context,
-              userId: flybisUserOwner.uid,
-              postId: widget.flybisBell.bellContent.contentId,
+              userId: flybisUserOwner!.uid,
+              postId: widget.flybisBell.bellContent!.contentId,
             );
-        trailingImage = widget.flybisBell.bellContent.contentImage;
-        bellText = 'commented: ' + widget.flybisBell.bellContent.contentText;
+        trailingImage = widget.flybisBell.bellContent!.contentImage;
+        bellText = 'commented: ' + widget.flybisBell.bellContent!.contentText;
         break;
 
       case 'message':
@@ -96,8 +96,8 @@ class _BellWidgetState extends State<BellWidget> {
                 pageColor: widget.pageColor,
               ),
             );
-        trailingImage = flybisUserReceiver.photoUrl;
-        bellText = 'talked you: ' + widget.flybisBell.bellContent.contentText;
+        trailingImage = flybisUserReceiver!.photoUrl;
+        bellText = 'talked you: ' + widget.flybisBell.bellContent!.contentText;
         break;
 
       default:
@@ -108,12 +108,12 @@ class _BellWidgetState extends State<BellWidget> {
     Widget trailing = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: trailingOnTap,
+        onTap: trailingOnTap as void Function()?,
         child: CircleAvatar(
           backgroundColor: kAvatarBackground,
           backgroundImage:
               image_network.ImageNetwork.cachedNetworkImageProvider(
-            trailingImage,
+            trailingImage!,
           ),
         ),
       ),
@@ -123,7 +123,7 @@ class _BellWidgetState extends State<BellWidget> {
       leading: CircleAvatar(
         backgroundColor: kAvatarBackground,
         backgroundImage: image_network.ImageNetwork.cachedNetworkImageProvider(
-          flybisUserSender.photoUrl,
+          flybisUserSender!.photoUrl!,
         ),
       ),
       title: Row(
@@ -137,7 +137,7 @@ class _BellWidgetState extends State<BellWidget> {
                 pageColor: widget.pageColor,
               ),
               child: utils_widget.UtilsWidget()
-                  .usernameText(flybisUserSender.username),
+                  .usernameText(flybisUserSender.username!),
             ),
           ),
           Container(
@@ -178,7 +178,7 @@ class _BellWidgetState extends State<BellWidget> {
               return Text('');
             }
 
-            return snapshot.data;
+            return snapshot.data!;
           },
         );
       },
@@ -188,8 +188,8 @@ class _BellWidgetState extends State<BellWidget> {
 
 void showPost(
   BuildContext context, {
-  String userId,
-  String postId,
+  String? userId,
+  String? postId,
 }) {
   Navigator.push(
     context,

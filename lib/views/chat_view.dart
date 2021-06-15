@@ -38,10 +38,10 @@ class ChatView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   ChatView({
-    Key key,
-    @required this.pageColor,
+    Key? key,
+    required this.pageColor,
     this.pageHeaderWeb = false,
-    @required this.scaffoldKey,
+    required this.scaffoldKey,
   }) : super(key: key);
 
   @override
@@ -54,23 +54,25 @@ class ChatViewState extends State<ChatView> {
   bool showToUpButton = false;
   int limit = 0;
   int oldLimit = 0;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >=
+            scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <=
+            scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -84,7 +86,7 @@ class ChatViewState extends State<ChatView> {
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -92,7 +94,7 @@ class ChatViewState extends State<ChatView> {
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -135,10 +137,10 @@ class ChatViewState extends State<ChatView> {
           return Padding(padding: EdgeInsets.zero);
         }
 
-        FlybisUser flybisUserReceiver = snapshot.data;
+        FlybisUser flybisUserReceiver = snapshot.data!;
 
         String chatId = chat_message_view.checkHasCode(
-          flybisUserOwner.uid,
+          flybisUserOwner!.uid,
           flybisUserReceiver.uid,
         );
 
@@ -148,21 +150,21 @@ class ChatViewState extends State<ChatView> {
             BuildContext context,
             AsyncSnapshot<FlybisChatStatus> snapshot,
           ) {
-            FlybisChatStatus flybisChatStatus = FlybisChatStatus(
+            FlybisChatStatus? flybisChatStatus = FlybisChatStatus(
               chatId: chatId,
               chatKey: "",
               chatType: "direct",
-              chatUsers: [flybisUserOwner.uid, flybisUserReceiver.uid],
+              chatUsers: [flybisUserOwner!.uid, flybisUserReceiver.uid],
             );
 
             if (snapshot.hasData) {
               flybisChatStatus = snapshot.data;
             }
 
-            bool hasCount = flybisChatStatus.messageCounts != null &&
-                flybisChatStatus.messageCounts.length > 0 &&
-                flybisChatStatus.messageCounts[flybisUserOwner.uid] != null &&
-                flybisChatStatus.messageCounts[flybisUserOwner.uid] > 0;
+            bool hasCount = flybisChatStatus!.messageCounts != null &&
+                flybisChatStatus.messageCounts!.length > 0 &&
+                flybisChatStatus.messageCounts![flybisUserOwner!.uid] != null &&
+                flybisChatStatus.messageCounts![flybisUserOwner!.uid]! > 0;
 
             bool hasContent = flybisChatStatus.messageContent != null &&
                 flybisChatStatus.messageContent.length > 0;
@@ -196,13 +198,13 @@ class ChatViewState extends State<ChatView> {
                   leading: CircleAvatar(
                     backgroundColor: kAvatarBackground,
                     backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                      flybisUserReceiver.photoUrl,
+                      flybisUserReceiver.photoUrl!,
                     ),
                   ),
                   title: Row(
                     children: <Widget>[
                       utils_widget.UtilsWidget()
-                          .usernameText(flybisUserReceiver.username),
+                          .usernameText(flybisUserReceiver.username!),
                       Spacer(),
                       hasCount
                           ? Container(
@@ -213,7 +215,7 @@ class ChatViewState extends State<ChatView> {
                                     pageColors[flybisChatStatus.messageColor],
                                 child: Text(
                                   flybisChatStatus
-                                      .messageCounts[flybisUserOwner.uid]
+                                      .messageCounts![flybisUserOwner!.uid]
                                       .toString(),
                                   style: TextStyle(
                                     color: Colors.white,
@@ -238,7 +240,7 @@ class ChatViewState extends State<ChatView> {
                               ),
                             )
                           : Text(
-                              flybisUserReceiver.displayName,
+                              flybisUserReceiver.displayName!,
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
                             ),
@@ -265,7 +267,7 @@ class ChatViewState extends State<ChatView> {
 
   Widget streamChats() {
     return StreamBuilder(
-      stream: chatService.streamChats(flybisUserOwner.uid, limit),
+      stream: chatService.streamChats(flybisUserOwner!.uid, limit),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<FlybisDocument>> snapshot,
@@ -277,7 +279,7 @@ class ChatViewState extends State<ChatView> {
           );
         }
 
-        if (snapshot.data.length == 0) {
+        if (snapshot.data!.length == 0) {
           Widget infoText = utils_widget.UtilsWidget().infoText(
             'Que pena, você ainda não tem nenhum amigo adicionado, faça novas amizades',
           );
@@ -312,9 +314,9 @@ class ChatViewState extends State<ChatView> {
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return chat(context, snapshot.data[index]);
+                return chat(context, snapshot.data![index]);
               },
             ),
           ],

@@ -29,9 +29,9 @@ class BellView extends StatefulWidget {
   final bool pageHeaderWeb;
 
   BellView({
-    Key key,
-    @required this.scaffoldKey,
-    @required this.pageColor,
+    Key? key,
+    required this.scaffoldKey,
+    required this.pageColor,
     this.pageHeaderWeb = false,
   }) : super(key: key);
 
@@ -46,23 +46,23 @@ class _BellViewState extends State<BellView> {
   bool showToUpButton = false;
   int limit = 0;
   int oldLimit = 0;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >= scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <= scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -76,7 +76,7 @@ class _BellViewState extends State<BellView> {
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -84,7 +84,7 @@ class _BellViewState extends State<BellView> {
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -118,7 +118,7 @@ class _BellViewState extends State<BellView> {
 
   Widget streamBell() {
     return StreamBuilder(
-      stream: BellService().streamBells(flybisUserOwner.uid, limit),
+      stream: BellService().streamBells(flybisUserOwner!.uid, limit),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<FlybisBell>> snapshot,
@@ -134,7 +134,7 @@ class _BellViewState extends State<BellView> {
         List<BellWidget> bells = [];
 
         if (snapshot.hasData) {
-          snapshot.data.forEach((FlybisBell flybisBell) {
+          snapshot.data!.forEach((FlybisBell flybisBell) {
             bells.add(
               BellWidget(
                 flybisBell: flybisBell,

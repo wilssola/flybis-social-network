@@ -26,16 +26,16 @@ class PostService {
     );
   }
 
-  Future<FlybisPost> getPost(
-    String userId,
-    String postId,
+  Future<FlybisPost?> getPost(
+    String? userId,
+    String? postId,
   ) =>
       _db.get(
         documentPath: PathService.post(userId, postId),
         builder: (data, documentId) => FlybisPost.fromMap(data, documentId),
       );
 
-  Stream<FlybisPost> streamPost(
+  Stream<FlybisPost>? streamPost(
     String userId,
     String postId,
   ) =>
@@ -44,8 +44,8 @@ class PostService {
         builder: (data, documentId) => FlybisPost.fromMap(data, documentId),
       );
 
-  Stream<List<FlybisPost>> streamPosts(
-    String userId,
+  Stream<List<FlybisPost>>? streamPosts(
+    String? userId,
     int limit,
   ) =>
       _db.streamCollection(
@@ -55,10 +55,10 @@ class PostService {
             query.orderBy('timestamp', descending: true).limit(10 + limit),
       );
 
-  Future<bool> getLike(
-    String userId,
-    String postId,
-    String sender,
+  Future<bool?> getLike(
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.get(
         documentPath:
@@ -66,10 +66,10 @@ class PostService {
         builder: (data, documentId) => data != null,
       );
 
-  Future<bool> getDislike(
-    String userId,
-    String postId,
-    String sender,
+  Future<bool?> getDislike(
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.get(
         documentPath:
@@ -78,9 +78,9 @@ class PostService {
       );
 
   Future<void> setLike(
-    String userId,
-    String postId,
-    String sender,
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.set(
         documentPath:
@@ -89,9 +89,9 @@ class PostService {
       );
 
   Future<void> setDislike(
-    String userId,
-    String postId,
-    String sender,
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.set(
         documentPath:
@@ -100,9 +100,9 @@ class PostService {
       );
 
   Future<void> deleteLike(
-    String userId,
-    String postId,
-    String sender,
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.delete(
         documentPath:
@@ -110,16 +110,16 @@ class PostService {
       );
 
   Future<void> deleteDislike(
-    String userId,
-    String postId,
-    String sender,
+    String? userId,
+    String? postId,
+    String? sender,
   ) =>
       _db.delete(
         documentPath:
             PathService.postLikeDislike(userId, postId, 'dislikes', sender),
       );
 
-  Stream<List<FlybisDocument>> streamLikesDislikes(
+  Stream<List<FlybisDocument>>? streamLikesDislikes(
     String userId,
     String postId,
     String type,
@@ -129,11 +129,11 @@ class PostService {
         builder: (data, documentId) => FlybisDocument.fromMap(data, documentId),
       );
 
-  Stream<FlybisDocument> streamLikeDislike(
-    String userId,
-    String postId,
+  Stream<FlybisDocument>? streamLikeDislike(
+    String? userId,
+    String? postId,
     String type,
-    String sender,
+    String? sender,
   ) =>
       _db.streamDoc(
         documentPath: PathService.postLikeDislike(userId, postId, type, sender),
@@ -141,8 +141,8 @@ class PostService {
       );
 
   Future<void> deletePost(
-    String userId,
-    String postId,
+    String? userId,
+    String? postId,
   ) =>
       _db.delete(documentPath: PathService.post(userId, postId));
 }

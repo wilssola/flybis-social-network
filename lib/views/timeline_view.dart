@@ -56,9 +56,9 @@ class TimelineView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   TimelineView({
-    @required this.pageColor,
+    required this.pageColor,
     this.pageHeaderWeb = false,
-    @required this.scaffoldKey,
+    required this.scaffoldKey,
   });
 
   @override
@@ -72,23 +72,25 @@ class _TimelineViewState extends State<TimelineView>
   bool showToUpButton = false;
   int limit = 0;
   int oldLimit = 0;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >=
+            scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <=
+            scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -102,7 +104,7 @@ class _TimelineViewState extends State<TimelineView>
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -110,7 +112,7 @@ class _TimelineViewState extends State<TimelineView>
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -133,8 +135,8 @@ class _TimelineViewState extends State<TimelineView>
   }
   // Scroll - End
 
-  List<FlybisLive> _livesList = [];
-  FlybisLive _liveOwner;
+  List<FlybisLive?> _livesList = [];
+  FlybisLive? _liveOwner;
 
   @override
   void initState() {
@@ -147,11 +149,11 @@ class _TimelineViewState extends State<TimelineView>
     listenLivesList();
   }
 
-  void setLivesList(List<FlybisLive> flybisLives) {
+  void setLivesList(List<FlybisLive?> flybisLives) {
     bool hasOwner = false;
 
-    flybisLives.forEach((FlybisLive flybisLive) {
-      if (flybisLive.userId == flybisUserOwner.uid) {
+    flybisLives.forEach((FlybisLive? flybisLive) {
+      if (flybisLive!.userId == flybisUserOwner!.uid) {
         hasOwner = true;
 
         flybisLives.remove(flybisLive);
@@ -171,7 +173,7 @@ class _TimelineViewState extends State<TimelineView>
 
         if (!hasOwner) {
           _liveOwner =
-              live_service.LiveService().createLive(flybisUserOwner.uid);
+              live_service.LiveService().createLive(flybisUserOwner!.uid);
           _livesList.insert(0, _liveOwner);
         }
       });
@@ -180,8 +182,8 @@ class _TimelineViewState extends State<TimelineView>
 
   void listenLivesList() {
     live_service.LiveService()
-        .streamLives(5)
-        .listen((List<FlybisLive> flybisLives) {
+        .streamLives(5)!
+        .listen((List<FlybisLive?> flybisLives) {
       logger.d('listenLivesList: ' + flybisLives.toString());
 
       if (flybisLives != null) {
@@ -191,7 +193,8 @@ class _TimelineViewState extends State<TimelineView>
   }
 
   Future<void> liveCreate(FlybisLive flybisLive) async {
-    await live_service.LiveService().startLive(flybisUserOwner.uid, flybisLive);
+    await live_service.LiveService()
+        .startLive(flybisUserOwner!.uid, flybisLive);
 
     await handleCameraMicrophone();
 
@@ -221,23 +224,23 @@ class _TimelineViewState extends State<TimelineView>
             return Text('');
           }
 
-          return liveUser(_livesList[index]);
+          return liveUser(_livesList[index]!);
         },
       ),
     );
   }
 
   Widget liveUser(FlybisLive flybisLive) {
-    bool isOwner = flybisLive.userId == flybisUserOwner.uid;
+    bool isOwner = flybisLive.userId == flybisUserOwner!.uid;
 
     return FutureBuilder(
       future: user_service.UserService().getUser(flybisLive.userId),
-      builder: (BuildContext context, AsyncSnapshot<FlybisUser> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<FlybisUser?> snapshot) {
         if (!snapshot.hasData) {
           return Text('');
         }
 
-        FlybisUser flybisUser = snapshot.data;
+        FlybisUser flybisUser = snapshot.data!;
 
         return Container(
           margin: EdgeInsets.all(5),
@@ -251,7 +254,7 @@ class _TimelineViewState extends State<TimelineView>
                   child: GestureDetector(
                     onTap: () {
                       if (isOwner) {
-                        liveCreate(_liveOwner);
+                        liveCreate(_liveOwner!);
                       } else {
                         liveJoin(flybisLive);
                       }
@@ -286,7 +289,7 @@ class _TimelineViewState extends State<TimelineView>
                             backgroundColor: kAvatarBackground,
                             backgroundImage:
                                 ImageNetwork.cachedNetworkImageProvider(
-                              flybisUser.photoUrl,
+                              flybisUser.photoUrl!,
                             ),
                           ),
                         ),
@@ -354,7 +357,7 @@ class _TimelineViewState extends State<TimelineView>
                 ),
               ),
               SizedBox(height: 3.5),
-              Text(flybisUser.username != null ? flybisUser.username : ''),
+              Text(flybisUser.username != null ? flybisUser.username! : ''),
             ],
           ),
         );
@@ -385,10 +388,11 @@ class _TimelineViewState extends State<TimelineView>
         : Card(child: errorWidget);
 
     return FutureBuilder(
-      future: follow_service.FollowService().getFollowings(flybisUserOwner.uid),
+      future:
+          follow_service.FollowService().getFollowings(flybisUserOwner!.uid),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<FlybisDocument>> snapshot,
+        AsyncSnapshot<List<FlybisDocument>?> snapshot,
       ) {
         if (!snapshot.hasData &&
             snapshot.connectionState == ConnectionState.waiting) {
@@ -399,7 +403,7 @@ class _TimelineViewState extends State<TimelineView>
           return hasError;
         }
 
-        List<String> followings = snapshot.data
+        List<String?> followings = snapshot.data!
             .map((FlybisDocument document) => document.documentId)
             .toList();
 
@@ -407,7 +411,7 @@ class _TimelineViewState extends State<TimelineView>
           future: user_service.UserService().getUsersRecommendations(),
           builder: (
             BuildContext context,
-            AsyncSnapshot<List<FlybisUser>> snapshot,
+            AsyncSnapshot<List<FlybisUser>?> snapshot,
           ) {
             if (!snapshot.hasData &&
                 snapshot.connectionState == ConnectionState.waiting) {
@@ -420,9 +424,9 @@ class _TimelineViewState extends State<TimelineView>
 
             List<Widget> users = [];
 
-            snapshot.data.forEach(
+            snapshot.data!.forEach(
               (FlybisUser flybisUser) {
-                bool isOwner = flybisUserOwner.uid == flybisUser.uid;
+                bool isOwner = flybisUserOwner!.uid == flybisUser.uid;
                 bool isFollowing = followings.contains(flybisUser.uid);
 
                 if (!isOwner && !isFollowing) {
@@ -484,7 +488,7 @@ class _TimelineViewState extends State<TimelineView>
   Widget streamTimeline() {
     return StreamBuilder(
       stream: timeline_service.TimelineService()
-          .streamTimeline(flybisUserOwner.uid, limit),
+          .streamTimeline(flybisUserOwner!.uid, limit),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<FlybisPost>> snapshot,
@@ -500,7 +504,7 @@ class _TimelineViewState extends State<TimelineView>
         List<Widget> posts = [];
 
         if (snapshot.hasData) {
-          snapshot.data.forEach((FlybisPost flybisPost) {
+          snapshot.data!.forEach((FlybisPost flybisPost) {
             Widget postWidget = post_widget.PostWidget(
               key: ValueKey(flybisPost.postId),
               flybisPost: flybisPost,

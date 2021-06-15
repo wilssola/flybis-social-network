@@ -34,19 +34,19 @@ import 'package:flybis/views/photo_view.dart';
 import 'package:flybis/widgets/utils_widget.dart' as utils_widget;
 
 class ChatMessageView extends StatefulWidget {
-  final FlybisChatStatus flybisChatStatus;
+  final FlybisChatStatus? flybisChatStatus;
 
-  final FlybisUser flybisUserSender;
-  final List<FlybisUser> flybisUserReceivers;
+  final FlybisUser? flybisUserSender;
+  final List<FlybisUser?> flybisUserReceivers;
 
   final Color pageColor;
 
   ChatMessageView({
-    Key key,
+    Key? key,
     this.flybisChatStatus,
-    @required this.flybisUserSender,
-    @required this.flybisUserReceivers,
-    @required this.pageColor,
+    required this.flybisUserSender,
+    required this.flybisUserReceivers,
+    required this.pageColor,
   }) : super(key: key);
 
   @override
@@ -61,23 +61,25 @@ class ChatMessageViewState extends State<ChatMessageView> {
   bool showToUpButton = false;
   int limit = 0;
   int oldLimit = 0;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >=
+            scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <=
+            scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -89,7 +91,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -97,7 +99,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -120,15 +122,15 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }
   // Scroll - End
 
-  FlybisChatStatus flybisChatStatus;
+  FlybisChatStatus? flybisChatStatus;
 
   ChatMessageViewState({
-    @required this.flybisChatStatus,
+    required this.flybisChatStatus,
   });
 
-  List<FlybisChatMessage> messagesList;
+  List<FlybisChatMessage>? messagesList;
 
-  PickedFile imageFile;
+  PickedFile? imageFile;
   bool isLoading = false;
   bool isShowSticker = false;
 
@@ -170,8 +172,8 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
     if (flybisChatStatus == null) {
       chatService
-          .streamStatus(checkHasCode(
-              widget.flybisUserSender.uid, widget.flybisUserReceivers[0].uid))
+          .streamStatus(checkHasCode(widget.flybisUserSender!.uid,
+              widget.flybisUserReceivers[0]!.uid))!
           .listen((event) {
         if (mounted) {
           setState(() {
@@ -181,21 +183,21 @@ class ChatMessageViewState extends State<ChatMessageView> {
       });
     }
 
-    chatService.setStatus(flybisChatStatus);
+    chatService.setStatus(flybisChatStatus!);
     chatService.resetStatusCount(
-      chatId: flybisChatStatus.chatId,
-      userId: widget.flybisUserSender.uid,
+      chatId: flybisChatStatus!.chatId,
+      userId: widget.flybisUserSender!.uid,
     );
   }
 
   Future<void> initCall() async {
-    String callId = await ChatService().addCall(flybisChatStatus.chatId);
+    String callId = await ChatService().addCall(flybisChatStatus!.chatId);
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CallView(
-          chat: flybisChatStatus.chatId,
+          chat: flybisChatStatus!.chatId,
           callId: callId,
         ),
       ),
@@ -233,8 +235,8 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
     Reference reference = FirebaseStorage.instance
         .ref()
-        .child(flybisUserOwner.uid + '/messages/images/message_$fileId.jpg');
-    UploadTask uploadTask = reference.putData(await imageFile.readAsBytes());
+        .child(flybisUserOwner!.uid! + '/messages/images/message_$fileId.jpg');
+    UploadTask uploadTask = reference.putData(await imageFile!.readAsBytes());
     TaskSnapshot storageTaskSnapshot = await uploadTask; //.onComplete;
 
     storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
@@ -271,13 +273,13 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
       final String encryptedContent = EncryptionService.instance.encryptWithCRC(
         content,
-        flybisChatStatus.chatKey,
+        flybisChatStatus!.chatKey,
       );
 
       try {
         FlybisChatMessage message = FlybisChatMessage(
-          chatId: flybisChatStatus.chatId,
-          userId: widget.flybisUserSender.uid,
+          chatId: flybisChatStatus!.chatId,
+          userId: widget.flybisUserSender!.uid,
           messageId: id,
           messageContent: encryptedContent,
           messageType: type,
@@ -286,24 +288,25 @@ class ChatMessageViewState extends State<ChatMessageView> {
         );
 
         chatService.setMessage(message).then((Object value) {
-          scrollController.jumpTo(scrollController.position.minScrollExtent);
-        });
+              scrollController!
+                  .jumpTo(scrollController!.position.minScrollExtent);
+            } as FutureOr Function(void));
 
         try {
-          Map<String, int> messageCounts = {};
-          for (int i = 0; i < flybisChatStatus.chatUsers.length; i++) {
-            if (flybisChatStatus.chatUsers[i] != flybisUserOwner.uid) {
-              messageCounts[flybisChatStatus.chatUsers[i]] = flybisChatStatus
-                      .messageCounts[flybisChatStatus.chatUsers[i]] +
+          Map<String?, int> messageCounts = {};
+          for (int i = 0; i < flybisChatStatus!.chatUsers.length; i++) {
+            if (flybisChatStatus!.chatUsers[i] != flybisUserOwner!.uid) {
+              messageCounts[flybisChatStatus!.chatUsers[i]] = flybisChatStatus!
+                      .messageCounts![flybisChatStatus!.chatUsers[i]]! +
                   1;
             }
           }
 
           FlybisChatStatus newFlybisChatStatus = FlybisChatStatus(
-            chatId: flybisChatStatus.chatId,
-            chatKey: flybisChatStatus.chatKey,
-            chatType: flybisChatStatus.chatType,
-            chatUsers: flybisChatStatus.chatUsers,
+            chatId: flybisChatStatus!.chatId,
+            chatKey: flybisChatStatus!.chatKey,
+            chatType: flybisChatStatus!.chatType,
+            chatUsers: flybisChatStatus!.chatUsers,
             messageContent: encryptedContent,
             messageType: type,
             messageColor: color,
@@ -330,21 +333,21 @@ class ChatMessageViewState extends State<ChatMessageView> {
     FlybisChatMessage message,
     String content,
   ) {
-    final bool isOwner = message.userId == flybisUserOwner.uid;
+    final bool isOwner = message.userId == flybisUserOwner!.uid;
 
     return Row(
       children: [
         // Avatar
         isLastMessageLeft(index) &&
-                message.userId == widget.flybisUserReceivers[0].uid
+                message.userId == widget.flybisUserReceivers[0]!.uid
             ? Container(
                 margin: EdgeInsets.only(right: 10),
                 child: CircleAvatar(
                   backgroundColor: kAvatarBackground,
                   backgroundImage:
-                      widget.flybisUserReceivers[0].photoUrl.length > 0
+                      widget.flybisUserReceivers[0]!.photoUrl!.length > 0
                           ? ImageNetwork.cachedNetworkImageProvider(
-                              widget.flybisUserReceivers[0].photoUrl,
+                              widget.flybisUserReceivers[0]!.photoUrl!,
                             )
                           : null,
                 ),
@@ -357,7 +360,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
               shadowColor: Colors.black,
               nip: isOwner ? BubbleNip.rightTop : BubbleNip.leftTop,
               alignment: isOwner ? Alignment.centerRight : Alignment.centerLeft,
-              color: pageColors[message.messageColor],
+              color: pageColors[message.messageColor!],
               margin: BubbleEdges.only(top: 15),
               child: Container(
                 margin: EdgeInsets.zero,
@@ -384,8 +387,10 @@ class ChatMessageViewState extends State<ChatMessageView> {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   LinkPreview(
-                                    text: urlFromString(content),
+                                    text: urlFromString(content)!,
                                     width: MediaQuery.of(context).size.width,
+                                    previewData: null,
+                                    onPreviewDataFetched: (PreviewData) {},
                                   ),
                                 ],
                               )
@@ -507,7 +512,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
             messagesList != null &&
-            messagesList[index - 1].userId == widget.flybisUserSender.uid) ||
+            messagesList![index - 1].userId == widget.flybisUserSender!.uid) ||
         index == 0) {
       return true;
     } else {
@@ -518,7 +523,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   bool isLastMessageRight(int index) {
     if ((index > 0 &&
             messagesList != null &&
-            messagesList[index - 1].userId != widget.flybisUserSender.uid) ||
+            messagesList![index - 1].userId != widget.flybisUserSender!.uid) ||
         index == 0) {
       return true;
     } else {
@@ -527,12 +532,12 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }
 
   void buildSticker() async {
-    final gif = await GiphyPicker.pickGif(
+    final gif = await (GiphyPicker.pickGif(
       context: context,
       apiKey: '0TH9WzvgjcHUKckMJLnGfrwvLz8DLfqa',
-    );
+    ) as FutureOr<GiphyGif>);
 
-    if (gif.images.original.url != null) {
+    if (gif.images.original!.url != null) {
       if (mounted) {
         setState(() {
           isLoading = true;
@@ -543,7 +548,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
         if (mounted) {
           setState(() {
             isLoading = false;
-            onSendMessage(gif.images.original.url, 'giphy');
+            onSendMessage(gif.images.original!.url!, 'giphy');
           });
         }
       });
@@ -646,7 +651,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                     width: (!kIsWeb || MediaQuery.of(context).size.width <= 720)
                         ? 1
                         : 1.5,
-                    color: Theme.of(context).iconTheme.color,
+                    color: Theme.of(context).iconTheme.color!,
                   ),
                   borderRadius: BorderRadius.circular(25),
                 ),
@@ -676,14 +681,14 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
   Widget buildListMessage() {
     return Flexible(
-      child: flybisChatStatus.chatId.length == 0
+      child: flybisChatStatus!.chatId.length == 0
           ? Center(
               child: utils_widget.UtilsWidget()
                   .circularProgress(context, color: widget.pageColor),
             )
           : StreamBuilder(
               stream:
-                  chatService.streamMessages(flybisChatStatus.chatId, limit),
+                  chatService.streamMessages(flybisChatStatus!.chatId, limit),
               builder: (
                 BuildContext context,
                 AsyncSnapshot<List<FlybisChatMessage>> snapshot,
@@ -699,7 +704,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                   return !kIsWeb
                       ? messages(
                           context,
-                          snapshot.data.length,
+                          snapshot.data!.length,
                           snapshot.data,
                         )
                       : Scrollbar(
@@ -708,7 +713,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                           controller: scrollController,
                           child: messages(
                             context,
-                            snapshot.data.length,
+                            snapshot.data!.length,
                             snapshot.data,
                           ),
                         );
@@ -721,7 +726,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   Widget messages(
     BuildContext context,
     int length,
-    List<FlybisChatMessage> docs,
+    List<FlybisChatMessage>? docs,
   ) {
     return ListView.builder(
       padding: EdgeInsets.all(10.0),
@@ -729,14 +734,14 @@ class ChatMessageViewState extends State<ChatMessageView> {
       controller: scrollController,
       itemCount: length,
       itemBuilder: (BuildContext context, int index) {
-        FlybisChatMessage message = docs[index];
+        FlybisChatMessage message = docs![index];
 
         return buildItem(
           context,
           index,
           message,
-          EncryptionService.instance
-              .decryptWithCRC(message.messageContent, flybisChatStatus.chatKey),
+          EncryptionService.instance.decryptWithCRC(
+              message.messageContent!, flybisChatStatus!.chatKey),
         );
       },
     );
@@ -753,18 +758,18 @@ class ChatMessageViewState extends State<ChatMessageView> {
           leading: CircleAvatar(
             backgroundColor: Colors.white,
             backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-              widget.flybisUserReceivers[0].photoUrl,
+              widget.flybisUserReceivers[0]!.photoUrl!,
             ),
           ),
           title: Text(
-            '@' + widget.flybisUserReceivers[0].username,
+            '@' + widget.flybisUserReceivers[0]!.username!,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
-            widget.flybisUserReceivers[0].displayName,
+            widget.flybisUserReceivers[0]!.displayName!,
             style: TextStyle(color: Colors.white),
           ),
           trailing: GestureDetector(
@@ -805,7 +810,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }
 }
 
-String checkHasCode(String flybisUserSender, String flybisUserReceivers) {
+String checkHasCode(String? flybisUserSender, String? flybisUserReceivers) {
   String chatId;
 
   if (flybisUserSender.hashCode <= flybisUserReceivers.hashCode) {

@@ -22,7 +22,7 @@ class RealtimeService {
   }
 
   Future<DataSnapshot> once<T>({
-    @required String path,
+    required String path,
   }) async {
     final DatabaseReference reference = _db.child(path);
 
@@ -32,7 +32,7 @@ class RealtimeService {
   }
 
   Stream<Event> onValue<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -42,7 +42,7 @@ class RealtimeService {
   }
 
   Stream<Event> onChildAdded<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -52,7 +52,7 @@ class RealtimeService {
   }
 
   Stream<Event> onChildChanged<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -62,7 +62,7 @@ class RealtimeService {
   }
 
   Stream<Event> onChildMoved<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -72,7 +72,7 @@ class RealtimeService {
   }
 
   Stream<Event> onChildRemoved<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -82,7 +82,7 @@ class RealtimeService {
   }
 
   OnDisconnect onDisconnect<T>({
-    @required String path,
+    required String path,
   }) {
     final DatabaseReference reference = _db.child(path);
 
@@ -92,8 +92,8 @@ class RealtimeService {
   }
 
   Future<void> set({
-    @required String path,
-    @required Map<String, dynamic> data,
+    required String path,
+    required Map<String, dynamic> data,
     bool merge = false,
   }) async {
     final DatabaseReference reference = _db.child(path);
@@ -104,8 +104,8 @@ class RealtimeService {
   }
 
   Future<void> update({
-    @required String path,
-    @required Map<String, dynamic> data,
+    required String path,
+    required Map<String, dynamic> data,
   }) async {
     final DatabaseReference reference = _db.child(path);
 
@@ -115,7 +115,7 @@ class RealtimeService {
   }
 
   Future<void> remove({
-    @required String path,
+    required String path,
   }) async {
     final DatabaseReference reference = _db.child(path);
 

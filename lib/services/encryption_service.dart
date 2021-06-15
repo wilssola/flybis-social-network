@@ -85,7 +85,7 @@ class EncryptionService {
       else
         preHash = Uint8List.fromList(password + salt);
 
-      currentHash = md5.convert(preHash).bytes;
+      currentHash = md5.convert(preHash).bytes as Uint8List;
       concatenatedHashes = Uint8List.fromList(concatenatedHashes + currentHash);
       if (concatenatedHashes.length >= 48) enoughBytesForKey = true;
     }
@@ -140,7 +140,7 @@ class EncryptionService {
         String decryptedString = decryptAESCryptoJS(split[0], key);
         String crcString = split[1];
 
-        int crc = int.tryParse(crcString);
+        int? crc = int.tryParse(crcString);
 
         if (crc != null) {
           if (CRC32.compute(decryptedString) == crc) {

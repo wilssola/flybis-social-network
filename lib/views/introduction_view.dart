@@ -33,13 +33,13 @@ class _IntroductionViewState extends State<IntroductionView> {
 
         List<PageViewModel> pages = [];
 
-        snapshot.data.forEach(
+        snapshot.data!.forEach(
           (FlybisIntroduction page) {
             pages.add(
               PageViewModel(
                 title: page.title,
                 body: page.body,
-                image: ImageNetwork.cachedNetworkImage(imageUrl: page.image),
+                image: ImageNetwork.cachedNetworkImage(imageUrl: page.image!),
               ),
             );
           },

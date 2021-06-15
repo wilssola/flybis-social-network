@@ -22,9 +22,9 @@ import 'package:flybis/services/api_service.dart';
 class UtilsWidget {
   PreferredSizeWidget header(
     BuildContext context, {
-    GlobalKey<ScaffoldState> scaffoldKey,
+    GlobalKey<ScaffoldState>? scaffoldKey,
     String titleText = '',
-    Color pageColor = Colors.red,
+    Color? pageColor = Colors.red,
     bool pageHeaderWeb = false,
     bool removeBackButton = false,
   }) {
@@ -42,7 +42,7 @@ class UtilsWidget {
                   Icons.menu,
                   color: Colors.white,
                 ),
-                onPressed: () => scaffoldKey.currentState.openDrawer(),
+                onPressed: () => scaffoldKey.currentState!.openDrawer(),
               ),
             )
           : null,
@@ -131,7 +131,7 @@ class UtilsWidget {
     }
   }
 
-  Widget adaptiveImage(BuildContext context, String url, String blurHash,
+  Widget adaptiveImage(BuildContext context, String? url, String blurHash,
       {BoxFit fit = BoxFit.cover}) {
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -145,7 +145,7 @@ class UtilsWidget {
             !kIsWeb ? MediaQuery.of(context).size.width : widthWeb(context),
       ),
       child: OctoImage(
-        image: ImageNetwork.cachedNetworkImageProvider(url != null ? url : ''),
+        image: ImageNetwork.cachedNetworkImageProvider(url!),
         placeholderBuilder: OctoPlaceholder.blurHash(blurHash),
         errorBuilder: OctoError.icon(color: Colors.red),
         fit: fit,
@@ -218,8 +218,8 @@ class UtilsWidget {
 
   Widget selectableText(
     String content, {
-    TextStyle style,
-    TextAlign textAlign,
+    TextStyle? style,
+    TextAlign? textAlign,
   }) {
     return RawKeyboardListener(
       focusNode: FocusNode(),
@@ -243,7 +243,7 @@ class UtilsWidget {
     bool showToUpButton,
     bool toUpButton,
     IconData icon,
-    Color pageColor,
+    Color? pageColor,
     Function scrollToUp,
     String tag,
   ) {
@@ -275,7 +275,7 @@ class UtilsWidget {
 
   Container circularProgress(
     BuildContext context, {
-    Color color,
+    Color? color,
   }) {
     return Container(
       alignment: Alignment(0.0, 0.0),
@@ -289,8 +289,8 @@ class UtilsWidget {
 
   Container centerCircularProgress(
     BuildContext context, {
-    Color color,
-    double height,
+    Color? color,
+    double? height,
   }) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -305,11 +305,11 @@ class UtilsWidget {
 
   Container scaffoldCenterCircularProgress(
     BuildContext context, {
-    Color color,
+    Color? color,
   }) {
     double sizeHeight = MediaQuery.of(context).size.height;
 
-    double appBarMaxHeight = Scaffold.of(context).appBarMaxHeight;
+    double? appBarMaxHeight = Scaffold.of(context).appBarMaxHeight;
 
     double calc1 = sizeHeight - double.parse(appBarMaxHeight.toString());
     double calc2 = calc1 - kAppBottomBarHeight;
@@ -321,7 +321,7 @@ class UtilsWidget {
 
   Widget formInput(
     GlobalKey<FormState> key,
-    Function(String) onSaved,
+    Function(String?) onSaved,
     String labelText,
     String hintText,
     String minText,
@@ -329,8 +329,8 @@ class UtilsWidget {
     int minLength,
     int maxLength, {
     String prefixText = '',
-    Function validator,
-    TextInputType keyboardType,
+    Function? validator,
+    TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
   }) {
     return Padding(
@@ -350,8 +350,8 @@ class UtilsWidget {
             keyboardType: keyboardType,
             textCapitalization: textCapitalization,
             onSaved: onSaved,
-            validator: (String value) {
-              if (value.trim().length < minLength) {
+            validator: (String? value) {
+              if (value!.trim().length < minLength) {
                 return minText;
               } else if (value.trim().length > maxLength) {
                 return maxText;
@@ -388,7 +388,7 @@ class UtilsWidget {
 
   Widget webBody(
     BuildContext context, {
-    Widget child,
+    Widget? child,
     double multiply = 1,
   }) {
     return Align(
@@ -403,7 +403,7 @@ class UtilsWidget {
   Widget infoError(String text) {
     return FutureBuilder(
       future: ApiService.instance.getErrorTenor(),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         return Column(
           children: [
             infoText(text),
@@ -411,7 +411,7 @@ class UtilsWidget {
                 ? Container(
                     padding: EdgeInsets.only(bottom: 15),
                     child: ImageNetwork.cachedNetworkImage(
-                      imageUrl: snapshot.data,
+                      imageUrl: snapshot.data!,
                     ),
                   )
                 : Padding(padding: EdgeInsets.zero),
@@ -421,7 +421,7 @@ class UtilsWidget {
     );
   }
 
-  Widget shimmer(BuildContext context, {double height}) {
+  Widget shimmer(BuildContext context, {double? height}) {
     return SizedBox(
       height: height,
       child: Shimmer.fromColors(

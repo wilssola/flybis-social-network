@@ -14,8 +14,8 @@ class BellService {
 
   final DatabaseService _db = DatabaseService.instance;
 
-  Stream<List<FlybisBell>> streamBells(
-    String userId,
+  Stream<List<FlybisBell>>? streamBells(
+    String? userId,
     int limit,
   ) =>
       _db.streamCollection(

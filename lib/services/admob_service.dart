@@ -12,10 +12,10 @@ import 'package:flybis/widgets/admob_widget.dart';
 
 class AdmobService {
   Widget showAdmob({
-    EdgeInsetsGeometry margin,
-    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
     String pageId = 'default',
-    @required Color pageColor,
+    required Color? pageColor,
   }) {
     if (kIsWeb) {
       return AdsenseService().showAdsense();
@@ -29,7 +29,7 @@ class AdmobService {
     );
   }
 
-  String nativeAdmobId(String pageId) {
+  String? nativeAdmobId(String pageId) {
     pageId = pageId.toLowerCase();
 
     // Generic Test AD ID from https://developers.google.com/admob/ios/native/start

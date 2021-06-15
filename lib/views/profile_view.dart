@@ -27,9 +27,9 @@ import 'package:flybis/widgets/utils_widget.dart' as utils_widget;
 
 void openUsername(
   String username,
-  Color pageColor,
+  Color? pageColor,
 ) async {
-  String uid = await UserService().getUsername(username.replaceAll('@', ''));
+  String? uid = await UserService().getUsername(username.replaceAll('@', ''));
 
   if (uid != null) {
     Get.to(
@@ -42,18 +42,18 @@ void openUsername(
 }
 
 class ProfileView extends StatefulWidget {
-  final String uid;
+  final String? uid;
 
   // Page
   final String pageId = 'Profile';
-  final Color pageColor;
+  final Color? pageColor;
   final bool pageHeaderWeb;
 
   // Scaffold
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   ProfileView({
-    @required this.uid,
+    required this.uid,
 
     // Page
     this.pageColor,
@@ -75,23 +75,25 @@ class _ProfileViewState extends State<ProfileView> {
   int limit = 0;
   int oldLimit = 0;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >=
+            scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <=
+            scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -105,7 +107,7 @@ class _ProfileViewState extends State<ProfileView> {
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -113,7 +115,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -137,7 +139,7 @@ class _ProfileViewState extends State<ProfileView> {
   // Scroll - End
 
   FlybisUser user = FlybisUser();
-  StreamSubscription userSubscription;
+  StreamSubscription? userSubscription;
 
   String postOrientation = 'grid';
 
@@ -149,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   getUser() async {
-    userSubscription = UserService().streamUser(widget.uid).listen((event) {
+    userSubscription = UserService().streamUser(widget.uid)!.listen((event) {
       if (mounted) {
         setState(() {
           user = event;
@@ -163,7 +165,7 @@ class _ProfileViewState extends State<ProfileView> {
       context,
       MaterialPageRoute(
         builder: (context) => profile_edit_view.ProfileEditView(
-          flybisUserOwner.uid,
+          flybisUserOwner!.uid,
           pageColor: widget.pageColor,
         ),
       ),
@@ -171,10 +173,10 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget profileButton() {
-    bool isOwner = flybisUserOwner.uid == widget.uid;
+    bool isOwner = flybisUserOwner!.uid == widget.uid;
 
     return StreamBuilder(
-      stream: FollowService().streamFollowing(widget.uid, flybisUserOwner.uid),
+      stream: FollowService().streamFollowing(widget.uid, flybisUserOwner!.uid),
       builder: (
         BuildContext context,
         AsyncSnapshot<bool> snapshot,
@@ -183,7 +185,7 @@ class _ProfileViewState extends State<ProfileView> {
           return Text('');
         }
 
-        bool isFollowing = snapshot.data;
+        bool? isFollowing = snapshot.data;
 
         if (isOwner) {
           return buildButton(
@@ -192,7 +194,7 @@ class _ProfileViewState extends State<ProfileView> {
             colorButton: widget.pageColor,
             colorText: Colors.white,
           );
-        } else if (isFollowing) {
+        } else if (isFollowing!) {
           return buildButton(
             text: 'Unfollow',
             function: handleUnfollowUser,
@@ -215,7 +217,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget followersCount() {
     final String text = 'followers'.tr.toLowerCase();
 
-    final int count = user.followersCount;
+    final int? count = user.followersCount;
 
     return countColumn(
       text,
@@ -226,7 +228,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget followingsCount() {
     final String text = 'followings'.tr.toLowerCase();
 
-    final int count = user.followingsCount;
+    final int? count = user.followingsCount;
 
     return countColumn(
       text,
@@ -237,7 +239,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget postsCount() {
     final String text = 'posts'.tr.toLowerCase();
 
-    final int count = user.postsCount;
+    final int? count = user.postsCount;
 
     return countColumn(
       text,
@@ -248,7 +250,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget friendsCount() {
     final String text = 'friends'.tr.toLowerCase();
 
-    final int count = user.friendsCount;
+    final int? count = user.friendsCount;
 
     return countColumn(
       text,
@@ -267,7 +269,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
   // Count - End
 
-  Column countColumn(String label, int count) {
+  Column countColumn(String label, int? count) {
     return Column(
       children: <Widget>[
         textCount(format.formatCompactNumber(count)),
@@ -290,42 +292,42 @@ class _ProfileViewState extends State<ProfileView> {
 
   // Friend
   friendButton() {
-    bool isOwner = flybisUserOwner.uid == widget.uid;
+    bool isOwner = flybisUserOwner!.uid == widget.uid;
 
     return StreamBuilder(
-      stream: FriendService().streamFriend(widget.uid, flybisUserOwner.uid),
+      stream: FriendService().streamFriend(widget.uid, flybisUserOwner!.uid),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
           return Text('');
         }
 
-        bool isFriend = snapshot.data;
+        bool? isFriend = snapshot.data;
 
         return StreamBuilder(
           stream: FriendService()
-              .streamFriendRequest(flybisUserOwner.uid, widget.uid),
+              .streamFriendRequest(flybisUserOwner!.uid, widget.uid),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (!snapshot.hasData) {
               return Text('');
             }
 
-            bool isRequestedFriendToMe = snapshot.data;
+            bool? isRequestedFriendToMe = snapshot.data;
 
             return StreamBuilder(
               stream: FriendService()
-                  .streamFriendRequest(widget.uid, flybisUserOwner.uid),
+                  .streamFriendRequest(widget.uid, flybisUserOwner!.uid),
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 if (!snapshot.hasData) {
                   return Text('');
                 }
 
-                bool isRequestedFriend = snapshot.data;
+                bool? isRequestedFriend = snapshot.data;
 
                 if (isOwner) {
                   return Padding(padding: EdgeInsets.zero);
-                } else if (!isFriend) {
-                  if (!isRequestedFriendToMe) {
-                    if (isRequestedFriend) {
+                } else if (!isFriend!) {
+                  if (!isRequestedFriendToMe!) {
+                    if (isRequestedFriend!) {
                       return buildButton(
                         text: 'Cancel Request',
                         function: handleUnrequestFriendUser,
@@ -365,36 +367,36 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   handleUnrequestFriendUser() {
-    FriendService().friendUnrequestUser(flybisUserOwner.uid, widget.uid);
+    FriendService().friendUnrequestUser(flybisUserOwner!.uid, widget.uid);
   }
 
   handleRequestFriendUser() {
-    FriendService().friendRequestUser(widget.uid, flybisUserOwner.uid);
+    FriendService().friendRequestUser(widget.uid, flybisUserOwner!.uid);
   }
 
   handleUnfriendUser() async {
-    FriendService().unfriendUser(flybisUserOwner.uid, widget.uid);
+    FriendService().unfriendUser(flybisUserOwner!.uid, widget.uid);
 
     handleUnrequestFriendUser();
   }
 
   handleFriendUser() {
-    FriendService().friendUser(flybisUserOwner.uid, widget.uid);
+    FriendService().friendUser(flybisUserOwner!.uid, widget.uid);
   }
   // Friend - End
 
   handleFollowUser() {
-    FollowService().followUser(widget.uid, flybisUserOwner.uid);
+    FollowService().followUser(widget.uid, flybisUserOwner!.uid);
   }
 
   handleUnfollowUser() {
-    FollowService().unfollowUser(widget.uid, flybisUserOwner.uid);
+    FollowService().unfollowUser(widget.uid, flybisUserOwner!.uid);
   }
 
   Container buildButton({
     String text = '',
-    Function function,
-    Color colorButton = Colors.white,
+    Function? function,
+    Color? colorButton = Colors.white,
     Color colorText = Colors.white,
   }) {
     return Container(
@@ -404,7 +406,7 @@ class _ProfileViewState extends State<ProfileView> {
         height: 35.0,
         alignment: Alignment.center,
         child: FlatButton(
-          onPressed: function,
+          onPressed: function as void Function()?,
           color: colorButton,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
@@ -453,12 +455,12 @@ class _ProfileViewState extends State<ProfileView> {
                               ? 250.0
                               : 350,
                       width: MediaQuery.of(context).size.width,
-                      child: user.bannerUrl.length > 0
+                      child: user.bannerUrl!.length > 0
                           ? ImageNetwork.cachedNetworkImage(
-                              imageUrl: user.bannerUrl,
+                              imageUrl: user.bannerUrl!,
                               fit: BoxFit.cover,
                               showIconError: false,
-                              color: widget.pageColor,
+                              color: widget.pageColor!,
                               alignment: Alignment.topCenter,
                             )
                           : null,
@@ -485,9 +487,9 @@ class _ProfileViewState extends State<ProfileView> {
                               ? 50.0
                               : 100.0,
                       backgroundColor: Colors.white,
-                      backgroundImage: user.photoUrl.length > 0
+                      backgroundImage: user.photoUrl!.length > 0
                           ? ImageNetwork.cachedNetworkImageProvider(
-                              user.photoUrl,
+                              user.photoUrl!,
                             )
                           : null,
                     ),
@@ -499,24 +501,24 @@ class _ProfileViewState extends State<ProfileView> {
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 10),
-            child: user.username.length > 0
-                ? utils_widget.UtilsWidget().usernameText(user.username)
+            child: user.username!.length > 0
+                ? utils_widget.UtilsWidget().usernameText(user.username!)
                 : Text(''),
           ),
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 5),
             child: Text(
-              user.displayName,
+              user.displayName!,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(top: 5, bottom: 15),
-            child: user.bio.length > 0
+            child: user.bio!.length > 0
                 ? Text(
-                    '"' + user.bio + '"',
+                    '"' + user.bio! + '"',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   )
                 : Text(''),
@@ -578,7 +580,7 @@ class _ProfileViewState extends State<ProfileView> {
 
         List<FlybisPost> posts = [];
 
-        snapshot.data.forEach((FlybisPost flybisPost) {
+        snapshot.data!.forEach((FlybisPost flybisPost) {
           posts.add(flybisPost);
         });
 
@@ -763,8 +765,8 @@ class _ProfileViewState extends State<ProfileView> {
 
 void showProfile(
   BuildContext context, {
-  @required String uid,
-  Color pageColor,
+  required String? uid,
+  Color? pageColor,
 }) {
   Navigator.push(
     context,

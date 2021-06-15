@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 class IconButtonTextHoverWidget extends StatefulWidget {
-  final Widget icon;
-  final String label;
-  final Function onPressed;
-  final ButtonStyle style;
+  final Widget? icon;
+  final String? label;
+  final Function? onPressed;
+  final ButtonStyle? style;
 
   IconButtonTextHoverWidget({
-    Key key,
+    Key? key,
     this.icon,
     this.label,
     this.onPressed,
@@ -40,16 +40,16 @@ class _IconButtonTextHoverWidgetState extends State<IconButtonTextHoverWidget> {
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         child: TextButton.icon(
-          icon: widget.icon,
+          icon: widget.icon!,
           label: AnimatedOpacity(
             duration: Duration(milliseconds: 200),
             child: Container(
-              child: Text(widget.label),
-              width: _hovering ? widget.label.length * 10 : 0,
+              child: Text(widget.label!),
+              width: _hovering ? widget.label!.length * 10 : 0,
             ),
             opacity: _hovering ? 1 : 0,
           ),
-          onPressed: widget.onPressed,
+          onPressed: widget.onPressed as void Function()?,
           style: widget.style,
         ),
         transform: _hovering ? hoverTransform : nonHoverTransform,

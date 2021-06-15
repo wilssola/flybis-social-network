@@ -2,9 +2,9 @@
 import 'package:flybis/global.dart';
 
 class FlybisIntroduction {
-  String title;
-  String image;
-  String body;
+  String? title;
+  String? image;
+  String? body;
 
   FlybisIntroduction({
     this.title: '',
@@ -13,11 +13,11 @@ class FlybisIntroduction {
   });
 
   factory FlybisIntroduction.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
-      return null;
+      return FlybisIntroduction();
     }
 
     logger.d('FlybisIntroduction.fromMap: ' + data.toString());

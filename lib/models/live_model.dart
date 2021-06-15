@@ -4,11 +4,11 @@ import 'package:flybis/plugins/timestamp.dart';
 
 class FlybisLive {
   // ID's
-  String userId;
-  String liveId;
+  String? userId;
+  String? liveId;
 
   // Status
-  String status;
+  String? status;
 
   // Timestamp
   dynamic timestamp;
@@ -26,11 +26,11 @@ class FlybisLive {
   });
 
   factory FlybisLive.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
-      return null;
+      return FlybisLive();
     }
 
     logger.d('FlybisLive.fromMap: ' + data.toString());
@@ -64,7 +64,7 @@ class FlybisLive {
 }
 
 class FlybisLiveStatus {
-  String status;
+  String? status;
   dynamic timestamp;
 
   FlybisLiveStatus({
@@ -73,11 +73,11 @@ class FlybisLiveStatus {
   });
 
   factory FlybisLiveStatus.fromMap(
-    Map<String, dynamic> data,
+    Map<String, dynamic>? data,
     String documentId,
   ) {
     if (data == null) {
-      return null;
+      return FlybisLiveStatus();
     }
 
     logger.d('FlybisLiveStatus.fromMap: ' + data.toString());

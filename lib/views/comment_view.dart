@@ -30,17 +30,17 @@ Future<bool> loadLibraries() async {
 enum CommentType { POSTS, LIVES, STORIES }
 
 class CommentView extends StatefulWidget {
-  final String userId;
-  final String postId;
+  final String? userId;
+  final String? postId;
 
   final CommentType commentType; // posts, lives, stories
 
-  final Color pageColor;
+  final Color? pageColor;
 
   CommentView({
-    @required this.userId,
-    @required this.postId,
-    @required this.commentType,
+    required this.userId,
+    required this.postId,
+    required this.commentType,
     this.pageColor: Colors.red,
   });
 
@@ -56,23 +56,23 @@ class _CommentViewState extends State<CommentView> {
   bool showToUpButton = false;
   int limit = 0;
   int oldLimit = 0;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   scrollInit() {
     scrollController = ScrollController();
-    scrollController.addListener(scrollListener);
+    scrollController!.addListener(scrollListener);
   }
 
   scrollListener() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset >= scrollController!.position.maxScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = limit + 5;
       });
     }
 
-    if (scrollController.offset <= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
+    if (scrollController!.offset <= scrollController!.position.minScrollExtent &&
+        !scrollController!.position.outOfRange) {
       setState(() {
         limit = 0;
       });
@@ -84,7 +84,7 @@ class _CommentViewState extends State<CommentView> {
   scrollToUp() {
     hideScrollToUpButton();
 
-    scrollController.jumpTo(1.0);
+    scrollController!.jumpTo(1.0);
 
     setState(() {
       limit = 0;
@@ -92,7 +92,7 @@ class _CommentViewState extends State<CommentView> {
   }
 
   listenScrollToUp() {
-    if (scrollController.offset > scrollController.position.minScrollExtent) {
+    if (scrollController!.offset > scrollController!.position.minScrollExtent) {
       setState(() {
         toUpButton = true;
         showToUpButton = true;
@@ -115,7 +115,7 @@ class _CommentViewState extends State<CommentView> {
   }
   // Scroll - End;
 
-  String commentType;
+  String? commentType;
   TextEditingController commentController = TextEditingController();
 
   @override
@@ -145,7 +145,7 @@ class _CommentViewState extends State<CommentView> {
 
     if (commentContent.length > 0) {
       FlybisComment flybisComment = FlybisComment(
-        userId: flybisUserOwner.uid,
+        userId: flybisUserOwner!.uid,
         commentId: Uuid().v4(),
         commentContent: commentContent,
         commentType: commentType,
@@ -159,7 +159,7 @@ class _CommentViewState extends State<CommentView> {
 
       commentController.clear();
 
-      scrollController.jumpTo(0);
+      scrollController!.jumpTo(0);
     }
   }
 
@@ -184,7 +184,7 @@ class _CommentViewState extends State<CommentView> {
 
         List<Widget> comments = [];
 
-        snapshot.data.forEach((FlybisComment flybisComment) {
+        snapshot.data!.forEach((FlybisComment flybisComment) {
           comments.add(
             comment_widget.CommentWidget(
               flybisComment: flybisComment,

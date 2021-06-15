@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_funding_choices/flutter_funding_choices.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:google_api_availability/google_api_availability.dart';
 import 'package:package_info/package_info.dart' deferred as package_info;
@@ -56,7 +57,7 @@ import 'package:day_night_switcher/day_night_switcher.dart'
 
 Future<bool> loadLibraries() async {
   await login_view.loadLibrary();
-  
+
   await utils_widget.loadLibrary();
 
   await html.loadLibrary();
@@ -103,13 +104,13 @@ Future<bool> searchLoadLibrary() async {
 }
 
 // Auth
-StreamSubscription streamuser;
+StreamSubscription? streamuser;
 
 // RemoteConfig
-RemoteConfig remoteConfig;
+late RemoteConfig remoteConfig;
 
 // Google API's
-GooglePlayServicesAvailability availability;
+GooglePlayServicesAvailability? availability;
 
 // PageView
 PageController pageController = PageController();
@@ -212,9 +213,9 @@ class _AppState extends State<App> {
   bool isAuthOffline = false;
   bool isDarkModeEnabled = false;
 
-  int pageIndex = 0;
+  int? pageIndex = 0;
 
-  String selectedLang = Translation.langs.first;
+  String? selectedLang = Translation.langs.first;
 
   UserService userService = UserService();
 
@@ -264,7 +265,7 @@ class _AppState extends State<App> {
   }
 
   void checkAdmobConsent() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       ConsentInformation consentInfo =
           await FlutterFundingChoices.requestConsentInformation();
       if (consentInfo.isConsentFormAvailable &&
@@ -283,10 +284,10 @@ class _AppState extends State<App> {
 
   void getDarkMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool darkMode = prefs.getBool('darkMode');
+    bool? darkMode = prefs.getBool('darkMode');
 
     bool darkBrightness =
-        SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+        SchedulerBinding.instance!.window.platformBrightness == Brightness.dark;
 
     Get.changeTheme(
       darkMode != null
@@ -325,11 +326,11 @@ class _AppState extends State<App> {
   Future<Map<String, dynamic>> showProfileCreateView(String uid) async {
     await profile_create_view.loadLibrary();
 
-    final Map<String, dynamic> result = await Get.to(
+    final Map<String, dynamic> result = await (Get.to(
       profile_create_view.ProfileCreateView(
         uid: uid,
       ),
-    );
+    ) as FutureOr<Map<String, dynamic>>);
 
     logger.i('showProfileCreateView: ' + result['username']);
 
@@ -352,7 +353,7 @@ class _AppState extends State<App> {
 
     auth.setLanguageCode('pt');
 
-    auth.userChanges().listen((User user) async {
+    auth.userChanges().listen((User? user) async {
       if (user == null) {
         if (mounted) {
           setState(() {
@@ -421,7 +422,7 @@ class _AppState extends State<App> {
 
     agoraIoToken = result.data['token'];
 
-    print('AgoraIo: ' + agoraIoToken);
+    print('AgoraIo: ' + agoraIoToken!);
   }
 
   void onPageChanged(int pageIndex) {
@@ -435,7 +436,7 @@ class _AppState extends State<App> {
   }
 
   void aboutButton() async {
-    var packageInfo;
+    late var packageInfo;
 
     if (!kIsWeb) {
       packageInfo = await package_info.PackageInfo.fromPlatform();
@@ -443,12 +444,12 @@ class _AppState extends State<App> {
 
     String minimumPostDuration = '';
 
-    List<Map<String, dynamic>> query =
-        await FlybisService().streamMinimumPostDurations();
+    List<Map<String, dynamic>?> query = await (FlybisService()
+        .streamMinimumPostDurations() as FutureOr<List<Map<String, dynamic>?>>);
 
     if (query[0] != null) {
       minimumPostDuration = Timestamp.fromMillisecondsSinceEpoch(
-        query[0]['minimumPostDuration'],
+        query[0]!['minimumPostDuration'],
       ).toString();
     }
 
@@ -475,7 +476,7 @@ class _AppState extends State<App> {
           'ID: ' +
               (!kIsWeb
                   ? packageInfo.packageName
-                  : html.window.location.hostname),
+                  : html.window.location.hostname!),
         ),
         utils_widget.UtilsWidget().selectableText(
           'MPD: ' + minimumPostDuration.toString(),
@@ -503,13 +504,13 @@ class _AppState extends State<App> {
 
   Widget drawer() {
     return StreamBuilder(
-      stream: userService.streamUser(flybisUserOwner.uid),
+      stream: userService.streamUser(flybisUserOwner!.uid),
       builder: (BuildContext context, AsyncSnapshot<FlybisUser> snapshot) {
         if (!snapshot.hasData) {
           return Text('');
         }
 
-        FlybisUser user = snapshot.data;
+        FlybisUser user = snapshot.data!;
 
         return Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
@@ -524,7 +525,7 @@ class _AppState extends State<App> {
                   leading: CircleAvatar(
                     backgroundColor: kAvatarBackground,
                     backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                      user.photoUrl,
+                      user.photoUrl!,
                     ),
                   ),
                   title: Text(
@@ -535,14 +536,14 @@ class _AppState extends State<App> {
                     ),
                   ),
                   subtitle: Text(
-                    user.displayName,
+                    user.displayName!,
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: pageColors[pageIndex],
+                  color: pageColors[pageIndex!],
                 ),
               ),
               Container(
@@ -573,7 +574,7 @@ class _AppState extends State<App> {
                             child: Text(lang),
                           );
                         }).toList(),
-                        onChanged: (String value) {
+                        onChanged: (String? value) {
                           // Updates dropdown selected value
                           setState(() => selectedLang = value);
                           // Gets language and changes the locale
@@ -652,7 +653,7 @@ class _AppState extends State<App> {
             scaffoldKey: scaffoldKey,
             pageColor: pageColors[3],
             pageHeaderWeb: true,
-            uid: flybisUserOwner.uid,
+            uid: flybisUserOwner!.uid,
           );
         },
       ),
@@ -735,8 +736,33 @@ class _AppState extends State<App> {
         ],
       ),
       bottomNavigationBar: !kIsWeb || (kIsWeb && kScreenLittle(context))
-          ? BottomNavigationBar(
-              currentIndex: pageIndex,
+          ? SnakeNavigationBar.color(
+              ///configuration for SnakeNavigationBar.color
+              snakeViewColor: Colors.black,
+              selectedItemColor: Colors.black,
+              unselectedItemColor: Colors.blueGrey,
+
+              ///configuration for SnakeNavigationBar.gradient
+              //snakeViewGradient: selectedGradient,
+              //selectedItemGradient: snakeShape == SnakeShape.indicator ? selectedGradient : null,
+              //unselectedItemGradient: unselectedGradient,
+
+              onTap: onTap,
+              elevation: 8,
+              currentIndex: pageIndex!,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              items: [
+                barItem(pages[0].color, pages[0].iconData),
+                barItem(pages[1].color, pages[1].iconData),
+                barItem(pages[2].color, pages[2].iconData),
+                barItem(pages[3].color, pages[3].iconData),
+                barItem(pages[4].color, pages[4].iconData),
+                barItem(pages[5].color, pages[5].iconData),
+              ],
+            )
+          /*? BottomNavigationBar(
+              currentIndex: pageIndex!,
               onTap: onTap,
               iconSize: 25,
               elevation: 8,
@@ -754,7 +780,7 @@ class _AppState extends State<App> {
                 barItem(pages[4].color, pages[4].iconData),
                 barItem(pages[5].color, pages[5].iconData),
               ],
-            )
+            )*/
           : null,
     );
   }

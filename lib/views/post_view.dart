@@ -9,12 +9,12 @@ import 'package:flybis/widgets/post_widget.dart';
 import 'package:flybis/widgets/utils_widget.dart' as utils_widget;
 
 class PostView extends StatefulWidget {
-  final FlybisPost flybisPost;
+  final FlybisPost? flybisPost;
 
-  final String userId;
-  final String postId;
+  final String? userId;
+  final String? postId;
 
-  final Color pageColor;
+  final Color? pageColor;
 
   PostView({
     this.flybisPost,
@@ -31,7 +31,7 @@ class _PostViewState extends State<PostView> {
   _PostViewState();
 
   bool _loaded = false;
-  PostWidget _postWidget;
+  PostWidget? _postWidget;
 
   final PostService postService = PostService();
 
@@ -43,7 +43,7 @@ class _PostViewState extends State<PostView> {
   }
 
   Future<void> getPost() async {
-    FlybisPost flybisPost;
+    FlybisPost? flybisPost;
 
     if (widget.flybisPost == null) {
       flybisPost = await postService.getPost(widget.userId, widget.postId);
@@ -78,21 +78,20 @@ class _PostViewState extends State<PostView> {
     return Scaffold(
       appBar: utils_widget.UtilsWidget().header(
         context,
-        titleText: _postWidget != null ? _postWidget.flybisPost.postTitle : '',
+        titleText:
+            _postWidget != null ? _postWidget!.flybisPost!.postTitle! : '',
       ),
       body: _loaded
-          ? ListView(
-              children: <Widget>[
-                _postWidget != null
-                    ? _postWidget
-                    : utils_widget.UtilsWidget().listViewContainer(
-                        context,
-                        utils_widget.UtilsWidget().infoText(
-                          'Post não existente',
-                        ),
-                      )
-              ],
-            )
+          ? ListView(children: <Widget>[
+              _postWidget != null
+                  ? _postWidget as PostWidget
+                  : utils_widget.UtilsWidget().listViewContainer(
+                      context,
+                      utils_widget.UtilsWidget().infoText(
+                        'Post não existente',
+                      ),
+                    )
+            ])
           : utils_widget.UtilsWidget().circularProgress(
               context,
               color: widget.pageColor,

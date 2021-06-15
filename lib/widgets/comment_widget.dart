@@ -19,7 +19,7 @@ Future<bool> loadLibraries() async {
 }
 
 class CommentWidget extends StatelessWidget {
-  final FlybisComment flybisComment;
+  final FlybisComment? flybisComment;
 
   CommentWidget({
     this.flybisComment,
@@ -38,12 +38,12 @@ class CommentWidget extends StatelessWidget {
         }
 
         return FutureBuilder(
-          future: UserService().getUser(flybisComment.userId),
+          future: UserService().getUser(flybisComment!.userId),
           builder: (
             BuildContext context,
-            AsyncSnapshot<FlybisUser> snapshot,
+            AsyncSnapshot<FlybisUser?> snapshot,
           ) {
-            FlybisUser flybisUser = FlybisUser();
+            FlybisUser? flybisUser = FlybisUser();
 
             if (snapshot.hasData) {
               flybisUser = snapshot.data;
@@ -55,24 +55,24 @@ class CommentWidget extends StatelessWidget {
                   leading: CircleAvatar(
                     backgroundColor: kAvatarBackground,
                     backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                      flybisUser.photoUrl,
+                      flybisUser!.photoUrl!,
                     ),
                   ),
                   title: GestureDetector(
                     onTap: () => profile_view.showProfile(
                       context,
-                      uid: flybisUser.uid,
+                      uid: flybisUser!.uid,
                     ),
                     child: utils_widget.UtilsWidget().usernameText(
-                      flybisUser.username,
+                      flybisUser.username!,
                     ),
                   ),
                   subtitle: utils_widget.UtilsWidget().selectableText(
-                    flybisComment.commentContent,
+                    flybisComment!.commentContent,
                   ),
                   trailing: Text(
                     timeago.timeUntil(
-                      flybisComment.timestamp.toDate(),
+                      flybisComment!.timestamp.toDate(),
                     ),
                   ),
                 ),

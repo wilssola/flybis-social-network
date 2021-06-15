@@ -9,12 +9,12 @@ class ImageNetwork {
   ImageNetwork._();
 
   static Widget cachedNetworkImage({
-    @required String imageUrl,
+    required String imageUrl,
     var placeholder,
     var errorWidget,
     Alignment alignment: Alignment.center,
-    double width,
-    double height,
+    double? width,
+    double? height,
     BoxFit fit = BoxFit.contain,
     bool showIconError = true,
     Color color = Colors.white,
@@ -46,13 +46,9 @@ class ImageNetwork {
   }
 
   static ImageProvider cachedNetworkImageProvider(String url) {
-    if (url != null && url.length > 0) {
-      return FadeInImage.memoryNetwork(
-        placeholder: kTransparentImage,
-        image: url,
-      ).image;
-    } else {
-      return null;
-    }
+    return FadeInImage.memoryNetwork(
+      placeholder: kTransparentImage,
+      image: url,
+    ).image;
   }
 }

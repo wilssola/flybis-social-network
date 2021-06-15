@@ -12,7 +12,7 @@ class CommentService {
   final DatabaseService _db = DatabaseService.instance;
 
   Future<void> setComment(
-    String postId,
+    String? postId,
     FlybisComment flybisComment,
   ) async {
     await _db.set(
@@ -26,10 +26,10 @@ class CommentService {
     );
   }
 
-  Stream<List<FlybisComment>> streamComments(
-    String userId,
-    String commentType,
-    String postId,
+  Stream<List<FlybisComment>>? streamComments(
+    String? userId,
+    String? commentType,
+    String? postId,
     int limit,
   ) =>
       _db.streamCollection(

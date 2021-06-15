@@ -31,8 +31,8 @@ Reference storageUrlRef(url) => FirebaseStorage.instance.refFromURL(url);
 // Admob
 //final AdmobConsent admobConsent = AdmobConsent();
 
-final Color buttonColor = Colors.grey[100];
-final Color kAvatarBackground = Colors.grey[200];
+final Color? buttonColor = Colors.grey[100];
+final Color? kAvatarBackground = Colors.grey[200];
 
 final int kAppBottomBarHeight = 60;
 
