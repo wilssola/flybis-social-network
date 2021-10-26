@@ -2,6 +2,7 @@
 // Generated file. Do not edit.
 //
 
+// ignore_for_file: directives_ordering
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:agora_rtc_engine/agora_rtc_engine_web.dart';
@@ -9,14 +10,19 @@ import 'package:audio_session/audio_session_web.dart';
 import 'package:cloud_firestore_web/cloud_firestore_web.dart';
 import 'package:cloud_functions_web/cloud_functions_web.dart';
 import 'package:connectivity_for_web/connectivity_for_web.dart';
-import 'package:file_picker/src/file_picker_web.dart';
+import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:firebase_analytics_web/firebase_analytics_web.dart';
+import 'package:firebase_app_check_web/firebase_app_check_web.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
+import 'package:firebase_database_web/firebase_database_web.dart';
 import 'package:firebase_messaging_web/firebase_messaging_web.dart';
+import 'package:firebase_performance_web/firebase_performance_web.dart';
 import 'package:firebase_storage_web/firebase_storage_web.dart';
+import 'package:firexcode/firexcode_web.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:geolocator_web/geolocator_web.dart';
+import 'package:image_editor_pro/image_editor_pro_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
@@ -39,12 +45,17 @@ void registerPlugins(Registrar registrar) {
   ConnectivityPlugin.registerWith(registrar);
   FilePickerWeb.registerWith(registrar);
   FirebaseAnalyticsWeb.registerWith(registrar);
+  FirebaseAppCheckWeb.registerWith(registrar);
   FirebaseAuthWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
+  FirebaseDatabaseWeb.registerWith(registrar);
   FirebaseMessagingWeb.registerWith(registrar);
+  FirebasePerformanceWeb.registerWith(registrar);
   FirebaseStorageWeb.registerWith(registrar);
+  FirexcodeWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);
   GeolocatorPlugin.registerWith(registrar);
+  ImageEditorProWeb.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
   PackageInfoPlugin.registerWith(registrar);

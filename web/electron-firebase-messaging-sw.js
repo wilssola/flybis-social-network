@@ -19,20 +19,18 @@ function loadMessaging() {
   // Listen for service successfully started.
   ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
     window.messagingToken = token;
-
-    console.log("FCM: " + token);
+    console.log("FCM: ", token);
   });
 
   // Handle notification errors.
   ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
-    console.log("FCM Request Error", error);
+    console.log("FCM Request Error: ", error);
   });
 
   // Send FCM token to backend.
   ipcRenderer.on(TOKEN_UPDATED, (_, refreshedToken) => {
     window.messagingToken = refreshedToken;
-
-    console.log("FCM Refreshed: " + refreshedToken);
+    console.log("FCM Refreshed: ", refreshedToken);
   });
 
   // Display notification.
@@ -40,7 +38,7 @@ function loadMessaging() {
     // Check to see if payload contains a body string, if it doesn't consider it a silent push.ssss
     if (payload.notification.body) {
       // Payload has a body, so show it to the user.
-      console.log("Message Received", payload);
+      console.log("Message Received: ", payload);
 
       let notification = new Notification(payload.notification.title, {
         body: payload.notification.body,
@@ -49,9 +47,8 @@ function loadMessaging() {
       });
 
       notification.onclick = () => {
-        console.log("Notification Clicked");
-
         ipcRenderer.send("notification_clicked");
+        console.log("Notification Clicked");
       };
 
       Toastify({
@@ -63,19 +60,17 @@ function loadMessaging() {
         position: "left",
         backgroundColor: "black",
         stopOnFocus: true,
-        onClick: () => {},
+        onClick: () => { },
       }).showToast();
     } else {
       // Payload has no body, so consider it silent (and just consider the data portion).
-      console.log(
-        "No body use the key/value pairs in the payload data",
-        payload.data
-      );
+      console.log("No Payload Body: ", payload.data);
     }
   });
 
   // Start service.
-  const senderId = "505131215378"; // FCM sender ID from FCM web admin under Settings -> Cloud Messaging.
-  ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
+  // FCM sender ID from FCM web admin under Settings -> Cloud Messaging.
+  const SENDER_ID = "505131215378"; 
+  ipcRenderer.send(START_NOTIFICATION_SERVICE, SENDER_ID);
   console.log("FCM Request Success");
 }

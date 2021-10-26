@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "npm link",
+    "start": "npm link --force",
     "deploy": "flybis web-build && firebase deploy",
     "deploy-web": "flybis web-build && firebase deploy --only hosting",
     "deploy-functions": "firebase deploy --only functions",

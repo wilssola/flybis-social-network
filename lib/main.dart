@@ -1,4 +1,5 @@
 // 🎯 Dart imports:
+import 'dart:async';
 import 'dart:ui' deferred as ui;
 
 // 🐦 Flutter imports:
@@ -6,7 +7,6 @@ import 'package:flutter/foundation.dart' deferred as foundation;
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:firebase_analytics/observer.dart' deferred as observer;
 import 'package:firebase_core/firebase_core.dart' deferred as firebase_core;
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -15,25 +15,28 @@ import 'package:universal_io/io.dart' deferred as io;
 import 'package:url_strategy/url_strategy.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/constants/function.dart';
-import 'package:flybis/constants/theme.dart';
+import 'package:flybis/core/values/function.dart';
+import 'package:flybis/core/themes/theme.dart';
 import 'package:flybis/global.dart';
-import 'package:flybis/routes.dart';
-import 'package:flybis/services/messaging_service.dart';
+import 'package:flybis/routes/routes.dart';
+import 'package:flybis/app/data/providers/messaging_provider.dart';
 import 'package:flybis/translation.dart' deferred as translation;
 
-import 'package:flybis/extensions/NoGlowOnListView.dart'
-    deferred as no_glow_on_list_view;
-
-import 'package:firebase_messaging/firebase_messaging.dart'
-    deferred as firebase_messaging;
+// 📦 Package imports:
 import 'package:firebase_analytics/firebase_analytics.dart'
     deferred as firebase_analytics;
+import 'package:firebase_analytics/observer.dart'
+    deferred as firebase_analytics_observer;
+import 'package:firebase_app_check/firebase_app_check.dart'
+    deferred as firebase_app_check;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart'
     deferred as firebase_crashlytics;
-
+import 'package:firebase_messaging/firebase_messaging.dart'
+    deferred as firebase_messaging;
 import 'package:flutter_phoenix/flutter_phoenix.dart'
     deferred as flutter_phoenix;
+import 'package:flybis/extensions/NoGlowOnListView.dart'
+    deferred as no_glow_on_list_view;
 
 Future<bool> loadLibraries() async {
   // Dart
@@ -47,9 +50,10 @@ Future<bool> loadLibraries() async {
 
   await firebase_core.loadLibrary();
   await firebase_messaging.loadLibrary();
-  await observer.loadLibrary();
   await firebase_analytics.loadLibrary();
+  await firebase_analytics_observer.loadLibrary();
   await firebase_crashlytics.loadLibrary();
+  await firebase_app_check.loadLibrary();
 
   await flutter_phoenix.loadLibrary();
 
@@ -60,6 +64,12 @@ Future<bool> loadLibraries() async {
 
 Future<void> initFirebase() async {
   await firebase_core.Firebase.initializeApp();
+
+  // Activate app check after initialization, but before
+  // usage of any Firebase services.
+  await firebase_app_check.FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: '6LcGDlIbAAAAAK-Byn66igAealfB020j8YSbNVJ9',
+  );
 }
 
 void initMessaging() {
@@ -75,7 +85,7 @@ void initMessaging() {
       if (notification != null && android != null) {
         logger.i('onBackgroundMessage: $notification');
 
-        MessagingService().showHighNotification(notification);
+        MessagingProvider.instance.showHighNotification(notification);
       }
     } catch (error) {
       logger.e(error);
@@ -106,7 +116,7 @@ Future<void> initSentry(Function runApp) async {
     await SentryFlutter.init(
       (SentryFlutterOptions options) => options.dsn =
           'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368',
-      appRunner: runApp as Future<void> Function()?,
+      appRunner: runApp(),
     );
   } catch (error) {
     logger.e(error);
@@ -131,14 +141,19 @@ void main() async {
       setNotificationBar();
     }
 
-    MessagingService().initialize();
+    MessagingProvider.instance.initialize();
   }
 
   /// Here we set the URL strategy for our web app.
   /// It is safe to call this function when running on mobile or desktop as well.
   setPathUrlStrategy();
 
-  await initSentry(() => runApp(flutter_phoenix.Phoenix(child: Main())));
+  await initSentry(
+    () => runZonedGuarded(
+      () => runApp(flutter_phoenix.Phoenix(child: Main())),
+      firebase_crashlytics.FirebaseCrashlytics.instance.recordError,
+    ),
+  );
 }
 
 class Main extends StatefulWidget {
@@ -152,7 +167,7 @@ class _MainState extends State<Main> {
     super.initState();
 
     if (!io.Platform.isWindows && !io.Platform.isLinux) {
-      MessagingService().getInitialMessage().then((var message) {
+      MessagingProvider.instance.getInitialMessage().then((var message) {
         if (message != null) {
           logger.i('getInitialMessage: $message');
         }
@@ -167,7 +182,7 @@ class _MainState extends State<Main> {
             if (notification != null && android != null) {
               logger.i('onMessage: $notification');
 
-              MessagingService().showHighNotification(notification);
+              MessagingProvider.instance.showHighNotification(notification);
             }
           } catch (error) {
             logger.e(error);
@@ -200,7 +215,7 @@ class _MainState extends State<Main> {
       initialRoute: initialRoute,
       routes: routes,
       navigatorObservers: [
-        observer.FirebaseAnalyticsObserver(
+        firebase_analytics_observer.FirebaseAnalyticsObserver(
           analytics: firebase_analytics.FirebaseAnalytics(),
         ),
       ],

@@ -5,8 +5,8 @@ import 'dart:ui';
 import 'package:get/get.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/languages/en_us.dart';
-import 'package:flybis/languages/pt_br.dart';
+import 'package:flybis/core/values/languages/en_us.dart';
+import 'package:flybis/core/values/languages/pt_br.dart';
 
 class Translation extends Translations {
   // Default locale

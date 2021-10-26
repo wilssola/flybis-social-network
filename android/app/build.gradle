@@ -25,8 +25,8 @@ apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-apply plugin: "io.fabric"
 apply plugin: "com.google.gms.google-services"
+apply plugin: 'com.google.firebase.crashlytics'
 
 def keystoreProperties = new Properties()
    def keystorePropertiesFile = rootProject.file("key.properties")
@@ -65,6 +65,7 @@ android {
             storePassword keystoreProperties["storePassword"]
         }
     }
+    
     buildTypes {
         release {
             signingConfig signingConfigs.release

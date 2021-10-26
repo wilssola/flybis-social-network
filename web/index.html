@@ -1,22 +1,9 @@
-<picture id="splash">
-  <source
-    srcset="
-      splash/img/light-1x.png 1x,
-      splash/img/light-2x.png 2x,
-      splash/img/light-3x.png 3x
-    "
-    media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)"
-  />
-  <source
-    srcset="
-      splash/img/dark-1x.png 1x,
-      splash/img/dark-2x.png 2x,
-      splash/img/dark-3x.png 3x
-    "
-    media="(prefers-color-scheme: dark)"
-  />
-  <img class="center" src="splash/img/light-1x.png" />
-</picture>
+  <picture id="splash">
+    <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)">
+    <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
+    <img class="center" src="splash/img/light-1x.png" />
+  </picture>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -99,6 +86,7 @@
     <title>Flybis - The New Dynamic Social Network</title>
 
     <link rel="canonical" href="https://flybis.net" />
+    <link rel="manifest" href="https://flybis.net/manifest.json" />
     <link
       rel="icon"
       href="https://flybis.net/assets/flybis_icon.png"
@@ -193,7 +181,6 @@
       rel="apple-touch-icon"
       href="https://flybis.net/assets/flybis_icon.png"
     />
-    <link rel="manifest" href="https://flybis.net/manifest.json" />
 
     <script
       async
@@ -221,11 +208,11 @@
     <link rel="preload" href="./splash/style.css" as="style" />
     <link rel="stylesheet" href="./flybis.css" />
     <link rel="stylesheet" href="./splash/style.css" />
-  </head>
+    <link rel="stylesheet" type="text/css" href="splash/style.css">
+</head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
-    <script async src="./load.js" type="application/javascript"></script>
 
     <script
       async
@@ -233,11 +220,20 @@
       integrity="sha256-CIv65byxCO8mtfyoF2L6mF4g7LmTeHEDz92oW+X5/fY="
       crossorigin="anonymous"
     ></script>
+    
     <script
       async
       src="https://cdn.jsdelivr.net/npm/hls.js@0.14.9/dist/hls.min.js"
       integrity="sha256-FcC0696DPIAX3LWvsAZJf98UmKYjQC2OLsTdUqvCj/s="
       crossorigin="anonymous"
     ></script>
+    
+    <script src="AgoraRtcWrapper.bundle.js" type="application/javascript"></script>
+    <script
+      src="https://raw.githubusercontent.com/AgoraIO/Agora-Flutter-SDK/dev/flutter2/example/web/AgoraRtcWrapper.bundle.js"
+      type="application/javascript"
+    ></script>
+
+    <script async src="./load.js" type="application/javascript"></script>
   </body>
 </html>

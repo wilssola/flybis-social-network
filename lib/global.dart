@@ -2,15 +2,17 @@
 import 'package:logger/logger.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/models/user_model.dart';
+import 'package:flybis/app/data/models/user_model.dart';
 
-Logger logger = Logger(
+// Logger
+final Logger logger = Logger(
   printer: PrettyPrinter(
     printTime: true,
   ),
 );
 
-FlybisUser? flybisUserOwner;
+// Agora.io
+late String agoraIoToken;
 
-// Agora
-String? agoraIoToken;
+// Flybis
+FlybisUser? flybisUserOwner;

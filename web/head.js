@@ -26,6 +26,8 @@ function buildHead() {
       "content",
       "default-src 'self' 'unsafe-inline' 'unsafe-hashes' 'unsafe-eval' blob: data: https: https://flybis.net; object-src 'none'; base-uri 'none'; form-action 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; img-src https: blob: 'self' https://firebasestorage.googleapis.com; media-src https: blob: 'self' https://firebasestorage.googleapis.com;"
     );
+  } else if (windows.isLocalHost) {
+    base.setAttribute("href", "/");
   } else {
     base.setAttribute("href", window.location.pathname);
   }

@@ -30,6 +30,9 @@
       <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/build" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/lib/packages/photofilters/example/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

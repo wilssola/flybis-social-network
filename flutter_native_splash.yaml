@@ -1,5 +1,6 @@
 flutter_native_splash:
     web: false
+    android12: true
     #android_disable_fullscreen: false
     fullscreen: true
     image: "assets/images/flybis_splash.png"

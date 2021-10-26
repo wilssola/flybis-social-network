@@ -141,7 +141,9 @@ function initializeFirebase() {
     });
     firebase
       .firestore()
-      .enablePersistence()
+      .enablePersistence({
+        experimentalTabSynchronization: true,
+      })
       .then(() => {
         console.log("Persistence enabled");
       })

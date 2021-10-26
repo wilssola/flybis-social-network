@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -25,7 +28,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="438908bf-31a2-440b-9e6b-bd82a5d21bec" name="Default Changelist" comment="" />
+    <list default="true" id="438908bf-31a2-440b-9e6b-bd82a5d21bec" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/flybis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flybis.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +49,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1c9KPHMfaK7dn3SoRC7V6fgnOpd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -63,6 +74,7 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -89,19 +101,20 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="640" y="256" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1617257788956">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="640" y="258" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1624483643566">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="640" y="256" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040/1920.0.800.440@0.0.1920.1040" timestamp="1617257788956" />
-    <state x="640" y="256" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614795746001" />
+    <state x="640" y="258" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1624483643566" />
     <state x="652" y="237" key="#main.dart" timestamp="1616676422103">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="652" y="237" key="#main.dart/0.0.1920.1040@0.0.1920.1040" timestamp="1616676422103" />
-    <state x="92" y="92" width="1736" height="856" key="AVDManager" timestamp="1617258510488">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="92" y="93" width="1736" height="865" key="AVDManager" timestamp="1624483721450">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="AVDManager/0.0.1920.1040@0.0.1920.1040" timestamp="1617258510488" />
+    <state x="92" y="93" width="1736" height="865" key="AVDManager/0.0.1920.1050@0.0.1920.1050" timestamp="1624483721450" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1616676796718">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -110,9 +123,5 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="281" y="189" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1617258475527" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614312261122">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1614312261122" />
   </component>
 </project>
