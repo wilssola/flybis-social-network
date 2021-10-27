@@ -8,6 +8,8 @@
 
 .debug_info/
 
+.github/
+
 # End of Flybis
 
 # Created by https://www.toptal.com/developers/gitignore/api/flutter,dart,firebase,node
