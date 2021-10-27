@@ -6,6 +6,8 @@
 *.part.js
 *.part.js.map
 
+.debug_info/
+
 # End of Flybis
 
 # Created by https://www.toptal.com/developers/gitignore/api/flutter,dart,firebase,node
