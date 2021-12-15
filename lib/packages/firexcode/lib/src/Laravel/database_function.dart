@@ -1,26 +1,26 @@
 class LaravelGetData {
-  final String tableName;
+  final String? tableName;
 
   LaravelGetData({this.tableName});
   String getData() {
-    return '${tableName[0].replaceAll('_', '').toUpperCase()}${tableName.substring(1).replaceAll('_', '')}'
+    return '${tableName![0].replaceAll('_', '').toUpperCase()}${tableName!.substring(1).replaceAll('_', '')}'
         '::get()';
   }
 
   String where(String filed, String operators, String value) {
     var op = operators == '' ? '' : "'$operators'" ',';
-    return '${tableName[0].replaceAll('_', '').toUpperCase()}${tableName.substring(1).replaceAll('_', '')}'
+    return '${tableName![0].replaceAll('_', '').toUpperCase()}${tableName!.substring(1).replaceAll('_', '')}'
         '::where($filed,$op$value)';
   }
 
   String getDataPaginate({final int value = 5}) {
-    return '${tableName[0].replaceAll('_', '').toUpperCase()}${tableName.substring(1).replaceAll('_', '')}'
+    return '${tableName![0].replaceAll('_', '').toUpperCase()}${tableName!.substring(1).replaceAll('_', '')}'
         '::paginate($value)';
   }
 
   String whereExists(String filed, String operators, dynamic value) {
     var op = operators == '' ? '' : "'$operators'" ',';
-    return '${tableName[0].replaceAll('_', '').toUpperCase()}${tableName.substring(1).replaceAll('_', '')}'
+    return '${tableName![0].replaceAll('_', '').toUpperCase()}${tableName!.substring(1).replaceAll('_', '')}'
         '::where($filed,$op$value)->exists()';
   }
 }
@@ -88,27 +88,27 @@ String laravelSaveValue(keyName, value) {
 }
 
 class LaravelSaveData {
-  final String tablename;
+  final String? tablename;
 
   LaravelSaveData({this.tablename});
 
   String save() {
-    return tablename[0].replaceAll('_', '').toUpperCase() +
-        tablename.substring(1).replaceAll('_', '') +
+    return tablename![0].replaceAll('_', '').toUpperCase() +
+        tablename!.substring(1).replaceAll('_', '') +
         '::' +
         'save()';
   }
 
   String create(String array) {
-    return tablename[0].replaceAll('_', '').toUpperCase() +
-        tablename.substring(1).replaceAll('_', '') +
+    return tablename![0].replaceAll('_', '').toUpperCase() +
+        tablename!.substring(1).replaceAll('_', '') +
         '::' +
         'create($array)';
   }
 
   String update(String array) {
-    return tablename[0].replaceAll('_', '').toUpperCase() +
-        tablename.substring(1).replaceAll('_', '') +
+    return tablename![0].replaceAll('_', '').toUpperCase() +
+        tablename!.substring(1).replaceAll('_', '') +
         '::' +
         'update($array)';
   }

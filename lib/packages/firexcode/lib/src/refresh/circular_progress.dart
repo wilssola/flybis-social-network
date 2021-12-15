@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 
 /// Progress Indicator for [LiquidPullToRefresh]
 class CircularProgress extends StatefulWidget {
-  final double innerCircleRadius;
-  final double progressPercent;
-  final double progressCircleOpacity;
-  final double progressCircleRadius;
-  final double progressCircleBorderWidth;
-  final Color backgroundColor;
-  final double startAngle;
+  final double? innerCircleRadius;
+  final double? progressPercent;
+  final double? progressCircleOpacity;
+  final double? progressCircleRadius;
+  final double? progressCircleBorderWidth;
+  final Color? backgroundColor;
+  final double? startAngle;
 
   const CircularProgress({
-    Key key,
+    Key? key,
     this.innerCircleRadius,
     this.progressPercent,
     this.progressCircleRadius,
@@ -31,7 +31,7 @@ class _CircularProgressState extends State<CircularProgress> {
   @override
   Widget build(BuildContext context) {
     double containerLength =
-        2 * max(widget.progressCircleRadius, widget.innerCircleRadius);
+        2 * max(widget.progressCircleRadius!, widget.innerCircleRadius!);
 
     return Container(
       height: containerLength,
@@ -39,16 +39,16 @@ class _CircularProgressState extends State<CircularProgress> {
       child: Stack(
         children: <Widget>[
           Opacity(
-            opacity: widget.progressCircleOpacity,
+            opacity: widget.progressCircleOpacity!,
             child: Container(
-              height: widget.progressCircleRadius * 2,
-              width: widget.progressCircleRadius * 2,
+              height: widget.progressCircleRadius! * 2,
+              width: widget.progressCircleRadius! * 2,
               child: CustomPaint(
                 painter: RingPainter(
                   startAngle: widget.startAngle,
-                  paintWidth: widget.progressCircleBorderWidth,
+                  paintWidth: widget.progressCircleBorderWidth!,
                   progressPercent: widget.progressPercent,
-                  trackColor: widget.backgroundColor,
+                  trackColor: widget.backgroundColor!,
                 ),
               ),
             ),
@@ -56,8 +56,8 @@ class _CircularProgressState extends State<CircularProgress> {
           Align(
             alignment: Alignment.center,
             child: Container(
-              width: widget.innerCircleRadius * 2,
-              height: widget.innerCircleRadius * 2,
+              width: widget.innerCircleRadius! * 2,
+              height: widget.innerCircleRadius! * 2,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: widget.backgroundColor,
@@ -87,14 +87,14 @@ class RingPainter extends CustomPainter {
   final double paintWidth;
   final Paint trackPaint;
   final Color trackColor;
-  final double progressPercent;
-  final double startAngle;
+  final double? progressPercent;
+  final double? startAngle;
 
   RingPainter({
     this.startAngle,
-    this.paintWidth,
+    required this.paintWidth,
     this.progressPercent,
-    this.trackColor,
+    required this.trackColor,
   }) : trackPaint = Paint()
           ..color = trackColor
           ..style = PaintingStyle.stroke
@@ -106,14 +106,14 @@ class RingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (min(size.width, size.height) - paintWidth) / 2;
 
-    final progressAngle = 2 * pi * progressPercent;
+    final progressAngle = 2 * pi * progressPercent!;
 
     canvas.drawArc(
         Rect.fromCircle(
           center: center,
           radius: radius,
         ),
-        startAngle,
+        startAngle!,
         progressAngle,
         false,
         trackPaint);

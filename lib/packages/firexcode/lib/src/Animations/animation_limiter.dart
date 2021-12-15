@@ -21,15 +21,15 @@ class AnimationLimiter extends StatefulWidget {
   ///
   /// The [child] argument must not be null.
   const AnimationLimiter({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
   })  : assert(child != null),
         super(key: key);
 
   @override
   _AnimationLimiterState createState() => _AnimationLimiterState();
 
-  static bool shouldRunAnimation(BuildContext context) {
+  static bool? shouldRunAnimation(BuildContext context) {
     return _AnimationLimiterProvider.of(context)?.shouldRunAnimation;
   }
 }
@@ -41,7 +41,7 @@ class _AnimationLimiterState extends State<AnimationLimiter> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((Duration value) {
+    WidgetsBinding.instance!.addPostFrameCallback((Duration value) {
       setState(() {
         _shouldRunAnimation = false;
       });
@@ -58,11 +58,11 @@ class _AnimationLimiterState extends State<AnimationLimiter> {
 }
 
 class _AnimationLimiterProvider extends InheritedWidget {
-  final bool shouldRunAnimation;
+  final bool? shouldRunAnimation;
 
   _AnimationLimiterProvider({
     this.shouldRunAnimation,
-    @required Widget child,
+    required Widget child,
   })  : assert(child != null),
         super(child: child);
 
@@ -71,8 +71,8 @@ class _AnimationLimiterProvider extends InheritedWidget {
     return false;
   }
 
-  static _AnimationLimiterProvider of(context) {
+  static _AnimationLimiterProvider? of(context) {
     return context.ancestorWidgetOfExactType(_AnimationLimiterProvider)
-        as _AnimationLimiterProvider;
+        as _AnimationLimiterProvider?;
   }
 }

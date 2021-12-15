@@ -1,8 +1,16 @@
 import 'dart:collection';
 import 'dart:convert' as convert;
 import 'dart:math';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:json_ast/json_ast.dart'
-    show ArrayNode, LiteralNode, Node, ObjectNode, Settings, parse;
+    show
+        ArrayNode,
+        LiteralNode,
+        Node,
+        ObjectNode,
+        Settings,
+        PropertyNode,
+        parse;
 
 import 'package:dart_style/dart_style.dart';
 
@@ -31,17 +39,17 @@ const Map<String, bool> PRIMITIVE_TYPES = {
 enum ListType { Object, String, Double, Int, Null }
 
 class MergeableListType {
-  final ListType listType;
+  final ListType? listType;
   final bool isAmbigous;
 
   MergeableListType(this.listType, this.isAmbigous);
 }
 
 MergeableListType mergeableListType(List<dynamic> list) {
-  var t = ListType.Null;
+  ListType? t = ListType.Null;
   var isAmbigous = false;
   list.forEach((e) {
-    ListType inferredType;
+    ListType? inferredType;
     if (e.runtimeType.toString() == 'int') {
       inferredType = ListType.Int;
     } else if (e.runtimeType.toString() == 'double') {
@@ -61,7 +69,7 @@ MergeableListType mergeableListType(List<dynamic> list) {
 
 String camelCase(String text) {
   String capitalize(Match m) =>
-      m[0].substring(0, 1).toUpperCase() + m[0].substring(1);
+      m[0]!.substring(0, 1).toUpperCase() + m[0]!.substring(1);
   String skip(String s) => '';
   return text.splitMapJoin(RegExp(r'[a-zA-Z0-9]+'),
       onMatch: capitalize, onNonMatch: skip);
@@ -186,8 +194,8 @@ WithWarning<Map> mergeObjectList(List<dynamic> list, String path,
   return WithWarning(obj, warnings);
 }
 
-bool isPrimitiveType(String typeName) {
-  final isPrimitive = PRIMITIVE_TYPES[typeName];
+bool isPrimitiveType(String? typeName) {
+  final isPrimitive = PRIMITIVE_TYPES[typeName!];
   if (isPrimitive == null) {
     return false;
   }
@@ -195,10 +203,10 @@ bool isPrimitiveType(String typeName) {
 }
 
 String fixFieldName(String name,
-    {TypeDefinition typeDef, bool privateField = false}) {
+    {TypeDefinition? typeDef, bool privateField = false}) {
   var properName = name;
   if (name.startsWith('_') || name.startsWith(RegExp(r'[0-9]'))) {
-    final firstCharType = typeDef.name.substring(0, 1).toLowerCase();
+    final firstCharType = typeDef!.name!.substring(0, 1).toLowerCase();
     properName = '$firstCharType$name';
   }
   final fieldName = camelCaseFirstLower(properName);
@@ -227,15 +235,17 @@ String getTypeName(dynamic obj) {
   }
 }
 
-Node navigateNode(Node astNode, String path) {
-  Node node;
+Node? navigateNode(Node? astNode, String path) {
+  Node? node;
   if (astNode is ObjectNode) {
     final objectNode = astNode;
-    final propertyNode = objectNode.children.firstWhere((final prop) {
-      return prop.key.value == path;
-    }, orElse: () {
-      return null;
-    });
+    final PropertyNode? propertyNode =
+        objectNode.children.firstWhere((final prop) {
+      return prop.key!.value == path;
+    },
+            orElse: () {
+              return null;
+            } as PropertyNode Function()?);
     if (propertyNode != null) {
       node = propertyNode.value;
     }
@@ -252,19 +262,19 @@ Node navigateNode(Node astNode, String path) {
 
 final _pattern = RegExp(r'([0-9]+)\.{0,1}([0-9]*)e(([-0-9]+))');
 
-bool isASTLiteralDouble(Node astNode) {
+bool isASTLiteralDouble(Node? astNode) {
   if (astNode != null && astNode is LiteralNode) {
     final literalNode = astNode;
-    final containsPoint = literalNode.raw.contains('.');
-    final containsExponent = literalNode.raw.contains('e');
+    final containsPoint = literalNode.raw!.contains('.');
+    final containsExponent = literalNode.raw!.contains('e');
     if (containsPoint || containsExponent) {
       var isDouble = containsPoint;
       if (containsExponent) {
-        final matches = _pattern.firstMatch(literalNode.raw);
+        final matches = _pattern.firstMatch(literalNode.raw!);
         if (matches != null) {
-          final integer = matches[1];
-          final comma = matches[2];
-          final exponent = matches[3];
+          final integer = matches[1]!;
+          final comma = matches[2]!;
+          final exponent = matches[3]!;
           isDouble = _isDoubleWithExponential(integer, comma, exponent);
         }
       }
@@ -322,12 +332,12 @@ class WithWarning<T> {
 }
 
 class TypeDefinition {
-  String name;
-  String subtype;
-  bool isAmbiguous = false;
+  String? name;
+  String? subtype;
+  bool? isAmbiguous = false;
   bool _isPrimitive = false;
 
-  factory TypeDefinition.fromDynamic(dynamic obj, Node astNode) {
+  factory TypeDefinition.fromDynamic(dynamic obj, Node? astNode) {
     var isAmbiguous = false;
     final type = getTypeName(obj);
     if (type == 'List') {
@@ -351,7 +361,7 @@ class TypeDefinition {
     return TypeDefinition(type, astNode: astNode, isAmbiguous: isAmbiguous);
   }
 
-  TypeDefinition(this.name, {this.subtype, this.isAmbiguous, Node astNode}) {
+  TypeDefinition(this.name, {this.subtype, this.isAmbiguous, Node? astNode}) {
     if (subtype == null) {
       _isPrimitive = isPrimitiveType(name);
       if (name == 'int' && isASTLiteralDouble(astNode)) {
@@ -451,7 +461,7 @@ class ClassDefinition {
     final dependenciesList = <Dependency>[];
     final keys = fields.keys;
     keys.forEach((k) {
-      final f = fields[k];
+      final f = fields[k]!;
       if (!f.isPrimitive) {
         dependenciesList.add(Dependency(k, f));
       }
@@ -487,9 +497,7 @@ class ClassDefinition {
   }
 
   bool hasField(TypeDefinition otherField) {
-    return fields.keys
-            .firstWhere((k) => fields[k] == otherField, orElse: () => null) !=
-        null;
+    return fields.keys.firstWhereOrNull((k) => fields[k] == otherField) != null;
   }
 
   Future<TypeDefinition> addField(String name, TypeDefinition typeDef) async =>
@@ -504,7 +512,7 @@ class ClassDefinition {
 
   String get _fieldList {
     return fields.keys.map((key) {
-      final f = fields[key];
+      final f = fields[key]!;
       final fieldName =
           fixFieldName(key, typeDef: f, privateField: privateFields);
       final sb = StringBuffer();
@@ -517,7 +525,7 @@ class ClassDefinition {
 
   String get _gettersSetters {
     return fields.keys.map((key) {
-      final f = fields[key];
+      final f = fields[key]!;
       final publicFieldName =
           fixFieldName(key, typeDef: f, privateField: false);
       final privateFieldName =
@@ -539,7 +547,7 @@ class ClassDefinition {
     var i = 0;
     var len = fields.keys.length - 1;
     fields.keys.forEach((key) {
-      final f = fields[key];
+      final f = fields[key]!;
       final publicFieldName =
           fixFieldName(key, typeDef: f, privateField: false);
       _addTypeDef(f, sb);
@@ -586,7 +594,7 @@ class ClassDefinition {
     sb.write('\t$name');
     sb.write('.fromJson(Map<String, dynamic> json) {\n');
     fields.keys.forEach((k) {
-      sb.write('\t\t${fields[k].jsonParseExpression(k, privateFields)}\n');
+      sb.write('\t\t${fields[k]!.jsonParseExpression(k, privateFields)}\n');
     });
     sb.write('\t}');
     return sb.toString();
@@ -597,7 +605,7 @@ class ClassDefinition {
     sb.write(
         '\tMap<String, dynamic> toJson() {\n\t\tfinal Map<String, dynamic> data = new Map<String, dynamic>();\n');
     fields.keys.forEach((k) {
-      sb.write('\t\t${fields[k].toJsonExpression(k, privateFields)}\n');
+      sb.write('\t\t${fields[k]!.toJsonExpression(k, privateFields)}\n');
     });
     sb.write('\t\treturn data;\n');
     sb.write('\t}');
@@ -633,7 +641,7 @@ class ModelGenerator {
   final bool _privateFields;
   List<ClassDefinition> allClasses = <ClassDefinition>[];
   final Map<String, String> sameClassMapping = HashMap<String, String>();
-  List<Hint> hints;
+  late List<Hint> hints;
 
   ModelGenerator(this._rootClassName, [this._privateFields = false, hints]) {
     if (hints != null) {
@@ -643,12 +651,12 @@ class ModelGenerator {
     }
   }
 
-  Hint _hintForPath(String path) {
-    return hints.firstWhere((h) => h.path == path, orElse: () => null);
+  Hint? _hintForPath(String path) {
+    return hints.firstWhereOrNull((h) => h.path == path);
   }
 
-  List<Warning> _generateClassDefinition(
-      String className, dynamic jsonRawDynamicData, String path, Node astNode) {
+  List<Warning> _generateClassDefinition(String className,
+      dynamic jsonRawDynamicData, String path, Node? astNode) {
     var warnings = <Warning>[];
     if (jsonRawDynamicData is List) {
       // if first element is an array, start in the first element.
@@ -676,13 +684,13 @@ class ModelGenerator {
         if (typeDef.subtype != null && typeDef.subtype == 'Class') {
           typeDef.subtype = camelCase(key);
         }
-        if (typeDef.isAmbiguous) {
+        if (typeDef.isAmbiguous!) {
           warnings.add(newAmbiguousListWarn('$path/$key'));
         }
         classDefinition.addField(key, typeDef);
       });
-      final similarClass = allClasses.firstWhere((cd) => cd == classDefinition,
-          orElse: () => null);
+      final similarClass =
+          allClasses.firstWhereOrNull((cd) => cd == classDefinition);
       if (similarClass != null) {
         final similarClassName = similarClass.name;
         final currentClassName = classDefinition.name;
@@ -692,14 +700,14 @@ class ModelGenerator {
       }
       final dependencies = classDefinition.dependencies;
       dependencies.forEach((dependency) {
-        List<Warning> warns;
+        List<Warning>? warns;
         if (dependency.typeDef.name == 'List') {
           // only generate dependency class if the array is not empty
           if (jsonRawData[dependency.name].length > 0) {
             // when list has ambiguous values, take the first one, otherwise merge all objects
             // into a single one
             dynamic toAnalyze;
-            if (!dependency.typeDef.isAmbiguous) {
+            if (!dependency.typeDef.isAmbiguous!) {
               var mergeWithWarning = mergeObjectList(
                   jsonRawData[dependency.name], '$path/${dependency.name}');
               toAnalyze = mergeWithWarning.result;
@@ -737,9 +745,9 @@ class ModelGenerator {
     allClasses.forEach((c) {
       final fieldsKeys = c.fields.keys;
       fieldsKeys.forEach((f) {
-        final typeForField = c.fields[f];
+        final typeForField = c.fields[f]!;
         if (sameClassMapping.containsKey(typeForField.name)) {
-          c.fields[f].name = sameClassMapping[typeForField.name];
+          c.fields[f]!.name = sameClassMapping[typeForField.name!];
         }
       });
     });

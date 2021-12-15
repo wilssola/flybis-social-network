@@ -7,19 +7,19 @@ class XDrawerUserProfileBlur extends StatelessWidget {
   final String userName;
   final String userEmail;
   final String photoUrl;
-  final bool emailUpperCase;
+  final bool? emailUpperCase;
   final EdgeInsetsGeometry margin;
   final double height;
-  final double width;
+  final double? width;
 
   const XDrawerUserProfileBlur(
-      {Key key,
-      @required this.userName,
-      @required this.userEmail,
-      @required this.photoUrl,
+      {Key? key,
+      required this.userName,
+      required this.userEmail,
+      required this.photoUrl,
       this.emailUpperCase,
-      @required this.margin,
-      @required this.height,
+      required this.margin,
+      required this.height,
       this.width})
       : super(key: key);
   @override
@@ -45,7 +45,7 @@ class XDrawerUserProfileBlur extends StatelessWidget {
               subtitle: Textmaterial(
                 text: emailUpperCase == null
                     ? userEmail
-                    : emailUpperCase
+                    : emailUpperCase!
                         ? userEmail.toUpperCase()
                         : userEmail,
                 color: Colors.white,

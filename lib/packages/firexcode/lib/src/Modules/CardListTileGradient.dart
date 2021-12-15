@@ -3,23 +3,23 @@ import 'package:firexcode/src/Container/GradientContainer.dart';
 
 class XCardListTileGradient extends StatelessWidget {
   final double width;
-  final Widget title;
-  final Widget subTitle;
-  final Widget leading;
-  final Function onTap;
+  final Widget? title;
+  final Widget? subTitle;
+  final Widget? leading;
+  final Function? onTap;
   final Gradient gradient;
-  final Color shadowColor;
+  final Color? shadowColor;
   final double blurRadius;
-  final double rounded;
-  final Widget trailing;
+  final double? rounded;
+  final Widget? trailing;
   const XCardListTileGradient(
-      {Key key,
+      {Key? key,
       this.width = 300,
       this.title,
       this.subTitle,
       this.leading,
       this.onTap,
-      @required this.gradient,
+      required this.gradient,
       this.shadowColor,
       this.blurRadius = 12,
       this.rounded,

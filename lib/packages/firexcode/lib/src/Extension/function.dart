@@ -6,35 +6,35 @@ extension XFunction on Function {
   Widget xFlatButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      FocusNode focusNode,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      Widget child,
-      AlignmentGeometry alignment,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      Color primary,
-      Color shadowColor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface}) {
+      Color? color,
+      FocusNode? focusNode,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      required Widget child,
+      AlignmentGeometry? alignment,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      Color? primary,
+      Color? shadowColor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface}) {
     return TextButton(
-      onPressed: this,
+      onPressed: this as void Function()?,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: TextButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -61,36 +61,36 @@ extension XFunction on Function {
   Widget xOutlineButton({
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    FocusNode focusNode,
-    Key key,
-    void Function() onLongPress,
-    EdgeInsetsGeometry padding,
-    ShapeBorder shape,
-    Widget child,
-    Color color,
-    MaterialTapTargetSize materialTapTargetSize,
-    AlignmentGeometry alignment,
-    BorderSide side,
-    ButtonTextTheme textTheme,
-    double elevation,
-    Duration animationDuration,
-    MouseCursor disabledMouseCursor,
-    TextStyle textStyle,
-    VisualDensity visualDensity,
-    bool enableFeedback,
-    MouseCursor enabledMouseCursor,
-    Size minimumSize,
-    Color onSurface,
-    Color primary,
-    Color shadowColor,
+    FocusNode? focusNode,
+    Key? key,
+    void Function()? onLongPress,
+    EdgeInsetsGeometry? padding,
+    ShapeBorder? shape,
+    required Widget child,
+    Color? color,
+    MaterialTapTargetSize? materialTapTargetSize,
+    AlignmentGeometry? alignment,
+    BorderSide? side,
+    ButtonTextTheme? textTheme,
+    double? elevation,
+    Duration? animationDuration,
+    MouseCursor? disabledMouseCursor,
+    TextStyle? textStyle,
+    VisualDensity? visualDensity,
+    bool? enableFeedback,
+    MouseCursor? enabledMouseCursor,
+    Size? minimumSize,
+    Color? onSurface,
+    Color? primary,
+    Color? shadowColor,
   }) {
     return OutlinedButton(
-      onPressed: this,
+      onPressed: this as void Function()?,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: OutlinedButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -144,43 +144,43 @@ extension XApp on bool {
       /// Whether this switch is on or off.
       ///
       /// This property must not be null.
-      final bool value,
+      final bool? value,
 
       /// The color to use when this switch is on.
       ///
       /// Defaults to [ThemeData.toggleableActiveColor].
-      final Color activeColor,
+      final Color? activeColor,
 
       /// The color to use on the track when this switch is on.
       ///
       /// Defaults to [ThemeData.toggleableActiveColor] with the opacity set at 50%.
       ///
       /// Ignored if this switch is created with [Switch.adaptive].
-      final Color activeTrackColor,
+      final Color? activeTrackColor,
 
       /// The color to use on the thumb when this switch is off.
       ///
       /// Defaults to the colors described in the Material design specification.
       ///
       /// Ignored if this switch is created with [Switch.adaptive].
-      final Color inactiveThumbColor,
+      final Color? inactiveThumbColor,
 
       /// The color to use on the track when this switch is off.
       ///
       /// Defaults to the colors described in the Material design specification.
       ///
       /// Ignored if this switch is created with [Switch.adaptive].
-      final Color inactiveTrackColor,
+      final Color? inactiveTrackColor,
 
       /// An image to use on the thumb of this switch when the switch is on.
       ///
       /// Ignored if this switch is created with [Switch.adaptive].
-      final ImageProvider activeThumbImage,
+      final ImageProvider? activeThumbImage,
 
       /// An image to use on the thumb of this switch when the switch is off.
       ///
       /// Ignored if this switch is created with [Switch.adaptive].
-      final ImageProvider inactiveThumbImage,
+      final ImageProvider? inactiveThumbImage,
 
       /// Configures the minimum size of the tap target.
       ///
@@ -189,24 +189,24 @@ extension XApp on bool {
       /// See also:
       ///
       ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-      final MaterialTapTargetSize materialTapTargetSize,
+      final MaterialTapTargetSize? materialTapTargetSize,
 
       /// {@macro flutter.cupertino.switch.dragStartBehavior}
-      final DragStartBehavior dragStartBehavior,
+      required final DragStartBehavior dragStartBehavior,
 
       /// The color for the button's [Material] when it has the input focus.
-      final Color focusColor,
+      final Color? focusColor,
 
       /// The color for the button's [Material] when a pointer is hovering over it.
-      final Color hoverColor,
+      final Color? hoverColor,
 
       /// {@macro flutter.widgets.Focus.focusNode}
-      final FocusNode focusNode,
+      final FocusNode? focusNode,
 
       /// {@macro flutter.widgets.Focus.autofocus}
       bool autofocus = false,
-      final Key key,
-      void Function(bool) onChanged}) {
+      final Key? key,
+      void Function(bool)? onChanged}) {
     return Switch(
       value: this,
       onChanged: onChanged,
@@ -259,17 +259,17 @@ extension XApp on bool {
       /// Whether this checkbox is checked.
       ///
       /// This property must not be null.
-      final bool value,
+      final bool? value,
 
       /// The color to use when this checkbox is checked.
       ///
       /// Defaults to [ThemeData.toggleableActiveColor].
-      final Color activeColor,
+      final Color? activeColor,
 
       /// The color to use for the check icon when this checkbox is checked.
       ///
       /// Defaults to Color(0xFFFFFFFF)
-      final Color checkColor,
+      final Color? checkColor,
 
       /// If true the checkbox's [value] can be true, false, or null.
       ///
@@ -281,7 +281,7 @@ extension XApp on bool {
       /// => true => null => false when tapped).
       ///
       /// If tristate is false (the default), [value] must not be null.
-      final bool tristate,
+      required final bool tristate,
 
       /// Configures the minimum size of the tap target.
       ///
@@ -290,24 +290,24 @@ extension XApp on bool {
       /// See also:
       ///
       ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-      final MaterialTapTargetSize materialTapTargetSize,
+      final MaterialTapTargetSize? materialTapTargetSize,
 
       /// The color for the checkbox's [Material] when it has the input focus.
-      final Color focusColor,
+      final Color? focusColor,
 
       /// The color for the checkbox's [Material] when a pointer is hovering over it.
-      final Color hoverColor,
+      final Color? hoverColor,
 
       /// {@macro flutter.widgets.Focus.focusNode}
-      final FocusNode focusNode,
+      final FocusNode? focusNode,
 
       /// {@macro flutter.widgets.Focus.autofocus}
-      final bool autofocus,
+      required final bool autofocus,
 
       /// The width of a checkbox widget.
       double width = 18.0,
-      final Key key,
-      void Function(bool) onChanged}) {
+      final Key? key,
+      void Function(bool?)? onChanged}) {
     return Checkbox(
       value: this,
       onChanged: onChanged,
@@ -324,7 +324,7 @@ extension XApp on bool {
   }
 
   Widget xRadio(
-      {final bool groupValue,
+      {final bool? groupValue,
 
       /// Called when the user selects this radio button.
       ///
@@ -352,12 +352,12 @@ extension XApp on bool {
       ///   },
       /// )
       /// ```
-      final ValueChanged onChanged,
+      final ValueChanged? onChanged,
 
       /// The color to use when this radio button is selected.
       ///
       /// Defaults to [ThemeData.toggleableActiveColor].
-      final Color activeColor,
+      final Color? activeColor,
 
       /// Configures the minimum size of the tap target.
       ///
@@ -366,16 +366,16 @@ extension XApp on bool {
       /// See also:
       ///
       ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-      final MaterialTapTargetSize materialTapTargetSize,
+      final MaterialTapTargetSize? materialTapTargetSize,
 
       /// The color for the radio's [Material] when it has the input focus.
-      final Color focusColor,
+      final Color? focusColor,
 
       /// The color for the radio's [Material] when a pointer is hovering over it.
-      final Color hoverColor,
+      final Color? hoverColor,
 
       /// {@macro flutter.widgets.Focus.focusNode}
-      final FocusNode focusNode,
+      final FocusNode? focusNode,
 
       /// {@macro flutter.widgets.Focus.autofocus}
       final bool autofocus = false,
@@ -401,7 +401,7 @@ extension XApp on bool {
       ///  * [MaterialStateMouseCursor], a [MouseCursor] that implements
       ///    `MaterialStateProperty` which is used in APIs that need to accept
       ///    either a [MouseCursor] or a [MaterialStateProperty<MouseCursor>].
-      final MouseCursor mouseCursor,
+      final MouseCursor? mouseCursor,
 
       /// Set to true if this radio button is allowed to be returned to an
       /// indeterminate state by selecting it again when selected.
@@ -465,7 +465,7 @@ extension XApp on bool {
       /// ```
       /// {@end-tool}
       final bool toggleable = false,
-      final Key key,
+      final Key? key,
 
       /// {@template flutter.material.radio.fillColor}
       /// The color that fills the radio button, in all [MaterialState]s.
@@ -483,7 +483,7 @@ extension XApp on bool {
       /// the disabled state, [ThemeData.toggleableActiveColor] is used in the
       /// selected state, and [ThemeData.unselectedWidgetColor] is used in the
       /// default state.
-      final MaterialStateProperty<Color> fillColor,
+      final MaterialStateProperty<Color>? fillColor,
 
       /// {@template flutter.material.radio.visualDensity}
       /// Defines how compact the radio's layout will be.
@@ -498,7 +498,7 @@ extension XApp on bool {
       ///
       ///  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
       ///    widgets within a [Theme].
-      final VisualDensity visualDensity,
+      final VisualDensity? visualDensity,
 
       /// {@template flutter.material.radio.overlayColor}
       /// The color for the checkbox's [Material].
@@ -517,7 +517,7 @@ extension XApp on bool {
       /// then the value of [ThemeData.toggleableActiveColor] with alpha
       /// [kRadialReactionAlpha], [ThemeData.focusColor] and [ThemeData.hoverColor]
       /// is used in the pressed, focused and hovered state.
-      final MaterialStateProperty<Color> overlayColor,
+      final MaterialStateProperty<Color>? overlayColor,
 
       /// {@template flutter.material.radio.splashRadius}
       /// The splash radius of the circular [Material] ink response.
@@ -525,7 +525,7 @@ extension XApp on bool {
       ///
       /// If null, then the value of [RadioThemeData.splashRadius] is used. If that
       /// is also null, then [kRadialReactionRadius] is used.
-      final double splashRadius}) {
+      final double? splashRadius}) {
     return Radio(
         value: this,
         groupValue: groupValue,
@@ -546,7 +546,7 @@ extension XApp on bool {
   }
 }
 
-extension Bools on Function(bool) {
+extension Bools on Function(bool?) {
   /// Called when the user toggles the switch on or off.
   ///
   /// The switch passes the new value to the callback but does not actually
@@ -573,43 +573,43 @@ extension Bools on Function(bool) {
     /// Whether this switch is on or off.
     ///
     /// This property must not be null.
-    final bool value,
+    required final bool value,
 
     /// The color to use when this switch is on.
     ///
     /// Defaults to [ThemeData.toggleableActiveColor].
-    final Color activeColor,
+    final Color? activeColor,
 
     /// The color to use on the track when this switch is on.
     ///
     /// Defaults to [ThemeData.toggleableActiveColor] with the opacity set at 50%.
     ///
     /// Ignored if this switch is created with [Switch.adaptive].
-    final Color activeTrackColor,
+    final Color? activeTrackColor,
 
     /// The color to use on the thumb when this switch is off.
     ///
     /// Defaults to the colors described in the Material design specification.
     ///
     /// Ignored if this switch is created with [Switch.adaptive].
-    final Color inactiveThumbColor,
+    final Color? inactiveThumbColor,
 
     /// The color to use on the track when this switch is off.
     ///
     /// Defaults to the colors described in the Material design specification.
     ///
     /// Ignored if this switch is created with [Switch.adaptive].
-    final Color inactiveTrackColor,
+    final Color? inactiveTrackColor,
 
     /// An image to use on the thumb of this switch when the switch is on.
     ///
     /// Ignored if this switch is created with [Switch.adaptive].
-    final ImageProvider activeThumbImage,
+    final ImageProvider? activeThumbImage,
 
     /// An image to use on the thumb of this switch when the switch is off.
     ///
     /// Ignored if this switch is created with [Switch.adaptive].
-    final ImageProvider inactiveThumbImage,
+    final ImageProvider? inactiveThumbImage,
 
     /// Configures the minimum size of the tap target.
     ///
@@ -618,23 +618,23 @@ extension Bools on Function(bool) {
     /// See also:
     ///
     ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-    final MaterialTapTargetSize materialTapTargetSize,
+    final MaterialTapTargetSize? materialTapTargetSize,
 
     /// {@macro flutter.cupertino.switch.dragStartBehavior}
-    final DragStartBehavior dragStartBehavior,
+    required final DragStartBehavior dragStartBehavior,
 
     /// The color for the button's [Material] when it has the input focus.
-    final Color focusColor,
+    final Color? focusColor,
 
     /// The color for the button's [Material] when a pointer is hovering over it.
-    final Color hoverColor,
+    final Color? hoverColor,
 
     /// {@macro flutter.widgets.Focus.focusNode}
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.Focus.autofocus}
     bool autofocus = false,
-    final Key key,
+    final Key? key,
   }) {
     return Switch(
       value: value,
@@ -686,17 +686,17 @@ extension Bools on Function(bool) {
     /// Whether this checkbox is checked.
     ///
     /// This property must not be null.
-    final bool value,
+    final bool? value,
 
     /// The color to use when this checkbox is checked.
     ///
     /// Defaults to [ThemeData.toggleableActiveColor].
-    final Color activeColor,
+    final Color? activeColor,
 
     /// The color to use for the check icon when this checkbox is checked.
     ///
     /// Defaults to Color(0xFFFFFFFF)
-    final Color checkColor,
+    final Color? checkColor,
 
     /// If true the checkbox's [value] can be true, false, or null.
     ///
@@ -708,7 +708,7 @@ extension Bools on Function(bool) {
     /// => true => null => false when tapped).
     ///
     /// If tristate is false (the default), [value] must not be null.
-    final bool tristate,
+    required final bool tristate,
 
     /// Configures the minimum size of the tap target.
     ///
@@ -717,23 +717,23 @@ extension Bools on Function(bool) {
     /// See also:
     ///
     ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-    final MaterialTapTargetSize materialTapTargetSize,
+    final MaterialTapTargetSize? materialTapTargetSize,
 
     /// The color for the checkbox's [Material] when it has the input focus.
-    final Color focusColor,
+    final Color? focusColor,
 
     /// The color for the checkbox's [Material] when a pointer is hovering over it.
-    final Color hoverColor,
+    final Color? hoverColor,
 
     /// {@macro flutter.widgets.Focus.focusNode}
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.Focus.autofocus}
     final bool autofocus = false,
 
     /// The width of a checkbox widget.
     double width = 18.0,
-    final Key key,
+    final Key? key,
   }) {
     return Checkbox(
       value: value,
@@ -751,7 +751,7 @@ extension Bools on Function(bool) {
   }
 
   Widget xRadio({
-    final bool groupValue,
+    final bool? groupValue,
 
     /// Called when the user selects this radio button.
     ///
@@ -779,12 +779,12 @@ extension Bools on Function(bool) {
     ///   },
     /// )
     /// ```
-    final ValueChanged onChanged,
+    final ValueChanged? onChanged,
 
     /// The color to use when this radio button is selected.
     ///
     /// Defaults to [ThemeData.toggleableActiveColor].
-    final Color activeColor,
+    final Color? activeColor,
 
     /// Configures the minimum size of the tap target.
     ///
@@ -793,24 +793,24 @@ extension Bools on Function(bool) {
     /// See also:
     ///
     ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-    final MaterialTapTargetSize materialTapTargetSize,
+    final MaterialTapTargetSize? materialTapTargetSize,
 
     /// The color for the radio's [Material] when it has the input focus.
-    final Color focusColor,
+    final Color? focusColor,
 
     /// The color for the radio's [Material] when a pointer is hovering over it.
-    final Color hoverColor,
+    final Color? hoverColor,
 
     /// {@macro flutter.widgets.Focus.focusNode}
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.Focus.autofocus}
     final bool autofocus = false,
-    final Key key,
-    final bool value,
+    final Key? key,
+    final bool? value,
   }) {
     return Radio(
-        value: value,
+        value: value!,
         groupValue: groupValue,
         activeColor: activeColor,
         autofocus: autofocus,

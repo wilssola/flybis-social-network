@@ -3,8 +3,8 @@ import 'package:firexcode/firexcode.dart';
 
 extension RowGridResponsive on List<ResponsiveGridList> {
   ResponsiveGridList xResponsiveGridList(
-      {double desiredItemWidth,
-      double minSpacing,
+      {double? desiredItemWidth,
+      double? minSpacing,
       bool scroll = true,
       bool squareCells = false}) {
     return ResponsiveGridList(
@@ -27,7 +27,7 @@ extension ResponsiveGridRow on List<ResponsiveGridCol> {
 
 extension XResponsiveGridCol on Widget {
   ResponsiveGridCol xResponsiveGridCol(
-      {int xs = 12, int sm, int md, int lg, int xl}) {
+      {int xs = 12, int? sm, int? md, int? lg, int? xl}) {
     return ResponsiveGridCol(
       lg: lg,
       md: md,

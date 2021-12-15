@@ -2,33 +2,33 @@ import 'package:firexcode/firexcode.dart';
 import 'package:flutter/material.dart';
 
 class XDropdownLab extends StatefulWidget {
-  final Widget name;
-  final String labelName;
-  final double width;
-  final double fontSize;
-  final Color color;
-  final double lableSize;
-  final Color textColor;
-  final List list;
-  final void Function(String) onChanged;
-  final String dropdownValue;
-  final TextStyle style;
+  final Widget? name;
+  final String? labelName;
+  final double? width;
+  final double? fontSize;
+  final Color? color;
+  final double? lableSize;
+  final Color? textColor;
+  final List? list;
+  final void Function(String?)? onChanged;
+  final String? dropdownValue;
+  final TextStyle? style;
   final bool showLable;
-  final Color dropdownColor;
+  final Color? dropdownColor;
   final bool autofocus;
-  final Widget disabledHint;
-  final Color focusColor;
-  final Color iconDisabledColor;
-  final FocusNode focusNode;
-  final Color iconEnabledColor;
+  final Widget? disabledHint;
+  final Color? focusColor;
+  final Color? iconDisabledColor;
+  final FocusNode? focusNode;
+  final Color? iconEnabledColor;
   final bool isDense;
   final bool isExpanded;
   final double itemHeight;
-  final void Function() onTap;
-  final List<Widget> Function(BuildContext) selectedItemBuilder;
-  final void Function() dropDownMenuOnTap;
+  final void Function()? onTap;
+  final List<Widget> Function(BuildContext)? selectedItemBuilder;
+  final void Function()? dropDownMenuOnTap;
   const XDropdownLab({
-    Key key,
+    Key? key,
     this.name,
     this.color,
     this.textColor,
@@ -71,7 +71,7 @@ class _XDropdownLabState extends State<XDropdownLab> {
             ? Padding(
                 padding: EdgeInsets.only(left: 10.0, top: 10.0, bottom: 5.0),
                 child: Text(
-                  widget.labelName,
+                  widget.labelName!,
                   style: TextStyle(
                     fontSize: widget.lableSize ?? 15.0,
                   ),
@@ -108,7 +108,7 @@ class _XDropdownLabState extends State<XDropdownLab> {
               key: widget.key,
               onTap: widget.onTap,
               selectedItemBuilder: widget.selectedItemBuilder,
-              items: widget.list.map<DropdownMenuItem<String>>((value) {
+              items: widget.list!.map<DropdownMenuItem<String>>((value) {
                 return DropdownMenuItem(
                   onTap: widget.dropDownMenuOnTap,
                   value: value,
@@ -123,31 +123,31 @@ class _XDropdownLabState extends State<XDropdownLab> {
 
 extension Dropdowns on List<String> {
   Widget xDropdownLabel(
-      {@required final Widget name,
-      final double fontSize,
-      final Color color,
-      final double lableSize,
-      final Color textColor,
-      final Key key,
-      final TextStyle style,
-      final String lableName,
-      final double width,
-      @required final void Function(String) onChanged,
-      @required final String dropdownValue,
+      {required final Widget name,
+      final double? fontSize,
+      final Color? color,
+      final double? lableSize,
+      final Color? textColor,
+      final Key? key,
+      final TextStyle? style,
+      final String? lableName,
+      final double? width,
+      required final void Function(String?) onChanged,
+      required final String dropdownValue,
       bool showLable = false,
       bool isDense = false,
       bool autofocus = false,
       bool isExpanded = false,
       double itemHeight = kMinInteractiveDimension,
-      void Function() onTap,
-      List<Widget> Function(BuildContext) selectedItemBuilder,
-      void Function() dropDownMenuOnTap,
-      Widget disabledHint,
-      Color focusColor,
-      Color iconDisabledColor,
-      Color dropdownColor,
-      Color iconEnabledColor,
-      FocusNode focusNode}) {
+      void Function()? onTap,
+      List<Widget> Function(BuildContext)? selectedItemBuilder,
+      void Function()? dropDownMenuOnTap,
+      Widget? disabledHint,
+      Color? focusColor,
+      Color? iconDisabledColor,
+      Color? dropdownColor,
+      Color? iconEnabledColor,
+      FocusNode? focusNode}) {
     return XDropdownLab(
       focusNode: focusNode,
       iconEnabledColor: iconEnabledColor,

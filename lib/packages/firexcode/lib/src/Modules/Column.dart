@@ -33,13 +33,13 @@ XColumnBSE xColumnBSE = XColumnBSE();
 XColumnCS xColumnCS = XColumnCS();
 
 class XColumn {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisAlignment mainAxisAlignment;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
 
   XColumn(
       {this.key,
@@ -62,11 +62,11 @@ class XColumn {
 }
 
 class XColumnCC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCC({
     this.key,
@@ -86,11 +86,11 @@ class XColumnCC {
 }
 
 class XColumnSS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSS({
     this.key,
@@ -110,11 +110,11 @@ class XColumnSS {
 }
 
 class XColumnSSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSSB({
     this.key,
@@ -134,11 +134,11 @@ class XColumnSSB {
 }
 
 class XColumnBS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBS({
     this.key,
@@ -158,11 +158,11 @@ class XColumnBS {
 }
 
 class XColumnES {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnES({
     this.key,
@@ -182,11 +182,11 @@ class XColumnES {
 }
 
 class XColumnSTS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTS({
     this.key,
@@ -206,11 +206,11 @@ class XColumnSTS {
 }
 
 class XColumnSTC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTC({
     this.key,
@@ -230,11 +230,11 @@ class XColumnSTC {
 }
 
 class XColumnSC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSC({
     this.key,
@@ -254,11 +254,11 @@ class XColumnSC {
 }
 
 class XColumnEC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnEC({
     this.key,
@@ -278,11 +278,11 @@ class XColumnEC {
 }
 
 class XColumnBC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBC({
     this.key,
@@ -302,11 +302,11 @@ class XColumnBC {
 }
 
 class XColumnSTE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTE({
     this.key,
@@ -326,11 +326,11 @@ class XColumnSTE {
 }
 
 class XColumnSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSE({
     this.key,
@@ -350,11 +350,11 @@ class XColumnSE {
 }
 
 class XColumnEE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnEE({
     this.key,
@@ -374,11 +374,11 @@ class XColumnEE {
 }
 
 class XColumnCE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCE({
     this.key,
@@ -398,11 +398,11 @@ class XColumnCE {
 }
 
 class XColumnBE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBE({
     this.key,
@@ -422,11 +422,11 @@ class XColumnBE {
 }
 
 class XColumnSTSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTSA({
     this.key,
@@ -446,11 +446,11 @@ class XColumnSTSA {
 }
 
 class XColumnSSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSSA({
     this.key,
@@ -470,11 +470,11 @@ class XColumnSSA {
 }
 
 class XColumnESA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnESA({
     this.key,
@@ -494,11 +494,11 @@ class XColumnESA {
 }
 
 class XColumnCSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCSA({
     this.key,
@@ -518,11 +518,11 @@ class XColumnCSA {
 }
 
 class XColumnBSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBSA({
     this.key,
@@ -542,11 +542,11 @@ class XColumnBSA {
 }
 
 class XColumnSTSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTSB({
     this.key,
@@ -566,11 +566,11 @@ class XColumnSTSB {
 }
 
 class XColumnESB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnESB({
     this.key,
@@ -590,11 +590,11 @@ class XColumnESB {
 }
 
 class XColumnCSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCSB({
     this.key,
@@ -614,11 +614,11 @@ class XColumnCSB {
 }
 
 class XColumnBSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBSB({
     this.key,
@@ -638,11 +638,11 @@ class XColumnBSB {
 }
 
 class XColumnSTSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSTSE({
     this.key,
@@ -662,11 +662,11 @@ class XColumnSTSE {
 }
 
 class XColumnSSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnSSE({
     this.key,
@@ -686,11 +686,11 @@ class XColumnSSE {
 }
 
 class XColumnESE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnESE({
     this.key,
@@ -710,11 +710,11 @@ class XColumnESE {
 }
 
 class XColumnCSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCSE({
     this.key,
@@ -734,11 +734,11 @@ class XColumnCSE {
 }
 
 class XColumnBSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnBSE({
     this.key,
@@ -758,11 +758,11 @@ class XColumnBSE {
 }
 
 class XColumnCS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XColumnCS({
     this.key,

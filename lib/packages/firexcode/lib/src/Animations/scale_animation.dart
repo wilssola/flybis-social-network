@@ -4,10 +4,10 @@ import 'animation_configurator.dart';
 /// An animation that scales its child.
 class ScaleAnimation extends StatelessWidget {
   /// The duration of the child animation.
-  final Duration duration;
+  final Duration? duration;
 
   /// The delay between the beginning of two children's animations.
-  final Duration delay;
+  final Duration? delay;
 
   /// Scaling factor to apply at the start of the animation.
   final double scale;
@@ -21,11 +21,11 @@ class ScaleAnimation extends StatelessWidget {
   ///
   /// The [child] argument must not be null.
   const ScaleAnimation({
-    Key key,
+    Key? key,
     this.duration,
     this.delay,
     this.scale = 0.0,
-    @required this.child,
+    required this.child,
   })  : assert(child != null),
         assert(scale != null && scale >= 0.0),
         super(key: key);

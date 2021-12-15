@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 extension Images on String {
   DecorationImage decorationINToCover(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.cover,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -20,8 +20,8 @@ extension Images on String {
 
   DecorationImage decorationINToContain(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.contain,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -37,8 +37,8 @@ extension Images on String {
 
   DecorationImage decorationINToFill(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fill,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -54,8 +54,8 @@ extension Images on String {
 
   DecorationImage decorationINToNone(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.none,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -71,8 +71,8 @@ extension Images on String {
 
   DecorationImage decorationINToScaleDown(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.scaleDown,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -88,8 +88,8 @@ extension Images on String {
 
   DecorationImage decorationINToFitHeight(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fitHeight,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -105,8 +105,8 @@ extension Images on String {
 
   DecorationImage decorationINToFitWidth(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fitHeight,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {

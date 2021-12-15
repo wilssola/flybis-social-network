@@ -3,26 +3,26 @@ import 'package:firexcode/firexcode.dart';
 
 extension StfulStless on Widget {
   Widget xMaterialApp({
-    GlobalKey<NavigatorState> navigatorKey,
-    Key key,
+    GlobalKey<NavigatorState>? navigatorKey,
+    Key? key,
     Map<String, Widget Function(BuildContext)> routes =
         const <String, WidgetBuilder>{},
-    String initialRoute,
-    Route<dynamic> Function(RouteSettings) onGenerateRoute,
-    Route<dynamic> Function(RouteSettings) onUnknownRoute,
+    String? initialRoute,
+    Route<dynamic> Function(RouteSettings)? onGenerateRoute,
+    Route<dynamic> Function(RouteSettings)? onUnknownRoute,
     List<NavigatorObserver> navigatorObservers = const <NavigatorObserver>[],
-    Widget Function(BuildContext, Widget) builder,
+    Widget Function(BuildContext, Widget?)? builder,
     String title = '',
-    String Function(BuildContext) onGenerateTitle,
-    Color color,
-    ThemeData theme,
-    ThemeData darkTheme,
+    String Function(BuildContext)? onGenerateTitle,
+    Color? color,
+    ThemeData? theme,
+    ThemeData? darkTheme,
     ThemeMode themeMode = ThemeMode.system,
-    Locale locale,
-    Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates,
-    Locale Function(List<Locale>, Iterable<Locale>)
+    Locale? locale,
+    Iterable<LocalizationsDelegate<dynamic>>? localizationsDelegates,
+    Locale Function(List<Locale>?, Iterable<Locale>)?
         localeListResolutionCallback,
-    Locale Function(Locale, Iterable<Locale>) localeResolutionCallback,
+    Locale Function(Locale?, Iterable<Locale>)? localeResolutionCallback,
     Iterable<Locale> supportedLocales = const <Locale>[Locale('en', 'US')],
     bool debugShowMaterialGrid = false,
     bool showPerformanceOverlay = false,
@@ -65,37 +65,37 @@ extension StfulStless on Widget {
   Widget xFloationActiobButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      Brightness colorBrightness,
-      Color focusColor,
-      FocusNode focusNode,
-      Color highlightColor,
-      Color hoverColor,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function(bool) onHighlightChanged,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      Color splashColor,
-      Color textColor,
-      ButtonTextTheme textTheme,
-      double disabledElevation,
-      double elevation,
-      double focusElevation,
-      Color foregroundColor,
-      Object heroTag,
-      double highlightElevation,
-      String tooltip,
+      Color? color,
+      Brightness? colorBrightness,
+      Color? focusColor,
+      FocusNode? focusNode,
+      Color? highlightColor,
+      Color? hoverColor,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function(bool)? onHighlightChanged,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      Color? splashColor,
+      Color? textColor,
+      ButtonTextTheme? textTheme,
+      double? disabledElevation,
+      double? elevation,
+      double? focusElevation,
+      Color? foregroundColor,
+      Object? heroTag,
+      double? highlightElevation,
+      String? tooltip,
       bool isExtended = false,
       bool mini = false,
-      double hoverElevation,
-      Function onTap}) {
+      double? hoverElevation,
+      Function? onTap}) {
     return FloatingActionButton(
         autofocus: autofocus,
         clipBehavior: clipBehavior,
         backgroundColor: color,
-        onPressed: onTap,
+        onPressed: onTap as void Function()?,
         focusColor: focusColor,
         focusNode: focusNode,
         hoverColor: hoverColor,
@@ -117,7 +117,7 @@ extension StfulStless on Widget {
   }
 
   Widget xIconButton({
-    Key key,
+    Key? key,
 
     /// The size of the icon inside the button.
     ///
@@ -159,17 +159,17 @@ extension StfulStless on Widget {
     /// This property must not be null.
     ///
     /// See [Icon], [ImageIcon].
-    final Widget icon,
+    final Widget? icon,
 
     /// The color for the button's icon when it has the input focus.
     ///
     /// Defaults to [ThemeData.focusColor] of the ambient theme.
-    final Color focusColor,
+    final Color? focusColor,
 
     /// The color for the button's icon when a pointer is hovering over it.
     ///
     /// Defaults to [ThemeData.hoverColor] of the ambient theme.
-    final Color hoverColor,
+    final Color? hoverColor,
 
     /// The color to use for the icon inside the button, if the icon is enabled.
     /// Defaults to leaving this up to the [icon] widget.
@@ -185,7 +185,7 @@ extension StfulStless on Widget {
     ///   icon: Icons.widgets,
     /// )
     /// ```
-    final Color color,
+    final Color? color,
 
     /// The primary color of the button when the button is in the down (pressed) state.
     /// The splash is represented as a circular overlay that appears above the
@@ -195,7 +195,7 @@ extension StfulStless on Widget {
     /// color has transparency then the highlight and button color will show through.
     ///
     /// Defaults to the Theme's splash color, [ThemeData.splashColor].
-    final Color splashColor,
+    final Color? splashColor,
 
     /// The secondary color of the button when the button is in the down (pressed)
     /// state. The highlight color is represented as a solid color that is overlaid over the
@@ -203,7 +203,7 @@ extension StfulStless on Widget {
     /// will show through. The highlight fades in quickly as the button is held down.
     ///
     /// Defaults to the Theme's highlight color, [ThemeData.highlightColor].
-    final Color highlightColor,
+    final Color? highlightColor,
 
     /// The color to use for the icon inside the button, if the icon is disabled.
     /// Defaults to the [ThemeData.disabledColor] of the current [Theme].
@@ -211,15 +211,15 @@ extension StfulStless on Widget {
     /// The icon is disabled if [onPressed] is null.
     ///
     /// See also [color].
-    final Color disabledColor,
+    final Color? disabledColor,
 
     /// The callback that is called when the button is tapped or otherwise activated.
     ///
     /// If this is set to null, the button will be disabled.
-    final VoidCallback onPressed,
+    final VoidCallback? onPressed,
 
     /// {@macro flutter.widgets.Focus.focusNode}
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.Focus.autofocus}
     final bool autofocus = false,
@@ -228,7 +228,7 @@ extension StfulStless on Widget {
     ///
     /// This text is displayed when the user long-presses on the button and is
     /// used for accessibility.
-    final String tooltip,
+    final String? tooltip,
 
     /// Whether detected gestures should provide acoustic and/or haptic feedback.
     ///
@@ -274,7 +274,7 @@ extension ComponentsIconData on IconData {
       {double size = 15,
       Color color = Colors.grey,
       Color activeColor = Colors.red,
-      bool value}) {
+      required bool value}) {
     return Icon(
       this,
       size: size,
@@ -295,8 +295,8 @@ extension ComponentsIconData on IconData {
   }
 
   Icon xIcons({
-    double size,
-    Color color,
+    double? size,
+    Color? color,
   }) {
     return Icon(
       this,
@@ -309,7 +309,7 @@ extension ComponentsIconData on IconData {
       {double size = 15,
       Color color = Colors.grey,
       Color activeColor = Colors.red,
-      @required bool value}) {
+      required bool value}) {
     return Icon(
       this,
       size: size,
@@ -318,17 +318,17 @@ extension ComponentsIconData on IconData {
   }
 
   Widget xIconBadge({
-    Function onPressed,
+    Function? onPressed,
     int badgeValue = 0,
-    Color iconColor,
-    Widget text,
+    Color? iconColor,
+    Widget? text,
     Color badgeColor = Colors.red,
   }) {
     return Stack(
       children: <Widget>[
         IconButton(
           icon: Icon(this),
-          onPressed: onPressed,
+          onPressed: onPressed as void Function()?,
           color: iconColor,
         ),
         badgeValue != 0
@@ -354,7 +354,7 @@ extension ComponentsIconData on IconData {
 
   Widget xListTileIcon(
       {double size = 30,
-      Function onTap,
+      Function? onTap,
       Color color = Colors.red,
       double height = 50,
       double width = 50}) {
@@ -373,7 +373,7 @@ extension ComponentsIconData on IconData {
 
   Widget xTransactionTileIcon(
       {double size = 30,
-      Function onTap,
+      Function? onTap,
       Color color = Colors.red,
       Color iconcColor = Colors.white,
       double height = 50,
@@ -394,21 +394,21 @@ extension ComponentsIconData on IconData {
 
 extension Lableicon on Widget {
   Widget lableIcon({
-    Widget lable,
-    final double width,
-    final Color color,
-    final EdgeInsetsGeometry padding,
-    final Color shadowColor,
-    final double rounded,
-    final Widget child,
-    final double height,
-    final double blurRadius,
-    final double spreadRadius,
-    final Offset offset,
-    final Function onTap,
-    final EdgeInsetsGeometry margin,
-    final DecorationImage image,
-    final BorderRadiusGeometry borderRadius,
+    Widget? lable,
+    final double? width,
+    final Color? color,
+    final EdgeInsetsGeometry? padding,
+    final Color? shadowColor,
+    final double? rounded,
+    final Widget? child,
+    final double? height,
+    final double? blurRadius,
+    final double? spreadRadius,
+    final Offset? offset,
+    final Function? onTap,
+    final EdgeInsetsGeometry? margin,
+    final DecorationImage? image,
+    final BorderRadiusGeometry? borderRadius,
   }) {
     return XContainer(
       blurRadius: blurRadius,
@@ -425,7 +425,7 @@ extension Lableicon on Widget {
       shadowColor: shadowColor,
       spreadRadius: spreadRadius,
       width: width,
-      child: <Widget>[xap(value: 5), 10.0.sizedHeight(), lable].xColumn(),
+      child: <Widget?>[xap(value: 5), 10.0.sizedHeight(), lable].xColumn(),
     );
   }
 }

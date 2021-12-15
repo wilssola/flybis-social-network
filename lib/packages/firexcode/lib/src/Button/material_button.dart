@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class MaterialXButton extends StatelessWidget {
-  final Color color;
+  final Color? color;
   final Widget child;
-  final Function onTap;
-  final double rounded;
-  final double height;
-  final double width;
-  final double elavation;
-  final double spreadRadius;
+  final Function? onTap;
+  final double? rounded;
+  final double? height;
+  final double? width;
+  final double? elavation;
+  final double? spreadRadius;
 
   const MaterialXButton(
-      {Key key,
-      @required this.color,
-      @required this.child,
-      @required this.onTap,
+      {Key? key,
+      required this.color,
+      required this.child,
+      required this.onTap,
       this.rounded,
-      @required this.width,
-      @required this.height,
+      required this.width,
+      required this.height,
       this.elavation,
       this.spreadRadius})
       : super(key: key);
@@ -28,7 +28,7 @@ class MaterialXButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: color.withOpacity(0.4),
+            color: color!.withOpacity(0.4),
             blurRadius: elavation ?? 10.0,
             spreadRadius: spreadRadius ?? 0.0,
 
@@ -41,7 +41,7 @@ class MaterialXButton extends StatelessWidget {
         color: color,
         child: InkWell(
           borderRadius: BorderRadius.circular(rounded ?? 0),
-          onTap: onTap,
+          onTap: onTap as void Function()?,
           child: Center(child: child),
         ),
       ),

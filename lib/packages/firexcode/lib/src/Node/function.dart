@@ -1,10 +1,10 @@
 class NodeJsList {
-  final List<String> list;
+  final List<String>? list;
   NodeJsList({this.list});
 
   List<String> get code {
     var model = <String>[];
-    list.forEach((element) {
+    list!.forEach((element) {
       var data = xBetweenText(element, '', ': {');
       model.add('$data: req.body.$data \n');
     });
@@ -13,12 +13,12 @@ class NodeJsList {
 }
 
 class NodeJsListValidator {
-  final List<String> list;
+  final List<String>? list;
   NodeJsListValidator({this.list});
 
   List<String> get code {
     var model = <String>[];
-    list.forEach((element) {
+    list!.forEach((element) {
       var data = xBetweenText(element, '', ': {');
       model.add("$data: 'required'");
     });

@@ -13,21 +13,21 @@ class XListView {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  ScrollPhysics physics;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  ScrollPhysics? physics;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   Axis scrollDirection;
   bool shrinkWrap;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListView({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -76,20 +76,20 @@ class XListViewHorizontal {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  ScrollPhysics physics;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  ScrollPhysics? physics;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   bool shrinkWrap;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewHorizontal({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -136,18 +136,18 @@ class XListViewHCSP {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewHCSP({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -190,18 +190,18 @@ class XListViewHNSP {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewHNSP({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -244,20 +244,20 @@ class XListViewVertical {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  ScrollPhysics physics;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  ScrollPhysics? physics;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   bool shrinkWrap;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewVertical({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -304,18 +304,18 @@ class XListViewVCSP {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewVCSP({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
@@ -358,18 +358,18 @@ class XListViewVNSP {
   bool addAutomaticKeepAlives;
   bool addRepaintBoundaries;
   bool addSemanticIndexes; //todo
-  double cacheExtent;
-  ScrollController controller;
+  double? cacheExtent;
+  ScrollController? controller;
   DragStartBehavior dragStartBehavior;
-  double itemExtent;
-  Key key;
-  EdgeInsetsGeometry padding;
-  bool primary;
+  double? itemExtent;
+  Key? key;
+  EdgeInsetsGeometry? padding;
+  bool? primary;
   bool reverse;
-  int semanticChildCount;
+  int? semanticChildCount;
   Clip clipBehavior;
   ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  String restorationId;
+  String? restorationId;
   XListViewVNSP({
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,

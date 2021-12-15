@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/src/Container/Container.dart';
 
 class XDrawerFullWidth extends StatelessWidget {
-  final List<Widget> children;
-  final Color backgrounCcolor;
+  final List<Widget>? children;
+  final Color? backgrounCcolor;
 
-  const XDrawerFullWidth({Key key, this.backgrounCcolor, this.children})
+  const XDrawerFullWidth({Key? key, this.backgrounCcolor, this.children})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

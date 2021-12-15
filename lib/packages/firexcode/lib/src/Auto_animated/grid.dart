@@ -9,9 +9,9 @@ const Duration _kDuration = Duration(milliseconds: 250);
 
 class XGridAnimated extends StatefulWidget {
   const XGridAnimated({
-    @required this.itemBuilder,
-    @required this.gridDelegate,
-    @required this.itemCount,
+    required this.itemBuilder,
+    required this.gridDelegate,
+    required this.itemCount,
     this.visibleFraction = 0.025,
     this.reAnimateOnVisibility = false,
     this.delay = Duration.zero,
@@ -27,16 +27,16 @@ class XGridAnimated extends StatefulWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key key,
+    Key? key,
   })  : assert(itemBuilder != null),
         assert(itemCount != null && itemCount >= 0),
         super(key: key);
 
   XGridAnimated.options({
-    @required this.itemBuilder,
-    @required this.gridDelegate,
-    @required this.itemCount,
-    @required LiveOptions options,
+    required this.itemBuilder,
+    required this.gridDelegate,
+    required this.itemCount,
+    required LiveOptions options,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
@@ -47,7 +47,7 @@ class XGridAnimated extends StatefulWidget {
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
-    Key key,
+    Key? key,
   })  : delay = options.delay,
         showItemInterval = options.showItemInterval,
         showItemDuration = options.showItemDuration,
@@ -87,7 +87,7 @@ class XGridAnimated extends StatefulWidget {
   /// The appearance of the initial items is not animated. They
   /// are created, as needed, by [itemBuilder] with an animation parameter
   /// of [kAlwaysCompleteAnimation].
-  final int itemCount;
+  final int? itemCount;
 
   /// The axis along which the scroll view scrolls.
   ///
@@ -120,7 +120,7 @@ class XGridAnimated extends StatefulWidget {
   /// [ScrollController.keepScrollOffset]). It can be used to read the current
   /// scroll position (see [ScrollController.offset]), or change it (see
   /// [ScrollController.animateTo]).
-  final ScrollController controller;
+  final ScrollController? controller;
 
   /// Whether this is the primary scroll view associated with the parent
   /// [PrimaryScrollController].
@@ -130,7 +130,7 @@ class XGridAnimated extends StatefulWidget {
   ///
   /// Defaults to true when [scrollDirection] is [Axis.vertical] and
   /// [controller] is null.
-  final bool primary;
+  final bool? primary;
 
   /// How the scroll view should respond to user input.
   ///
@@ -138,7 +138,7 @@ class XGridAnimated extends StatefulWidget {
   /// user stops dragging the scroll view.
   ///
   /// Defaults to matching platform conventions.
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
 
   /// Whether the extent of the scroll view in the [scrollDirection] should be
   /// determined by the contents being viewed.
@@ -157,7 +157,7 @@ class XGridAnimated extends StatefulWidget {
   final bool shrinkWrap;
 
   /// The amount of space by which to inset the children.
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
   /// A delegate that controls the layout of the children within the [GridView].
   ///

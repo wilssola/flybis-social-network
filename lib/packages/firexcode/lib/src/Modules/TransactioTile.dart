@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/firexcode.dart';
 
 class XTransactiontTile extends StatelessWidget {
-  final Function onTap;
-  final Widget leading;
-  final Widget subtitle;
+  final Function? onTap;
+  final Widget? leading;
+  final Widget? subtitle;
   final double middleSpace;
-  final Widget trailing1;
-  final Widget trailing2;
-  final Widget title;
+  final Widget? trailing1;
+  final Widget? trailing2;
+  final Widget? title;
   const XTransactiontTile(
-      {Key key,
+      {Key? key,
       this.onTap,
       this.leading,
       this.subtitle,
@@ -23,7 +23,7 @@ class XTransactiontTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: onTap,
+      onTap: onTap as void Function()?,
       leading: leading,
       title: title,
       subtitle: subtitle,

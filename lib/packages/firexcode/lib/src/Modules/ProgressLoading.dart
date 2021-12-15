@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/src/Text/text_material.dart';
 
 class XProgressLoading extends StatelessWidget {
-  final String progressName;
-  final Color progressColor;
-  final Color progressBackgroundColor;
-  final double progressValue;
-  final Color progressNameColor;
+  final String? progressName;
+  final Color? progressColor;
+  final Color? progressBackgroundColor;
+  final double? progressValue;
+  final Color? progressNameColor;
 
   const XProgressLoading(
-      {Key key,
+      {Key? key,
       this.progressName,
       this.progressColor,
       this.progressBackgroundColor,
@@ -29,7 +29,7 @@ class XProgressLoading extends StatelessWidget {
             subtitle: LinearProgressIndicator(
               backgroundColor: progressBackgroundColor,
               value: progressValue ?? 0.0,
-              valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+              valueColor: AlwaysStoppedAnimation<Color?>(progressColor),
             ));
   }
 }

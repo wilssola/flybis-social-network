@@ -6,7 +6,7 @@ import 'package:firexcode/firexcode.dart';
 
 extension ImageString on String {
   Widget xImageAsset({
-    Map<String, String> headers,
+    Map<String, String>? headers,
 
     /// A builder function responsible for creating the widget that represents
     /// this image.
@@ -95,7 +95,7 @@ extension ImageString on String {
     /// image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/frame_builder_image.mp4}
-    final ImageFrameBuilder frameBuilder,
+    final ImageFrameBuilder? frameBuilder,
 
     /// A builder that specifies the widget to display to the user while an image
     /// is still loading.
@@ -163,7 +163,7 @@ extension ImageString on String {
     /// completed image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/loading_progress_image.mp4}
-    final ImageLoadingBuilder loadingBuilder,
+    final ImageLoadingBuilder? loadingBuilder,
 
     /// If non-null, require the image to have this width.
     ///
@@ -175,7 +175,7 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double width,
+    final double? width,
 
     /// If non-null, require the image to have this height.
     ///
@@ -187,10 +187,10 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double height,
+    final double? height,
 
     /// If non-null, this color is blended with each image pixel using [colorBlendMode].
-    final Color color,
+    final Color? color,
 
     /// Used to set the [FilterQuality] of the image.
     ///
@@ -207,13 +207,13 @@ extension ImageString on String {
     /// See also:
     ///
     ///  * [BlendMode], which includes an illustration of the effect of each blend mode.
-    final BlendMode colorBlendMode,
+    final BlendMode? colorBlendMode,
 
     /// How to inscribe the image into the space allocated during layout.
     ///
     /// The default varies based on the other fields. See the discussion at
     /// [paintImage].
-    final BoxFit fit,
+    final BoxFit? fit,
 
     /// How to align the image within its bounds.
     ///
@@ -243,7 +243,7 @@ extension ImageString on String {
     final AlignmentGeometry alignment = Alignment.center,
 
     /// How to paint any portions of the layout bounds not covered by the image.
-    final ImageRepeat repeat,
+    final ImageRepeat? repeat,
 
     /// The center slice for a nine-patch image.
     ///
@@ -252,7 +252,7 @@ extension ImageString on String {
     /// region of the image above and below the center slice will be stretched
     /// only horizontally and the region of the image to the left and right of
     /// the center slice will be stretched only vertically.
-    final Rect centerSlice,
+    final Rect? centerSlice,
 
     /// Whether to paint the image in the direction of the [TextDirection].
     ///
@@ -279,19 +279,19 @@ extension ImageString on String {
     ///
     /// Used to provide a description of the image to TalkBack on Android, and
     /// VoiceOver on iOS.
-    final String semanticLabel,
+    final String? semanticLabel,
 
     /// Whether to exclude this image from semantics.
     ///
     /// Useful for images which do not contribute meaningful information to an
     /// application.
     final bool excludeFromSemantics = false,
-    String package,
+    String? package,
     double scale = 1.0,
-    int cacheWidth,
-    int cacheHeight,
-    Key key,
-    AssetBundle bundle,
+    int? cacheWidth,
+    int? cacheHeight,
+    Key? key,
+    AssetBundle? bundle,
   }) {
     return Image.asset(
       this,
@@ -319,7 +319,7 @@ extension ImageString on String {
   }
 
   Widget xImageNetwork({
-    Map<String, String> headers,
+    Map<String, String>? headers,
 
     /// A builder function responsible for creating the widget that represents
     /// this image.
@@ -408,7 +408,7 @@ extension ImageString on String {
     /// image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/frame_builder_image.mp4}
-    final ImageFrameBuilder frameBuilder,
+    final ImageFrameBuilder? frameBuilder,
 
     /// A builder that specifies the widget to display to the user while an image
     /// is still loading.
@@ -476,7 +476,7 @@ extension ImageString on String {
     /// completed image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/loading_progress_image.mp4}
-    final ImageLoadingBuilder loadingBuilder,
+    final ImageLoadingBuilder? loadingBuilder,
 
     /// If non-null, require the image to have this width.
     ///
@@ -488,7 +488,7 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double width,
+    final double? width,
 
     /// If non-null, require the image to have this height.
     ///
@@ -500,10 +500,10 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double height,
+    final double? height,
 
     /// If non-null, this color is blended with each image pixel using [colorBlendMode].
-    final Color color,
+    final Color? color,
 
     /// Used to set the [FilterQuality] of the image.
     ///
@@ -520,13 +520,13 @@ extension ImageString on String {
     /// See also:
     ///
     ///  * [BlendMode], which includes an illustration of the effect of each blend mode.
-    final BlendMode colorBlendMode,
+    final BlendMode? colorBlendMode,
 
     /// How to inscribe the image into the space allocated during layout.
     ///
     /// The default varies based on the other fields. See the discussion at
     /// [paintImage].
-    final BoxFit fit,
+    final BoxFit? fit,
 
     /// How to align the image within its bounds.
     ///
@@ -556,7 +556,7 @@ extension ImageString on String {
     final AlignmentGeometry alignment = Alignment.center,
 
     /// How to paint any portions of the layout bounds not covered by the image.
-    final ImageRepeat repeat = ImageRepeat.noRepeat,
+    final ImageRepeat? repeat = ImageRepeat.noRepeat,
 
     /// The center slice for a nine-patch image.
     ///
@@ -565,7 +565,7 @@ extension ImageString on String {
     /// region of the image above and below the center slice will be stretched
     /// only horizontally and the region of the image to the left and right of
     /// the center slice will be stretched only vertically.
-    final Rect centerSlice,
+    final Rect? centerSlice,
 
     /// Whether to paint the image in the direction of the [TextDirection].
     ///
@@ -592,7 +592,7 @@ extension ImageString on String {
     ///
     /// Used to provide a description of the image to TalkBack on Android, and
     /// VoiceOver on iOS.
-    final String semanticLabel,
+    final String? semanticLabel,
 
     /// Whether to exclude this image from semantics.
     ///
@@ -600,9 +600,9 @@ extension ImageString on String {
     /// application.
     final bool excludeFromSemantics = false,
     double scale = 1.0,
-    int cacheWidth,
-    int cacheHeight,
-    Key key,
+    int? cacheWidth,
+    int? cacheHeight,
+    Key? key,
   }) {
     return Image.network(
       this,
@@ -630,7 +630,7 @@ extension ImageString on String {
   }
 
   Widget xImageFile({
-    Map<String, String> headers,
+    Map<String, String>? headers,
 
     /// A builder function responsible for creating the widget that represents
     /// this image.
@@ -719,7 +719,7 @@ extension ImageString on String {
     /// image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/frame_builder_image.mp4}
-    final ImageFrameBuilder frameBuilder,
+    final ImageFrameBuilder? frameBuilder,
 
     /// A builder that specifies the widget to display to the user while an image
     /// is still loading.
@@ -787,7 +787,7 @@ extension ImageString on String {
     /// completed image.
     ///
     /// {@animation 400 400 https://flutter.github.io/assets-for-api-docs/assets/widgets/loading_progress_image.mp4}
-    final ImageLoadingBuilder loadingBuilder,
+    final ImageLoadingBuilder? loadingBuilder,
 
     /// If non-null, require the image to have this width.
     ///
@@ -799,7 +799,7 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double width,
+    final double? width,
 
     /// If non-null, require the image to have this height.
     ///
@@ -811,10 +811,10 @@ extension ImageString on String {
     /// layout constraints, so that the image does not change size as it loads.
     /// Consider using [fit] to adapt the image's rendering to fit the given width
     /// and height if the exact image dimensions are not known in advance.
-    final double height,
+    final double? height,
 
     /// If non-null, this color is blended with each image pixel using [colorBlendMode].
-    final Color color,
+    final Color? color,
 
     /// Used to set the [FilterQuality] of the image.
     ///
@@ -831,13 +831,13 @@ extension ImageString on String {
     /// See also:
     ///
     ///  * [BlendMode], which includes an illustration of the effect of each blend mode.
-    final BlendMode colorBlendMode,
+    final BlendMode? colorBlendMode,
 
     /// How to inscribe the image into the space allocated during layout.
     ///
     /// The default varies based on the other fields. See the discussion at
     /// [paintImage].
-    final BoxFit fit,
+    final BoxFit? fit,
 
     /// How to align the image within its bounds.
     ///
@@ -867,7 +867,7 @@ extension ImageString on String {
     final AlignmentGeometry alignment = Alignment.center,
 
     /// How to paint any portions of the layout bounds not covered by the image.
-    final ImageRepeat repeat,
+    final ImageRepeat? repeat,
 
     /// The center slice for a nine-patch image.
     ///
@@ -876,7 +876,7 @@ extension ImageString on String {
     /// region of the image above and below the center slice will be stretched
     /// only horizontally and the region of the image to the left and right of
     /// the center slice will be stretched only vertically.
-    final Rect centerSlice,
+    final Rect? centerSlice,
 
     /// Whether to paint the image in the direction of the [TextDirection].
     ///
@@ -903,7 +903,7 @@ extension ImageString on String {
     ///
     /// Used to provide a description of the image to TalkBack on Android, and
     /// VoiceOver on iOS.
-    final String semanticLabel,
+    final String? semanticLabel,
 
     /// Whether to exclude this image from semantics.
     ///
@@ -911,9 +911,9 @@ extension ImageString on String {
     /// application.
     final bool excludeFromSemantics = false,
     double scale = 1.0,
-    int cacheWidth,
-    int cacheHeight,
-    Key key,
+    int? cacheWidth,
+    int? cacheHeight,
+    Key? key,
   }) {
     return Image.file(
       File(this),
@@ -941,20 +941,20 @@ extension ImageString on String {
 
 extension DecorationX on DecorationImage {
   Widget xContainer({
-    final double width,
-    final Color color,
-    final EdgeInsetsGeometry padding,
-    final Color shadowColor,
-    final double rounded,
-    final Widget child,
-    final double height,
-    final double blurRadius,
-    final double spreadRadius,
-    final Offset offset,
-    final Function onTap,
-    final EdgeInsetsGeometry margin,
-    final BorderRadiusGeometry borderRadius,
-    final Key key,
+    final double? width,
+    final Color? color,
+    final EdgeInsetsGeometry? padding,
+    final Color? shadowColor,
+    final double? rounded,
+    final Widget? child,
+    final double? height,
+    final double? blurRadius,
+    final double? spreadRadius,
+    final Offset? offset,
+    final Function? onTap,
+    final EdgeInsetsGeometry? margin,
+    final BorderRadiusGeometry? borderRadius,
+    final Key? key,
   }) {
     return XContainer(
       image: this,

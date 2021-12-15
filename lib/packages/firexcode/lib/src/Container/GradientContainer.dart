@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
 class XContainerGradient extends StatelessWidget {
-  final double width;
-  final Gradient gradient;
-  final EdgeInsetsGeometry padding;
-  final Color shadowColor;
-  final double rounded;
-  final Widget child;
-  final DecorationImage image;
-  final double height;
-  final double blurRadius;
-  final double spreadRadius;
-  final Offset offset;
-  final Function onTap;
-  final EdgeInsetsGeometry margin;
-  final BorderRadiusGeometry borderRadius;
+  final double? width;
+  final Gradient? gradient;
+  final EdgeInsetsGeometry? padding;
+  final Color? shadowColor;
+  final double? rounded;
+  final Widget? child;
+  final DecorationImage? image;
+  final double? height;
+  final double? blurRadius;
+  final double? spreadRadius;
+  final Offset? offset;
+  final Function? onTap;
+  final EdgeInsetsGeometry? margin;
+  final BorderRadiusGeometry? borderRadius;
   const XContainerGradient(
-      {Key key,
+      {Key? key,
       this.height,
       this.width,
-      @required this.gradient,
+      required this.gradient,
       this.shadowColor,
       this.rounded,
       this.padding,
-      @required this.child,
+      required this.child,
       this.blurRadius,
       this.spreadRadius,
       this.offset,
@@ -45,7 +45,7 @@ class XContainerGradient extends StatelessWidget {
             BoxShadow(
                 color: shadowColor == null
                     ? Colors.white
-                    : shadowColor.withOpacity(0.4),
+                    : shadowColor!.withOpacity(0.4),
                 blurRadius: blurRadius ?? 0,
                 spreadRadius: spreadRadius ?? 0.0,
                 offset: offset ?? Offset(0, 0)),
@@ -58,8 +58,8 @@ class XContainerGradient extends StatelessWidget {
               borderRadius:
                   borderRadius ?? BorderRadius.circular(rounded ?? 0)),
           child: InkWell(
-              borderRadius: borderRadius ?? BorderRadius.circular(rounded ?? 0),
-              onTap: onTap,
+              borderRadius: borderRadius as BorderRadius? ?? BorderRadius.circular(rounded ?? 0),
+              onTap: onTap as void Function()?,
               child: Padding(
                 padding: padding ?? EdgeInsets.all(10.0),
                 child: child,

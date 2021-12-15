@@ -4,10 +4,10 @@ import 'animation_configurator.dart';
 /// An animation that slides its child.
 class SlideAnimation extends StatelessWidget {
   /// The duration of the child animation.
-  final Duration duration;
+  final Duration? duration;
 
   /// The delay between the beginning of two children's animations.
-  final Duration delay;
+  final Duration? delay;
 
   /// The vertical offset to apply at the start of the animation (can be negative).
   final double verticalOffset;
@@ -26,12 +26,12 @@ class SlideAnimation extends StatelessWidget {
   ///
   /// The [child] argument must not be null.
   const SlideAnimation({
-    Key key,
+    Key? key,
     this.duration,
     this.delay,
-    double verticalOffset,
+    double? verticalOffset,
     this.horizontalOffset = 0.0,
-    @required this.child,
+    required this.child,
   })  : verticalOffset = (verticalOffset == null && horizontalOffset == null)
             ? 50.0
             : (verticalOffset ?? 0.0),

@@ -3,33 +3,33 @@ import 'package:firexcode/src/Container/Container.dart';
 import 'package:firexcode/src/Modules/StoriesBar.dart';
 
 class XStoriesBuilder extends StatelessWidget {
-  final Color addCircleColor;
+  final Color? addCircleColor;
   final String addText;
-  final FontWeight addtextFontWeight;
-  final Color addBackGroundColor;
-  final String fontfamily;
-  final Color backGroundColor;
-  final Color addtextColor;
-  final double addTextFontSize;
+  final FontWeight? addtextFontWeight;
+  final Color? addBackGroundColor;
+  final String? fontfamily;
+  final Color? backGroundColor;
+  final Color? addtextColor;
+  final double? addTextFontSize;
   final double backGroundHeight;
-  final Widget addChild;
+  final Widget? addChild;
   final int itemCount;
-  final Function addOnTap;
+  final Function? addOnTap;
   final Widget Function(BuildContext, int) itemBuilder;
 
   const XStoriesBuilder(
-      {Key key,
+      {Key? key,
       this.addCircleColor,
-      @required this.addText,
+      required this.addText,
       this.addtextFontWeight,
       this.fontfamily,
       this.backGroundColor,
       this.addBackGroundColor,
       this.addtextColor,
       this.addTextFontSize,
-      @required this.backGroundHeight,
-      @required this.itemBuilder,
-      @required this.itemCount,
+      required this.backGroundHeight,
+      required this.itemBuilder,
+      required this.itemCount,
       this.addChild,
       this.addOnTap})
       : super(key: key);

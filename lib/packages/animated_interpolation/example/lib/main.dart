@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
 
 class AnimatedCell extends StatelessWidget {
   AnimatedCell({this.configMap, this.text, this.autoPlay = false, this.curve});
-  final Map<double, AnimatedConfig> configMap;
-  final String text;
-  final bool autoPlay;
-  final Curve curve;
+  final Map<double, AnimatedConfig>? configMap;
+  final String? text;
+  final bool? autoPlay;
+  final Curve? curve;
   @override
   Widget build(BuildContext context) {
     GlobalKey<SmartAnimatedWidgetState> key =
@@ -40,7 +40,7 @@ class AnimatedCell extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        key.currentState.animate();
+        key.currentState!.animate();
       },
       child: SmartAnimatedWidget(
           configMap: configMap,
@@ -49,7 +49,7 @@ class AnimatedCell extends StatelessWidget {
           curve: curve,
           onAnimationEnd: () {
             Future.delayed(Duration(milliseconds: 200), () {
-              if (autoPlay == false) key.currentState.reset();
+              if (autoPlay == false) key.currentState!.reset();
             });
           },
           iterationCount: 1,
@@ -60,7 +60,7 @@ class AnimatedCell extends StatelessWidget {
             width: double.infinity,
             color: Colors.red.shade300,
             child: Center(
-              child: Text(text),
+              child: Text(text!),
             ),
           )),
     );

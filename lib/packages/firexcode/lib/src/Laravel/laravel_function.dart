@@ -37,7 +37,7 @@ extension LaravelFunction on List {
 // }
 
 extension LaravelString on String {
-  String validateAuth({List<String> messageerror}) {
+  String validateAuth({required List<String> messageerror}) {
     var text = """
        if (Auth::check()) {
 
@@ -81,7 +81,7 @@ extension LaravelString on String {
 
   /// Default error code is 401
   /// Default variable name is $validator
-  String toValidate({String customMessage}) {
+  String toValidate({String? customMessage}) {
     var text = """\$validator = $this;
     
      if (\$validator->fails()) {

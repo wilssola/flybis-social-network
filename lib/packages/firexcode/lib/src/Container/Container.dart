@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class XContainer extends StatelessWidget {
-  final double width;
-  final Color color;
-  final EdgeInsetsGeometry padding;
-  final Color shadowColor;
-  final double rounded;
-  final Widget child;
-  final double height;
-  final double blurRadius;
-  final double spreadRadius;
-  final Offset offset;
-  final Function onTap;
-  final EdgeInsetsGeometry margin;
-  final DecorationImage image;
-  final BorderRadiusGeometry borderRadius;
+  final double? width;
+  final Color? color;
+  final EdgeInsetsGeometry? padding;
+  final Color? shadowColor;
+  final double? rounded;
+  final Widget? child;
+  final double? height;
+  final double? blurRadius;
+  final double? spreadRadius;
+  final Offset? offset;
+  final Function? onTap;
+  final EdgeInsetsGeometry? margin;
+  final DecorationImage? image;
+  final BorderRadiusGeometry? borderRadius;
 
   const XContainer(
-      {Key key,
+      {Key? key,
       this.height,
       this.width,
       this.color,
@@ -46,7 +46,7 @@ class XContainer extends StatelessWidget {
             BoxShadow(
                 color: shadowColor == null
                     ? Colors.transparent
-                    : shadowColor.withOpacity(0.4),
+                    : shadowColor!.withOpacity(0.4),
                 blurRadius: blurRadius ?? 0,
                 spreadRadius: spreadRadius ?? 0.0,
                 offset: offset ?? Offset(0, 0)),
@@ -59,8 +59,8 @@ class XContainer extends StatelessWidget {
               borderRadius:
                   borderRadius ?? BorderRadius.circular(rounded ?? 0)),
           child: InkWell(
-              borderRadius: borderRadius ?? BorderRadius.circular(rounded ?? 0),
-              onTap: onTap,
+              borderRadius: borderRadius as BorderRadius? ?? BorderRadius.circular(rounded ?? 0),
+              onTap: onTap as void Function()?,
               child: Padding(
                 padding: padding ?? EdgeInsets.all(10.0),
                 child: child,

@@ -8,10 +8,10 @@ class XHeader extends StatelessWidget {
   final double spreadRadius;
   final Color shadowColor;
   final Color color;
-  final Widget child;
-  final Function onTap;
+  final Widget? child;
+  final Function? onTap;
   const XHeader({
-    Key key,
+    Key? key,
     this.rounded = 5,
     this.blurRadius = 12,
     this.offset = const Offset(0, 8),

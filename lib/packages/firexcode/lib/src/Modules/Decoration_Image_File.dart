@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 extension IFImage on String {
   DecorationImage decorationIFToCover(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.cover,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -22,8 +22,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToContain(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.contain,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -39,8 +39,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToFill(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fill,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -56,8 +56,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToNone(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.none,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -73,8 +73,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToScaleDown(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.scaleDown,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -90,8 +90,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToFitHeight(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fitHeight,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {
@@ -107,8 +107,8 @@ extension IFImage on String {
 
   DecorationImage decorationIFToFitWidth(
       {AlignmentGeometry alignment = Alignment.center,
-      Rect centerSlice,
-      ColorFilter colorFilter,
+      Rect? centerSlice,
+      ColorFilter? colorFilter,
       bool matchTextDirection = false,
       BoxFit fit = BoxFit.fitHeight,
       ImageRepeat repeat = ImageRepeat.noRepeat}) {

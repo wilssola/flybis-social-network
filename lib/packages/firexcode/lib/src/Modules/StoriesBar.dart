@@ -3,25 +3,25 @@ import 'package:firexcode/src/Container/Container.dart';
 import 'package:firexcode/src/Text/text_material.dart';
 
 class XStorieBar extends StatelessWidget {
-  final Color color;
-  final Color circleColor;
-  final double circleRadius;
-  final Widget child;
+  final Color? color;
+  final Color? circleColor;
+  final double? circleRadius;
+  final Widget? child;
   final String text;
-  final double fontSize;
-  final FontWeight fontWeight;
-  final String fontFamily;
-  final Color textColor;
-  final double verticalSpace;
-  final Function onTap;
-  final ImageProvider<dynamic> backgroundImage;
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  final String? fontFamily;
+  final Color? textColor;
+  final double? verticalSpace;
+  final Function? onTap;
+  final ImageProvider<dynamic>? backgroundImage;
 
   const XStorieBar(
-      {Key key,
+      {Key? key,
       this.color,
       this.circleRadius,
       this.child,
-      @required this.text,
+      required this.text,
       this.backgroundImage,
       this.circleColor,
       this.fontSize,
@@ -40,8 +40,8 @@ class XStorieBar extends StatelessWidget {
             CircleAvatar(
               radius: circleRadius,
               backgroundColor: circleColor,
-              backgroundImage: backgroundImage,
-              child: InkWell(onTap: onTap, child: child),
+              backgroundImage: backgroundImage as ImageProvider<Object>?,
+              child: InkWell(onTap: onTap as void Function()?, child: child),
             ),
             SizedBox(
               height: verticalSpace ?? 5,

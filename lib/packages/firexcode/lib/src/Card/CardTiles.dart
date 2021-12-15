@@ -8,14 +8,14 @@ class CardTile extends StatelessWidget {
   final Color color;
   final Color lineColor;
   final EdgeInsetsGeometry padding;
-  final Widget title;
-  final Function onTap;
-  final Widget subtitle;
-  final EdgeInsetsGeometry margin;
+  final Widget? title;
+  final Function? onTap;
+  final Widget? subtitle;
+  final EdgeInsetsGeometry? margin;
   final Radius bottomLeft;
   final Radius bottomRight;
   const CardTile(
-      {Key key,
+      {Key? key,
       this.bottomLeft = Radius.zero,
       this.bottomRight = Radius.zero,
       this.blurRadius = 12,

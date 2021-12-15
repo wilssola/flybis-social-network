@@ -17,9 +17,9 @@ import 'visibility_detector_layer.dart';
 class RenderVisibilityDetector extends RenderProxyBox {
   /// Constructor.  See the corresponding properties for parameter details.
   RenderVisibilityDetector({
-    RenderBox child,
-    @required this.key,
-    @required VisibilityChangedCallback onVisibilityChanged,
+    RenderBox? child,
+    required this.key,
+    required VisibilityChangedCallback onVisibilityChanged,
   })  : assert(key != null),
         _onVisibilityChanged = onVisibilityChanged,
         super(child);

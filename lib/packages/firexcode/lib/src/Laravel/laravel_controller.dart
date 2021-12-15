@@ -26,14 +26,14 @@
 //   }
 // }
 
-class LaravelTableController extends ControllerFunction<String> {
+class LaravelTableController extends ControllerFunction<String?> {
   LaravelTableController(
-      {String tableName, String functionCreate, List<String> importModel})
+      {String? tableName, String? functionCreate, List<String>? importModel})
       : super(tableName, functionCreate, importModel);
   var model = '';
 
   String get code {
-    importModel.forEach((element) {
+    importModel!.forEach((element) {
       model = model +
           'use App\\' +
           element.replaceAll('_', '')[0].toUpperCase() +
@@ -50,7 +50,7 @@ use Illuminate\\Support\\Facades\\Auth;
 use Illuminate\\Support\\Facades\\Validator;
 use Illuminate\\Http\\Request;
 
-class ${tableName.replaceAll('_', '')[0].toUpperCase()}${tableName.substring(1).replaceAll('_', '')}Controller extends Controller
+class ${tableName!.replaceAll('_', '')[0].toUpperCase()}${tableName!.substring(1).replaceAll('_', '')}Controller extends Controller
 {
    $functionCreate
 }
@@ -61,6 +61,6 @@ class ${tableName.replaceAll('_', '')[0].toUpperCase()}${tableName.substring(1).
 class ControllerFunction<T> {
   final T tableName;
   final T functionCreate;
-  final List<String> importModel;
+  final List<String>? importModel;
   ControllerFunction(this.tableName, this.functionCreate, this.importModel);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class XRotationRoute extends PageRouteBuilder {
-  final Widget page;
+  final Widget? page;
   XRotationRoute({this.page})
       : super(
           pageBuilder: (
@@ -9,7 +9,7 @@ class XRotationRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page,
+              page!,
           transitionDuration: Duration(seconds: 1),
           transitionsBuilder: (
             BuildContext context,

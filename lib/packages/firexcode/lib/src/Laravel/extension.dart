@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 // -------------------------------------------------------------------------
 extension LaravelValidation on LaraveRequiredValidation {
-  ToValidator toValidator({@required Request request}) {
+  ToValidator toValidator({required Request request}) {
     var text = '''Validator::make(${request.code}, $code)''';
 
     return ToValidator(text);
@@ -23,7 +23,7 @@ class ToValidator extends ToValidatorParam<String> {
 
 // -------------------------------------------------------------------------
 extension LaravelToValidateName on ToValidator {
-  ToValidate toValidate({String customMessage}) {
+  ToValidate toValidate({String? customMessage}) {
     return ToValidate(code, customMessage);
   }
 }
@@ -34,8 +34,8 @@ class ToValidateParam<T> {
   ToValidateParam(this.text, this.customMessage);
 }
 
-class ToValidate extends ToValidateParam<String> {
-  ToValidate(String text, String customMessage) : super(text, customMessage);
+class ToValidate extends ToValidateParam<String?> {
+  ToValidate(String text, String? customMessage) : super(text, customMessage);
 
   String get validate => """\$validator = ${text.toString()};
     

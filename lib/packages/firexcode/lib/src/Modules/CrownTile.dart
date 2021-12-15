@@ -4,12 +4,12 @@ import 'dart:math';
 import 'package:firexcode/src/Modules/CircleView.dart';
 
 class CrowdTile extends StatefulWidget {
-  final double pagerHeight;
-  final double scale;
-  final double scalefraction;
-  final int itemLength;
+  final double? pagerHeight;
+  final double? scale;
+  final double? scalefraction;
+  final int? itemLength;
   const CrowdTile(
-      {Key key,
+      {Key? key,
       this.pagerHeight,
       this.scale,
       this.scalefraction,
@@ -22,11 +22,11 @@ class CrowdTile extends StatefulWidget {
 class _CrowdTileState extends State<CrowdTile> {
   double viewPortFraction = 0.5;
 
-  PageController pageController;
+  PageController? pageController;
 
   int currentPage = 2;
 
-  double page = 2.0;
+  double? page = 2.0;
 
   @override
   void initState() {
@@ -48,11 +48,11 @@ class _CrowdTileState extends State<CrowdTile> {
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification) {
                 setState(() {
-                  page = pageController.page;
+                  page = pageController!.page;
                 });
               }
               return null;
-            },
+            } as bool Function(ScrollNotification)?,
             child: PageView.builder(
               onPageChanged: (pos) {
                 setState(() {
@@ -63,8 +63,8 @@ class _CrowdTileState extends State<CrowdTile> {
               controller: pageController,
               itemCount: widget.itemLength,
               itemBuilder: (context, index) {
-                final scale = max(widget.scalefraction,
-                    (widget.scale - (index - page).abs()) + viewPortFraction);
+                final scale = max(widget.scalefraction!,
+                    (widget.scale! - (index - page!).abs()) + viewPortFraction);
                 return XCircleView(
                   borderColor: Colors.grey.shade100,
                   borderWidth: 5,

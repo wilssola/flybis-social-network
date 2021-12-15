@@ -1,6 +1,6 @@
 import '../../laravel.dart';
 
-List<String> makeModel({List<String> list}) {
+List<String> makeModel({required List<String> list}) {
   var model = <String>[];
   list.forEach((element) {
     var data = xBetweenText(element, "'", "'");

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class XFadeRoute extends PageRouteBuilder {
-  final Widget page;
+  final Widget? page;
   XFadeRoute({this.page})
       : super(
           pageBuilder: (
@@ -9,7 +9,7 @@ class XFadeRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page,
+              page!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

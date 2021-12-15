@@ -6,7 +6,7 @@ import 'package:process_run/shell.dart';
 var shell = Shell();
 
 class NodeSetup {
-  Future<void> expressStarts({String path, String projectName}) async {
+  Future<void> expressStarts({String? path, String? projectName}) async {
     ANSIPrinter().printRGB(
         '-------------------------------------------------------------------------------------------',
         breakLine: true,
@@ -41,7 +41,7 @@ class NodeSetup {
     //  shell = shell.popd();
   }
 
-  Future<void> expressInstallDependencies({String path}) async {
+  Future<void> expressInstallDependencies({required String path}) async {
     await shell.cd(path).run('npm i express nodemon');
     ANSIPrinter().printRGB('Express nodemon Installed',
         breakLine: true, bGray: 1.0, fColor: 0xff4BB543);

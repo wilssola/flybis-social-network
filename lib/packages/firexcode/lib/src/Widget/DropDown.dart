@@ -21,13 +21,13 @@ extension XDropDown on List<DropdownMenuItem> {
     /// If [value] is null, this widget is displayed as a placeholder for
     /// the dropdown button's value. This widget is also displayed if the button
     /// is disabled ([items] or [onChanged] is null) and [disabledHint] is null.
-    final Widget hint,
+    final Widget? hint,
 
     /// A message to show when the dropdown is disabled.
     ///
     /// Displayed if [items] or [onChanged] is null. If [hint] is non-null and
     /// [disabledHint] is null, the [hint] widget will be displayed instead.
-    final Widget disabledHint,
+    final Widget? disabledHint,
 
     /// {@template flutter.material.dropdownButton.onChanged}
     /// Called when the user selects an item.
@@ -39,7 +39,7 @@ extension XDropDown on List<DropdownMenuItem> {
     /// [disabledHint] is also null but [hint] is non-null, [hint] will instead
     /// be displayed.
     /// {@endtemplate}
-    final ValueChanged onChanged,
+    final ValueChanged? onChanged,
 
     /// A builder to customize the dropdown buttons corresponding to the
     /// [DropdownMenuItem]s in [items].
@@ -83,7 +83,7 @@ extension XDropDown on List<DropdownMenuItem> {
     ///
     /// If this callback is null, the [DropdownMenuItem] from [items]
     /// that matches [value] will be displayed.
-    final DropdownButtonBuilder selectedItemBuilder,
+    final DropdownButtonBuilder? selectedItemBuilder,
 
     /// The z-coordinate at which to place the menu when open.
     ///
@@ -91,7 +91,7 @@ extension XDropDown on List<DropdownMenuItem> {
     /// 16, and 24. See [kElevationToShadow].
     ///
     /// Defaults to 8, the appropriate elevation for dropdown buttons.
-    final int elevation,
+    required final int elevation,
 
     /// The text style to use for text in the dropdown button and the dropdown
     /// menu that appears when you tap the button.
@@ -143,17 +143,17 @@ extension XDropDown on List<DropdownMenuItem> {
     ///
     /// Defaults to the [TextTheme.subhead] value of the current
     /// [ThemeData.textTheme] of the current [Theme].
-    final TextStyle style,
+    final TextStyle? style,
 
     /// The widget to use for drawing the drop-down button's underline.
     ///
     /// Defaults to a 0.0 width bottom border with color 0xFFBDBDBD.
-    final Widget underline,
+    final Widget? underline,
 
     /// The widget to use for the drop-down button's icon.
     ///
     /// Defaults to an [Icon] with the [Icons.arrow_drop_down] glyph.
-    final Widget icon,
+    final Widget? icon,
 
     /// The color of any [Icon] descendant of [icon] if this button is disabled,
     /// i.e. if [onChanged] is null.
@@ -161,7 +161,7 @@ extension XDropDown on List<DropdownMenuItem> {
     /// Defaults to [Colors.grey.shade400] when the theme's
     /// [ThemeData.brightness] is [Brightness.light] and to
     /// [Colors.white10] when it is [Brightness.dark]
-    final Color iconDisabledColor,
+    final Color? iconDisabledColor,
 
     /// The color of any [Icon] descendant of [icon] if this button is enabled,
     /// i.e. if [onChanged] is defined.
@@ -169,7 +169,7 @@ extension XDropDown on List<DropdownMenuItem> {
     /// Defaults to [Colors.grey.shade700] when the theme's
     /// [ThemeData.brightness] is [Brightness.light] and to
     /// [Colors.white70] when it is [Brightness.dark]
-    final Color iconEnabledColor,
+    final Color? iconEnabledColor,
 
     /// The size to use for the drop-down button's down arrow icon button.
     ///
@@ -205,14 +205,14 @@ extension XDropDown on List<DropdownMenuItem> {
     final double itemHeight = kMinInteractiveDimension,
 
     /// The color for the button's [Material] when it has the input focus.
-    final Color focusColor,
+    final Color? focusColor,
 
     /// {@macro flutter.widgets.Focus.focusNode}
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.Focus.autofocus}
     final bool autofocus = false,
-    Key key,
+    Key? key,
   }) {
     return DropdownButton(
       value: value,

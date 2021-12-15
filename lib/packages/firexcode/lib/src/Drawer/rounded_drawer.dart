@@ -8,32 +8,32 @@ import 'package:firexcode/src/Modules/ProgressLoading.dart';
 import '../Modules/Widget.dart';
 
 class XRoundedCornerDrawer extends StatelessWidget {
-  final String expansionTileTitle;
-  final String expansionTileSubTitle;
+  final String? expansionTileTitle;
+  final String? expansionTileSubTitle;
   final String userName;
   final String userEmail;
   final String photoUrl;
   final bool emailUpperCase;
-  final Color expansionTileTitleColor;
-  final Color expansionTileSubTitleColor;
-  final List<Widget> expansionchildren;
-  final String progressName;
-  final Color progressColor;
-  final Color progressBackgroundColor;
-  final double progressValue;
-  final Color progressNameColor;
-  final List<Widget> menuChildren;
-  final List<Widget> bottomMenu;
+  final Color? expansionTileTitleColor;
+  final Color? expansionTileSubTitleColor;
+  final List<Widget>? expansionchildren;
+  final String? progressName;
+  final Color? progressColor;
+  final Color? progressBackgroundColor;
+  final double? progressValue;
+  final Color? progressNameColor;
+  final List<Widget>? menuChildren;
+  final List<Widget>? bottomMenu;
   final double elevation;
   final BorderRadius borderRadius;
   const XRoundedCornerDrawer(
-      {Key key,
+      {Key? key,
       this.expansionTileTitle,
       this.expansionTileSubTitle,
-      @required this.userName,
-      @required this.userEmail,
-      @required this.photoUrl,
-      @required this.emailUpperCase,
+      required this.userName,
+      required this.userEmail,
+      required this.photoUrl,
+      required this.emailUpperCase,
       this.expansionTileTitleColor,
       this.expansionTileSubTitleColor,
       this.expansionchildren,
@@ -85,7 +85,7 @@ class XRoundedCornerDrawer extends StatelessWidget {
                   color: Colors.grey[300],
                 ),
                 Column(
-                  children: menuChildren,
+                  children: menuChildren!,
                 )
               ],
             ),

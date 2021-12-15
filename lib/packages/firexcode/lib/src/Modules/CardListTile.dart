@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/src/Container/Container.dart';
 
 class XCardListTile extends StatelessWidget {
-  final double width;
-  final Widget title;
-  final Widget subTitle;
-  final Widget leading;
-  final Function onTap;
-  final Color color;
+  final double? width;
+  final Widget? title;
+  final Widget? subTitle;
+  final Widget? leading;
+  final Function? onTap;
+  final Color? color;
   final double rounded;
   final double blurRadius;
-  final Widget trailing;
-  final EdgeInsetsGeometry padding;
-  final DecorationImage image;
+  final Widget? trailing;
+  final EdgeInsetsGeometry? padding;
+  final DecorationImage? image;
   const XCardListTile(
-      {Key key,
+      {Key? key,
       this.width,
       this.title,
       this.subTitle,

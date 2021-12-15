@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 extension RowWidget on List<Widget> {
   Widget xRow(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down,
       CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
       MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start}) {
@@ -22,10 +22,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSS(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -40,10 +40,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBS(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -58,10 +58,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowES(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -76,10 +76,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSTS(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -96,10 +96,10 @@ extension RowWidget on List<Widget> {
   //----------------------------------------------------------  end  start
 
   Widget xRowSTC(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -114,10 +114,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSC(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -132,10 +132,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowEC(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -150,10 +150,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowCC(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -168,10 +168,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBC(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -188,10 +188,10 @@ extension RowWidget on List<Widget> {
   // ------------------------------------------------------------ emd center
 
   Widget xRowSTE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -206,10 +206,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -224,10 +224,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowEE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -242,10 +242,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowCE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -260,10 +260,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -280,10 +280,10 @@ extension RowWidget on List<Widget> {
   // ------------------------------------------------------------ emd end
 
   Widget xRowSTSA(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -298,10 +298,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSSA(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -316,10 +316,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowESA(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -334,10 +334,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowCSA(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -352,10 +352,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBSA(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -372,10 +372,10 @@ extension RowWidget on List<Widget> {
   // ------------------------------------------------------------- end spaceAround
 
   Widget xRowSTSB(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -390,10 +390,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSSB(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -408,10 +408,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowESB(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -426,10 +426,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowCSB(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -444,10 +444,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBSB(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -463,10 +463,10 @@ extension RowWidget on List<Widget> {
 
   // ------------------------------------------------------------- end spaceBetween
   Widget xRowSTSE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -481,10 +481,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowSSE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -499,10 +499,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowESE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -517,10 +517,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowCSE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,
@@ -535,10 +535,10 @@ extension RowWidget on List<Widget> {
   }
 
   Widget xRowBSE(
-      {Key key,
+      {Key? key,
       MainAxisSize mainAxisSize = MainAxisSize.max,
-      TextBaseline textBaseline,
-      TextDirection textDirection,
+      TextBaseline? textBaseline,
+      TextDirection? textDirection,
       VerticalDirection verticalDirection = VerticalDirection.down}) {
     return Row(
       mainAxisSize: mainAxisSize,

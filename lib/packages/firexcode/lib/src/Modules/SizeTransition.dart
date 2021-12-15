@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class XSizeRoute extends PageRouteBuilder {
-  final Widget page;
+  final Widget? page;
   XSizeRoute({this.page})
       : super(
           pageBuilder: (
@@ -9,7 +9,7 @@ class XSizeRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaAnimation,
           ) =>
-              page,
+              page!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

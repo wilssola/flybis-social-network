@@ -2,62 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextFiledMaterial extends StatelessWidget {
-  final String name;
-  final double fontSize;
-  final TextEditingController controller;
-  final Color color;
-  final double lableSize;
-  final Color textColor;
-  final bool obscureText;
+  final String? name;
+  final double? fontSize;
+  final TextEditingController? controller;
+  final Color? color;
+  final double? lableSize;
+  final Color? textColor;
+  final bool? obscureText;
   final bool showLabel;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
-  final String initialValue;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? initialValue;
   final bool autofocus;
   final bool readOnly;
-  final ToolbarOptions toolbarOptions;
-  final bool showCursor;
+  final ToolbarOptions? toolbarOptions;
+  final bool? showCursor;
   final String obscuringCharacter;
   final bool autocorrect;
-  final SmartDashesType smartDashesType;
-  final SmartQuotesType smartQuotesType;
+  final SmartDashesType? smartDashesType;
+  final SmartQuotesType? smartQuotesType;
   final bool enableSuggestions;
-  final FocusNode focusNodel;
+  final FocusNode? focusNodel;
   final bool maxLengthEnforced;
-  final MaxLengthEnforcement maxLengthEnforcement;
+  final MaxLengthEnforcement? maxLengthEnforcement;
   final int maxLines;
-  final int minLines;
+  final int? minLines;
   final bool expands;
-  final int maxLength;
-  final ValueChanged<String> onChanged;
-  final GestureTapCallback onTap;
-  final VoidCallback onEditingComplete;
-  final ValueChanged<String> onFieldSubmitted;
-  final FormFieldSetter<String> onSaved;
-  final bool enabled;
+  final int? maxLength;
+  final ValueChanged<String>? onChanged;
+  final GestureTapCallback? onTap;
+  final VoidCallback? onEditingComplete;
+  final ValueChanged<String>? onFieldSubmitted;
+  final FormFieldSetter<String>? onSaved;
+  final bool? enabled;
   final double cursorWidth;
-  final double cursorHeight;
-  final Radius cursorRadius;
-  final Color cursorColor;
-  final Brightness keyboardAppearance;
+  final double? cursorHeight;
+  final Radius? cursorRadius;
+  final Color? cursorColor;
+  final Brightness? keyboardAppearance;
   final EdgeInsets scrollPadding;
   final bool enableInteractiveSelection;
 
-  final InputCounterWidgetBuilder buildCounter;
-  final ScrollPhysics scrollPhysics;
-  final Iterable<String> autofillHints;
-  final TextInputAction textInputAction;
-  final AutovalidateMode autovalidateMode;
-  final TextDirection textDirection;
-  final StrutStyle strutStyle;
-  final TextSelectionControls selectionControls;
+  final InputCounterWidgetBuilder? buildCounter;
+  final ScrollPhysics? scrollPhysics;
+  final Iterable<String>? autofillHints;
+  final TextInputAction? textInputAction;
+  final AutovalidateMode? autovalidateMode;
+  final TextDirection? textDirection;
+  final StrutStyle? strutStyle;
+  final TextSelectionControls? selectionControls;
   final TextAlign textAlign;
-  final TextAlignVertical textAlignVertical;
+  final TextAlignVertical? textAlignVertical;
   final TextCapitalization textCapitalization;
-  final String Function(String) validator;
+  final String? Function(String?)? validator;
 
   const TextFiledMaterial(
-      {Key key,
+      {Key? key,
       this.scrollPadding = const EdgeInsets.all(20.0),
       this.enableInteractiveSelection = true,
       this.name,
@@ -121,7 +121,7 @@ class TextFiledMaterial extends StatelessWidget {
             ? Padding(
                 padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 5.0),
                 child: Text(
-                  'Enter Your ' + name,
+                  'Enter Your ' + name!,
                   style: TextStyle(
                     fontSize: lableSize ?? 15.0,
                   ),
@@ -182,10 +182,10 @@ class TextFiledMaterial extends StatelessWidget {
             validator: validator ??
                 (value) {
                   if (value.isEmpty) {
-                    return 'error :' + name;
+                    return 'error :' + name!;
                   }
                   return null;
-                },
+                } as String? Function(String?)?,
             controller: controller,
             obscureText: obscureText ?? false,
             decoration: InputDecoration(
@@ -193,7 +193,7 @@ class TextFiledMaterial extends StatelessWidget {
                     fontSize: fontSize, color: textColor ?? Colors.black),
                 contentPadding:
                     EdgeInsets.only(left: 10.0, right: 5.0, bottom: 5.0),
-                hintText: ' ' + name,
+                hintText: ' ' + name!,
                 border: InputBorder.none),
           ),
         ),
@@ -203,16 +203,16 @@ class TextFiledMaterial extends StatelessWidget {
 }
 
 class TextFiledMaterialRounded extends StatelessWidget {
-  final Color enableColor;
-  final String name;
-  final double fontSize;
-  final TextEditingController controller;
-  final Color color;
-  final double lableSize;
-  final Color textColor;
-  final Color focusColor;
+  final Color? enableColor;
+  final String? name;
+  final double? fontSize;
+  final TextEditingController? controller;
+  final Color? color;
+  final double? lableSize;
+  final Color? textColor;
+  final Color? focusColor;
   const TextFiledMaterialRounded(
-      {Key key,
+      {Key? key,
       this.name,
       this.controller,
       this.color,
@@ -231,7 +231,7 @@ class TextFiledMaterialRounded extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 5.0),
           child: Text(
-            'Enter Your ' + name,
+            'Enter Your ' + name!,
             style: TextStyle(
               fontSize: lableSize ?? 15.0,
             ),
@@ -246,8 +246,8 @@ class TextFiledMaterialRounded extends StatelessWidget {
               color: textColor ?? Colors.black,
             ),
             validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter ' + name;
+              if (value!.isEmpty) {
+                return 'Please enter ' + name!;
               }
               return null;
             },
@@ -257,7 +257,7 @@ class TextFiledMaterialRounded extends StatelessWidget {
                     fontSize: fontSize, color: textColor ?? Colors.black),
                 contentPadding:
                     EdgeInsets.only(left: 10.0, right: 5.0, bottom: 5.0),
-                hintText: ' ' + name,
+                hintText: ' ' + name!,
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: enableColor ?? Colors.black)),

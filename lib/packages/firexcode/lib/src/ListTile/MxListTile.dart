@@ -5,21 +5,21 @@ class XListTile extends StatefulWidget {
   final Color selectedColor;
   final Color unSelectedColor;
   final bool selected;
-  final FontWeight fontWeight;
-  final IconData icon;
+  final FontWeight? fontWeight;
+  final IconData? icon;
   final String text;
-  final double iconSize;
-  final Function onTap;
-  final Widget trailing;
-  final Widget subtitle;
+  final double? iconSize;
+  final Function? onTap;
+  final Widget? trailing;
+  final Widget? subtitle;
   const XListTile(
-      {Key key,
-      @required this.selectedColor,
-      @required this.unSelectedColor,
-      @required this.selected,
+      {Key? key,
+      required this.selectedColor,
+      required this.unSelectedColor,
+      required this.selected,
       this.fontWeight,
       this.icon,
-      @required this.text,
+      required this.text,
       this.iconSize,
       this.onTap,
       this.trailing,
@@ -42,7 +42,7 @@ class _XListTileState extends State<XListTile> {
           !widget.selected ? widget.unSelectedColor : widget.selectedColor,
       child: ListTile(
           subtitle: widget.subtitle,
-          onTap: widget.onTap,
+          onTap: widget.onTap as void Function()?,
           trailing: widget.trailing,
           title: Textmaterial(
             text: widget.text,

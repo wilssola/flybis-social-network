@@ -5,7 +5,7 @@ import 'package:firexcode/src/Generator/file.dart';
 extension NodeRoutesFunction on NodeRoutes {
   /// Like /add/store
   NodeRoutesData toRoutes({
-    String routeName,
+    required String routeName,
     String method = 'get',
     bool create = false,
     bool read = false,
@@ -33,11 +33,11 @@ routes.$method('/', async (req, res) => {
        });
         return;
       }else{
-             const ${name.toLowerCase()} = new ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')}({
+             const ${name!.toLowerCase()} = new ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')}({
 ${NodeJsList(list: data).code.toList().toString().replaceAll('[', '').replaceAll(']', '')}
     });
    try{
-     const dataSave = await  ${name.toLowerCase()}.save();
+     const dataSave = await  ${name!.toLowerCase()}.save();
        res.status = 200;
             res.json({
               status: 200,
@@ -61,7 +61,7 @@ ${NodeJsList(list: data).code.toList().toString().replaceAll('[', '').replaceAll
     var shoedata = '''
     routes.$method('/show', async (req, res) => {
 try{
-  const show = await  ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')} .find();
+  const show = await  ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')} .find();
        res.status = 200;
             res.json({
               status: 200,
@@ -76,7 +76,7 @@ try{
     var speciceid = '''
     routes.$method('/:id', async (req, res) => {
 try{
-  const show = await  ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')} .findById(req.params.id);
+  const show = await  ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')} .findById(req.params.id);
        res.status = 200;
             res.status = 200;
             res.json({
@@ -92,7 +92,7 @@ try{
     var deleteData = '''
     routes.delete('/delete/:id', async (req, res) => {
 try{
-  const dataDelete = await  ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')} .remove({_id: req.params.id});
+  const dataDelete = await  ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')} .remove({_id: req.params.id});
        res.status = 200;
             res.json({
               status: 200,
@@ -124,7 +124,7 @@ routes.patch('/:id', async (req, res) => {
       }else{
         
    try{
-     const dataUpdate = await  ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')}.updateOne(
+     const dataUpdate = await  ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')}.updateOne(
                {
                  _id: req.params.id
                },
@@ -160,7 +160,7 @@ const { Validator } = require('node-input-validator');
 
 
 const routes = express.Router();
-const ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll('_', '')} = require('../model/$name');
+const ${name!.replaceAll('_', '')[0].toUpperCase()}${name!.substring(1).replaceAll('_', '')} = require('../model/$name');
 // Add routes
 
     ${create ? adddatas : ''}
@@ -170,7 +170,7 @@ const ${name.replaceAll('_', '')[0].toUpperCase()}${name.substring(1).replaceAll
     ${update ? updateData : ''}
 module.exports = routes;
     """;
-    fileCreate(path + '/routes', content,
+    fileCreate(path! + '/routes', content,
         '${routeName.toLowerCase().replaceAll('/', '_').toLowerCase()}_routes.js');
 
     ANSIPrinter().printRGB('''

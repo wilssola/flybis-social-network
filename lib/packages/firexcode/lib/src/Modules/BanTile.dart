@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:firexcode/firexcode.dart';
 
 class BanTile extends StatelessWidget {
-  final Widget centerTitle;
-  final Widget leftTile;
-  final Widget rightTile;
-  final Widget body;
+  final Widget? centerTitle;
+  final Widget? leftTile;
+  final Widget? rightTile;
+  final Widget? body;
 
   const BanTile(
-      {Key key, this.centerTitle, this.leftTile, this.rightTile, this.body})
+      {Key? key, this.centerTitle, this.leftTile, this.rightTile, this.body})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

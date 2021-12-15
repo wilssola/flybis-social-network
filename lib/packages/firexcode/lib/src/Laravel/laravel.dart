@@ -33,7 +33,7 @@ extension Laravels on String {
   }
 
   /// CHAR equivalent column with a length.
-  String toChar({int length}) {
+  String toChar({int? length}) {
     return "\$table->char('$this', $length);";
   }
 
@@ -43,32 +43,32 @@ extension Laravels on String {
   }
 
   /// DATETIME equivalent column with precision (total digits).
-  String toDateTime({int value}) {
+  String toDateTime({int? value}) {
     return "\$table->dateTime('$this', $value);";
   }
 
   ///DATETIME (with timezone) equivalent column with precision (total digits).
-  String toDateTimeTz({int value}) {
+  String toDateTimeTz({int? value}) {
     return "\$table->dateTimeTz('$this', $value);";
   }
 
   ///	DECIMAL equivalent column with precision (total digits) and scale (decimal digits).
-  String toDecimal({int total, double decimal}) {
+  String toDecimal({int? total, double? decimal}) {
     return "\$table->decimal('$this', $total , $decimal );";
   }
 
   ///DOUBLE equivalent column with precision (total digits) and scale (decimal digits).
-  String toDouble({int total, double decimal}) {
+  String toDouble({int? total, double? decimal}) {
     return "\$table->double('$this', $total , $decimal );";
   }
 
   ///FLOAT equivalent column with a precision (total digits) and scale (decimal digits).
-  String toFloat({int total, double decimal}) {
+  String toFloat({int? total, double? decimal}) {
     return "\$table->float('$this', $total , $decimal );";
   }
 
   /// ENUM equivalent column.
-  String toEnum({List value}) {
+  String toEnum({List? value}) {
     return "\$table->enum('$this', $value);";
   }
 
@@ -169,13 +169,13 @@ String xBetweenText(String text, String start, String end) {
   return str.substring(startIndex + start.length, endIndex);
 }
 
-class LaraveRequiredValidation extends ValidatorList<List<String>> {
-  LaraveRequiredValidation({List<String> tableStructure})
+class LaraveRequiredValidation extends ValidatorList<List<String>?> {
+  LaraveRequiredValidation({List<String>? tableStructure})
       : super(tableStructure);
 
   List<String> get code {
     var model = <String>[];
-    list.forEach((element) {
+    list!.forEach((element) {
       var data = xBetweenText(element, "'", "'");
       model.add("'$data' => 'required'");
     });

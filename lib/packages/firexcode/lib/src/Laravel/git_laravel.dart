@@ -10,7 +10,7 @@ var shell = Shell();
 var context = '';
 
 class LaravelSetup {
-  void laravelStarts({String path, String projectName}) async {
+  void laravelStarts({required String path, String? projectName}) async {
     print('Laravel start downloading.....');
 
     await shell
@@ -57,7 +57,7 @@ DB_PASSWORD= //if your database password then enter here\nNow setup your databas
     });
   }
 
-  void laravelDone({String path, String projectName}) async {
+  void laravelDone({required String path, String? projectName}) async {
     ANSIPrinter().printRGB('Laravel start installing dependency',
         bGray: 1.0, fColor: 0xff4BB543);
     await shell.cd(path + '/$projectName').run('composer update').then((a) {
@@ -75,7 +75,7 @@ DB_PASSWORD= //if your database password then enter here\nNow setup your databas
     });
   }
 
-  void laravelMigrate({String path}) {
+  void laravelMigrate({required String path}) {
     ANSIPrinter().printRGB('Running Migration... ',
         breakLine: true, bGray: 1.0, fColor: 0xff4BB543);
     shell.cd(path).run('''php artisan migrate ''').then((a) {
@@ -84,7 +84,7 @@ DB_PASSWORD= //if your database password then enter here\nNow setup your databas
     });
   }
 
-  void laravelReset({String path}) {
+  void laravelReset({required String path}) {
     ANSIPrinter().printRGB('Running Migration... ',
         breakLine: true, bGray: 1.0, fColor: 0xff4BB543);
     shell.cd(path).run('''

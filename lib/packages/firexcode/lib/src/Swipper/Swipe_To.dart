@@ -9,26 +9,26 @@ enum SwipePosition {
 class XSwipeTo extends StatefulWidget {
   final Color iconBackgroundColor;
   final Color backColor;
-  final Widget thumb;
-  final Widget content;
+  final Widget? thumb;
+  final Widget? content;
   final BorderRadius borderRadius;
-  final SwipePosition initialPosition;
+  final SwipePosition? initialPosition;
   final ValueChanged<SwipePosition> onChanged;
   final double horizintalPadding;
   final double circleHeight;
   final double circleWidth;
   const XSwipeTo(
-      {Key key,
-      @required this.iconBackgroundColor,
-      @required this.backColor,
+      {Key? key,
+      required this.iconBackgroundColor,
+      required this.backColor,
       this.thumb,
       this.content,
-      @required this.borderRadius,
+      required this.borderRadius,
       this.initialPosition,
-      @required this.onChanged,
-      @required this.horizintalPadding,
-      @required this.circleHeight,
-      @required this.circleWidth})
+      required this.onChanged,
+      required this.horizintalPadding,
+      required this.circleHeight,
+      required this.circleWidth})
       : super(key: key);
 
   @override
@@ -40,28 +40,28 @@ class XSwipeToState extends State<XSwipeTo>
   final GlobalKey _containerKey = GlobalKey();
   final GlobalKey _positionedKey = GlobalKey();
 
-  AnimationController _controller;
-  Animation<double> _contentAnimation;
+  AnimationController? _controller;
+  late Animation<double> _contentAnimation;
   Offset _start = Offset.zero;
 
-  RenderBox get _positioned => _positionedKey.currentContext.findRenderObject();
+  RenderBox? get _positioned => _positionedKey.currentContext!.findRenderObject() as RenderBox?;
 
-  RenderBox get _container => _containerKey.currentContext.findRenderObject();
+  RenderBox? get _container => _containerKey.currentContext!.findRenderObject() as RenderBox?;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController.unbounded(vsync: this);
     _contentAnimation = Tween<double>(begin: 1.0, end: 0.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+        .animate(CurvedAnimation(parent: _controller!, curve: Curves.easeOut));
     if (widget.initialPosition == SwipePosition.SwipeRight) {
-      _controller.value = 1.0;
+      _controller!.value = 1.0;
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -95,10 +95,10 @@ class XSwipeToState extends State<XSwipeTo>
             ),
           ),
           AnimatedBuilder(
-            animation: _controller,
-            builder: (BuildContext context, Widget child) {
+            animation: _controller!,
+            builder: (BuildContext context, Widget? child) {
               return Align(
-                alignment: Alignment((_controller.value * 2.0) - 1.0, 0.0),
+                alignment: Alignment((_controller!.value * 2.0) - 1.0, 0.0),
                 child: child,
               );
             },
@@ -126,26 +126,26 @@ class XSwipeToState extends State<XSwipeTo>
   }
 
   void _onDragStart(DragStartDetails details) {
-    final pos = _positioned.globalToLocal(details.globalPosition);
+    final pos = _positioned!.globalToLocal(details.globalPosition);
     _start = Offset(pos.dx, 0.0);
-    _controller.stop(canceled: true);
+    _controller!.stop(canceled: true);
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
-    final pos = _container.globalToLocal(details.globalPosition) - _start;
-    final extent = _container.size.width - _positioned.size.width;
-    _controller.value = (pos.dx.clamp(0.0, extent) / extent);
+    final pos = _container!.globalToLocal(details.globalPosition) - _start;
+    final extent = _container!.size.width - _positioned!.size.width;
+    _controller!.value = (pos.dx.clamp(0.0, extent) / extent);
   }
 
   void _onDragEnd(DragEndDetails details) {
-    final extent = _container.size.width - _positioned.size.width;
-    var fractionalVelocity = (details.primaryVelocity / extent).abs();
+    final extent = _container!.size.width - _positioned!.size.width;
+    var fractionalVelocity = (details.primaryVelocity! / extent).abs();
     if (fractionalVelocity < 0.5) {
       fractionalVelocity = 0.5;
     }
     SwipePosition result;
     double acceleration, velocity;
-    if (_controller.value > 0.5) {
+    if (_controller!.value > 0.5) {
       acceleration = 0.5;
       velocity = fractionalVelocity;
       result = SwipePosition.SwipeRight;
@@ -156,11 +156,11 @@ class XSwipeToState extends State<XSwipeTo>
     }
     final simulation = _SwipeSimulation(
       acceleration,
-      _controller.value,
+      _controller!.value,
       1.0,
       velocity,
     );
-    _controller.animateWith(simulation).then((_) {
+    _controller!.animateWith(simulation).then((_) {
       if (widget.onChanged != null) {
         widget.onChanged(result);
       }
@@ -185,19 +185,19 @@ class _SwipeSimulation extends GravitySimulation {
 
 class _XSwipeToClipper extends CustomClipper<RRect> {
   const _XSwipeToClipper({
-    @required this.animation,
-    @required this.borderRadius,
+    required this.animation,
+    required this.borderRadius,
   })  : assert(animation != null && borderRadius != null),
         super(reclip: animation);
 
-  final Animation<double> animation;
+  final Animation<double>? animation;
   final BorderRadius borderRadius;
 
   @override
   RRect getClip(Size size) {
     return borderRadius.toRRect(
       Rect.fromLTRB(
-        size.width * animation.value,
+        size.width * animation!.value,
         0.0,
         size.width,
         size.height,

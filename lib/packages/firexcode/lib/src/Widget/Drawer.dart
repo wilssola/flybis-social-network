@@ -15,7 +15,7 @@ extension Drawers on Widget {
     ///
     ///  * [SemanticsConfiguration.namesRoute], for a description of how this
     ///    value is used.
-    final String semanticLabel,
+    final String? semanticLabel,
 
     /// The z-coordinate at which to place this drawer relative to its parent.
     ///
@@ -24,7 +24,7 @@ extension Drawers on Widget {
     /// Defaults to 16, the appropriate elevation for drawers. The value is
     /// always non-negative.
     double elevation = 16.0,
-    Key key,
+    Key? key,
   }) {
     return ClipRRect(
       borderRadius: borderRadius,

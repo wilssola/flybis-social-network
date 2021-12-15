@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 extension Paddings on Widget {
-  Widget xap({double value}) {
+  Widget xap({required double value}) {
     return Padding(
       padding: EdgeInsets.all(value),
       child: this,
     );
   }
 
-  Widget xlp({double value}) {
+  Widget xlp({required double value}) {
     return Padding(
       padding: EdgeInsets.only(left: value),
       child: this,
     );
   }
 
-  Widget xrp({double value}) {
+  Widget xrp({required double value}) {
     return Padding(
       padding: EdgeInsets.only(
         right: value,
@@ -24,7 +24,7 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xtp({double value}) {
+  Widget xtp({required double value}) {
     return Padding(
       padding: EdgeInsets.only(
         top: value,
@@ -33,7 +33,7 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xbp({double value}) {
+  Widget xbp({required double value}) {
     return Padding(
       padding: EdgeInsets.only(
         bottom: value,
@@ -42,49 +42,49 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xtbp({double t, double b}) {
+  Widget xtbp({required double t, required double b}) {
     return Padding(
       padding: EdgeInsets.only(top: t, bottom: b),
       child: this,
     );
   }
 
-  Widget xltp({double l, double t}) {
+  Widget xltp({required double l, required double t}) {
     return Padding(
       padding: EdgeInsets.only(top: t, left: l),
       child: this,
     );
   }
 
-  Widget xrtp({double r, double t}) {
+  Widget xrtp({required double r, required double t}) {
     return Padding(
       padding: EdgeInsets.only(top: t, right: r),
       child: this,
     );
   }
 
-  Widget xlbp({double l, double b}) {
+  Widget xlbp({required double l, required double b}) {
     return Padding(
       padding: EdgeInsets.only(left: l, bottom: b),
       child: this,
     );
   }
 
-  Widget xlrp({double l, double r}) {
+  Widget xlrp({required double l, required double r}) {
     return Padding(
       padding: EdgeInsets.only(left: l, right: r),
       child: this,
     );
   }
 
-  Widget xrbp({double r, double b}) {
+  Widget xrbp({required double r, required double b}) {
     return Padding(
       padding: EdgeInsets.only(right: r, bottom: b),
       child: this,
     );
   }
 
-  Widget xrbtp({double r, double b, double t}) {
+  Widget xrbtp({required double r, required double b, required double t}) {
     return Padding(
       padding: EdgeInsets.only(
         right: r,
@@ -95,7 +95,7 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xlbtp({double l, double b, double t}) {
+  Widget xlbtp({required double l, required double b, required double t}) {
     return Padding(
       padding: EdgeInsets.only(
         left: l,
@@ -106,7 +106,7 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xlrtp({double l, double r, double t}) {
+  Widget xlrtp({required double l, required double r, required double t}) {
     return Padding(
       padding: EdgeInsets.only(
         left: l,
@@ -117,7 +117,7 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xlrbp({double l, double r, double b}) {
+  Widget xlrbp({required double l, required double r, required double b}) {
     return Padding(
       padding: EdgeInsets.only(
         left: l,
@@ -128,28 +128,28 @@ extension Paddings on Widget {
     );
   }
 
-  Widget xlrbtp({double l, double r, double b, double t}) {
+  Widget xlrbtp({required double l, required double r, required double b, required double t}) {
     return Padding(
       padding: EdgeInsets.only(left: l, right: r, bottom: b, top: t),
       child: this,
     );
   }
 
-  Widget xhp({double value}) {
+  Widget xhp({required double value}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: value),
       child: this,
     );
   }
 
-  Widget xvp({double value}) {
+  Widget xvp({required double value}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: value),
       child: this,
     );
   }
 
-  Widget xhvp({double h, double v}) {
+  Widget xhvp({required double h, required double v}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: h, vertical: v),
       child: this,

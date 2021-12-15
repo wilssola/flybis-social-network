@@ -14,10 +14,10 @@ enum FlipAxis {
 /// An animation that flips its child either vertically or horizontally.
 class FlipAnimation extends StatelessWidget {
   /// The duration of the child animation.
-  final Duration duration;
+  final Duration? duration;
 
   /// The delay between the beginning of two children's animations.
-  final Duration delay;
+  final Duration? delay;
 
   /// The [FlipAxis] in which the child widget will be flipped.
   final FlipAxis flipAxis;
@@ -31,11 +31,11 @@ class FlipAnimation extends StatelessWidget {
   ///
   /// The [child] argument must not be null.
   const FlipAnimation({
-    Key key,
+    Key? key,
     this.duration,
     this.delay,
     this.flipAxis = FlipAxis.x,
-    @required this.child,
+    required this.child,
   })  : assert(child != null),
         super(key: key);
 

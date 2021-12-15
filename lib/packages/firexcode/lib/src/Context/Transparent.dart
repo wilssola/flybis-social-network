@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 
 void xStatusBar(
     {statusBarColor = Colors.transparent,
-    Brightness statusBarBrightness,
-    Brightness statusBarIconBrightness,
-    Color systemNavigationBarColor,
-    Color systemNavigationBarDividerColor,
-    Brightness systemNavigationBarIconBrightness}) {
+    Brightness? statusBarBrightness,
+    Brightness? statusBarIconBrightness,
+    Color? systemNavigationBarColor,
+    Color? systemNavigationBarDividerColor,
+    Brightness? systemNavigationBarIconBrightness}) {
   return SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: statusBarColor,
     statusBarBrightness: statusBarBrightness,

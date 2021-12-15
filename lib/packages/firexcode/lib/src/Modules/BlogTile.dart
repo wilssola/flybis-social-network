@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/src/Container/Container.dart';
 
 class XBlogTile extends StatelessWidget {
-  final Function onTap;
-  final Widget child;
-  final Color backSideBackgroundColor;
-  final double cardElevation;
-  final double imageHeight;
-  final Widget title;
-  final Widget subTitle;
-  final Widget trailing;
-  final ShapeBorder shape;
-  final Widget leading;
-  final EdgeInsetsGeometry margin;
-  final Function tileOnTap;
-  final double backrounded;
-  final DecorationImage image;
-  final Color color;
-  final BorderRadiusGeometry backBorderRadius;
-  final double rounded;
+  final Function? onTap;
+  final Widget? child;
+  final Color? backSideBackgroundColor;
+  final double? cardElevation;
+  final double? imageHeight;
+  final Widget? title;
+  final Widget? subTitle;
+  final Widget? trailing;
+  final ShapeBorder? shape;
+  final Widget? leading;
+  final EdgeInsetsGeometry? margin;
+  final Function? tileOnTap;
+  final double? backrounded;
+  final DecorationImage? image;
+  final Color? color;
+  final BorderRadiusGeometry? backBorderRadius;
+  final double? rounded;
   const XBlogTile(
-      {Key key,
+      {Key? key,
       this.onTap,
       this.child,
       this.backSideBackgroundColor,
@@ -62,7 +62,7 @@ class XBlogTile extends StatelessWidget {
               child: child,
             ),
             ListTile(
-              onTap: tileOnTap,
+              onTap: tileOnTap as void Function()?,
               title: title,
               subtitle: subTitle,
               trailing: trailing,

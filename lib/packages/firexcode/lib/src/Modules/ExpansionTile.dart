@@ -3,14 +3,14 @@ import 'package:firexcode/src/Text/h_tag.dart';
 import 'package:firexcode/src/Extension/Stack.dart';
 
 class XExpansionTiles extends StatelessWidget {
-  final Color expansionTileTitleColor;
-  final Color expansionTileSubTitleColor;
-  final String expansionTileTitle;
-  final String expansionTileSubTitle;
-  final List<Widget> expansionchildren;
+  final Color? expansionTileTitleColor;
+  final Color? expansionTileSubTitleColor;
+  final String? expansionTileTitle;
+  final String? expansionTileSubTitle;
+  final List<Widget>? expansionchildren;
 
   const XExpansionTiles(
-      {Key key,
+      {Key? key,
       this.expansionTileTitleColor,
       this.expansionTileSubTitleColor,
       this.expansionTileTitle,
@@ -67,7 +67,7 @@ class XExpansionTile {
   final Widget trailing;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false; the default).
-  final bool initiallyExpanded;
+  final bool? initiallyExpanded;
   final Key key;
 
   XExpansionTile(

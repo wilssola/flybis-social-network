@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 XTabBarView xTabBarView = XTabBarView();
 
 class XTabBarView {
-  final Key key;
+  final Key? key;
 
   /// This widget's selection and animation state.
   ///
   /// If [TabController] is not provided, then the value of [DefaultTabController.of]
   /// will be used.
-  final TabController controller;
+  final TabController? controller;
 
   /// How the page view should respond to user input.
   ///
@@ -21,10 +21,10 @@ class XTabBarView {
   /// [PageScrollPhysics] prior to being used.
   ///
   /// Defaults to matching platform conventions.
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-  final DragStartBehavior dragStartBehavior;
+  final DragStartBehavior? dragStartBehavior;
 
   XTabBarView(
       {this.key, this.controller, this.physics, this.dragStartBehavior});
@@ -45,20 +45,20 @@ class XTabBarView {
 /// The length of this list must match the [controller]'s [TabController.length]
 /// and the length of the [TabBarView.children] list.
 class XTabBar {
-  final Key key;
+  final Key? key;
 
   /// This widget's selection and animation state.
   ///
   /// If [TabController] is not provided, then the value of [DefaultTabController.of]
   /// will be used.
-  final TabController controller;
+  final TabController? controller;
 
   /// Whether this tab bar can be scrolled horizontally.
   ///
   /// If [isScrollable] is true, then each tab is as wide as needed for its label
   /// and the entire [TabBar] is scrollable. Otherwise each tab gets an equal
   /// share of the available space.
-  final bool isScrollable;
+  final bool? isScrollable;
 
   /// The color of the line that appears below the selected tab.
   ///
@@ -66,7 +66,7 @@ class XTabBar {
   /// property is used.
   ///
   /// If [indicator] is specified, this property is ignored.
-  final Color indicatorColor;
+  final Color? indicatorColor;
 
   /// The thickness of the line that appears below the selected tab.
   ///
@@ -74,7 +74,7 @@ class XTabBar {
   /// value is 2.0.
   ///
   /// If [indicator] is specified, this property is ignored.
-  final double indicatorWeight;
+  final double? indicatorWeight;
 
   /// The horizontal padding for the line that appears below the selected tab.
   ///
@@ -88,7 +88,7 @@ class XTabBar {
   /// The default value of [indicatorPadding] is [EdgeInsets.zero].
   ///
   /// If [indicator] is specified, this property is ignored.
-  final EdgeInsetsGeometry indicatorPadding;
+  final EdgeInsetsGeometry? indicatorPadding;
 
   /// Defines the appearance of the selected tab indicator.
   ///
@@ -103,7 +103,7 @@ class XTabBar {
   /// occupied by the tab in the tab bar. If [indicatorSize] is
   /// [TabBarIndicatorSize.label], then the tab's bounds are only as wide as
   /// the tab widget itself.
-  final Decoration indicator;
+  final Decoration? indicator;
 
   /// Defines how the selected tab indicator's size is computed.
   ///
@@ -115,7 +115,7 @@ class XTabBar {
   /// The selected tab's location appearance can be refined further with
   /// the [indicatorColor], [indicatorWeight], [indicatorPadding], and
   /// [indicator] properties.
-  final TabBarIndicatorSize indicatorSize;
+  final TabBarIndicatorSize? indicatorSize;
 
   /// The color of selected tab labels.
   ///
@@ -124,13 +124,13 @@ class XTabBar {
   ///
   /// If this parameter is null, then the color of the [ThemeData.primaryTextTheme]'s
   /// bodyText1 text color is used.
-  final Color labelColor;
+  final Color? labelColor;
 
   /// The color of unselected tab labels.
   ///
   /// If this property is null, unselected tab labels are rendered with the
   /// [labelColor] with 70% opacity.
-  final Color unselectedLabelColor;
+  final Color? unselectedLabelColor;
 
   /// The text style of the selected tab labels.
   ///
@@ -139,22 +139,22 @@ class XTabBar {
   ///
   /// If this property is null, then the text style of the
   /// [ThemeData.primaryTextTheme]'s bodyText1 definition is used.
-  final TextStyle labelStyle;
+  final TextStyle? labelStyle;
 
   /// The padding added to each of the tab labels.
   ///
   /// If this property is null, then kTabLabelPadding is used.
-  final EdgeInsetsGeometry labelPadding;
+  final EdgeInsetsGeometry? labelPadding;
 
   /// The text style of the unselected tab labels
   ///
   /// If this property is null, then the [labelStyle] value is used. If [labelStyle]
   /// is null, then the text style of the [ThemeData.primaryTextTheme]'s
   /// bodyText1 definition is used.
-  final TextStyle unselectedLabelStyle;
+  final TextStyle? unselectedLabelStyle;
 
   /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-  final DragStartBehavior dragStartBehavior;
+  final DragStartBehavior? dragStartBehavior;
 
   /// An optional callback that's called when the [TabBar] is tapped.
   ///
@@ -165,7 +165,7 @@ class XTabBar {
   /// even if the tap doesn't change the TabController's index. TabBar [onTap]
   /// callbacks should not make changes to the TabController since that would
   /// interfere with the default tap handler.
-  final ValueChanged<int> onTap;
+  final ValueChanged<int>? onTap;
 
   XTabBar(
       {this.key,

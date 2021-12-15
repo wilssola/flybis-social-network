@@ -33,13 +33,13 @@ XRowBSE xRowBSE = XRowBSE();
 XRowCS xRowCS = XRowCS();
 
 class XRow {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
-  final CrossAxisAlignment crossAxisAlignment;
-  final MainAxisAlignment mainAxisAlignment;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
+  final CrossAxisAlignment? crossAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
 
   XRow(
       {this.key,
@@ -62,11 +62,11 @@ class XRow {
 }
 
 class XRowCC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCC({
     this.key,
@@ -88,11 +88,11 @@ class XRowCC {
 }
 
 class XRowSS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSS({
     this.key,
@@ -114,11 +114,11 @@ class XRowSS {
 }
 
 class XRowSSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSSB({
     this.key,
@@ -140,11 +140,11 @@ class XRowSSB {
 }
 
 class XRowBS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBS({
     this.key,
@@ -166,11 +166,11 @@ class XRowBS {
 }
 
 class XRowES {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowES({
     this.key,
@@ -192,11 +192,11 @@ class XRowES {
 }
 
 class XRowSTS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTS({
     this.key,
@@ -218,11 +218,11 @@ class XRowSTS {
 }
 
 class XRowSTC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTC({
     this.key,
@@ -244,11 +244,11 @@ class XRowSTC {
 }
 
 class XRowSC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSC({
     this.key,
@@ -270,11 +270,11 @@ class XRowSC {
 }
 
 class XRowEC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowEC({
     this.key,
@@ -296,11 +296,11 @@ class XRowEC {
 }
 
 class XRowBC {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBC({
     this.key,
@@ -322,11 +322,11 @@ class XRowBC {
 }
 
 class XRowSTE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTE({
     this.key,
@@ -348,11 +348,11 @@ class XRowSTE {
 }
 
 class XRowSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSE({
     this.key,
@@ -374,11 +374,11 @@ class XRowSE {
 }
 
 class XRowEE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowEE({
     this.key,
@@ -400,11 +400,11 @@ class XRowEE {
 }
 
 class XRowCE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCE({
     this.key,
@@ -426,11 +426,11 @@ class XRowCE {
 }
 
 class XRowBE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBE({
     this.key,
@@ -452,11 +452,11 @@ class XRowBE {
 }
 
 class XRowSTSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTSA({
     this.key,
@@ -478,11 +478,11 @@ class XRowSTSA {
 }
 
 class XRowSSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSSA({
     this.key,
@@ -504,11 +504,11 @@ class XRowSSA {
 }
 
 class XRowESA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowESA({
     this.key,
@@ -530,11 +530,11 @@ class XRowESA {
 }
 
 class XRowCSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCSA({
     this.key,
@@ -556,11 +556,11 @@ class XRowCSA {
 }
 
 class XRowBSA {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBSA({
     this.key,
@@ -582,11 +582,11 @@ class XRowBSA {
 }
 
 class XRowSTSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTSB({
     this.key,
@@ -608,11 +608,11 @@ class XRowSTSB {
 }
 
 class XRowESB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowESB({
     this.key,
@@ -634,11 +634,11 @@ class XRowESB {
 }
 
 class XRowCSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCSB({
     this.key,
@@ -660,11 +660,11 @@ class XRowCSB {
 }
 
 class XRowBSB {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBSB({
     this.key,
@@ -686,11 +686,11 @@ class XRowBSB {
 }
 
 class XRowSTSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSTSE({
     this.key,
@@ -712,11 +712,11 @@ class XRowSTSE {
 }
 
 class XRowSSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowSSE({
     this.key,
@@ -738,11 +738,11 @@ class XRowSSE {
 }
 
 class XRowESE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowESE({
     this.key,
@@ -764,11 +764,11 @@ class XRowESE {
 }
 
 class XRowCSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCSE({
     this.key,
@@ -790,11 +790,11 @@ class XRowCSE {
 }
 
 class XRowBSE {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowBSE({
     this.key,
@@ -816,11 +816,11 @@ class XRowBSE {
 }
 
 class XRowCS {
-  final Key key;
-  final MainAxisSize mainAxisSize;
-  final TextBaseline textBaseline;
-  final TextDirection textDirection;
-  final VerticalDirection verticalDirection;
+  final Key? key;
+  final MainAxisSize? mainAxisSize;
+  final TextBaseline? textBaseline;
+  final TextDirection? textDirection;
+  final VerticalDirection? verticalDirection;
 
   XRowCS({
     this.key,

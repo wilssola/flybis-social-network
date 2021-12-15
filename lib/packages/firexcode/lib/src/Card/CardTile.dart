@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firexcode/src/Container/Container.dart';
 
 class XCardTile extends StatelessWidget {
-  final Color backgroundColor;
-  final EdgeInsetsGeometry margin;
-  final Widget title;
-  final Widget subtitle1;
-  final Widget subtitle2;
-  final Widget leading;
-  final double rounded;
-  final double boxRounded;
-  final Widget boxChild;
-  final Color boxColor;
-  final DecorationImage image;
+  final Color? backgroundColor;
+  final EdgeInsetsGeometry? margin;
+  final Widget? title;
+  final Widget? subtitle1;
+  final Widget? subtitle2;
+  final Widget? leading;
+  final double? rounded;
+  final double? boxRounded;
+  final Widget? boxChild;
+  final Color? boxColor;
+  final DecorationImage? image;
 
   const XCardTile(
-      {Key key,
+      {Key? key,
       this.backgroundColor,
       this.margin,
       this.title,

@@ -1,8 +1,8 @@
 import 'package:firexcode/src/Generator/file.dart';
 
 class NodeModel {
-  final String name;
-  final String path;
+  final String? name;
+  final String? path;
   NodeModel({this.name, this.path});
 
   NodeRoutes create(List<String> list) {
@@ -18,7 +18,7 @@ var $name = new mongoose.Schema({
 //Export the model
 module.exports = mongoose.model('$name', $name);
     """;
-    fileCreate(path + '\\model', content, name + '.js');
+    fileCreate(path! + '\\model', content, name! + '.js');
 
     return NodeRoutes(list, name, path);
   }
@@ -42,16 +42,16 @@ class NodeModelString<T> {
 }
 
 class NodeRoutes extends NodeRoutesParams {
-  NodeRoutes(List<String> data, String name, String paths)
+  NodeRoutes(List<String> data, String? name, String? paths)
       : super(data, name, paths);
   List<String> get code => data;
-  String get modelname => name;
-  String get path => paths;
+  String? get modelname => name;
+  String? get path => paths;
 }
 
 class NodeRoutesParams<T> {
   final List<String> data;
-  final String name;
-  final String paths;
+  final String? name;
+  final String? paths;
   NodeRoutesParams(this.data, this.name, this.paths);
 }

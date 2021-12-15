@@ -15,7 +15,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureTapDownCallback onTapDown,
+    GestureTapDownCallback? onTapDown,
 
     /// A pointer that will trigger a tap with a primary button has stopped
     /// contacting the screen at a particular location.
@@ -26,7 +26,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureTapUpCallback onTapUp,
+    GestureTapUpCallback? onTapUp,
 
     /// A tap with a primary button has occurred.
     ///
@@ -38,7 +38,7 @@ extension Gesture on Widget {
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onTapUp], which is called at the same time but includes details
     ///    regarding the pointer position.
-    GestureTapCallback onTap,
+    GestureTapCallback? onTap,
 
     /// The pointer that previously triggered [onTapDown] will not end up causing
     /// a tap.
@@ -49,7 +49,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureTapCancelCallback onTapCancel,
+    GestureTapCancelCallback? onTapCancel,
 
     /// A pointer that might cause a tap with a secondary button has contacted the
     /// screen at a particular location.
@@ -61,7 +61,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kSecondaryButton], the button this callback responds to.
-    GestureTapDownCallback onSecondaryTapDown,
+    GestureTapDownCallback? onSecondaryTapDown,
 
     /// A pointer that will trigger a tap with a secondary button has stopped
     /// contacting the screen at a particular location.
@@ -72,7 +72,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kSecondaryButton], the button this callback responds to.
-    GestureTapUpCallback onSecondaryTapUp,
+    GestureTapUpCallback? onSecondaryTapUp,
 
     /// The pointer that previously triggered [onSecondaryTapDown] will not end up
     /// causing a tap.
@@ -83,7 +83,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kSecondaryButton], the button this callback responds to.
-    GestureTapCancelCallback onSecondaryTapCancel,
+    GestureTapCancelCallback? onSecondaryTapCancel,
 
     /// The user has tapped the screen with a primary button at the same location
     /// twice in quick succession.
@@ -91,7 +91,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureTapCallback onDoubleTap,
+    GestureTapCallback? onDoubleTap,
 
     /// Called when a long press gesture with a primary button has been recognized.
     ///
@@ -102,7 +102,7 @@ extension Gesture on Widget {
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onLongPressStart], which has the same timing but has gesture details.
-    GestureLongPressCallback onLongPress,
+    GestureLongPressCallback? onLongPress,
 
     /// Called when a long press gesture with a primary button has been recognized.
     ///
@@ -113,14 +113,14 @@ extension Gesture on Widget {
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onLongPress], which has the same timing but without the gesture details.
-    GestureLongPressStartCallback onLongPressStart,
+    GestureLongPressStartCallback? onLongPressStart,
 
     /// A pointer has been drag-moved after a long press with a primary button.
     ///
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureLongPressMoveUpdateCallback onLongPressMoveUpdate,
+    GestureLongPressMoveUpdateCallback? onLongPressMoveUpdate,
 
     /// A pointer that has triggered a long-press with a primary button has
     /// stopped contacting the screen.
@@ -129,7 +129,7 @@ extension Gesture on Widget {
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onLongPressEnd], which has the same timing but has gesture details.
-    GestureLongPressUpCallback onLongPressUp,
+    GestureLongPressUpCallback? onLongPressUp,
 
     /// A pointer that has triggered a long-press with a primary button has
     /// stopped contacting the screen.
@@ -139,7 +139,7 @@ extension Gesture on Widget {
     ///  * [kPrimaryButton], the button this callback responds to.
     ///  * [onLongPressUp], which has the same timing but without the gesture
     ///    details.
-    GestureLongPressEndCallback onLongPressEnd,
+    GestureLongPressEndCallback? onLongPressEnd,
 
     /// A pointer has contacted the screen with a primary button and might begin
     /// to move vertically.
@@ -147,7 +147,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragDownCallback onVerticalDragDown,
+    GestureDragDownCallback? onVerticalDragDown,
 
     /// A pointer has contacted the screen with a primary button and has begun to
     /// move vertically.
@@ -155,7 +155,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragStartCallback onVerticalDragStart,
+    GestureDragStartCallback? onVerticalDragStart,
 
     /// A pointer that is in contact with the screen with a primary button and
     /// moving vertically has moved in the vertical direction.
@@ -163,7 +163,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragUpdateCallback onVerticalDragUpdate,
+    GestureDragUpdateCallback? onVerticalDragUpdate,
 
     /// A pointer that was previously in contact with the screen with a primary
     /// button and moving vertically is no longer in contact with the screen and
@@ -172,7 +172,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragEndCallback onVerticalDragEnd,
+    GestureDragEndCallback? onVerticalDragEnd,
 
     /// The pointer that previously triggered [onVerticalDragDown] did not
     /// complete.
@@ -180,7 +180,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragCancelCallback onVerticalDragCancel,
+    GestureDragCancelCallback? onVerticalDragCancel,
 
     /// A pointer has contacted the screen with a primary button and might begin
     /// to move horizontally.
@@ -188,7 +188,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragDownCallback onHorizontalDragDown,
+    GestureDragDownCallback? onHorizontalDragDown,
 
     /// A pointer has contacted the screen with a primary button and has begun to
     /// move horizontally.
@@ -196,7 +196,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragStartCallback onHorizontalDragStart,
+    GestureDragStartCallback? onHorizontalDragStart,
 
     /// A pointer that is in contact with the screen with a primary button and
     /// moving horizontally has moved in the horizontal direction.
@@ -204,7 +204,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragUpdateCallback onHorizontalDragUpdate,
+    GestureDragUpdateCallback? onHorizontalDragUpdate,
 
     /// A pointer that was previously in contact with the screen with a primary
     /// button and moving horizontally is no longer in contact with the screen and
@@ -213,7 +213,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragEndCallback onHorizontalDragEnd,
+    GestureDragEndCallback? onHorizontalDragEnd,
 
     /// The pointer that previously triggered [onHorizontalDragDown] did not
     /// complete.
@@ -221,7 +221,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragCancelCallback onHorizontalDragCancel,
+    GestureDragCancelCallback? onHorizontalDragCancel,
 
     /// A pointer has contacted the screen with a primary button and might begin
     /// to move.
@@ -229,7 +229,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragDownCallback onPanDown,
+    GestureDragDownCallback? onPanDown,
 
     /// A pointer has contacted the screen with a primary button and has begun to
     /// move.
@@ -237,7 +237,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragStartCallback onPanStart,
+    GestureDragStartCallback? onPanStart,
 
     /// A pointer that is in contact with the screen with a primary button and
     /// moving has moved again.
@@ -245,7 +245,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragUpdateCallback onPanUpdate,
+    GestureDragUpdateCallback? onPanUpdate,
 
     /// A pointer that was previously in contact with the screen with a primary
     /// button and moving is no longer in contact with the screen and was moving
@@ -254,25 +254,25 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragEndCallback onPanEnd,
+    GestureDragEndCallback? onPanEnd,
 
     /// The pointer that previously triggered [onPanDown] did not complete.
     ///
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    GestureDragCancelCallback onPanCancel,
+    GestureDragCancelCallback? onPanCancel,
 
     /// The pointers in contact with the screen have established a focal point and
     /// initial scale of 1.0.
-    GestureScaleStartCallback onScaleStart,
+    GestureScaleStartCallback? onScaleStart,
 
     /// The pointers in contact with the screen have indicated a new focal point
     /// and/or scale.
-    GestureScaleUpdateCallback onScaleUpdate,
+    GestureScaleUpdateCallback? onScaleUpdate,
 
     /// The pointers are no longer in contact with the screen.
-    GestureScaleEndCallback onScaleEnd,
+    GestureScaleEndCallback? onScaleEnd,
 
     /// The pointer is in contact with the screen and has pressed with sufficient
     /// force to initiate a force press. The amount of force is at least
@@ -280,7 +280,7 @@ extension Gesture on Widget {
     ///
     /// Note that this callback will only be fired on devices with pressure
     /// detecting screens.
-    GestureForcePressStartCallback onForcePressStart,
+    GestureForcePressStartCallback? onForcePressStart,
 
     /// The pointer is in contact with the screen and has pressed with the maximum
     /// force. The amount of force is at least
@@ -288,7 +288,7 @@ extension Gesture on Widget {
     ///
     /// Note that this callback will only be fired on devices with pressure
     /// detecting screens.
-    GestureForcePressPeakCallback onForcePressPeak,
+    GestureForcePressPeakCallback? onForcePressPeak,
 
     /// A pointer is in contact with the screen, has previously passed the
     /// [ForcePressGestureRecognizer.startPressure] and is either moving on the
@@ -297,19 +297,19 @@ extension Gesture on Widget {
     ///
     /// Note that this callback will only be fired on devices with pressure
     /// detecting screens.
-    GestureForcePressUpdateCallback onForcePressUpdate,
+    GestureForcePressUpdateCallback? onForcePressUpdate,
 
     /// The pointer is no longer in contact with the screen.
     ///
     /// Note that this callback will only be fired on devices with pressure
     /// detecting screens.
-    GestureForcePressEndCallback onForcePressEnd,
+    GestureForcePressEndCallback? onForcePressEnd,
 
     /// How this gesture detector should behave during hit testing.
     ///
     /// This defaults to [HitTestBehavior.deferToChild] if [child] is not null and
     /// [HitTestBehavior.translucent] if child is null.
-    HitTestBehavior behavior,
+    HitTestBehavior? behavior,
 
     /// Whether to exclude these gestures from the semantics tree. For
     /// example, the long-press gesture for showing a tooltip is
@@ -345,7 +345,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    final GestureTapCancelCallback onDoubleTapCancel,
+    final GestureTapCancelCallback? onDoubleTapCancel,
 
     /// A pointer that might cause a double tap has contacted the screen at a
     /// particular location.
@@ -359,7 +359,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kPrimaryButton], the button this callback responds to.
-    final GestureTapDownCallback onDoubleTapDown,
+    final GestureTapDownCallback? onDoubleTapDown,
 
     /// Called when a long press gesture with a secondary button has been
     /// recognized.
@@ -372,7 +372,7 @@ extension Gesture on Widget {
     ///  * [kSecondaryButton], the button this callback responds to.
     ///  * [onSecondaryLongPressStart], which has the same timing but has gesture
     ///    details.
-    final GestureLongPressCallback onSecondaryLongPress,
+    final GestureLongPressCallback? onSecondaryLongPress,
 
     /// A pointer that has triggered a long-press with a secondary button has
     /// stopped contacting the screen.
@@ -382,14 +382,14 @@ extension Gesture on Widget {
     ///  * [kSecondaryButton], the button this callback responds to.
     ///  * [onSecondaryLongPressUp], which has the same timing but without the
     ///    gesture details.
-    final GestureLongPressEndCallback onSecondaryLongPressEnd,
+    final GestureLongPressEndCallback? onSecondaryLongPressEnd,
 
     /// A pointer has been drag-moved after a long press with a secondary button.
     ///
     /// See also:
     ///
     ///  * [kSecondaryButton], the button this callback responds to.
-    final GestureLongPressMoveUpdateCallback onSecondaryLongPressMoveUpdate,
+    final GestureLongPressMoveUpdateCallback? onSecondaryLongPressMoveUpdate,
 
     /// Called when a long press gesture with a secondary button has been
     /// recognized.
@@ -402,7 +402,7 @@ extension Gesture on Widget {
     ///  * [kSecondaryButton], the button this callback responds to.
     ///  * [onSecondaryLongPress], which has the same timing but without the
     ///    gesture details.
-    final GestureLongPressStartCallback onSecondaryLongPressStart,
+    final GestureLongPressStartCallback? onSecondaryLongPressStart,
 
     /// A pointer that has triggered a long-press with a secondary button has
     /// stopped contacting the screen.
@@ -412,7 +412,7 @@ extension Gesture on Widget {
     ///  * [kSecondaryButton], the button this callback responds to.
     ///  * [onSecondaryLongPressEnd], which has the same timing but has gesture
     ///    details.
-    final GestureLongPressUpCallback onSecondaryLongPressUp,
+    final GestureLongPressUpCallback? onSecondaryLongPressUp,
 
     /// A tap with a secondary button has occurred.
     ///
@@ -424,7 +424,7 @@ extension Gesture on Widget {
     ///  * [kSecondaryButton], the button this callback responds to.
     ///  * [onSecondaryTapUp], which is called at the same time but includes details
     ///    regarding the pointer position.
-    final GestureTapCallback onSecondaryTap,
+    final GestureTapCallback? onSecondaryTap,
 
     /// A pointer that might cause a tap with a tertiary button has contacted the
     /// screen at a particular location.
@@ -436,7 +436,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kTertiaryButton], the button this callback responds to.
-    final GestureTapDownCallback onTertiaryTapDown,
+    final GestureTapDownCallback? onTertiaryTapDown,
 
     /// A pointer that will trigger a tap with a tertiary button has stopped
     /// contacting the screen at a particular location.
@@ -447,7 +447,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kTertiaryButton], the button this callback responds to.
-    final GestureTapUpCallback onTertiaryTapUp,
+    final GestureTapUpCallback? onTertiaryTapUp,
 
     /// The pointer that previously triggered [onTertiaryTapDown] will not end up
     /// causing a tap.
@@ -458,7 +458,7 @@ extension Gesture on Widget {
     /// See also:
     ///
     ///  * [kTertiaryButton], the button this callback responds to.
-    final GestureTapCancelCallback onTertiaryTapCancel,
+    final GestureTapCancelCallback? onTertiaryTapCancel,
   }) {
     return GestureDetector(
       onTertiaryTapDown: onTertiaryTapDown,

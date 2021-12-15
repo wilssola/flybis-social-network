@@ -14,8 +14,8 @@ class ActiveItem implements Comparable<ActiveItem> {
       : controller = null,
         removedItemBuilder = null;
 
-  final AnimationController controller;
-  final LiveListRemovedItemBuilder removedItemBuilder;
+  final AnimationController? controller;
+  final LiveListRemovedItemBuilder? removedItemBuilder;
   int itemIndex;
 
   @override
@@ -34,13 +34,13 @@ mixin ListAnimation<T extends StatefulWidget> on State<T> {
   TickerProvider get vsync;
 
   @protected
-  ActiveItem removeActiveItemAt(List<ActiveItem> items, int itemIndex) {
+  ActiveItem? removeActiveItemAt(List<ActiveItem> items, int itemIndex) {
     final i = binarySearch(items, ActiveItem.index(itemIndex));
     return i == -1 ? null : items.removeAt(i);
   }
 
   @protected
-  ActiveItem activeItemAt(List<ActiveItem> items, int itemIndex) {
+  ActiveItem? activeItemAt(List<ActiveItem> items, int itemIndex) {
     final i = binarySearch(items, ActiveItem.index(itemIndex));
     return i == -1 ? null : items[i];
   }
@@ -100,8 +100,8 @@ mixin ListAnimation<T extends StatefulWidget> on State<T> {
     });
 
     controller.forward().then<void>((_) {
-      removeActiveItemAt(incomingItems, incomingItem.itemIndex)
-          .controller
+      removeActiveItemAt(incomingItems, incomingItem.itemIndex)!
+          .controller!
           .dispose();
     });
   }
@@ -142,8 +142,8 @@ mixin ListAnimation<T extends StatefulWidget> on State<T> {
     });
 
     controller.reverse().then<void>((void value) {
-      removeActiveItemAt(outgoingItems, outgoingItem.itemIndex)
-          .controller
+      removeActiveItemAt(outgoingItems, outgoingItem.itemIndex)!
+          .controller!
           .dispose();
 
       // Decrement the incoming and outgoing item indices to account

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class XCircleView extends StatelessWidget {
-  final double pagerHeight;
-  final double scale;
-  final double elevation;
-  final Color borderColor;
-  final double borderWidth;
-  final Widget child;
+  final double? pagerHeight;
+  final double? scale;
+  final double? elevation;
+  final Color? borderColor;
+  final double? borderWidth;
+  final Widget? child;
 
   const XCircleView(
-      {Key key,
+      {Key? key,
       this.pagerHeight,
       this.scale,
       this.elevation,
@@ -23,13 +23,13 @@ class XCircleView extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
-        height: pagerHeight * scale,
-        width: pagerHeight * scale,
+        height: pagerHeight! * scale!,
+        width: pagerHeight! * scale!,
         child: Card(
           elevation: elevation,
           clipBehavior: Clip.antiAlias,
           shape: CircleBorder(
-              side: BorderSide(color: borderColor, width: borderWidth)),
+              side: BorderSide(color: borderColor!, width: borderWidth!)),
           child: child,
         ),
       ),

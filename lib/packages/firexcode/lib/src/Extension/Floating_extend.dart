@@ -14,34 +14,34 @@ extension Floating on Widget {
       ///
       /// This text is displayed when the user long-presses on the button and is
       /// used for accessibility.
-      final String tooltip,
+      final String? tooltip,
 
       /// The default icon and text color.
       ///
       /// Defaults to [ThemeData.accentIconTheme.color] for the current theme.
-      final Color foregroundColor,
+      final Color? foregroundColor,
 
       /// The color to use when filling the button.
       ///
       /// Defaults to [ThemeData.accentColor] for the current theme.
-      final Color backgroundColor,
+      final Color? backgroundColor,
 
       /// The color to use for filling the button when the button has input focus.
       ///
       /// Defaults to [ThemeData.focusColor] for the current theme.
-      final Color focusColor,
+      final Color? focusColor,
 
       /// The color to use for filling the button when the button has a pointer
       /// hovering over it.
       ///
       /// Defaults to [ThemeData.hoverColor] for the current theme.
-      final Color hoverColor,
+      final Color? hoverColor,
 
       /// The splash color for this [FloatingActionButton]'s [InkWell].
       ///
       /// If null, [FloatingActionButtonThemeData.splashColor] is used, if that is
       /// null, [ThemeData.splashColor] is used.
-      final Color splashColor,
+      final Color? splashColor,
 
       /// The tag to apply to the button's [Hero] widget.
       ///
@@ -55,12 +55,12 @@ extension Floating on Widget {
       /// there would be a tag conflict (multiple heroes on one route can't have the
       /// same tag). The material design specification recommends only using one
       /// floating action button per screen.
-      final Object heroTag,
+      final Object? heroTag,
 
       /// The callback that is called when the button is tapped or otherwise activated.
       ///
       /// If this is set to null, the button will be disabled.
-      final VoidCallback onPressed,
+      final VoidCallback? onPressed,
 
       /// The z-coordinate at which to place this button relative to its parent.
       ///
@@ -73,7 +73,7 @@ extension Floating on Widget {
       ///
       ///  * [highlightElevation], the elevation when the button is pressed.
       ///  * [disabledElevation], the elevation when the button is disabled.
-      final double elevation,
+      final double? elevation,
 
       /// The z-coordinate at which to place this button relative to its parent when
       /// the button has the input focus.
@@ -88,7 +88,7 @@ extension Floating on Widget {
       ///  * [elevation], the default elevation.
       ///  * [highlightElevation], the elevation when the button is pressed.
       ///  * [disabledElevation], the elevation when the button is disabled.
-      final double focusElevation,
+      final double? focusElevation,
 
       /// The z-coordinate at which to place this button relative to its parent when
       /// the button is enabled and has a pointer hovering over it.
@@ -103,7 +103,7 @@ extension Floating on Widget {
       ///  * [elevation], the default elevation.
       ///  * [highlightElevation], the elevation when the button is pressed.
       ///  * [disabledElevation], the elevation when the button is disabled.
-      final double hoverElevation,
+      final double? hoverElevation,
 
       /// The z-coordinate at which to place this button relative to its parent when
       /// the user is touching the button.
@@ -116,7 +116,7 @@ extension Floating on Widget {
       /// See also:
       ///
       ///  * [elevation], the default elevation.
-      final double highlightElevation,
+      final double? highlightElevation,
 
       /// The z-coordinate at which to place this button when the button is disabled
       /// ([onPressed] is null).
@@ -131,7 +131,7 @@ extension Floating on Widget {
       ///
       ///  * [elevation], the default elevation.
       ///  * [highlightElevation], the elevation when the button is pressed.
-      final double disabledElevation,
+      final double? disabledElevation,
 
       /// Controls the size of this button.
       ///
@@ -141,14 +141,14 @@ extension Floating on Widget {
       /// logical pixels. (The extra 4 pixels of padding on each side are added as a
       /// result of the floating action button having [MaterialTapTargetSize.padded]
       /// set on the underlying [RawMaterialButton.materialTapTargetSize].)
-      final bool mini,
+      final bool? mini,
 
       /// The shape of the button's [Material].
       ///
       /// The button's highlight and splash are clipped to this shape. If the
       /// button has an elevation, then its drop shadow is defined by this
       /// shape as well.
-      final ShapeBorder shape,
+      final ShapeBorder? shape,
 
       /// {@macro flutter.widgets.Clip}
       ///
@@ -167,7 +167,7 @@ extension Floating on Widget {
       final bool isExtended = true,
 
       /// {@macro flutter.widgets.Focus.focusNode}
-      final FocusNode focusNode,
+      final FocusNode? focusNode,
 
       /// {@macro flutter.widgets.Focus.autofocus}
       final bool autofocus = false,
@@ -179,8 +179,8 @@ extension Floating on Widget {
       /// See also:
       ///
       ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
-      final MaterialTapTargetSize materialTapTargetSize,
-      Widget icon,
+      final MaterialTapTargetSize? materialTapTargetSize,
+      Widget? icon,
 
       /// {@macro flutter.material.RawMaterialButton.mouseCursor}
       MouseCursor mouseCursor = SystemMouseCursors.click}) {

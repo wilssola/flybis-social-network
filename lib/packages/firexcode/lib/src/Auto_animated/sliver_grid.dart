@@ -10,27 +10,27 @@ const Duration _kDuration = Duration(milliseconds: 250);
 
 class XSliverGrid extends StatefulWidget {
   const XSliverGrid({
-    @required this.itemBuilder,
-    @required this.gridDelegate,
-    @required this.itemCount,
-    @required this.controller,
+    required this.itemBuilder,
+    required this.gridDelegate,
+    required this.itemCount,
+    required this.controller,
     this.visibleFraction = 0.025,
     this.reAnimateOnVisibility = false,
     this.delay = Duration.zero,
     this.showItemInterval = _kDuration,
     this.showItemDuration = _kDuration,
-    Key key,
+    Key? key,
   })  : assert(itemBuilder != null),
         assert(itemCount != null && itemCount >= 0),
         super(key: key);
 
   XSliverGrid.options({
-    @required this.itemBuilder,
-    @required this.gridDelegate,
-    @required this.itemCount,
-    @required this.controller,
-    @required LiveOptions options,
-    Key key,
+    required this.itemBuilder,
+    required this.gridDelegate,
+    required this.itemCount,
+    required this.controller,
+    required LiveOptions options,
+    Key? key,
   })  : delay = options.delay,
         showItemInterval = options.showItemInterval,
         showItemDuration = options.showItemDuration,

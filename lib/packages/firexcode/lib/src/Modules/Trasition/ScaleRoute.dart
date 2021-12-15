@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class XScaleRoute extends PageRouteBuilder {
-  final Widget page;
+  final Widget? page;
   XScaleRoute({this.page})
       : super(
           pageBuilder: (
@@ -9,7 +9,7 @@ class XScaleRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page,
+              page!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

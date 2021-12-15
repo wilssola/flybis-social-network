@@ -45,9 +45,9 @@ enum _XLiquidPullToRefreshMode {
 
 class XLiquidPullToRefresh extends StatefulWidget {
   const XLiquidPullToRefresh({
-    Key key,
-    @required this.child,
-    @required this.onRefresh,
+    Key? key,
+    required this.child,
+    required this.onRefresh,
     this.color,
     this.backgroundColor,
     this.notificationPredicate = defaultScrollNotificationPredicate,
@@ -73,7 +73,7 @@ class XLiquidPullToRefresh extends StatefulWidget {
   /// will settle after the spring effect.
   ///
   /// default is set to 100.0
-  final double height;
+  final double? height;
 
   /// Duration in milliseconds of springy effect that occurs when
   /// we leave dragging after full drag.
@@ -98,11 +98,11 @@ class XLiquidPullToRefresh extends StatefulWidget {
 
   /// The progress indicator's foreground color. The current theme's
   /// [ThemeData.accentColor] by default.
-  final Color color;
+  final Color? color;
 
   /// The progress indicator's background color. The current theme's
   /// [ThemeData.canvasColor] by default.
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// A check that specifies whether a [ScrollNotification] should be
   /// handled by this widget.
@@ -113,7 +113,7 @@ class XLiquidPullToRefresh extends StatefulWidget {
 
   /// Controls the [ScrollView] child.
   /// [null] by default.
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   @override
   _XLiquidPullToRefreshState createState() => _XLiquidPullToRefreshState();
@@ -121,42 +121,42 @@ class XLiquidPullToRefresh extends StatefulWidget {
 
 class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     with TickerProviderStateMixin<XLiquidPullToRefresh> {
-  AnimationController _springController;
-  Animation<double> _springAnimation;
+  AnimationController? _springController;
+  late Animation<double> _springAnimation;
 
-  AnimationController _progressingController;
-  Animation<double> _progressingRotateAnimation;
-  Animation<double> _progressingPercentAnimation;
-  Animation<double> _progressingStartAngleAnimation;
+  AnimationController? _progressingController;
+  late Animation<double> _progressingRotateAnimation;
+  late Animation<double> _progressingPercentAnimation;
+  late Animation<double> _progressingStartAngleAnimation;
 
-  AnimationController _ringDisappearController;
-  Animation<double> _ringRadiusAnimation;
-  Animation<double> _ringOpacityAnimation;
+  AnimationController? _ringDisappearController;
+  late Animation<double> _ringRadiusAnimation;
+  late Animation<double> _ringOpacityAnimation;
 
-  AnimationController _showPeakController;
-  Animation<double> _peakHeightUpAnimation;
-  Animation<double> _peakHeightDownAnimation;
+  AnimationController? _showPeakController;
+  late Animation<double> _peakHeightUpAnimation;
+  late Animation<double> _peakHeightDownAnimation;
 
-  AnimationController _indicatorMoveWithPeakController;
-  Animation<double> _indicatorTranslateWithPeakAnimation;
-  Animation<double> _indicatorRadiusWithPeakAnimation;
+  AnimationController? _indicatorMoveWithPeakController;
+  late Animation<double> _indicatorTranslateWithPeakAnimation;
+  late Animation<double> _indicatorRadiusWithPeakAnimation;
 
-  AnimationController _indicatorTranslateInOutController;
-  Animation<double> _indicatorTranslateAnimation;
+  AnimationController? _indicatorTranslateInOutController;
+  late Animation<double> _indicatorTranslateAnimation;
 
-  AnimationController _radiusController;
-  Animation<double> _radiusAnimation;
+  AnimationController? _radiusController;
+  late Animation<double> _radiusAnimation;
 
-  Animation<double> _childOpacityAnimation;
+  late Animation<double> _childOpacityAnimation;
 
-  AnimationController _positionController;
-  Animation<double> _value;
-  Animation<Color> _valueColor;
+  AnimationController? _positionController;
+  late Animation<double> _value;
+  late Animation<Color?> _valueColor;
 
-  _XLiquidPullToRefreshMode _mode;
-  Future<void> _pendingRefreshFuture;
-  bool _isIndicatorAtTop;
-  double _dragOffset;
+  _XLiquidPullToRefreshMode? _mode;
+  Future<void>? _pendingRefreshFuture;
+  bool? _isIndicatorAtTop;
+  double? _dragOffset;
 
   static final Animatable<double> _threeQuarterTween =
       Tween<double>(begin: 0.0, end: 0.75);
@@ -168,76 +168,76 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     super.initState();
     _springController = AnimationController(vsync: this);
     _springAnimation =
-        _springController.drive(Tween<double>(begin: 1.0, end: -1.0));
+        _springController!.drive(Tween<double>(begin: 1.0, end: -1.0));
 
     _progressingController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
     _progressingRotateAnimation =
         Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-      parent: _progressingController,
+      parent: _progressingController!,
       curve: Interval(0.0, 1.0),
     ));
     _progressingPercentAnimation =
         Tween<double>(begin: 0.25, end: 5 / 6).animate(CurvedAnimation(
-      parent: _progressingController,
+      parent: _progressingController!,
       curve: Interval(0.0, 1.0, curve: ProgressRingCurve()),
     ));
     _progressingStartAngleAnimation =
         Tween<double>(begin: -2 / 3, end: 1 / 2).animate(CurvedAnimation(
-      parent: _progressingController,
+      parent: _progressingController!,
       curve: Interval(0.5, 1.0),
     ));
 
     _ringDisappearController = AnimationController(vsync: this);
     _ringRadiusAnimation = Tween<double>(begin: 1.0, end: 1.25).animate(
         CurvedAnimation(
-            parent: _ringDisappearController,
+            parent: _ringDisappearController!,
             curve: Interval(0.0, 0.2, curve: Curves.easeOut)));
     _ringOpacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
         CurvedAnimation(
-            parent: _ringDisappearController,
+            parent: _ringDisappearController!,
             curve: Interval(0.0, 0.2, curve: Curves.easeIn)));
 
     _showPeakController = AnimationController(vsync: this);
     _peakHeightUpAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
-            parent: _showPeakController,
+            parent: _showPeakController!,
             curve: Interval(0.1, 0.2, curve: Curves.easeOut)));
     _peakHeightDownAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
         CurvedAnimation(
-            parent: _showPeakController,
+            parent: _showPeakController!,
             curve: Interval(0.2, 0.3, curve: Curves.easeIn)));
 
     _indicatorMoveWithPeakController = AnimationController(vsync: this);
     _indicatorTranslateWithPeakAnimation = Tween<double>(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(
-            parent: _indicatorMoveWithPeakController,
+            parent: _indicatorMoveWithPeakController!,
             curve: Interval(0.1, 0.2, curve: Curves.easeOut)));
     _indicatorRadiusWithPeakAnimation = Tween<double>(begin: 0.0, end: 1.0)
         .animate(CurvedAnimation(
-            parent: _indicatorMoveWithPeakController,
+            parent: _indicatorMoveWithPeakController!,
             curve: Interval(0.1, 0.2, curve: Curves.easeOut)));
 
     _indicatorTranslateInOutController = AnimationController(vsync: this);
     _indicatorTranslateAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
-            parent: _indicatorTranslateInOutController,
+            parent: _indicatorTranslateInOutController!,
             curve: Interval(0.2, 0.6, curve: Curves.easeOut)));
 
     _radiusController = AnimationController(vsync: this);
     _radiusAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(parent: _radiusController, curve: Curves.easeIn));
+        CurvedAnimation(parent: _radiusController!, curve: Curves.easeIn));
 
     _positionController = AnimationController(vsync: this);
-    _value = _positionController.drive(_threeQuarterTween);
+    _value = _positionController!.drive(_threeQuarterTween);
 
-    _childOpacityAnimation = _positionController.drive(_oneToZeroTween);
+    _childOpacityAnimation = _positionController!.drive(_oneToZeroTween);
   }
 
   @override
   void didChangeDependencies() {
     final theme = Theme.of(context);
-    _valueColor = _positionController.drive(
+    _valueColor = _positionController!.drive(
       ColorTween(
               begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
               end: (widget.color ?? theme.accentColor).withOpacity(1.0))
@@ -249,14 +249,14 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
 
   @override
   void dispose() {
-    _springController.dispose();
-    _progressingController.dispose();
-    _positionController.dispose();
-    _ringDisappearController.dispose();
-    _showPeakController.dispose();
-    _indicatorMoveWithPeakController.dispose();
-    _indicatorTranslateInOutController.dispose();
-    _radiusController.dispose();
+    _springController!.dispose();
+    _progressingController!.dispose();
+    _positionController!.dispose();
+    _ringDisappearController!.dispose();
+    _showPeakController!.dispose();
+    _indicatorMoveWithPeakController!.dispose();
+    _indicatorTranslateInOutController!.dispose();
+    _radiusController!.dispose();
     super.dispose();
   }
 
@@ -271,7 +271,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
       });
       return false;
     }
-    bool indicatorAtTopNow;
+    bool? indicatorAtTopNow;
     switch (notification.metrics.axisDirection) {
       case AxisDirection.down:
         indicatorAtTopNow = true;
@@ -295,7 +295,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
         if (notification.metrics.extentBefore > 0.0) {
           _dismiss(_XLiquidPullToRefreshMode.canceled);
         } else {
-          _dragOffset -= notification.scrollDelta;
+          _dragOffset = _dragOffset! - notification.scrollDelta!;
           _checkDragOffset(notification.metrics.viewportDimension);
         }
       }
@@ -309,7 +309,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     } else if (notification is OverscrollNotification) {
       if (_mode == _XLiquidPullToRefreshMode.drag ||
           _mode == _XLiquidPullToRefreshMode.armed) {
-        _dragOffset -= notification.overscroll / 2.0;
+        _dragOffset = _dragOffset! - notification.overscroll / 2.0;
         _checkDragOffset(notification.metrics.viewportDimension);
       }
     } else if (notification is ScrollEndNotification) {
@@ -351,53 +351,53 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     switch (_mode) {
       case _XLiquidPullToRefreshMode.done:
         //stop progressing animation
-        _progressingController.stop();
+        _progressingController!.stop();
 
         // progress ring disappear animation
-        await _ringDisappearController.animateTo(1.0,
+        await _ringDisappearController!.animateTo(1.0,
             duration: Duration(
                 milliseconds: widget.springAnimationDurationInMilliseconds),
             curve: Curves.linear);
 
         // indicator translate out
-        await _indicatorMoveWithPeakController.animateTo(0.0,
+        await _indicatorMoveWithPeakController!.animateTo(0.0,
             duration: Duration(
                 milliseconds: widget.springAnimationDurationInMilliseconds),
             curve: Curves.linear);
-        await _indicatorTranslateInOutController.animateTo(0.0,
+        await _indicatorTranslateInOutController!.animateTo(0.0,
             duration: Duration(
                 milliseconds: widget.springAnimationDurationInMilliseconds),
             curve: Curves.linear);
 
         //initial value of controller is 1.0
-        await _showPeakController.animateTo(0.3,
+        await _showPeakController!.animateTo(0.3,
             duration: Duration(
                 milliseconds:
                     (widget.springAnimationDurationInMilliseconds).round()),
             curve: Curves.linear);
 
-        await _radiusController.animateTo(0.0,
+        await _radiusController!.animateTo(0.0,
             duration: Duration(
                 milliseconds:
                     (widget.springAnimationDurationInMilliseconds / 5).round()),
             curve: Curves.linear);
 
-        _showPeakController.value = 0.175;
-        await _showPeakController.animateTo(0.1,
+        _showPeakController!.value = 0.175;
+        await _showPeakController!.animateTo(0.1,
             duration: Duration(
                 milliseconds:
                     (widget.springAnimationDurationInMilliseconds / 5).round()),
             curve: Curves.easeOut);
-        _showPeakController.value = 0.0;
+        _showPeakController!.value = 0.0;
 
-        await _positionController.animateTo(0.0,
+        await _positionController!.animateTo(0.0,
             duration: Duration(
                 milliseconds: _kIndicatorSnapDuration.inMilliseconds * 2));
         break;
 
       case _XLiquidPullToRefreshMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        await _positionController!
+            .animateTo(0.0, duration: _kIndicatorScaleDuration);
         break;
       default:
         assert(false);
@@ -429,14 +429,14 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
         return false;
     }
     _dragOffset = 0.0;
-    _positionController.value = 0.0;
-    _springController.value = 0.0;
-    _progressingController.value = 0.0;
-    _ringDisappearController.value = 1.0;
-    _showPeakController.value = 0.0;
-    _indicatorMoveWithPeakController.value = 0.0;
-    _indicatorTranslateInOutController.value = 0.0;
-    _radiusController.value = 1.0;
+    _positionController!.value = 0.0;
+    _springController!.value = 0.0;
+    _progressingController!.value = 0.0;
+    _ringDisappearController!.value = 1.0;
+    _showPeakController!.value = 0.0;
+    _indicatorMoveWithPeakController!.value = 0.0;
+    _indicatorTranslateInOutController!.value = 0.0;
+    _radiusController!.value = 1.0;
     return true;
   }
 
@@ -444,14 +444,14 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     assert(_mode == _XLiquidPullToRefreshMode.drag ||
         _mode == _XLiquidPullToRefreshMode.armed);
     var newValue =
-        _dragOffset / (containerExtent * _kDragContainerExtentPercentage);
+        _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _XLiquidPullToRefreshMode.armed) {
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     }
-    _positionController.value =
+    _positionController!.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
     if (_mode == _XLiquidPullToRefreshMode.drag &&
-        _valueColor.value.alpha == 0xFF) {
+        _valueColor.value!.alpha == 0xFF) {
       _mode = _XLiquidPullToRefreshMode.armed;
     }
   }
@@ -463,34 +463,34 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     _pendingRefreshFuture = completer.future;
     _mode = _XLiquidPullToRefreshMode.snap;
 
-    _positionController.animateTo(1.0 / _kDragSizeFactorLimit,
+    _positionController!.animateTo(1.0 / _kDragSizeFactorLimit,
         duration: Duration(
             milliseconds: widget.springAnimationDurationInMilliseconds),
         curve: Curves.linear);
 
-    _showPeakController.animateTo(1.0,
+    _showPeakController!.animateTo(1.0,
         duration: Duration(
             milliseconds: widget.springAnimationDurationInMilliseconds),
         curve: Curves.linear);
 
     //indicator translate in with peak
-    _indicatorMoveWithPeakController.animateTo(1.0,
+    _indicatorMoveWithPeakController!.animateTo(1.0,
         duration: Duration(
             milliseconds: widget.springAnimationDurationInMilliseconds),
         curve: Curves.linear);
 
     //indicator move to center
-    _indicatorTranslateInOutController.animateTo(1.0,
+    _indicatorTranslateInOutController!.animateTo(1.0,
         duration: Duration(
             milliseconds: widget.springAnimationDurationInMilliseconds),
         curve: Curves.linear);
 
     // progress ring fade in
-    _ringDisappearController.animateTo(0.0,
+    _ringDisappearController!.animateTo(0.0,
         duration: Duration(
             milliseconds: widget.springAnimationDurationInMilliseconds));
 
-    _springController
+    _springController!
         .animateTo(0.5,
             duration: Duration(
                 milliseconds: widget.springAnimationDurationInMilliseconds),
@@ -505,7 +505,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
         });
 
         //run progress animation
-        _progressingController.repeat();
+        _progressingController!.repeat();
 
         final refreshResult = widget.onRefresh();
         assert(() {
@@ -559,7 +559,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
   /// When initiated in this manner, the progress indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
+  Future<void>? show({bool atTop = true}) {
     if (_mode != _XLiquidPullToRefreshMode.refresh &&
         _mode != _XLiquidPullToRefreshMode.snap) {
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
@@ -651,8 +651,8 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
     return Stack(
       children: <Widget>[
         AnimatedBuilder(
-          animation: _positionController,
-          builder: (BuildContext buildContext, Widget child) {
+          animation: _positionController!,
+          builder: (BuildContext buildContext, Widget? child) {
             return Opacity(
               // -0.01 is done for elasticOut curve
               opacity: (widget.showChildOpacityTransition)
@@ -675,11 +675,11 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
             _springController,
             _showPeakController,
           ]),
-          builder: (BuildContext buildContext, Widget child) {
+          builder: (BuildContext buildContext, Widget? child) {
             return ClipPath(
               clipper: CurveHillClipper(
                 centreHeight: height,
-                curveHeight: height / 2 * _springAnimation.value, // 50.0
+                curveHeight: height! / 2 * _springAnimation.value, // 50.0
                 peakHeight: height *
                     3 /
                     10 *
@@ -708,7 +708,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
               _indicatorTranslateInOutController,
               _radiusController,
             ]),
-            builder: (BuildContext buildContext, Widget child) {
+            builder: (BuildContext buildContext, Widget? child) {
               return Align(
                 alignment: Alignment(
                   0.0,
@@ -723,7 +723,7 @@ class _XLiquidPullToRefreshState extends State<XLiquidPullToRefresh>
                   child: CircularProgress(
                     backgroundColor: backgroundColor,
                     progressCircleOpacity: _ringOpacityAnimation.value,
-                    innerCircleRadius: height *
+                    innerCircleRadius: height! *
                         15 /
                         100 * // 15.0
                         ((_mode != _XLiquidPullToRefreshMode.done)

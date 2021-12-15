@@ -27,7 +27,7 @@ TextEditingController heightcontroler = TextEditingController();
 TextEditingController widthcontroler = TextEditingController();
 var width = 300;
 var height = 300;
-List<Map> widgetJson = [];
+List<Map?> widgetJson = [];
 //List fontsize = [];
 //List<Color> colorList = [];
 var howmuchwidgetis = 0;
@@ -38,10 +38,10 @@ SignatureController _controller =
     SignatureController(penStrokeWidth: 5, penColor: Colors.green);
 
 class ImageEditorPro extends StatefulWidget {
-  final Color appBarColor;
-  final Color bottomBarColor;
-  final Directory pathSave;
-  final double pixelRatio;
+  final Color? appBarColor;
+  final Color? bottomBarColor;
+  final Directory? pathSave;
+  final double? pixelRatio;
   ImageEditorPro(
       {this.appBarColor, this.bottomBarColor, this.pathSave, this.pixelRatio});
 
@@ -69,15 +69,15 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   Offset offset2 = Offset.zero;
   final scaf = GlobalKey<ScaffoldState>();
   var openbottomsheet = false;
-  List<Offset> _points = <Offset>[];
+  List<Offset?> _points = <Offset?>[];
   List type = [];
   List aligment = [];
 
   final GlobalKey container = GlobalKey();
   final GlobalKey globalKey = GlobalKey();
-  File _image;
+  File? _image;
   ScreenshotController screenshotController = ScreenshotController();
-  Timer timeprediction;
+  late Timer timeprediction;
   void timers() {
     Timer.periodic(Duration(milliseconds: 10), (tim) {
       setState(() {});
@@ -138,7 +138,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                           child: ClipRect(
                             // <-- clips to the 200x200 [Container] below
 
-                            child: _image.path
+                            child: _image!.path
                                 .decorationIFToFitHeight()
                                 .xContainer(
                                     padding: EdgeInsets.zero,
@@ -172,7 +172,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                   Signat().xGesture(
                     onPanUpdate: (DragUpdateDetails details) {
                       setState(() {
-                        RenderBox object = context.findRenderObject();
+                        RenderBox object =
+                            context.findRenderObject() as RenderBox;
                         var _localPosition =
                             object.globalToLocal(details.globalPosition);
                         _points = List.from(_points)..add(_localPosition);
@@ -189,7 +190,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                               left: offsets[f.key].dx,
                               top: offsets[f.key].dy,
                               ontap: () {
-                                scaf.currentState.showBottomSheet((context) {
+                                scaf.currentState!.showBottomSheet((context) {
                                   return Sliders(
                                     index: f.key,
                                     mapValue: f.value,
@@ -704,8 +705,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                   ],
                 ).xContainer(
                   onTap: () async {
-                    var image =
-                        await picker.getImage(source: ImageSource.gallery);
+                    var image = await (picker.getImage(
+                        source: ImageSource.gallery) as FutureOr<PickedFile>);
                     var decodedImage = await decodeImageFromList(
                         File(image.path).readAsBytesSync());
 
@@ -726,7 +727,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     'Open Camera'.text(),
                   ],
                 ).xContainer(onTap: () async {
-                  var image = await picker.getImage(source: ImageSource.camera);
+                  var image = await (picker.getImage(source: ImageSource.camera)
+                      as FutureOr<PickedFile>);
                   var decodedImage = await decodeImageFromList(
                       File(image.path).readAsBytesSync());
 
@@ -787,7 +789,8 @@ class _SignatState extends State<Signat> {
   }
 }
 
-Widget imageFilterLatest({brightness, saturation, hue, child}) {
+Widget imageFilterLatest(
+    {required brightness, required saturation, required hue, child}) {
   return ColorFiltered(
       colorFilter:
           ColorFilter.matrix(ColorFilterGenerator.brightnessAdjustMatrix(

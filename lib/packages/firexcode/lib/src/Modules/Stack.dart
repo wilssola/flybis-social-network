@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:firexcode/firexcode.dart';
 
 class XStack {
-  final AlignmentGeometry alignment;
-  final StackFit fit;
-  final Key key;
-  final Clip clipBehavior;
-  final TextDirection textDirection;
+  final AlignmentGeometry? alignment;
+  final StackFit? fit;
+  final Key? key;
+  final Clip? clipBehavior;
+  final TextDirection? textDirection;
 
   XStack(
       {this.alignment,
@@ -31,18 +31,18 @@ XWrap xWrap = XWrap();
 XCustomScrollView xCustomScrollView = XCustomScrollView();
 
 class XCustomScrollView {
-  Key key;
-  Axis scrollDirection = Axis.vertical;
-  bool reverse = false;
-  ScrollController controller;
-  bool primary;
-  ScrollPhysics physics;
-  bool shrinkWrap = false;
-  Key center;
-  double anchor = 0.0;
-  double cacheExtent;
-  int semanticChildCount;
-  DragStartBehavior dragStartBehavior = DragStartBehavior.start;
+  Key? key;
+  Axis? scrollDirection = Axis.vertical;
+  bool? reverse = false;
+  ScrollController? controller;
+  bool? primary;
+  ScrollPhysics? physics;
+  bool? shrinkWrap = false;
+  Key? center;
+  double? anchor = 0.0;
+  double? cacheExtent;
+  int? semanticChildCount;
+  DragStartBehavior? dragStartBehavior = DragStartBehavior.start;
 
   Widget list(List<Widget> list) {
     return list.xCustomScrollView(
@@ -69,7 +69,7 @@ class XWrap {
   /// children are placed adjacent to one another in a horizontal run until the
   /// available horizontal space is consumed, at which point a subsequent
   /// children are placed in a new run vertically adjacent to the previous run.
-  final Axis direction;
+  final Axis? direction;
 
   /// How the children within a run should be placed in the main axis.
   ///
@@ -84,7 +84,7 @@ class XWrap {
   ///    other in the cross axis.
   ///  * [crossAxisAlignment], which controls how the children within each run
   ///    are placed relative to each other in the cross axis.
-  final WrapAlignment alignment;
+  final WrapAlignment? alignment;
 
   /// How much space to place between children in a run in the main axis.
   ///
@@ -97,7 +97,7 @@ class XWrap {
   /// [alignment].
   ///
   /// Defaults to 0.0.
-  final double spacing;
+  final double? spacing;
 
   /// How the runs themselves should be placed in the cross axis.
   ///
@@ -112,7 +112,7 @@ class XWrap {
   ///    relative to each other in the main axis.
   ///  * [crossAxisAlignment], which controls how the children within each run
   ///    are placed relative to each other in the cross axis.
-  final WrapAlignment runAlignment;
+  final WrapAlignment? runAlignment;
 
   /// How much space to place between the runs themselves in the cross axis.
   ///
@@ -124,7 +124,7 @@ class XWrap {
   /// will be allocated according to the [runAlignment].
   ///
   /// Defaults to 0.0.
-  final double runSpacing;
+  final double? runSpacing;
 
   /// How the children within a run should be aligned relative to each other in
   /// the cross axis.
@@ -141,7 +141,7 @@ class XWrap {
   ///    relative to each other in the main axis.
   ///  * [runAlignment], which controls how the runs are placed relative to each
   ///    other in the cross axis.
-  final WrapCrossAlignment crossAxisAlignment;
+  final WrapCrossAlignment? crossAxisAlignment;
 
   /// Determines the order to lay children out horizontally and how to interpret
   /// `start` and `end` in the horizontal direction.
@@ -169,7 +169,7 @@ class XWrap {
   /// [crossAxisAlignment] is either [WrapCrossAlignment.start] or
   /// [WrapCrossAlignment.end], or there's more than one child, then the
   /// [textDirection] (or the ambient [Directionality]) must not be null.
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
   /// Determines the order to lay children out vertically and how to interpret
   /// `start` and `end` in the vertical direction.
@@ -193,8 +193,8 @@ class XWrap {
   /// [crossAxisAlignment] is either [WrapCrossAlignment.start] or
   /// [WrapCrossAlignment.end], or there's more than one child, then the
   /// [verticalDirection] must not be null.
-  final VerticalDirection verticalDirection;
-  final Key key;
+  final VerticalDirection? verticalDirection;
+  final Key? key;
 
   XWrap(
       {this.direction,

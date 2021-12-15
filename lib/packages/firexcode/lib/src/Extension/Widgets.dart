@@ -15,7 +15,7 @@ extension Widgets on Widget {
       ///
       /// Defaults to 16, the appropriate elevation for drawers. The value is
       /// always non-negative.
-      final double elevation,
+      required final double elevation,
 
       /// The semantic label of the dialog used by accessibility frameworks to
       /// announce screen transitions when the drawer is opened and closed.
@@ -27,8 +27,8 @@ extension Widgets on Widget {
       ///
       ///  * [SemanticsConfiguration.namesRoute], for a description of how this
       ///    value is used.
-      final String semanticLabel,
-      final Key key}) {
+      final String? semanticLabel,
+      final Key? key}) {
     return Drawer(
       elevation: elevation,
       key: key,
@@ -68,7 +68,7 @@ extension Widgets on Widget {
     /// keyboard due to the change in the padding value. Setting this to true will
     /// avoid the UI shift.
     final bool maintainBottomViewPadding = false,
-    final Key key,
+    final Key? key,
   }) {
     return SafeArea(
       bottom: bottom,
@@ -83,13 +83,13 @@ extension Widgets on Widget {
   }
 
   Widget xHero(
-      {Widget Function(BuildContext, Size, Widget) placeholderBuilder,
-      Tween<Rect> Function(Rect, Rect) createRectTween,
-      Object tag,
+      {Widget Function(BuildContext, Size, Widget)? placeholderBuilder,
+      Tween<Rect> Function(Rect?, Rect?)? createRectTween,
+      required Object tag,
       bool transitionOnUserGestures = false,
-      Key key,
+      Key? key,
       Widget Function(BuildContext, Animation<double>, HeroFlightDirection,
-              BuildContext, BuildContext)
+              BuildContext, BuildContext)?
           flightShuttleBuilder}) {
     return Hero(
       tag: tag,
@@ -102,7 +102,7 @@ extension Widgets on Widget {
     );
   }
 
-  Widget xAnimationLimiter({Key key}) {
+  Widget xAnimationLimiter({Key? key}) {
     return AnimationLimiter(
       key: key,
       child: this,
@@ -112,12 +112,12 @@ extension Widgets on Widget {
   Widget xNestedScrollView({
     /// An object that can be used to control the position to which the outer
     /// scroll view is scrolled.
-    final ScrollController controller,
+    final ScrollController? controller,
 
     /// The axis along which the scroll view scrolls.
     ///
     /// Defaults to [Axis.vertical].
-    final Axis scrollDirection,
+    final Axis? scrollDirection,
 
     /// Whether the scroll view scrolls in the reading direction.
     ///
@@ -131,7 +131,7 @@ extension Widgets on Widget {
     /// when [reverse] is true.
     ///
     /// Defaults to false.
-    final bool reverse,
+    required final bool reverse,
 
     /// How the scroll view should respond to user input.
     ///
@@ -148,13 +148,13 @@ extension Widgets on Widget {
     /// [ScrollMetrics.maxScrollExtent] properties passed to that method. If that
     /// invariant is not maintained, the nested scroll view may respond to user
     /// scrolling erratically.
-    final ScrollPhysics physics,
+    final ScrollPhysics? physics,
 
     /// A builder for any widgets that are to precede the inner scroll views (as
     /// given by [body]).
     ///
     /// Typically this is used to create a [SliverAppBar] with a [TabBar].
-    @required final NestedScrollViewHeaderSliversBuilder headerSliverBuilder,
+    required final NestedScrollViewHeaderSliversBuilder headerSliverBuilder,
 
     /// The widget to show inside the [NestedScrollView].
     ///
@@ -166,11 +166,11 @@ extension Widgets on Widget {
     /// intended to scroll with the [NestedScrollView] should therefore not be
     /// given an explicit [ScrollController], instead allowing it to default to
     /// the [PrimaryScrollController] provided by the [NestedScrollView].
-    final Widget body,
+    final Widget? body,
 
     /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-    final DragStartBehavior dragStartBehavior,
-    final Key key,
+    final DragStartBehavior? dragStartBehavior,
+    final Key? key,
   }) {
     return NestedScrollView(
       body: this,
@@ -188,33 +188,33 @@ extension Widgets on Widget {
 extension AppBarXs on Widget {
 // AppBar
   PreferredSizeWidget xAppBar(
-      {final Widget leading,
-      final bool automaticallyImplyLeading,
-      final List<Widget> actions,
-      final Gradient gradient,
-      final PreferredSizeWidget bottom,
-      final double elevation,
-      final ShapeBorder shape,
-      final Brightness brightness,
-      final IconThemeData iconTheme,
-      final IconThemeData actionsIconTheme,
-      final TextTheme textTheme,
-      final bool primary,
-      final bool centerTitle,
-      final double titleSpacing,
-      final double toolbarOpacity,
-      final double bottomOpacity,
-      final DecorationImage image,
-      @override final Size preferredSize,
-      final Color backgroundColor,
+      {final Widget? leading,
+      final bool? automaticallyImplyLeading,
+      final List<Widget>? actions,
+      final Gradient? gradient,
+      final PreferredSizeWidget? bottom,
+      final double? elevation,
+      final ShapeBorder? shape,
+      final Brightness? brightness,
+      final IconThemeData? iconTheme,
+      final IconThemeData? actionsIconTheme,
+      final TextTheme? textTheme,
+      final bool? primary,
+      final bool? centerTitle,
+      final double? titleSpacing,
+      final double? toolbarOpacity,
+      final double? bottomOpacity,
+      final DecorationImage? image,
+      @override final Size? preferredSize,
+      final Color? backgroundColor,
 
       /// {@template flutter.material.appbar.excludeHeaderSemantics}
       /// Whether the title should be wrapped with header [Semantics].
       ///
       /// Defaults to false.
       /// {@endtemplate}
-      final bool excludeHeaderSemantics,
-      final bool backwardsCompatibility,
+      final bool? excludeHeaderSemantics,
+      final bool? backwardsCompatibility,
 
       /// {@template flutter.material.appbar.foregroundColor}
       /// The default color for [Text] and [Icon]s within the app bar.
@@ -239,14 +239,14 @@ extension AppBarXs on Widget {
       ///    default colors are based on.
       ///  * [ColorScheme.brightness], which indicates if the overall [Theme]
       ///    is light or dark.
-      final Color foregroundColor,
+      final Color? foregroundColor,
 
       /// {@template flutter.material.appbar.leadingWidth}
       /// Defines the width of [leading] widget.
       ///
       /// By default, the value of `leadingWidth` is 56.0.
       /// {@endtemplate}
-      final double leadingWidth,
+      final double? leadingWidth,
 
       /// {@template flutter.material.appbar.shadowColor}
       /// The of the shadow below the app bar.
@@ -260,7 +260,7 @@ extension AppBarXs on Widget {
       ///
       ///  * [elevation], which defines the size of the shadow below the app bar.
       ///  * [shape], which defines the shape of the app bar and its shadow.
-      final Color shadowColor,
+      final Color? shadowColor,
 
       /// {@template flutter.material.appbar.systemOverlayStyle}
       /// Specifies the style to use for the system overlays that overlap the AppBar.
@@ -278,7 +278,7 @@ extension AppBarXs on Widget {
       //
       /// See also:
       ///  * [SystemChrome.setSystemUIOverlayStyle]
-      final SystemUiOverlayStyle systemOverlayStyle,
+      final SystemUiOverlayStyle? systemOverlayStyle,
 
       /// {@template flutter.material.appbar.titleTextStyle}
       /// The default text style for the AppBar's [title] widget.
@@ -296,14 +296,14 @@ extension AppBarXs on Widget {
       ///    AppBar's "toolbar".
       ///  * [DefaultTextStyle], which overrides the default text style for all of the
       ///    the widgets in a subtree.
-      final TextStyle titleTextStyle,
+      final TextStyle? titleTextStyle,
 
       /// {@template flutter.material.appbar.toolbarHeight}
       /// Defines the height of the toolbar component of an [AppBar].
       ///
       /// By default, the value of `toolbarHeight` is [kToolbarHeight].
       /// {@endtemplate}
-      final double toolbarHeight,
+      final double? toolbarHeight,
 
       /// {@template flutter.material.appbar.toolbarTextStyle}
       /// The default text style for the AppBar's [leading], and
@@ -320,8 +320,8 @@ extension AppBarXs on Widget {
       ///  * [titleTextStyle], which overrides the default text style for the [title].
       ///  * [DefaultTextStyle], which overrides the default text style for all of the
       ///    the widgets in a subtree.
-      final TextStyle toolbarTextStyle,
-      final Key key}) {
+      final TextStyle? toolbarTextStyle,
+      final Key? key}) {
     return AppbarGadient(
       key: key,
       shadowColor: shadowColor,
@@ -411,10 +411,10 @@ extension AppBarXs on Widget {
   Future xDialog(context,
       {final bool barrierDismissible = true,
       final bool useRootNavigator = true,
-      final Color barrierColor,
-      final RouteSettings routeSettings,
-      final bool useSafeArea,
-      final String barrierLabel}) {
+      final Color? barrierColor,
+      final RouteSettings? routeSettings,
+      required final bool useSafeArea,
+      final String? barrierLabel}) {
     return showDialog(
         context: context,
         barrierColor: barrierColor,
@@ -452,25 +452,25 @@ extension StringsX on String {
       /// The text to display.
       ///
       /// This will be null if a [textSpan] is provided instead.
-      final String data,
+      final String? data,
 
       /// The text to display as a [InlineSpan].
       ///
       /// This will be null if [data] is provided instead.
-      final InlineSpan textSpan,
+      final InlineSpan? textSpan,
 
       /// If non-null, the style to use for this text.
       ///
       /// If the style's "inherit" property is true, the style will be merged with
       /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
       /// replace the closest enclosing [DefaultTextStyle].
-      final TextStyle style,
+      final TextStyle? style,
 
       /// {@macro flutter.painting.textPainter.strutStyle}
-      final StrutStyle strutStyle,
+      final StrutStyle? strutStyle,
 
       /// How the text should be aligned horizontally.
-      final TextAlign textAlign,
+      final TextAlign? textAlign,
 
       /// The directionality of the text.
       ///
@@ -485,7 +485,7 @@ extension StringsX on String {
       /// its left.
       ///
       /// Defaults to the ambient [Directionality], if any.
-      final TextDirection textDirection,
+      final TextDirection? textDirection,
 
       /// Used to select a font when the same Unicode character can
       /// be rendered differently, depending on the locale.
@@ -494,15 +494,15 @@ extension StringsX on String {
       /// is inherited from the enclosing app with `Localizations.localeOf(context)`.
       ///
       /// See [RenderParagraph.locale] for more information.
-      final Locale locale,
+      final Locale? locale,
 
       /// Whether the text should break at soft line breaks.
       ///
       /// If false, the glyphs in the text will be positioned as if there was unlimited horizontal space.
-      final bool softWrap,
+      final bool? softWrap,
 
       /// How visual overflow should be handled.
-      final TextOverflow overflow,
+      final TextOverflow? overflow,
 
       /// The number of font pixels for each logical pixel.
       ///
@@ -512,7 +512,7 @@ extension StringsX on String {
       /// The value given to the constructor as textScaleFactor. If null, will
       /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
       /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
-      final double textScaleFactor,
+      final double? textScaleFactor,
 
       /// An optional maximum number of lines for the text to span, wrapping if necessary.
       /// If the text exceeds the given number of lines, it will be truncated according
@@ -525,7 +525,7 @@ extension StringsX on String {
       /// an explicit number for its [DefaultTextStyle.maxLines], then the
       /// [DefaultTextStyle] value will take precedence. You can use a [RichText]
       /// widget directly to entirely override the [DefaultTextStyle].
-      final int maxLines,
+      final int? maxLines,
 
       /// An alternative semantics label for this text.
       ///
@@ -539,14 +539,14 @@ extension StringsX on String {
       /// ```dart
       /// Text(r'$$', semanticsLabel: 'Double dollars')
       /// ```
-      final String semanticsLabel,
+      final String? semanticsLabel,
 
       /// {@macro flutter.painting.textPainter.textWidthBasis}
-      final TextWidthBasis textWidthBasis,
-      final Key key,
+      final TextWidthBasis? textWidthBasis,
+      final Key? key,
 
       /// {@macro flutter.dart:ui.textHeightBehavior}
-      final ui.TextHeightBehavior textHeightBehavior}) {
+      final ui.TextHeightBehavior? textHeightBehavior}) {
     return Text(
       this,
       textHeightBehavior: textHeightBehavior,
@@ -569,25 +569,25 @@ extension StringsX on String {
     /// The text to display.
     ///
     /// This will be null if a [textSpan] is provided instead.
-    final String data,
+    final String? data,
 
     /// The text to display as a [InlineSpan].
     ///
     /// This will be null if [data] is provided instead.
-    final InlineSpan textSpan,
+    final InlineSpan? textSpan,
 
     /// If non-null, the style to use for this text.
     ///
     /// If the style's "inherit" property is true, the style will be merged with
     /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
     /// replace the closest enclosing [DefaultTextStyle].
-    final TextStyle style,
+    final TextStyle? style,
 
     /// {@macro flutter.painting.textPainter.strutStyle}
-    final StrutStyle strutStyle,
+    final StrutStyle? strutStyle,
 
     /// How the text should be aligned horizontally.
-    final TextAlign textAlign,
+    final TextAlign? textAlign,
 
     /// The directionality of the text.
     ///
@@ -602,7 +602,7 @@ extension StringsX on String {
     /// its left.
     ///
     /// Defaults to the ambient [Directionality], if any.
-    final TextDirection textDirection,
+    final TextDirection? textDirection,
 
     /// The number of font pixels for each logical pixel.
     ///
@@ -612,7 +612,7 @@ extension StringsX on String {
     /// The value given to the constructor as textScaleFactor. If null, will
     /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
     /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
-    final double textScaleFactor,
+    final double? textScaleFactor,
 
     /// An optional maximum number of lines for the text to span, wrapping if necessary.
     /// If the text exceeds the given number of lines, it will be truncated according
@@ -625,34 +625,34 @@ extension StringsX on String {
     /// an explicit number for its [DefaultTextStyle.maxLines], then the
     /// [DefaultTextStyle] value will take precedence. You can use a [RichText]
     /// widget directly to entirely override the [DefaultTextStyle].
-    final int maxLines,
+    final int? maxLines,
 
     /// {@macro flutter.painting.textPainter.textWidthBasis}
-    final TextWidthBasis textWidthBasis,
-    final Key key,
+    final TextWidthBasis? textWidthBasis,
+    final Key? key,
 
     /// {@macro flutter.widgets.editableText.autofocus}
     bool autofocus = false,
 
     /// {@macro flutter.widgets.editableText.minLines}
-    final int minLines,
+    final int? minLines,
 
     /// {@macro flutter.widgets.editableText.showCursor}
     bool showCursor = false,
 
     /// {@macro flutter.widgets.editableText.cursorWidth}
-    final double cursorWidth,
+    final double? cursorWidth,
 
     /// {@macro flutter.widgets.editableText.cursorHeight}
-    final double cursorHeight,
+    final double? cursorHeight,
 
     /// {@macro flutter.widgets.editableText.cursorRadius}
-    final Radius cursorRadiu,
+    final Radius? cursorRadiu,
 
     /// The color to use when painting the cursor.
     ///
     /// Defaults to the theme's `cursorColor` when null.
-    final Color cursorColor,
+    final Color? cursorColor,
 
     /// {@macro flutter.widgets.editableText.enableInteractiveSelection}
     final bool enableInteractiveSelection = true,
@@ -684,10 +684,10 @@ extension StringsX on String {
     /// ```
     ///
     /// If null, this widget will create its own [FocusNode].
-    final FocusNode focusNode,
+    final FocusNode? focusNode,
 
     /// {@macro flutter.widgets.editableText.onSelectionChanged}
-    final SelectionChangedCallback onSelectionChanged,
+    final SelectionChangedCallback? onSelectionChanged,
 
     /// Called when the user taps on this selectable text.
     ///
@@ -704,23 +704,23 @@ extension StringsX on String {
     ///
     /// To listen to arbitrary pointer events without competing with the
     /// selectable text's internal gesture detector, use a [Listener].
-    final GestureTapCallback onTap,
+    final GestureTapCallback? onTap,
 
     /// {@macro flutter.widgets.editableText.scrollPhysics}
-    final ScrollPhysics scrollPhysics,
+    final ScrollPhysics? scrollPhysics,
 
     /// {@macro flutter.widgets.editableText.selectionControls}
-    final TextSelectionControls selectionControls,
+    final TextSelectionControls? selectionControls,
 
     /// Configuration of toolbar options.
     ///
     /// Paste and cut will be disabled regardless.
     ///
     /// If not set, select all and copy will be enabled by default.
-    final ToolbarOptions toolbarOptions,
+    final ToolbarOptions? toolbarOptions,
 
     /// {@macro flutter.dart:ui.textHeightBehavior}
-    final TextHeightBehavior textHeightBehavior,
+    final TextHeightBehavior? textHeightBehavior,
   }) {
     return SelectableText(
       this,
@@ -752,14 +752,14 @@ extension StringsX on String {
   }
 
   Widget xTFD(
-      {final double fontSize,
-      final TextEditingController controller,
-      final Color color,
-      final double lableSize,
-      final Color textColor,
-      final bool obscureText,
-      final Key key,
-      final int maxline}) {
+      {final double? fontSize,
+      final TextEditingController? controller,
+      final Color? color,
+      final double? lableSize,
+      final Color? textColor,
+      final bool? obscureText,
+      final Key? key,
+      final int? maxline}) {
     return TextFiledMaterialD(
       name: this,
       color: color,
@@ -775,59 +775,59 @@ extension StringsX on String {
 
   /// tf mean TextFormFiled
   Widget xTF({
-    final double fontSize,
-    final TextEditingController controller,
-    final Color color,
-    final double lableSize,
-    final Color textColor,
-    final Key key,
+    final double? fontSize,
+    final TextEditingController? controller,
+    final Color? color,
+    final double? lableSize,
+    final Color? textColor,
+    final Key? key,
     final bool showLabel = true,
-    final TextInputType keyboardType,
-    final String initialValue,
-    final FocusNode focusNode,
+    final TextInputType? keyboardType,
+    final String? initialValue,
+    final FocusNode? focusNode,
     final TextCapitalization textCapitalization = TextCapitalization.none,
-    final TextInputAction textInputAction,
-    final TextStyle style,
-    final StrutStyle strutStyle,
-    final TextDirection textDirection,
+    final TextInputAction? textInputAction,
+    final TextStyle? style,
+    final StrutStyle? strutStyle,
+    final TextDirection? textDirection,
     final TextAlign textAlign = TextAlign.start,
-    final TextAlignVertical textAlignVertical,
+    final TextAlignVertical? textAlignVertical,
     final bool autofocus = false,
     final bool readOnly = false,
-    final ToolbarOptions toolbarOptions,
-    final bool showCursor,
+    final ToolbarOptions? toolbarOptions,
+    final bool? showCursor,
     final String obscuringCharacter = '•',
     final bool obscureText = false,
     final bool autocorrect = true,
-    final SmartDashesType smartDashesType,
-    final SmartQuotesType smartQuotesType,
+    final SmartDashesType? smartDashesType,
+    final SmartQuotesType? smartQuotesType,
     final bool enableSuggestions = true,
     final bool maxLengthEnforced = true,
-    final MaxLengthEnforcement maxLengthEnforcement,
+    final MaxLengthEnforcement? maxLengthEnforcement,
     final int maxLines = 1,
-    final int minLines,
+    final int? minLines,
     final bool expands = false,
-    final int maxLength,
-    final ValueChanged<String> onChanged,
-    final GestureTapCallback onTap,
-    final VoidCallback onEditingComplete,
-    final ValueChanged<String> onFieldSubmitted,
-    final FormFieldSetter<String> onSaved,
-    final FormFieldValidator<String> validator,
-    final List<TextInputFormatter> inputFormatters,
-    final bool enabled,
+    final int? maxLength,
+    final ValueChanged<String>? onChanged,
+    final GestureTapCallback? onTap,
+    final VoidCallback? onEditingComplete,
+    final ValueChanged<String>? onFieldSubmitted,
+    final FormFieldSetter<String>? onSaved,
+    final FormFieldValidator<String>? validator,
+    final List<TextInputFormatter>? inputFormatters,
+    final bool? enabled,
     final double cursorWidth = 2.0,
-    final double cursorHeight,
-    final Radius cursorRadius,
-    final Color cursorColor,
-    final Brightness keyboardAppearance,
+    final double? cursorHeight,
+    final Radius? cursorRadius,
+    final Color? cursorColor,
+    final Brightness? keyboardAppearance,
     final EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
     final bool enableInteractiveSelection = true,
-    final TextSelectionControls selectionControls,
-    final InputCounterWidgetBuilder buildCounter,
-    final ScrollPhysics scrollPhysics,
-    final Iterable<String> autofillHints,
-    final AutovalidateMode autovalidateMode,
+    final TextSelectionControls? selectionControls,
+    final InputCounterWidgetBuilder? buildCounter,
+    final ScrollPhysics? scrollPhysics,
+    final Iterable<String>? autofillHints,
+    final AutovalidateMode? autovalidateMode,
   }) {
     return TextFiledMaterial(
       maxLengthEnforced: maxLengthEnforced,
@@ -889,24 +889,24 @@ extension StringsX on String {
 
 extension ListViewBuilders on Function(BuildContext context, int index) {
   Widget xListVB({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.vertical,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
-    @required int itemCount,
+    EdgeInsetsGeometry? padding,
+    required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) {
     return ListView.builder(
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -926,22 +926,22 @@ extension ListViewBuilders on Function(BuildContext context, int index) {
   }
 
   Widget xListVBCSP({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.vertical,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    EdgeInsetsGeometry padding,
-    @required int itemCount,
+    ScrollController? controller,
+    bool? primary,
+    EdgeInsetsGeometry? padding,
+    required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) {
     return ListView.builder(
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -961,24 +961,24 @@ extension ListViewBuilders on Function(BuildContext context, int index) {
   }
 
   Widget xListVBH({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.horizontal,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    ScrollPhysics physics,
+    ScrollController? controller,
+    bool? primary,
+    ScrollPhysics? physics,
     bool shrinkWrap = false,
-    EdgeInsetsGeometry padding,
-    @required int itemCount,
+    EdgeInsetsGeometry? padding,
+    required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) {
     return ListView.builder(
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -998,22 +998,22 @@ extension ListViewBuilders on Function(BuildContext context, int index) {
   }
 
   Widget xListVBHCSP({
-    Key key,
+    Key? key,
     Axis scrollDirection = Axis.horizontal,
     bool reverse = false,
-    ScrollController controller,
-    bool primary,
-    EdgeInsetsGeometry padding,
-    @required int itemCount,
+    ScrollController? controller,
+    bool? primary,
+    EdgeInsetsGeometry? padding,
+    required int itemCount,
     bool addAutomaticKeepAlives = true,
     bool addRepaintBoundaries = true,
     bool addSemanticIndexes = true,
-    double cacheExtent,
-    int semanticChildCount,
+    double? cacheExtent,
+    int? semanticChildCount,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) {
     return ListView.builder(
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -1033,24 +1033,24 @@ extension ListViewBuilders on Function(BuildContext context, int index) {
   }
 
   Widget xGridVB(
-      {Key key,
+      {Key? key,
       Axis scrollDirection = Axis.vertical,
       bool reverse = false,
-      ScrollController controller,
-      bool primary,
-      ScrollPhysics physics,
+      ScrollController? controller,
+      bool? primary,
+      ScrollPhysics? physics,
       bool shrinkWrap = false,
-      EdgeInsetsGeometry padding,
-      @required int itemCount,
+      EdgeInsetsGeometry? padding,
+      required int itemCount,
       bool addAutomaticKeepAlives = true,
       bool addRepaintBoundaries = true,
       bool addSemanticIndexes = true,
-      double cacheExtent,
-      int semanticChildCount,
-      @required SliverGridDelegate gridDelegate}) {
+      double? cacheExtent,
+      int? semanticChildCount,
+      required SliverGridDelegate gridDelegate}) {
     return GridView.builder(
       gridDelegate: gridDelegate,
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -1069,22 +1069,22 @@ extension ListViewBuilders on Function(BuildContext context, int index) {
   }
 
   Widget xGridVBCSP(
-      {Key key,
+      {Key? key,
       Axis scrollDirection = Axis.vertical,
       bool reverse = false,
-      ScrollController controller,
-      bool primary,
-      EdgeInsetsGeometry padding,
-      @required int itemCount,
+      ScrollController? controller,
+      bool? primary,
+      EdgeInsetsGeometry? padding,
+      required int itemCount,
       bool addAutomaticKeepAlives = true,
       bool addRepaintBoundaries = true,
       bool addSemanticIndexes = true,
-      double cacheExtent,
-      int semanticChildCount,
-      @required SliverGridDelegate gridDelegate}) {
+      double? cacheExtent,
+      int? semanticChildCount,
+      required SliverGridDelegate gridDelegate}) {
     return GridView.builder(
       gridDelegate: gridDelegate,
-      itemBuilder: this,
+      itemBuilder: this as Widget Function(BuildContext, int),
       itemCount: itemCount,
       addAutomaticKeepAlives: addAutomaticKeepAlives,
       addRepaintBoundaries: addRepaintBoundaries,
@@ -1122,13 +1122,13 @@ extension AnimationXs on Widget {
   }
 
   Widget xSA({
-    final Key key,
+    final Key? key,
 
     /// The duration of the child animation.
-    final Duration duration,
+    final Duration? duration,
 
     /// The delay between the beginning of two children's animations.
-    final Duration delay,
+    final Duration? delay,
 
     /// The vertical offset to apply at the start of the animation (can be negative).
     final double verticalOffset = 50.0,
@@ -1157,10 +1157,10 @@ extension AnimationXs on Widget {
 
   Widget xFA({
     /// The duration of the child animation.
-    final Duration duration,
+    final Duration? duration,
 
     /// The delay between the beginning of two children's animations.
-    final Duration delay,
+    final Duration? delay,
   }) {
     return FadeInAnimation(
       delay: delay,
@@ -1175,10 +1175,10 @@ extension AnimationXs on Widget {
       {
 
       /// The duration of the child animation.
-      final Duration duration,
+      final Duration? duration,
 
       /// The delay between the beginning of two children's animations.
-      final Duration delay,
+      final Duration? delay,
       double scale = 0.0}) {
     return ScaleAnimation(
       delay: delay,
@@ -1194,10 +1194,10 @@ extension AnimationXs on Widget {
       {FlipAxis flipAxis = FlipAxis.x,
 
       /// The duration of the child animation.
-      final Duration duration,
+      final Duration? duration,
 
       /// The delay between the beginning of two children's animations.
-      final Duration delay,
+      final Duration? delay,
       double scale = 0.0}) {
     return FlipAnimation(
       delay: delay,
@@ -1211,13 +1211,13 @@ extension AnimationXs on Widget {
 extension XButton on Widget {
   /// if u want elavation so pass value more tham 5
   Widget xButton(
-      {double elavation,
-      double rounded,
-      double spreadRadius,
-      Color color,
-      Function onTap,
-      double width,
-      double height}) {
+      {double? elavation,
+      double? rounded,
+      double? spreadRadius,
+      Color? color,
+      Function? onTap,
+      double? width,
+      double? height}) {
     return MaterialXButton(
         elavation: elavation,
         rounded: rounded,
@@ -1235,7 +1235,7 @@ extension Win on String {
     return XTitle(title: this);
   }
 
-  Widget xTFM({TextEditingController controller, bool obscureText}) {
+  Widget xTFM({TextEditingController? controller, bool? obscureText}) {
     return XContainer(
       padding: EdgeInsets.zero,
       margin: EdgeInsets.all(10.0),
@@ -1247,7 +1247,7 @@ extension Win on String {
           color: Colors.black,
         ),
         validator: (value) {
-          if (value.isEmpty) {
+          if (value!.isEmpty) {
             return 'Please enter ' + this;
           }
           return null;
@@ -1266,7 +1266,7 @@ extension Win on String {
 }
 
 extension Wins on Widget {
-  Widget xExpanded({int flex = 1, Key key}) {
+  Widget xExpanded({int flex = 1, Key? key}) {
     return Expanded(
       flex: flex,
       key: key,
@@ -1275,10 +1275,10 @@ extension Wins on Widget {
   }
 
   Widget toAlign(
-      {AlignmentGeometry alignment,
-      double heightFactor,
-      Key key,
-      double widthFactor}) {
+      {required AlignmentGeometry alignment,
+      double? heightFactor,
+      Key? key,
+      double? widthFactor}) {
     return Align(
       alignment: alignment,
       heightFactor: heightFactor,
@@ -1289,10 +1289,10 @@ extension Wins on Widget {
   }
 
   Widget xAlign(
-      {AlignmentGeometry alignment,
-      double heightFactor,
-      Key key,
-      double widthFactor}) {
+      {required AlignmentGeometry alignment,
+      double? heightFactor,
+      Key? key,
+      double? widthFactor}) {
     return Align(
       alignment: alignment,
       heightFactor: heightFactor,
@@ -1302,7 +1302,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xBottomCenter({double heightFactor, Key key, double widthFactor}) {
+  Widget xBottomCenter({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.bottomCenter,
       heightFactor: heightFactor,
@@ -1312,7 +1312,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xBottomRight({double heightFactor, Key key, double widthFactor}) {
+  Widget xBottomRight({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.bottomRight,
       heightFactor: heightFactor,
@@ -1322,7 +1322,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xBottomLeft({double heightFactor, Key key, double widthFactor}) {
+  Widget xBottomLeft({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.bottomLeft,
       heightFactor: heightFactor,
@@ -1332,7 +1332,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xTopCenter({double heightFactor, Key key, double widthFactor}) {
+  Widget xTopCenter({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.topCenter,
       heightFactor: heightFactor,
@@ -1342,7 +1342,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xTopLeft({double heightFactor, Key key, double widthFactor}) {
+  Widget xTopLeft({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.topLeft,
       heightFactor: heightFactor,
@@ -1352,7 +1352,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xTopRight({double heightFactor, Key key, double widthFactor}) {
+  Widget xTopRight({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.topRight,
       heightFactor: heightFactor,
@@ -1362,7 +1362,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xCenterLeft({double heightFactor, Key key, double widthFactor}) {
+  Widget xCenterLeft({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.centerLeft,
       heightFactor: heightFactor,
@@ -1372,7 +1372,7 @@ extension Wins on Widget {
     );
   }
 
-  Widget xCenterRight({double heightFactor, Key key, double widthFactor}) {
+  Widget xCenterRight({double? heightFactor, Key? key, double? widthFactor}) {
     return Align(
       alignment: Alignment.centerRight,
       heightFactor: heightFactor,
@@ -1383,14 +1383,14 @@ extension Wins on Widget {
   }
 
   Widget toMaterial({
-    Key key,
+    Key? key,
     MaterialType type = MaterialType.canvas,
     double elevation = 0.0,
-    Color color,
+    Color? color,
     Color shadowColor = const Color(0xFF000000),
-    TextStyle textStyle,
-    BorderRadiusGeometry borderRadius,
-    ShapeBorder shape,
+    TextStyle? textStyle,
+    BorderRadiusGeometry? borderRadius,
+    ShapeBorder? shape,
     bool borderOnForeground = true,
     Clip clipBehavior = Clip.none,
     Duration animationDuration = kThemeChangeDuration,
@@ -1412,14 +1412,14 @@ extension Wins on Widget {
   }
 
   Widget xMaterial({
-    Key key,
+    Key? key,
     MaterialType type = MaterialType.canvas,
     double elevation = 0.0,
-    Color color,
+    Color? color,
     Color shadowColor = const Color(0xFF000000),
-    TextStyle textStyle,
-    BorderRadiusGeometry borderRadius,
-    ShapeBorder shape,
+    TextStyle? textStyle,
+    BorderRadiusGeometry? borderRadius,
+    ShapeBorder? shape,
     bool borderOnForeground = true,
     Clip clipBehavior = Clip.none,
     Duration animationDuration = kThemeChangeDuration,
@@ -1441,11 +1441,11 @@ extension Wins on Widget {
   }
 
   Widget xCard(
-      {double elevation,
-      Color shadowColor,
-      Color color,
-      Function onTap,
-      BorderRadiusGeometry borderRadius}) {
+      {double? elevation,
+      Color? shadowColor,
+      Color? color,
+      Function? onTap,
+      BorderRadiusGeometry? borderRadius}) {
     return xContainer(
         padding: EdgeInsets.zero,
         blurRadius: elevation ?? 10,

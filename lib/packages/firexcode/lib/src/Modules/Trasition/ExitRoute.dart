@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class XEnterExitRoute extends PageRouteBuilder {
-  final Widget enterPage;
-  final Widget exitPage;
+  final Widget? enterPage;
+  final Widget? exitPage;
   XEnterExitRoute({this.exitPage, this.enterPage})
       : super(
           pageBuilder: (
@@ -10,7 +10,7 @@ class XEnterExitRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              enterPage,
+              enterPage!,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

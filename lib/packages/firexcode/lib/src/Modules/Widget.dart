@@ -5,18 +5,18 @@ import 'package:firexcode/src/Modules/MxAnimationType.dart';
 import 'package:firexcode/src/Modules/animation/animation_do.dart';
 
 extension XWidget on Widget {
-  Widget xFlexable({FlexFit fit = FlexFit.loose, int flex = 1, Key key}) {
+  Widget xFlexable({FlexFit fit = FlexFit.loose, int flex = 1, Key? key}) {
     return Flexible(fit: fit, flex: flex, key: key, child: this);
   }
 
   /// ------------------------------------------------------------------------ Single ChildScroll view NeverScrollableScrollPhysics
   Widget xSingleChildScroolViewNeverScrollableScrollPhysics(
-      {Key key,
+      {Key? key,
       bool reverse = false,
-      ScrollController controller,
+      ScrollController? controller,
       DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-      EdgeInsetsGeometry padding,
-      bool primary,
+      EdgeInsetsGeometry? padding,
+      bool? primary,
       Axis scrollDirection = Axis.vertical}) {
     return SingleChildScrollView(
       key: key,
@@ -33,12 +33,12 @@ extension XWidget on Widget {
 
   /// ------------------------------------------------------------------------ Single ChildScroll view
   Widget xSingleChildScroolViewClampingScrollPhysics(
-      {Key key,
+      {Key? key,
       bool reverse = false,
-      ScrollController controller,
+      ScrollController? controller,
       DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-      EdgeInsetsGeometry padding,
-      bool primary,
+      EdgeInsetsGeometry? padding,
+      bool? primary,
       Axis scrollDirection = Axis.vertical}) {
     return SingleChildScrollView(
       key: key,
@@ -55,13 +55,13 @@ extension XWidget on Widget {
 
   /// ------------------------------------------------------------------------ Single ChildScroll view
   Widget xSingleChildScroolView(
-      {Key key,
+      {Key? key,
       bool reverse = false,
-      ScrollController controller,
+      ScrollController? controller,
       DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-      EdgeInsetsGeometry padding,
-      ScrollPhysics physics,
-      bool primary,
+      EdgeInsetsGeometry? padding,
+      ScrollPhysics? physics,
+      bool? primary,
       Axis scrollDirection = Axis.vertical}) {
     return SingleChildScrollView(
       key: key,
@@ -77,7 +77,7 @@ extension XWidget on Widget {
   }
 
   /// ------------------------------------------------------------------------ Center
-  Widget toCenter({double widthFactor, double heightFactor, Key key}) {
+  Widget toCenter({double? widthFactor, double? heightFactor, Key? key}) {
     return Center(
       heightFactor: heightFactor,
       key: key,
@@ -86,7 +86,7 @@ extension XWidget on Widget {
     );
   }
 
-  Widget xCenter({double widthFactor, double heightFactor, Key key}) {
+  Widget xCenter({double? widthFactor, double? heightFactor, Key? key}) {
     return Center(
       heightFactor: heightFactor,
       key: key,
@@ -99,10 +99,10 @@ extension XWidget on Widget {
   Widget animation(
       {from,
       to,
-      @required XAnimationType configMap,
+      required XAnimationType configMap,
       curve,
       duration = const Duration(seconds: 1),
-      @required autoPlay,
+      required autoPlay,
       onAnimationEnd,
       onAnimationBegin,
       iterationCount = 1,
@@ -129,7 +129,7 @@ extension XWidget on Widget {
 
   Widget fadeIn(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -145,7 +145,7 @@ extension XWidget on Widget {
 
   Widget fadeInDown(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -161,7 +161,7 @@ extension XWidget on Widget {
 
   Widget fadeInDownBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -177,7 +177,7 @@ extension XWidget on Widget {
 
   Widget fadeInUp(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -193,7 +193,7 @@ extension XWidget on Widget {
 
   Widget fadeInUpBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -209,7 +209,7 @@ extension XWidget on Widget {
 
   Widget fadeInLeft(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -225,7 +225,7 @@ extension XWidget on Widget {
 
   Widget fadeInLeftBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -241,7 +241,7 @@ extension XWidget on Widget {
 
   Widget fadeInRight(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -257,7 +257,7 @@ extension XWidget on Widget {
 
   Widget fadeInRightBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -275,7 +275,7 @@ extension XWidget on Widget {
 
   Widget fadeOut(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -291,7 +291,7 @@ extension XWidget on Widget {
 
   Widget fadeOutDown(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -307,7 +307,7 @@ extension XWidget on Widget {
 
   Widget fadeOutDownBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -323,7 +323,7 @@ extension XWidget on Widget {
 
   Widget fadeOutUp(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -339,7 +339,7 @@ extension XWidget on Widget {
 
   Widget fadeOutUpBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -355,7 +355,7 @@ extension XWidget on Widget {
 
   Widget fadeOutLeft(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -371,7 +371,7 @@ extension XWidget on Widget {
 
   Widget fadeOutLeftBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -387,7 +387,7 @@ extension XWidget on Widget {
 
   Widget fadeOutRight(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -403,7 +403,7 @@ extension XWidget on Widget {
 
   Widget fadeOutRightBig(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -420,7 +420,7 @@ extension XWidget on Widget {
   //---------------------------------------------------------------------------------------
   Widget bounceInDown(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -436,7 +436,7 @@ extension XWidget on Widget {
 
   Widget bounceInUp(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -452,7 +452,7 @@ extension XWidget on Widget {
 
   Widget bounceInLeft(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -468,7 +468,7 @@ extension XWidget on Widget {
 
   Widget bounceInRight(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -484,7 +484,7 @@ extension XWidget on Widget {
 
   Widget elasticIn(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -500,7 +500,7 @@ extension XWidget on Widget {
 
   Widget elasticInDown(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -516,7 +516,7 @@ extension XWidget on Widget {
 
   Widget elasticInUp(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -532,7 +532,7 @@ extension XWidget on Widget {
 
   Widget elasticInLeft(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -548,7 +548,7 @@ extension XWidget on Widget {
 
   Widget elasticInRight(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -564,7 +564,7 @@ extension XWidget on Widget {
 
   Widget slideInDown(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -580,7 +580,7 @@ extension XWidget on Widget {
 
   Widget slideInUp(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -596,7 +596,7 @@ extension XWidget on Widget {
 
   Widget slideInLeft(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -612,7 +612,7 @@ extension XWidget on Widget {
 
   Widget slideInRight(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -628,7 +628,7 @@ extension XWidget on Widget {
 
   Widget flipInX(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -644,7 +644,7 @@ extension XWidget on Widget {
 
   Widget flipInY(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -660,7 +660,7 @@ extension XWidget on Widget {
 
   Widget zoomIn(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -678,7 +678,7 @@ extension XWidget on Widget {
 
   Widget zoomOut(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -696,7 +696,7 @@ extension XWidget on Widget {
 
   Widget jelloIn(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false}) {
@@ -712,7 +712,7 @@ extension XWidget on Widget {
 
   Widget bounce(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -732,7 +732,7 @@ extension XWidget on Widget {
 
   Widget flash(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -750,7 +750,7 @@ extension XWidget on Widget {
 
   Widget pulse(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -768,7 +768,7 @@ extension XWidget on Widget {
 
   Widget swing(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -786,7 +786,7 @@ extension XWidget on Widget {
 
   Widget spin(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -806,7 +806,7 @@ extension XWidget on Widget {
 
   Widget spinPerfect(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -826,7 +826,7 @@ extension XWidget on Widget {
 
   Widget dance(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,
@@ -844,7 +844,7 @@ extension XWidget on Widget {
 
   Widget roulette(
       {bool animate = true,
-      dynamic Function(AnimationController) controller,
+      dynamic Function(AnimationController)? controller,
       Duration delay = const Duration(milliseconds: 0),
       Duration duration = const Duration(milliseconds: 3500),
       bool manualTrigger = false,

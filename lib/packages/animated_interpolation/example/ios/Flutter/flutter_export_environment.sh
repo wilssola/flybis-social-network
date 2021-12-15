@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\Flutter"
-export "FLUTTER_APPLICATION_PATH=D:\Projects\flybis\lib\packages\animated_interpolation\example"
+export "FLUTTER_ROOT=C:\tools\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\WolfTheZelda\Flybis\lib\packages\animated_interpolation\example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"

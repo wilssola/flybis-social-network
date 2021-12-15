@@ -14,7 +14,7 @@ extension XNew on Widget {
     /// If a [backgroundColor] is not specified, the theme's
     /// [ThemeData.primaryColorLight] is used with dark foreground colors, and
     /// [ThemeData.primaryColorDark] with light foreground colors.
-    final Color backgroundColor,
+    final Color? backgroundColor,
 
     /// The default text color for text in the circle.
     ///
@@ -23,13 +23,13 @@ extension XNew on Widget {
     ///
     /// Defaults to [ThemeData.primaryColorLight] for dark background colors, and
     /// [ThemeData.primaryColorDark] for light background colors.
-    final Color foregroundColor,
+    final Color? foregroundColor,
 
     /// The background image of the circle. Changing the background
     /// image will cause the avatar to animate to the new image.
     ///
     /// If the [CircleAvatar] is to have the user's initials, use [child] instead.
-    final ImageProvider backgroundImage,
+    final ImageProvider? backgroundImage,
 
     /// The size of the avatar, expressed as the radius (half the diameter).
     ///
@@ -43,7 +43,7 @@ extension XNew on Widget {
     ///
     /// Changes to the [radius] are animated (including changing from an explicit
     /// [radius] to a [minRadius]/[maxRadius] pair or vice versa).
-    final double radius,
+    final double? radius,
 
     /// The minimum size of the avatar, expressed as the radius (half the
     /// diameter).
@@ -59,7 +59,7 @@ extension XNew on Widget {
     /// However, if the [minRadius] is 40 and the [CircleAvatar] has a parent
     /// [SizedBox] whose size changes instantaneously from 20 pixels to 40 pixels,
     /// the size will snap to 40 pixels instantly.
-    final double minRadius,
+    final double? minRadius,
 
     /// The maximum size of the avatar, expressed as the radius (half the
     /// diameter).
@@ -75,7 +75,7 @@ extension XNew on Widget {
     /// However, if the [maxRadius] is 40 and the [CircleAvatar] has a parent
     /// [SizedBox] whose size changes instantaneously from 20 pixels to 40 pixels,
     /// the size will snap to 40 pixels instantly.
-    final double maxRadius,
+    final double? maxRadius,
   }) {
     return CircleAvatar(
       backgroundColor: backgroundColor,
@@ -93,8 +93,8 @@ extension XNew on Widget {
       {Color buttonColor = Colors.red,
       double buttonWidth = 150,
       double buttonHeight = 30,
-      double rounded,
-      Function onTap}) {
+      double? rounded,
+      Function? onTap}) {
     return MaterialXButton(
       color: buttonColor,
       width: buttonWidth,
@@ -108,36 +108,36 @@ extension XNew on Widget {
   Widget xRaisedButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      FocusNode focusNode,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      Widget child,
-      AlignmentGeometry alignment,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      Color primary,
-      Color shadowColor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      void Function() onPressed}) {
+      Color? color,
+      FocusNode? focusNode,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      Widget? child,
+      AlignmentGeometry? alignment,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      Color? primary,
+      Color? shadowColor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      void Function()? onPressed}) {
     return ElevatedButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: ElevatedButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -164,36 +164,36 @@ extension XNew on Widget {
   Widget xElevatedButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      FocusNode focusNode,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      Widget child,
-      AlignmentGeometry alignment,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      Color primary,
-      Color shadowColor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      void Function() onPressed}) {
+      Color? color,
+      FocusNode? focusNode,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      Widget? child,
+      AlignmentGeometry? alignment,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      Color? primary,
+      Color? shadowColor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      void Function()? onPressed}) {
     return ElevatedButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: ElevatedButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -220,36 +220,36 @@ extension XNew on Widget {
   Widget xFlatButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      FocusNode focusNode,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      Widget child,
-      AlignmentGeometry alignment,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      Color primary,
-      Color shadowColor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      void Function() onPressed}) {
+      Color? color,
+      FocusNode? focusNode,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      Widget? child,
+      AlignmentGeometry? alignment,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      Color? primary,
+      Color? shadowColor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      void Function()? onPressed}) {
     return TextButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: TextButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -276,36 +276,36 @@ extension XNew on Widget {
   Widget xTextButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      Color color,
-      FocusNode focusNode,
-      Key key,
-      MaterialTapTargetSize materialTapTargetSize,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      Widget child,
-      AlignmentGeometry alignment,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      Color primary,
-      Color shadowColor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      void Function() onPressed}) {
+      Color? color,
+      FocusNode? focusNode,
+      Key? key,
+      MaterialTapTargetSize? materialTapTargetSize,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      Widget? child,
+      AlignmentGeometry? alignment,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      Color? primary,
+      Color? shadowColor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      void Function()? onPressed}) {
     return TextButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: TextButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -332,36 +332,36 @@ extension XNew on Widget {
   Widget xOutlineButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      FocusNode focusNode,
-      Key key,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      Widget child,
-      Color color,
-      MaterialTapTargetSize materialTapTargetSize,
-      AlignmentGeometry alignment,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      Color primary,
-      Color shadowColor,
-      void Function() onPressed}) {
+      FocusNode? focusNode,
+      Key? key,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      Widget? child,
+      Color? color,
+      MaterialTapTargetSize? materialTapTargetSize,
+      AlignmentGeometry? alignment,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      Color? primary,
+      Color? shadowColor,
+      void Function()? onPressed}) {
     return OutlinedButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: OutlinedButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -388,36 +388,36 @@ extension XNew on Widget {
   Widget xOutlinedButton(
       {bool autofocus = false,
       Clip clipBehavior = Clip.none,
-      FocusNode focusNode,
-      Key key,
-      void Function() onLongPress,
-      EdgeInsetsGeometry padding,
-      ShapeBorder shape,
-      Widget child,
-      Color color,
-      MaterialTapTargetSize materialTapTargetSize,
-      AlignmentGeometry alignment,
-      BorderSide side,
-      ButtonTextTheme textTheme,
-      double elevation,
-      Duration animationDuration,
-      MouseCursor disabledMouseCursor,
-      TextStyle textStyle,
-      VisualDensity visualDensity,
-      bool enableFeedback,
-      MouseCursor enabledMouseCursor,
-      Size minimumSize,
-      Color onSurface,
-      Color primary,
-      Color shadowColor,
-      void Function() onPressed}) {
+      FocusNode? focusNode,
+      Key? key,
+      void Function()? onLongPress,
+      EdgeInsetsGeometry? padding,
+      ShapeBorder? shape,
+      Widget? child,
+      Color? color,
+      MaterialTapTargetSize? materialTapTargetSize,
+      AlignmentGeometry? alignment,
+      BorderSide? side,
+      ButtonTextTheme? textTheme,
+      double? elevation,
+      Duration? animationDuration,
+      MouseCursor? disabledMouseCursor,
+      TextStyle? textStyle,
+      VisualDensity? visualDensity,
+      bool? enableFeedback,
+      MouseCursor? enabledMouseCursor,
+      Size? minimumSize,
+      Color? onSurface,
+      Color? primary,
+      Color? shadowColor,
+      void Function()? onPressed}) {
     return OutlinedButton(
       onPressed: onPressed,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
       style: OutlinedButton.styleFrom(
         padding: padding,
-        shape: shape,
+        shape: shape as OutlinedBorder?,
         alignment: alignment,
         animationDuration: animationDuration,
         disabledMouseCursor: disabledMouseCursor,
@@ -442,17 +442,17 @@ extension XNew on Widget {
   }
 
   Widget xLiquidPullToRefresh({
-    @required Future<void> Function() onRefresh,
-    Color color,
-    Color backgroundColor,
+    required Future<void> Function() onRefresh,
+    Color? color,
+    Color? backgroundColor,
     bool Function(ScrollNotification) notificationPredicate =
         defaultScrollNotificationPredicate,
-    double height,
+    double? height,
     int springAnimationDurationInMilliseconds = 1000,
     double borderWidth = 2.0,
     bool showChildOpacityTransition = true,
-    ScrollController scrollController,
-    Key key,
+    ScrollController? scrollController,
+    Key? key,
   }) {
     return XLiquidPullToRefresh(
       onRefresh: onRefresh,
@@ -471,17 +471,17 @@ extension XNew on Widget {
   }
 
   Widget xPullRefresh(
-      {@required Future<void> Function() onRefresh,
-      Color color,
-      Color backgroundColor,
+      {required Future<void> Function() onRefresh,
+      Color? color,
+      Color? backgroundColor,
       bool Function(ScrollNotification) notificationPredicate =
           defaultScrollNotificationPredicate,
       double strokeWidth = 2.0,
       double displacement = 40.0,
       bool showChildOpacityTransition = true,
-      String semanticsLabel,
-      String semanticsValue,
-      Key key,
+      String? semanticsLabel,
+      String? semanticsValue,
+      Key? key,
       RefreshIndicatorTriggerMode triggerMode =
           RefreshIndicatorTriggerMode.onEdge}) {
     return RefreshIndicator(
@@ -541,7 +541,7 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// horizontally.
-    final double left,
+    final double? left,
 
     /// The distance that the child's top edge is inset from the top of the stack.
     ///
@@ -550,7 +550,7 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// vertically.
-    final double top,
+    final double? top,
 
     /// The distance that the child's right edge is inset from the right of the stack.
     ///
@@ -559,7 +559,7 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// horizontally.
-    final double right,
+    final double? right,
 
     /// The distance that the child's bottom edge is inset from the bottom of the stack.
     ///
@@ -568,7 +568,7 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// vertically.
-    final double bottom,
+    final double? bottom,
 
     /// The child's width.
     ///
@@ -577,7 +577,7 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// horizontally.
-    final double width,
+    final double? width,
 
     /// The child's height.
     ///
@@ -586,8 +586,8 @@ extension XNew on Widget {
     ///
     /// If all three are null, the [Stack.alignment] is used to position the child
     /// vertically.
-    final double height,
-    final Key key,
+    final double? height,
+    final Key? key,
   }) {
     return Positioned(
       bottom: bottom,
@@ -602,26 +602,26 @@ extension XNew on Widget {
   }
 
   Widget xChip(
-      {final Widget avatar,
-      final Widget label,
-      final TextStyle labelStyle,
-      final EdgeInsetsGeometry labelPadding,
-      final ShapeBorder shape,
-      final Clip clipBehavior,
-      final FocusNode focusNode,
-      final bool autofocus,
-      final Color backgroundColor,
-      final EdgeInsetsGeometry padding,
-      final VisualDensity visualDensity,
-      final Widget deleteIcon,
-      final VoidCallback onDeleted,
-      final Color deleteIconColor,
-      final String deleteButtonTooltipMessage,
-      final MaterialTapTargetSize materialTapTargetSize,
-      final double elevation,
-      final Color shadowColor,
-      final Key key,
-      final BorderSide side,
+      {final Widget? avatar,
+      final Widget? label,
+      final TextStyle? labelStyle,
+      final EdgeInsetsGeometry? labelPadding,
+      final ShapeBorder? shape,
+      final Clip? clipBehavior,
+      final FocusNode? focusNode,
+      final bool? autofocus,
+      final Color? backgroundColor,
+      final EdgeInsetsGeometry? padding,
+      final VisualDensity? visualDensity,
+      final Widget? deleteIcon,
+      final VoidCallback? onDeleted,
+      final Color? deleteIconColor,
+      final String? deleteButtonTooltipMessage,
+      final MaterialTapTargetSize? materialTapTargetSize,
+      final double? elevation,
+      final Color? shadowColor,
+      final Key? key,
+      final BorderSide? side,
       final bool useDeleteButtonTooltip = true}) {
     return Chip(
       key: key,
@@ -635,7 +635,7 @@ extension XNew on Widget {
       onDeleted: onDeleted,
       deleteIconColor: deleteIconColor,
       deleteButtonTooltipMessage: deleteButtonTooltipMessage,
-      shape: shape,
+      shape: shape as OutlinedBorder?,
       clipBehavior: clipBehavior ?? Clip.none,
       focusNode: focusNode,
       autofocus: autofocus ?? true,
@@ -652,23 +652,23 @@ extension XNew on Widget {
   ///
   /// Must not be used in combination with [child].
   Widget xTab({
-    final Key key,
+    final Key? key,
 
     /// The widget to be used as the tab's label.
     ///
     /// Usually a [Text] widget, possibly wrapped in a [Semantics] widget.
     ///
     /// Must not be used in combination with [text].
-    final String text,
+    final String? text,
 
     /// An icon to display as the tab's label.
-    final Widget icon,
+    final Widget? icon,
 
     /// The margin added around the tab's icon.
     ///
     /// Only useful when used in combination with [icon], and either one of
     /// [text] or [child] is non-null.
-    final EdgeInsetsGeometry iconMargin,
+    required final EdgeInsetsGeometry iconMargin,
   }) {
     return Tab(
       icon: icon,
@@ -692,20 +692,20 @@ extension XNew on Widget {
       ///
       ///  * [WillPopScope], another widget that provides a way to intercept the
       ///    back button.
-      final WillPopCallback onWillPop,
+      final WillPopCallback? onWillPop,
 
       /// Called when one of the form fields changes.
       ///
       /// In addition to this callback being invoked, all the form fields themselves
       /// will rebuild.
-      final VoidCallback onChanged,
+      final VoidCallback? onChanged,
 
       /// Used to enable/disable form fields auto validation and update their error
       /// text.
       ///
       /// {@macro flutter.widgets.FormField.autovalidateMode}
-      final AutovalidateMode autovalidateMode,
-      Key key}) {
+      final AutovalidateMode? autovalidateMode,
+      Key? key}) {
     return Form(
       onChanged: onChanged,
       onWillPop: onWillPop,

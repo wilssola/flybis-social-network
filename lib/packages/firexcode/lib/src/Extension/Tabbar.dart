@@ -3,7 +3,7 @@ import 'package:firexcode/firexcode.dart';
 import 'package:flutter/rendering.dart';
 
 extension XTabbars on Widget {
-  Widget xDTController({int length, int initialIndex = 0}) {
+  Widget xDTController({required int length, int initialIndex = 0}) {
     return DefaultTabController(
         initialIndex: initialIndex, length: length, child: this);
   }
@@ -15,7 +15,7 @@ extension XTabbars on Widget {
 /// and the length of the [TabBarView.children] list.
 extension XTabBarss on List<Widget> {
   Widget xTabBar(
-      {TabController controller,
+      {TabController? controller,
 
       /// Whether this tab bar can be scrolled horizontally.
       ///
@@ -30,7 +30,7 @@ extension XTabBarss on List<Widget> {
       /// property is used.
       ///
       /// If [indicator] is specified, this property is ignored.
-      Color indicatorColor,
+      Color? indicatorColor,
 
       /// The thickness of the line that appears below the selected tab.
       ///
@@ -67,7 +67,7 @@ extension XTabBarss on List<Widget> {
       /// occupied by the tab in the tab bar. If [indicatorSize] is
       /// [TabBarIndicatorSize.label], then the tab's bounds are only as wide as
       /// the tab widget itself.
-      Decoration indicator,
+      Decoration? indicator,
 
       /// Defines how the selected tab indicator's size is computed.
       ///
@@ -79,7 +79,7 @@ extension XTabBarss on List<Widget> {
       /// The selected tab's location appearance can be refined further with
       /// the [indicatorColor], [indicatorWeight], [indicatorPadding], and
       /// [indicator] properties.
-      TabBarIndicatorSize indicatorSize,
+      TabBarIndicatorSize? indicatorSize,
 
       /// The color of selected tab labels.
       ///
@@ -88,13 +88,13 @@ extension XTabBarss on List<Widget> {
       ///
       /// If this parameter is null, then the color of the [ThemeData.primaryTextTheme]'s
       /// body2 text color is used.
-      Color labelColor,
+      Color? labelColor,
 
       /// The color of unselected tab labels.
       ///
       /// If this property is null, unselected tab labels are rendered with the
       /// [labelColor] with 70% opacity.
-      Color unselectedLabelColor,
+      Color? unselectedLabelColor,
 
       /// The text style of the selected tab labels.
       ///
@@ -103,22 +103,22 @@ extension XTabBarss on List<Widget> {
       ///
       /// If this property is null, then the text style of the
       /// [ThemeData.primaryTextTheme]'s body2 definition is used.
-      TextStyle labelStyle,
+      TextStyle? labelStyle,
 
       /// The padding added to each of the tab labels.
       ///
       /// If this property is null, then kTabLabelPadding is used.
-      EdgeInsetsGeometry labelPadding,
+      EdgeInsetsGeometry? labelPadding,
 
       /// The text style of the unselected tab labels
       ///
       /// If this property is null, then the [labelStyle] value is used. If [labelStyle]
       /// is null, then the text style of the [ThemeData.primaryTextTheme]'s
       /// body2 definition is used.
-      TextStyle unselectedLabelStyle,
+      TextStyle? unselectedLabelStyle,
 
       /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-      DragStartBehavior dragStartBehavior,
+      required DragStartBehavior dragStartBehavior,
 
       /// An optional callback that's called when the [TabBar] is tapped.
       ///
@@ -129,14 +129,14 @@ extension XTabBarss on List<Widget> {
       /// even if the tap doesn't change the TabController's index. TabBar [onTap]
       /// callbacks should not make changes to the TabController since that would
       /// interfere with the default tap handler.
-      ValueChanged<int> onTap,
+      ValueChanged<int>? onTap,
 
       /// Whether this tab bar should automatically adjust the [indicatorColor].
       ///
       /// If [automaticIndicatorColorAdjustment] is true,
       /// then the [indicatorColor] will be automatically adjusted to [Colors.white]
       /// when the [indicatorColor] is same as [Material.color] of the [Material] parent widget.
-      final bool automaticIndicatorColorAdjustment,
+      final bool? automaticIndicatorColorAdjustment,
 
       /// Whether detected gestures should provide acoustic and/or haptic feedback.
       ///
@@ -144,13 +144,13 @@ extension XTabBarss on List<Widget> {
       /// will produce a short vibration, when feedback is enabled.
       ///
       /// Defaults to true.
-      final bool enableFeedback,
+      final bool? enableFeedback,
 
       /// The cursor for a mouse pointer when it enters or is hovering over the
       /// individual tab widgets.
       ///
       /// If this property is null, [SystemMouseCursors.click] will be used.
-      final MouseCursor mouseCursor,
+      final MouseCursor? mouseCursor,
 
       /// Defines the ink response focus, hover, and splash colors.
       ///
@@ -166,7 +166,7 @@ extension XTabBarss on List<Widget> {
       /// If the overlay color is null or resolves to null, then the default values
       /// for [InkResponse.focusColor], [InkResponse.hoverColor], [InkResponse.splashColor]
       /// will be used instead.
-      final MaterialStateProperty<Color> overlayColor,
+      final MaterialStateProperty<Color>? overlayColor,
 
       /// How the [TabBar]'s scroll view should respond to user input.
       ///
@@ -174,8 +174,8 @@ extension XTabBarss on List<Widget> {
       /// user stops dragging the scroll view.
       ///
       /// Defaults to matching platform conventions.
-      final ScrollPhysics physics,
-      Key key}) {
+      final ScrollPhysics? physics,
+      Key? key}) {
     return TabBar(
       automaticIndicatorColorAdjustment:
           automaticIndicatorColorAdjustment ?? true,
@@ -203,10 +203,10 @@ extension XTabBarss on List<Widget> {
   }
 
   Widget xTabBarView(
-      {TabController controller,
+      {TabController? controller,
       DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-      Key key,
-      ScrollPhysics physics}) {
+      Key? key,
+      ScrollPhysics? physics}) {
     return TabBarView(
       controller: controller,
       dragStartBehavior: dragStartBehavior,
@@ -226,7 +226,7 @@ extension XBottomNavigationBar on List<BottomNavigationBarItem> {
     /// The stateful widget that creates the bottom navigation bar needs to keep
     /// track of the index of the selected [BottomNavigationBarItem] and call
     /// `setState` to rebuild the bottom navigation bar with the new [currentIndex].
-    ValueChanged<int> onTap,
+    ValueChanged<int>? onTap,
 
     /// The index into [items] for the current active [BottomNavigationBarItem].
     int currentIndex = 0,
@@ -242,14 +242,14 @@ extension XBottomNavigationBar on List<BottomNavigationBarItem> {
     ///
     /// See documentation for [BottomNavigationBarType] for information on the
     /// meaning of different types.
-    BottomNavigationBarType type,
+    BottomNavigationBarType? type,
 
     /// The color of the [BottomNavigationBar] itself.
     ///
     /// If [type] is [BottomNavigationBarType.shifting] and the
     /// [items]s, have [BottomNavigationBarItem.backgroundColor] set, the [item]'s
     /// backgroundColor will splash and overwrite this color.
-    Color backgroundColor,
+    Color? backgroundColor,
 
     /// The size of all of the [BottomNavigationBarItem] icons.
     ///
@@ -260,13 +260,13 @@ extension XBottomNavigationBar on List<BottomNavigationBarItem> {
     /// [BottomNavigationBarItem.label].
     ///
     /// If null then the [ThemeData.primaryColor] is used.
-    Color selectedItemColor,
+    Color? selectedItemColor,
 
     /// The color of the unselected [BottomNavigationBarItem.icon] and
     /// [BottomNavigationBarItem.label]s.
     ///
     /// If null then the [TextTheme.caption]'s color is used.
-    Color unselectedItemColor,
+    Color? unselectedItemColor,
 
     /// The size, opacity, and color of the icon in the currently selected
     /// [BottomNavigationBarItem.icon].
@@ -292,11 +292,11 @@ extension XBottomNavigationBar on List<BottomNavigationBarItem> {
 
     /// The [TextStyle] of the [BottomNavigationBarItem] labels when they are
     /// selected.
-    TextStyle selectedLabelStyle,
+    TextStyle? selectedLabelStyle,
 
     /// The [TextStyle] of the [BottomNavigationBarItem] labels when they are not
     /// selected.
-    TextStyle unselectedLabelStyle,
+    TextStyle? unselectedLabelStyle,
 
     /// The font size of the [BottomNavigationBarItem] labels when they are selected.
     ///
@@ -314,12 +314,12 @@ extension XBottomNavigationBar on List<BottomNavigationBarItem> {
     double unselectedFontSize = 12.0,
 
     /// Whether the labels are shown for the selected [BottomNavigationBarItem].
-    bool showUnselectedLabels,
+    bool? showUnselectedLabels,
 
     /// Whether the labels are shown for the unselected [BottomNavigationBarItem]s.
     bool showSelectedLabels = true,
-    Color fixedColor,
-    Key key,
+    Color? fixedColor,
+    Key? key,
   }) {
     return BottomNavigationBar(
       items: this,

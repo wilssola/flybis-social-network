@@ -11,7 +11,7 @@ extension Snackbar on Widget {
       /// [ThemeData.snackBarTheme.backgroundColor]. If that is not specified
       /// it will default to a dark variation of [ColorScheme.surface] for light
       /// themes, or [ColorScheme.onSurface] for dark themes.
-      final Color backgroundColor,
+      final Color? backgroundColor,
 
       /// The z-coordinate at which to place the snack bar. This controls the size
       /// of the shadow below the snack bar.
@@ -20,7 +20,7 @@ extension Snackbar on Widget {
       ///
       /// If this property is null, then [ThemeData.snackBarTheme.elevation] is
       /// used, if that is also null, the default value is 6.0.
-      final double elevation,
+      final double? elevation,
 
       /// The shape of the snack bar's [Material].
       ///
@@ -31,7 +31,7 @@ extension Snackbar on Widget {
       /// [SnackBarBehavior.fixed], no overriding shape is specified, so the
       /// [SnackBar] is rectangular. For [SnackBarBehavior.floating], it uses a
       /// [RoundedRectangleBorder] with a circular corner radius of 4.0.
-      final ShapeBorder shape,
+      final ShapeBorder? shape,
 
       /// This defines the behavior and location of the snack bar.
       ///
@@ -41,7 +41,7 @@ extension Snackbar on Widget {
       ///
       /// If this property is null, then [ThemeData.snackBarTheme.behavior]
       /// is used. If that is null, then the default is [SnackBarBehavior.fixed].
-      final SnackBarBehavior behavior,
+      final SnackBarBehavior? behavior,
 
       /// (optional) An action that the user can take based on the snack bar.
       ///
@@ -49,7 +49,7 @@ extension Snackbar on Widget {
       /// prompted the snackbar. Snack bars can have at most one action.
       ///
       /// The action should not be "dismiss" or "cancel".
-      final SnackBarAction action,
+      final SnackBarAction? action,
 
       /// The amount of time the snack bar should be displayed.
       ///
@@ -61,13 +61,13 @@ extension Snackbar on Widget {
       ///    currently displayed snack bar, if any, and allows the next to be
       ///    displayed.
       ///  * <https://material.io/design/components/snackbars.html>
-      final Duration duration,
+      required final Duration duration,
 
       /// The animation driving the entrance and exit of the snack bar.
-      final Animation<double> animation,
+      final Animation<double>? animation,
 
       /// Called the first time that the snackbar is visible within a [Scaffold].
-      final VoidCallback onVisible,
+      final VoidCallback? onVisible,
 
       ///
       /// This property is only used when [behavior] is [SnackBarBehavior.floating].
@@ -75,7 +75,7 @@ extension Snackbar on Widget {
       ///
       /// If this property is null, then the default is
       /// `EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0)`.
-      final EdgeInsetsGeometry margin,
+      final EdgeInsetsGeometry? margin,
 
       /// The width of the snack bar.
       ///
@@ -85,7 +85,7 @@ extension Snackbar on Widget {
       ///
       /// If this property is null, then the snack bar will take up the full device
       /// width less the margin.
-      final double width,
+      final double? width,
 
       /// The amount of padding to apply to the snack bar's content and optional
       /// action.
@@ -94,7 +94,7 @@ extension Snackbar on Widget {
       /// the presence of an [action]. The start padding is 24 if [behavior] is
       /// [SnackBarBehavior.fixed] and 16 if it is [SnackBarBehavior.floating]. If
       /// there is no [action], the same padding is added to the end.
-      final EdgeInsetsGeometry padding}) {
+      final EdgeInsetsGeometry? padding}) {
     return SnackBar(
       padding: padding,
       width: width,

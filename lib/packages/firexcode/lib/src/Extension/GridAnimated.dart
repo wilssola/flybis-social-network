@@ -25,14 +25,14 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     /// Called, as needed, to build list item widgets.
     ///
     /// List items are only built when they're scrolled into view.
-    final LiveListItemBuilder itemBuilder,
+    final LiveListItemBuilder? itemBuilder,
 
     /// The number of items the list will start with.
     ///
     /// The appearance of the initial items is not animated. They
     /// are created, as needed, by [itemBuilder] with an animation parameter
     /// of [kAlwaysCompleteAnimation].
-    final int itemCount,
+    final int? itemCount,
 
     /// The axis along which the scroll view scrolls.
     ///
@@ -65,7 +65,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     /// [ScrollController.keepScrollOffset]). It can be used to read the current
     /// scroll position (see [ScrollController.offset]), or change it (see
     /// [ScrollController.animateTo]).
-    final ScrollController controller,
+    final ScrollController? controller,
 
     /// Whether this is the primary scroll view associated with the parent
     /// [PrimaryScrollController].
@@ -75,7 +75,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     ///
     /// Defaults to true when [scrollDirection] is [Axis.vertical] and
     /// [controller] is null.
-    final bool primary,
+    final bool? primary,
 
     /// How the scroll view should respond to user input.
     ///
@@ -83,7 +83,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     /// user stops dragging the scroll view.
     ///
     /// Defaults to matching platform conventions.
-    final ScrollPhysics physics,
+    final ScrollPhysics? physics,
 
     /// Whether the extent of the scroll view in the [scrollDirection] should be
     /// determined by the contents being viewed.
@@ -102,7 +102,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     final bool shrinkWrap = false,
 
     /// The amount of space by which to inset the children.
-    final EdgeInsetsGeometry padding,
+    final EdgeInsetsGeometry? padding,
 
     /// A delegate that controls the layout of the children within the [GridView].
     ///
@@ -110,7 +110,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     /// constructors let you specify this
     /// delegate explicitly. The other constructors create a [gridDelegate]
     /// implicitly.
-    @required SliverGridDelegate gridDelegate,
+    required SliverGridDelegate gridDelegate,
 
     /// Whether to wrap each child in an [AutomaticKeepAlive].
     ///
@@ -151,7 +151,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
     ///  * IndexedChildSemantics, for an explanation of how to manually
     ///    provide semantic indexes.
     final bool addSemanticIndexes = true,
-    final Key key,
+    final Key? key,
   }) {
     return XGridAnimated(
       padding: padding,
@@ -178,7 +178,7 @@ extension AniamtedX on Widget Function(BuildContext, int, Animation<double>) {
 }
 
 SliverGridDelegate xSGDWFCC(
-    {int crossAxisCount,
+    {required int crossAxisCount,
     double crossAxisSpacing = 0.0,
     double mainAxisSpacing = 0.0,
     double childAspectRatio = 1.0}) {
@@ -193,13 +193,13 @@ SliverGridDelegate xSGDWFCC(
 extension ZX on Function(BuildContext, int, Animation<double>) {
   Widget xlbAnimated({
     bool shrinkWrap = false,
-    ScrollPhysics physics,
+    ScrollPhysics? physics,
     Duration showItemInterval = const Duration(milliseconds: 150),
     Duration showItemDuration = const Duration(milliseconds: 300),
     EdgeInsetsGeometry padding = const EdgeInsets.all(0.0),
     bool reAnimateOnVisibility = false,
     Axis scrollDirection = Axis.vertical,
-    @required int itemCount,
+    required int itemCount,
   }) {
     return XlbAnimated(
         shrinkWrap: shrinkWrap,
@@ -210,6 +210,6 @@ extension ZX on Function(BuildContext, int, Animation<double>) {
         reAnimateOnVisibility: reAnimateOnVisibility,
         scrollDirection: scrollDirection,
         itemCount: itemCount,
-        itemBuilder: this);
+        itemBuilder: this as Widget Function(BuildContext, int, Animation<double>));
   }
 }

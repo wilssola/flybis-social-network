@@ -3,11 +3,11 @@ import 'package:firexcode/firexcode.dart';
 extension XSliverGrids on Widget Function(
     BuildContext, int, Animation<double>) {
   Widget xSliverGrid(
-      {@required ScrollController controller,
-      @required int itemCount,
-      @required SliverGridDelegate gridDelegate,
+      {required ScrollController controller,
+      required int itemCount,
+      required SliverGridDelegate gridDelegate,
       bool reAnimateOnVisibility = false,
-      Key key,
+      Key? key,
       Duration showItemDuration = const Duration(milliseconds: 200),
       Duration showItemInterval = const Duration(milliseconds: 100),
       Duration delay = const Duration(milliseconds: 150),
@@ -30,11 +30,11 @@ extension XSliverGrids on Widget Function(
 extension XSliverLists on Widget Function(
     BuildContext, int, Animation<double>) {
   Widget xSliverList(
-      {@required ScrollController controller,
-      @required int itemCount,
-      final SliverGridDelegate gridDelegate,
+      {required ScrollController controller,
+      required int itemCount,
+      final SliverGridDelegate? gridDelegate,
       bool reAnimateOnVisibility = false,
-      Key key,
+      Key? key,
       Duration showItemDuration = const Duration(milliseconds: 200),
       Duration showItemInterval = const Duration(milliseconds: 100),
       Duration delay = const Duration(milliseconds: 150),
