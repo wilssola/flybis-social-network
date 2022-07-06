@@ -5,7 +5,9 @@ const package = require("./package.json");
 
 const fs = require("fs");
 const path = require("path");
-const { exec } = require("child_process");
+const {
+  exec
+} = require("child_process");
 
 program.version(package.version);
 
@@ -14,12 +16,12 @@ program
   .description("Compilar builds Web.")
   .action(() => {
     exec("flybis icon-generate", (error, stdout, stderr) => {
-      if (error) {
-        console.error(error);
-      }
-      if (stderr) {
-        console.error(stderr);
-      }
+      if (error)
+        return console.error(error);
+
+      if (stderr)
+        return console.error(stderr);
+
 
       console.log("📦 FLUTTER ICON GENERATE");
       console.log(stdout);
@@ -27,45 +29,44 @@ program
       exec(
         "flutter build web --release --web-renderer auto",
         (error, stdout, stderr) => {
-          if (error) {
-            console.error(error);
-          }
-          if (stderr) {
-            console.error(stderr);
-          }
+          if (error)
+            return console.error(error);
+
+          if (stderr)
+            return console.error(stderr);
+
 
           console.log("📦 FLUTTER BUILD");
           console.log(stdout);
 
           exec("cd react && npm run build", (error, stdout, stderr) => {
-            if (error) {
-              console.error(error);
-            }
-            if (stderr) {
-              console.error(stderr);
-            }
+            if (error)
+              return console.error(error);
+
+            if (stderr)
+              return console.error(stderr);
+
 
             console.log("📦 REACT BUILD");
             console.log(stdout);
 
             exec("flybis web-minify", (error, stdout, stderr) => {
-              if (error) {
-                console.error(error);
-              }
-              if (stderr) {
-                console.error(stderr);
-              }
+              if (error)
+                return console.error(error);
+
+              if (stderr)
+                return console.error(stderr);
+
 
               console.log("📦 WEB MINIFY");
               console.log(stdout);
 
               exec("flybis web-copy", (error, stdout, stderr) => {
-                if (error) {
-                  console.error(error);
-                }
-                if (stderr) {
-                  console.error(stderr);
-                }
+                if (error)
+                  return console.error(error);
+                if (stderr)
+                  return console.error(stderr);
+
 
                 console.log("📦 WEB COPY");
                 console.log(stdout);
@@ -79,15 +80,15 @@ program
 
 program
   .command("web-minify")
-  .description("Minimizar scripts da build Web.")
+  .description("Minimizar javascripts para a build Web.")
   .action(() => {
     const terser = require("terser");
     const folder = "/build/web/";
 
     fs.readdir(path.join(__dirname, folder), (error, files) => {
-      if (error) {
+      if (error)
         return console.error("Unable to scan directory: ", error);
-      }
+
 
       files.forEach((file) => {
         if (path.extname(file) == ".js") {
@@ -98,22 +99,20 @@ program
               .minify(original, {
                 compress: true,
                 ie8: true,
-                keep_classnames: path.basename(file).includes("main")
-                  ? false
-                  : true,
-                keep_fnames: path.basename(file).includes("main")
-                  ? false
-                  : true,
+                keep_classnames: path.basename(file).includes("main") ?
+                  false : true,
+                keep_fnames: path.basename(file).includes("main") ?
+                  false : true,
                 mangle: true,
                 module: true,
               })
               .then((minify) => {
                 fs.writeFile(location, minify.code, (error) => {
-                  if (error) {
+                  if (error)
                     return console.error("Unable to minify file: ", error);
-                  }
 
-                  console.log({
+
+                  return console.log({
                     original: `${original.length} Characters`,
                     minify: `${minify.code.length} Characters`,
                     location,
@@ -128,15 +127,14 @@ program
 
 program
   .command("web-copy")
-  .description("Copiar build Web para os diretórios corretos.")
+  .description("Copiar a build Web para os diretórios de distribuição.")
   .action(() => {
     const fsExtra = require("fs-extra");
     const copyDir = require("copy-dir");
 
     const emptys = ["/public", "/electron/app"];
 
-    const paths = [
-      {
+    const paths = [{
         input: "/react/build",
         output: emptys[0],
       },
@@ -165,21 +163,22 @@ program
         });
       });
 
-      console.log({ empty });
+      console.log({
+        empty
+      });
     });
 
     function copy(directory) {
       copyDir.sync(
         path.join(__dirname, directory.input),
-        path.join(__dirname, directory.output),
-        {
+        path.join(__dirname, directory.output), {
           utimes: true, // Keep add time and modify time.
           mode: true, // Keep file mode.
           cover: true, // Cover file when exists, default is true.
         }
       );
 
-      console.log({
+      return console.log({
         input: path.join(__dirname, directory.input),
         output: path.join(__dirname, directory.output),
       });
@@ -194,8 +193,7 @@ program
 
     copyDir.sync(
       path.join(__dirname, "/assets/icons"),
-      path.join(__dirname, "/electron/assets/icons"),
-      {
+      path.join(__dirname, "/electron/assets/icons"), {
         utimes: true, // Keep add time and modify time.
         mode: true, // Keep file mode.
         cover: true, // Cover file when exists, default is true.
@@ -205,12 +203,24 @@ program
     exec(
       "flutter pub run flutter_launcher_icons:main",
       (error, stdout, stderr) => {
+        if (error)
+          return console.error(error);
+
+        if (stderr)
+          return console.error(stderr);
+
         console.log("📦 FLUTTER LAUNCHER ICONS");
         console.log(stdout);
 
         exec(
           "flutter pub run flutter_native_splash:create",
           (error, stdout, stderr) => {
+            if (error)
+              return console.error(error);
+
+            if (stderr)
+              return console.error(stderr);
+
             console.log("📦 FLUTTER NATIVE SPLASH");
             console.log(stdout);
           }
