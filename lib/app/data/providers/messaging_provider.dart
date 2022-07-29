@@ -99,6 +99,7 @@ class MessagingProvider {
       await _notification.createNotification(
         content: NotificationContent(
           id: notification.hashCode,
+          channelKey: 'high_importance_channel',
           title: notification.title,
           body: notification.body,
           notificationLayout: NotificationLayout.Default,
@@ -117,7 +118,7 @@ class MessagingProvider {
     String endMessage = 'Progress End',
   }) async {
     try {
-      await Future.delayed(Duration(milliseconds: 100), () async {
+      await Future.delayed(const Duration(milliseconds: 100), () async {
         if (progress >= endProgress) {
           await _notification.createNotification(
             content: NotificationContent(

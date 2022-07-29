@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -8,9 +9,12 @@ import 'package:universal_html/html.dart' as html;
 import 'package:flybis/plugins/ui/ui.dart' as ui;
 
 class AdsenseWidget extends StatelessWidget {
-  AdsenseWidget();
+  const AdsenseWidget({Key? key}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
+    if (!kIsWeb) return const Padding(padding: EdgeInsets.zero);
+
     ui.platformViewRegistry.registerViewFactory(
       'adsenseType',
       (int viewId) => html.IFrameElement()
@@ -20,23 +24,10 @@ class AdsenseWidget extends StatelessWidget {
         ..style.border = 'none',
     );
 
-    return SizedBox(
+    return const SizedBox(
       width: 320,
       height: 100,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          HtmlElementView(
-            viewType: 'adsenseType',
-          ),
-          Text(
-            'AD',
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-        ],
-      ),
+      child: HtmlElementView(viewType: 'adsenseType'),
     );
   }
 }

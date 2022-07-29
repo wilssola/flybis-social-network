@@ -25,7 +25,7 @@ class LiveService {
   FlybisLive createLive(String? userId) {
     return FlybisLive(
       userId: userId,
-      liveId: Uuid().v4(),
+      liveId: const Uuid().v4(),
       timestamp: _db.serverTimestamp(),
     );
   }

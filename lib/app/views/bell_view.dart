@@ -32,7 +32,7 @@ class BellView extends StatefulWidget {
 
   static const String pageId = 'Bell';
 
-  BellView({
+  const BellView({
     Key? key,
     required this.scaffoldKey,
     required this.pageColor,
@@ -105,7 +105,7 @@ class _BellViewState extends State<BellView>
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -139,14 +139,14 @@ class _BellViewState extends State<BellView>
         List<Widget> bells = [];
 
         if (snapshot.hasData) {
-          snapshot.data!.forEach((FlybisBell flybisBell) {
+          for (var flybisBell in snapshot.data!) {
             bells.add(
               bell_widget.BellWidget(
                 flybisBell: flybisBell,
                 pageColor: widget.pageColor,
               ),
             );
-          });
+          }
         }
 
         if (bells.isEmpty) {
@@ -169,7 +169,7 @@ class _BellViewState extends State<BellView>
         Widget ad = AdWidget(
           pageId: BellView.pageId,
           pageColor: widget.pageColor,
-          margin: EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 15),
         );
 
         return Column(
@@ -177,7 +177,7 @@ class _BellViewState extends State<BellView>
             kNotIsWebOrScreenLittle(context) ? ad : Card(child: ad),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: bells.length,
               itemBuilder: (BuildContext context, int index) {
                 return kNotIsWebOrScreenLittle(context)
@@ -216,7 +216,7 @@ class _BellViewState extends State<BellView>
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return Scaffold(
@@ -230,7 +230,7 @@ class _BellViewState extends State<BellView>
           body: !kIsWeb
               ? bell()
               : Scrollbar(
-                  isAlwaysShown: true,
+                  thumbVisibility: true,
                   showTrackOnHover: true,
                   controller: scrollController,
                   child: bell(),

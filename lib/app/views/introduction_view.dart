@@ -12,7 +12,7 @@ import 'package:flybis/app/data/services/flybis_service.dart';
 // Firestore
 
 class IntroductionView extends StatefulWidget {
-  IntroductionView();
+  const IntroductionView();
 
   @override
   _IntroductionViewState createState() => _IntroductionViewState();
@@ -28,13 +28,12 @@ class _IntroductionViewState extends State<IntroductionView> {
       builder: (BuildContext context,
           AsyncSnapshot<List<FlybisIntroduction>> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         List<PageViewModel> pages = [];
 
-        snapshot.data!.forEach(
-          (FlybisIntroduction page) {
+        for (var page in snapshot.data!) {
             pages.add(
               PageViewModel(
                 title: page.title,
@@ -42,8 +41,7 @@ class _IntroductionViewState extends State<IntroductionView> {
                 image: ImageNetwork.cachedNetworkImage(imageUrl: page.image),
               ),
             );
-          },
-        );
+          }
 
         if (pages.isEmpty) {
           Navigator.pop(context);
@@ -51,13 +49,13 @@ class _IntroductionViewState extends State<IntroductionView> {
 
         return IntroductionScreen(
           pages: pages,
-          done: Text("Done"),
+          done: const Text("Done"),
           onDone: () {
             Navigator.pop(context);
           },
-          next: Text("Next"),
+          next: const Text("Next"),
           showNextButton: true,
-          skip: Text("Skip"),
+          skip: const Text("Skip"),
           showSkipButton: true,
         );
       },

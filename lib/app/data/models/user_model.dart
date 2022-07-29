@@ -38,32 +38,32 @@ class FlybisUser {
 
   FlybisUser({
     // Firebase Auth
-    this.uid: '',
-    this.email: '',
-    this.photoUrl: '',
-    this.displayName: '',
-    this.displayNameQuery: '',
+    this.uid = '',
+    this.email = '',
+    this.photoUrl = '',
+    this.displayName = '',
+    this.displayNameQuery = '',
 
     // Flybis Auth
-    this.username: '',
-    this.usernameQuery: '',
-    this.bio: '',
-    this.bioQuery: '',
+    this.username = '',
+    this.usernameQuery = '',
+    this.bio = '',
+    this.bioQuery = '',
     this.bioSentiment,
-    this.bannerUrl: '',
+    this.bannerUrl = '',
 
     // Counts
-    this.followersCount: 0,
-    this.followingsCount: 0,
-    this.friendsCount: 0,
-    this.postsCount: 0,
+    this.followersCount = 0,
+    this.followingsCount = 0,
+    this.friendsCount = 0,
+    this.postsCount = 0,
 
     // BlurHash
-    this.blurHash: '',
+    this.blurHash = '',
 
     // Premium
-    this.hasPremium: false,
-    this.hasVerified: false,
+    this.hasPremium = false,
+    this.hasVerified = false,
 
     // Timestamp
     this.timestamp,
@@ -82,40 +82,40 @@ class FlybisUser {
 
     FlybisUser result = FlybisUser(
       // Firebase Auth
-      uid: data['uid'] != null ? data['uid'] : documentId,
-      email: data['email'] != null ? data['email'] : '',
-      photoUrl: data['photoUrl'] != null ? data['photoUrl'] : '',
-      displayName: data['displayName'] != null ? data['displayName'] : '',
+      uid: data['uid'] ?? documentId,
+      email: data['email'] ?? '',
+      photoUrl: data['photoUrl'] ?? '',
+      displayName: data['displayName'] ?? '',
       displayNameQuery:
-          data['displayNameQuery'] != null ? data['displayNameQuery'] : '',
+          data['displayNameQuery'] ?? '',
 
       // Flybis Auth
-      username: data['username'] != null ? data['username'] : '',
-      usernameQuery: data['usernameQuery'] != null ? data['usernameQuery'] : '',
-      bio: data['bio'] != null ? data['bio'] : '',
-      bioQuery: data['bioQuery'] != null ? data['bioQuery'] : '',
-      bioSentiment: data['bioSentiment'] != null ? data['bioSentiment'] : {},
-      bannerUrl: data['bannerUrl'] != null ? data['bannerUrl'] : '',
+      username: data['username'] ?? '',
+      usernameQuery: data['usernameQuery'] ?? '',
+      bio: data['bio'] ?? '',
+      bioQuery: data['bioQuery'] ?? '',
+      bioSentiment: data['bioSentiment'] ?? {},
+      bannerUrl: data['bannerUrl'] ?? '',
 
       // Counts
       followersCount:
-          data['followersCount'] != null ? data['followersCount'] : 0,
+          data['followersCount'] ?? 0,
       followingsCount:
-          data['followingsCount'] != null ? data['followingsCount'] : 0,
-      friendsCount: data['friendsCount'] != null ? data['friendsCount'] : 0,
-      postsCount: data['postsCount'] != null ? data['postsCount'] : 0,
+          data['followingsCount'] ?? 0,
+      friendsCount: data['friendsCount'] ?? 0,
+      postsCount: data['postsCount'] ?? 0,
 
       // BlurHash
-      blurHash: data['blurHash'] != null ? data['blurHash'] : '',
+      blurHash: data['blurHash'] ?? '',
 
       // Premium
-      hasPremium: data['hasPremium'] != null ? data['hasPremium'] : false,
-      hasVerified: data['hasVerified'] != null ? data['hasVerified'] : false,
+      hasPremium: data['hasPremium'] ?? false,
+      hasVerified: data['hasVerified'] ?? false,
 
       // Timestamp
-      timestamp: data['timestamp'] != null ? data['timestamp'] : null,
+      timestamp: data['timestamp'],
       timestampBirthday:
-          data['timestampBirthday'] != null ? data['timestampBirthday'] : null,
+          data['timestampBirthday'],
     );
 
     logger.i('FlybisUser.fromMap: ${result.toMap()}');
@@ -126,36 +126,36 @@ class FlybisUser {
   Map<String, dynamic> toMap() {
     return {
       // Firebase Auth
-      'uid': this.uid,
-      'email': this.email,
-      'photoUrl': this.photoUrl,
-      'displayName': this.displayName,
-      'displayNameQuery': this.displayNameQuery,
+      'uid': uid,
+      'email': email,
+      'photoUrl': photoUrl,
+      'displayName': displayName,
+      'displayNameQuery': displayNameQuery,
 
       // Flybis Auth
-      'username': this.username,
-      'usernameQuery': this.usernameQuery,
-      'bio': this.bio,
-      'bioQuery': this.bioQuery,
-      'bioSentiment': this.bioSentiment,
-      'bannerUrl': this.bannerUrl,
+      'username': username,
+      'usernameQuery': usernameQuery,
+      'bio': bio,
+      'bioQuery': bioQuery,
+      'bioSentiment': bioSentiment,
+      'bannerUrl': bannerUrl,
 
       // Counts
-      'followersCount': this.followersCount,
-      'followingsCount': this.followingsCount,
-      'friendsCount': this.friendsCount,
-      'postsCount': this.postsCount,
+      'followersCount': followersCount,
+      'followingsCount': followingsCount,
+      'friendsCount': friendsCount,
+      'postsCount': postsCount,
 
       // BlurHash
-      'blurHash': this.blurHash,
+      'blurHash': blurHash,
 
       // Premium
-      'hasPremium': this.hasPremium,
-      'hasVerified': this.hasVerified,
+      'hasPremium': hasPremium,
+      'hasVerified': hasVerified,
 
       // Timestamp
-      'timestamp': this.timestamp,
-      'timestampBirthday': this.timestampBirthday,
+      'timestamp': timestamp,
+      'timestampBirthday': timestampBirthday,
     };
   }
 }
@@ -165,7 +165,7 @@ class FlybisUserStatus {
   final dynamic timestamp;
 
   FlybisUserStatus({
-    this.status: 'offline',
+    this.status = 'offline',
     this.timestamp,
   });
 
@@ -187,8 +187,8 @@ class FlybisUserStatus {
 
   Map<String, dynamic> toMap() {
     return {
-      'status': this.status,
-      'timestamp': this.timestamp,
+      'status': status,
+      'timestamp': timestamp,
     };
   }
 }

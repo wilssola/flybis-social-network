@@ -27,7 +27,7 @@ class ImageWidget extends StatefulWidget {
   final Color? pageColor;
   final Function? onDoubleTap;
 
-  ImageWidget({
+  const ImageWidget({
     required this.url,
     required this.blurHash,
     this.pageColor,
@@ -61,7 +61,7 @@ class ImageWidgetState extends State<ImageWidget> {
         AsyncSnapshot<void> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return OpenContainer(

@@ -13,7 +13,7 @@ String formatCompactNumber(value) {
 }
 
 String messageTimestampFormat(dynamic timestamp) {
-  final dayInMilliseconds = 24 * 60 * 60 * 1000;
+  const dayInMilliseconds = 24 * 60 * 60 * 1000;
   final DateTime date = timestamp.toDate();
   final int difference =
       date.millisecondsSinceEpoch - DateTime.now().millisecondsSinceEpoch;

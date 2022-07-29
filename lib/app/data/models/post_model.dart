@@ -31,25 +31,25 @@ class FlybisPost {
 
   FlybisPost({
     // User
-    this.userId: '',
+    this.userId = '',
 
     // Post
-    this.postId: '',
-    this.postTitle: '',
-    this.postLocation: '',
-    this.postDescription: '',
+    this.postId = '',
+    this.postTitle = '',
+    this.postLocation = '',
+    this.postDescription = '',
     this.postContents,
-    this.postValidity: false,
-    this.postPopularity: 0,
+    this.postValidity = false,
+    this.postPopularity = 0,
     this.postUrls,
     this.postTags,
     this.postMentions,
 
     // Likes
-    this.likesCount: 0,
+    this.likesCount = 0,
 
     // Dislikes
-    this.dislikesCount: 0,
+    this.dislikesCount = 0,
 
     // Timestamp
     this.timestamp,
@@ -116,37 +116,37 @@ class FlybisPost {
     try {
       List<Map<String, dynamic>?> postContents = [];
       if (this.postContents != null) {
-        this.postContents!.forEach((content) {
+        for (var content in this.postContents!) {
           postContents.add(content.toMap());
-        });
+        }
       }
 
       return {
         // User
-        'userId': this.userId ?? '',
+        'userId': userId ?? '',
 
         // Post
-        'postId': this.postId ?? '',
-        'postTitle': this.postTitle ?? '',
-        'postLocation': this.postLocation ?? '',
-        'postDescription': this.postDescription,
+        'postId': postId ?? '',
+        'postTitle': postTitle ?? '',
+        'postLocation': postLocation ?? '',
+        'postDescription': postDescription,
         'postContents': postContents,
-        'postValidity': this.postValidity,
-        'postPopularity': this.postPopularity ?? 0,
-        'postUrls': this.postUrls ?? [],
-        'postTags': this.postTags ?? [],
-        'postMentions': this.postMentions ?? [],
+        'postValidity': postValidity,
+        'postPopularity': postPopularity ?? 0,
+        'postUrls': postUrls ?? [],
+        'postTags': postTags ?? [],
+        'postMentions': postMentions ?? [],
 
         // Likes
-        'likesCount': this.likesCount,
+        'likesCount': likesCount,
 
         // Dislikes
-        'dislikesCount': this.dislikesCount,
+        'dislikesCount': dislikesCount,
 
         // Timestamp
-        'timestamp': this.timestamp,
-        'timestampDuration': this.timestampDuration,
-        'timestampPopularity': this.timestampPopularity,
+        'timestamp': timestamp,
+        'timestampDuration': timestampDuration,
+        'timestampPopularity': timestampPopularity,
       };
     } catch (error) {
       logger.e('FlybisPost.toMap: ' + error.toString());
@@ -194,17 +194,17 @@ class FlybisPostContent {
 
   FlybisPostContent({
     // Content
-    this.contentId: '',
-    this.contentUrl: '',
-    this.contentThumbnail: '',
-    this.contentType: '',
-    this.contentAspectRatio: 0,
+    this.contentId = '',
+    this.contentUrl = '',
+    this.contentThumbnail = '',
+    this.contentType = '',
+    this.contentAspectRatio = 0,
 
     // BlurHash
-    this.blurHash: '',
+    this.blurHash = '',
 
     // Process
-    this.hasProcessed: false,
+    this.hasProcessed = false,
   });
 
   factory FlybisPostContent.fromMap(
@@ -219,21 +219,21 @@ class FlybisPostContent {
 
       return FlybisPostContent(
         // Content
-        contentId: data['contentId'] != null ? data['contentId'] : '',
-        contentUrl: data['contentUrl'] != null ? data['contentUrl'] : '',
+        contentId: data['contentId'] ?? '',
+        contentUrl: data['contentUrl'] ?? '',
         contentThumbnail:
-            data['contentThumbnail'] != null ? data['contentThumbnail'] : '',
-        contentType: data['contentType'] != null ? data['contentType'] : '',
+            data['contentThumbnail'] ?? '',
+        contentType: data['contentType'] ?? '',
         contentAspectRatio: data['contentAspectRatio'] != null
             ? data['contentAspectRatio'].toDouble()
             : 0,
 
         // BlurHash
-        blurHash: data['blurHash'] != null ? data['blurHash'] : '',
+        blurHash: data['blurHash'] ?? '',
 
         // Process
         hasProcessed:
-            data['hasProcessed'] != null ? data['hasProcessed'] : false,
+            data['hasProcessed'] ?? false,
       );
     } catch (error) {
       logger.e('FlybisPostContent.fromMap: ' + error.toString());
@@ -246,17 +246,17 @@ class FlybisPostContent {
     try {
       return {
         // Content
-        'contentId': this.contentId,
-        'contentUrl': this.contentUrl,
-        'contentThumbnail': this.contentThumbnail,
-        'contentType': this.contentType,
-        'contentAspectRatio': this.contentAspectRatio,
+        'contentId': contentId,
+        'contentUrl': contentUrl,
+        'contentThumbnail': contentThumbnail,
+        'contentType': contentType,
+        'contentAspectRatio': contentAspectRatio,
 
         // BlurHash
-        'blurHash': this.blurHash,
+        'blurHash': blurHash,
 
         // Process
-        'hasProcessed': this.hasProcessed,
+        'hasProcessed': hasProcessed,
       };
     } catch (error) {
       logger.e('FlybisPostContent.toMap: ' + error.toString());

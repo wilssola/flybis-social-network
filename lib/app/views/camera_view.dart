@@ -7,7 +7,6 @@ import 'dart:typed_data';
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 // 📦 Package imports:
 import 'package:detectable_text_field/detector/sample_regular_expressions.dart';
@@ -44,7 +43,7 @@ class CameraView extends StatefulWidget {
   final Color? pageColor;
   final bool pageHeader;
 
-  CameraView({
+  const CameraView({
     required this.scaffoldKey,
     this.pageColor,
     this.pageHeader = false,
@@ -80,23 +79,23 @@ class CameraViewState extends State<CameraView>
   final thumbWidth = 100;
   final thumbHeight = 150;
   //List<VideoInfo> _videos = <VideoInfo>[];
-  bool _imagePickerActive = false;
-  bool _processing = false;
-  bool _canceled = false;
-  double _progress = 0.0;
-  int _videoDuration = 0;
-  String _processPhase = '';
+  final bool _imagePickerActive = false;
+  final bool _processing = false;
+  final bool _canceled = false;
+  final double _progress = 0.0;
+  final int _videoDuration = 0;
+  final String _processPhase = '';
   final bool _debugMode = false;
 
   Widget _getProgressBar() {
     return Container(
-      padding: EdgeInsets.all(30.0),
+      padding: const EdgeInsets.all(30.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 30.0),
+            margin: const EdgeInsets.only(bottom: 30.0),
             child: Text(_processPhase),
           ),
           LinearProgressIndicator(
@@ -137,7 +136,7 @@ class CameraViewState extends State<CameraView>
     availableCameras().then((List<CameraDescription> availableCameras) {
       cameras = availableCameras;
 
-      if (cameras!.length > 0) {
+      if (cameras!.isNotEmpty) {
         if (mounted) {
           setState(() {
             indexCamera = 0;
@@ -203,7 +202,7 @@ class CameraViewState extends State<CameraView>
 
   Widget cameraToggle() {
     if (cameras == null || cameras!.isEmpty) {
-      return Spacer();
+      return const Spacer();
     }
 
     CameraDescription selectedCamera = cameras![indexCamera];
@@ -227,7 +226,7 @@ class CameraViewState extends State<CameraView>
                     .toString()
                     .substring(lensDirection.toString().indexOf('.') + 1)
                     .substring(1),
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -238,7 +237,7 @@ class CameraViewState extends State<CameraView>
 
   Widget cameraFlash() {
     if (cameras == null || cameras!.isEmpty) {
-      return Spacer();
+      return const Spacer();
     }
 
     return Container(
@@ -248,11 +247,11 @@ class CameraViewState extends State<CameraView>
           onPressed: () {
             //TorchCompat.turnOn();
           }, //onFlash,
-          icon: Icon(
+          icon: const Icon(
             Icons.wb_sunny,
             color: Colors.white,
           ),
-          label: Text(
+          label: const Text(
             'Lanterna',
             style: TextStyle(
               color: Colors.white,
@@ -265,7 +264,7 @@ class CameraViewState extends State<CameraView>
 
   Widget cameraGallery() {
     if (cameras == null || cameras!.isEmpty) {
-      return Spacer();
+      return const Spacer();
     }
 
     return galleryButton();
@@ -278,11 +277,11 @@ class CameraViewState extends State<CameraView>
           alignment: Alignment.centerRight,
           child: FlatButton.icon(
             onPressed: gallerySelect,
-            icon: Icon(
+            icon: const Icon(
               Icons.image,
               color: Colors.white,
             ),
-            label: Text(
+            label: const Text(
               'Galeria',
               style: TextStyle(
                 color: Colors.white,
@@ -299,7 +298,7 @@ class CameraViewState extends State<CameraView>
             child: GestureDetector(
               onTap: gallerySelect,
               child: Container(
-                padding: EdgeInsets.all(25),
+                padding: const EdgeInsets.all(25),
                 height: 275,
                 child: Icon(
                   Icons.cloud,
@@ -315,7 +314,7 @@ class CameraViewState extends State<CameraView>
   }
 
   setUuid() {
-    postId = Uuid().v4();
+    postId = const Uuid().v4();
   }
 
   Widget cameraButton() {
@@ -323,7 +322,7 @@ class CameraViewState extends State<CameraView>
       child: Icon(
         Icons.camera,
         size: 100,
-        color: cameraIconColor != null ? cameraIconColor : Colors.white,
+        color: cameraIconColor ?? Colors.white,
       ),
       onTap: () => onCaptureImage(context),
       onLongPress: () => startCaptureVideo(),
@@ -375,7 +374,7 @@ class CameraViewState extends State<CameraView>
 
       contentType = 'image';
       setState(() {
-        this.files.add(PickedFile(imagePath));
+        files.add(PickedFile(imagePath));
       });
     } catch (error) {
       print(error);
@@ -405,7 +404,7 @@ class CameraViewState extends State<CameraView>
 
       if (mounted) {
         setState(() {
-          this.files.add(PickedFile(videoPath));
+          files.add(PickedFile(videoPath));
         });
       }
 
@@ -438,8 +437,8 @@ class CameraViewState extends State<CameraView>
 
     if (mounted) {
       setState(() {
-        this.contentType = 'video';
-        this.files.add(file);
+        contentType = 'video';
+        files.add(file);
       });
     }
   }
@@ -454,8 +453,8 @@ class CameraViewState extends State<CameraView>
 
     if (mounted) {
       setState(() {
-        this.contentType = 'image';
-        this.files.add(file);
+        contentType = 'image';
+        files.add(file);
       });
     }
   }
@@ -466,7 +465,7 @@ class CameraViewState extends State<CameraView>
       builder: (context) {
         return SimpleDialog(
           title: Row(
-            children: <Widget>[
+            children: const <Widget>[
               Icon(Icons.image),
               Padding(padding: EdgeInsets.all(5)),
               Text('Galeria'),
@@ -475,7 +474,7 @@ class CameraViewState extends State<CameraView>
           children: <Widget>[
             SimpleDialogOption(
               child: Row(
-                children: <Widget>[
+                children: const <Widget>[
                   Icon(Icons.camera),
                   Padding(padding: EdgeInsets.all(5)),
                   Text('Imagem'),
@@ -485,7 +484,7 @@ class CameraViewState extends State<CameraView>
             ),
             SimpleDialogOption(
               child: Row(
-                children: <Widget>[
+                children: const <Widget>[
                   Icon(Icons.videocam),
                   Padding(padding: EdgeInsets.all(5)),
                   Text('Vídeo'),
@@ -495,7 +494,7 @@ class CameraViewState extends State<CameraView>
             ),
             SimpleDialogOption(
               child: Row(
-                children: <Widget>[
+                children: const <Widget>[
                   Icon(Icons.clear),
                   Padding(padding: EdgeInsets.all(5)),
                   Text('Cancelar'),
@@ -556,11 +555,11 @@ class CameraViewState extends State<CameraView>
       context,
       MaterialPageRoute(
         builder: (context) => PhotoFilterSelector(
-          title: Text('Photo Filter Example'),
+          title: const Text('Photo Filter Example'),
           image: imageDecode,
           filters: presetFiltersList,
           filename: fileName,
-          loader: Center(child: CircularProgressIndicator()),
+          loader: const Center(child: CircularProgressIndicator()),
           fit: BoxFit.contain,
           //backgroundColor: widget.pageColor,
         ),
@@ -586,11 +585,11 @@ class CameraViewState extends State<CameraView>
     Placemark placemark = placemarks[0];
 
     String formatedAdress;
-    if (placemark.locality!.length > 0 && placemark.country!.length > 0) {
+    if (placemark.locality!.isNotEmpty && placemark.country!.isNotEmpty) {
       formatedAdress = '${placemark.locality}, ${placemark.country}';
-    } else if (placemark.locality!.length > 0) {
+    } else if (placemark.locality!.isNotEmpty) {
       formatedAdress = '${placemark.locality}';
-    } else if (placemark.country!.length > 0) {
+    } else if (placemark.country!.isNotEmpty) {
       formatedAdress = '${placemark.country}';
     } else {
       formatedAdress = 'Desconhecido';
@@ -647,7 +646,7 @@ class CameraViewState extends State<CameraView>
       setState(() {
         files = [];
         isUploading = false;
-        postId = Uuid().v4();
+        postId = const Uuid().v4();
       });
     }
   }
@@ -684,7 +683,7 @@ class CameraViewState extends State<CameraView>
       appBar: appBar() as PreferredSizeWidget?,
       body: Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: AspectRatio(
@@ -725,7 +724,7 @@ class CameraViewState extends State<CameraView>
 
   Widget appBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(0),
+      preferredSize: const Size.fromHeight(0),
       child: AppBar(
         backgroundColor: widget.pageColor,
       ),
@@ -754,13 +753,13 @@ class CameraViewState extends State<CameraView>
       appBar: AppBar(
         backgroundColor: widget.pageColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: clearImage,
         ),
-        title: Text('Caption Post'),
+        title: const Text('Caption Post'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Post'),
+            child: const Text('Post'),
             onPressed: isUploading ? null : () => post(),
           )
         ],
@@ -769,7 +768,7 @@ class CameraViewState extends State<CameraView>
         children: <Widget>[
           Stack(
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: contentType == 'image'
                     ? AspectRatio(
@@ -797,11 +796,11 @@ class CameraViewState extends State<CameraView>
                                       alignment: Alignment.center,
                                       child: RaisedButton.icon(
                                         color: Colors.blue,
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.remove_red_eye,
                                           color: Colors.white,
                                         ),
-                                        label: Text(
+                                        label: const Text(
                                           'Aplicar Filtros',
                                           style: TextStyle(color: Colors.white),
                                         ),
@@ -815,7 +814,7 @@ class CameraViewState extends State<CameraView>
                                       ),
                                     ),
                                   )
-                                : Padding(
+                                : const Padding(
                                     padding: EdgeInsets.zero,
                                   ),
                           ],
@@ -839,11 +838,11 @@ class CameraViewState extends State<CameraView>
                                   alignment: Alignment.center,
                                   child: RaisedButton.icon(
                                     color: Colors.blue,
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.remove_red_eye,
                                       color: Colors.white,
                                     ),
-                                    label: Text(
+                                    label: const Text(
                                       'Editar Vídeo',
                                       style: TextStyle(color: Colors.white),
                                     ),
@@ -859,14 +858,14 @@ class CameraViewState extends State<CameraView>
                               )
                             ],
                           )
-                        : Text('')),
+                        : const Text('')),
               ),
               isUploading
                   ? utils_widget.UtilsWidget().linearProgress(context)
-                  : Padding(padding: EdgeInsets.zero),
+                  : const Padding(padding: EdgeInsets.zero),
             ],
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 10.0),
           ),
           ListTile(
@@ -881,37 +880,37 @@ class CameraViewState extends State<CameraView>
               controller: captionControler,
               detectionRegExp: hashTagAtSignUrlRegExp,
               keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Write a caption',
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             leading: Icon(Icons.pin_drop,
                 color: Theme.of(context).iconTheme.color, size: 35),
             title: Row(
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: 190,
                   child: TextField(
                     controller: locationControler,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Where was this photo taken ?',
                       border: InputBorder.none,
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 !kIsWeb
                     ? RaisedButton.icon(
                         color: Colors.blue,
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.pin_drop,
                           color: Colors.white,
                         ),
-                        label: Text(
+                        label: const Text(
                           'Get Now',
                           style: TextStyle(
                             color: Colors.white,
@@ -924,7 +923,7 @@ class CameraViewState extends State<CameraView>
                         ),
                         onPressed: getUserLocation,
                       )
-                    : Padding(
+                    : const Padding(
                         padding: EdgeInsets.zero,
                       ),
               ],
@@ -942,7 +941,7 @@ class CameraViewState extends State<CameraView>
   Widget build(BuildContext context) {
     super.build(context);
 
-    if (files.length == 0) {
+    if (files.isEmpty) {
       if (!kIsWeb) {
         // Test camera return first
         //return camera();

@@ -61,19 +61,19 @@ class FlybisBell {
   Map<String, dynamic> toMap() {
     return {
       // Reference
-      'ref': this.ref,
+      'ref': ref,
 
       // Users
-      'senderId': this.senderId,
-      'receiverId': this.receiverId,
+      'senderId': senderId,
+      'receiverId': receiverId,
 
       // Bell
-      'bellId': this.bellId,
-      'bellContent': this.bellContent.toMap(),
-      'bellMode': this.bellMode, // comment, friend, follow, message
+      'bellId': bellId,
+      'bellContent': bellContent.toMap(),
+      'bellMode': bellMode, // comment, friend, follow, message
 
       // Timestamp
-      'timestamp': this.timestamp,
+      'timestamp': timestamp,
     };
   }
 }
@@ -106,10 +106,10 @@ class FlybisBellContent {
 
   Map<String, dynamic> toMap() {
     return {
-      'contentId': this.contentId,
-      'contentType': this.contentType,
-      'contentText': this.contentText,
-      'contentImage': this.contentImage,
+      'contentId': contentId,
+      'contentType': contentType,
+      'contentText': contentText,
+      'contentImage': contentImage,
     };
   }
 }
@@ -149,11 +149,11 @@ class FlybisBellData {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {
       // Users
-      'senderId': this.senderId,
-      'receiverId': this.receiverId,
+      'senderId': senderId,
+      'receiverId': receiverId,
 
       // Bell
-      'bell': this.bell.toMap(),
+      'bell': bell.toMap(),
     };
 
     logger.d('FlybisBellData.toMap: ' + data.toString());

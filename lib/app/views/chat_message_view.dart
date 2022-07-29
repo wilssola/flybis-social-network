@@ -44,7 +44,7 @@ class ChatMessageView extends StatefulWidget {
 
   final Color pageColor;
 
-  ChatMessageView({
+  const ChatMessageView({
     Key? key,
     this.flybisChatStatus,
     required this.flybisUserSender,
@@ -54,7 +54,7 @@ class ChatMessageView extends StatefulWidget {
 
   @override
   State createState() => ChatMessageViewState(
-        flybisChatStatus: this.flybisChatStatus,
+        flybisChatStatus: flybisChatStatus,
       );
 }
 
@@ -117,7 +117,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -234,7 +234,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }
 
   Future uploadFile() async {
-    String fileId = Uuid().v4();
+    String fileId = const Uuid().v4();
 
     Reference reference = FirebaseStorage.instance
         .ref()
@@ -267,10 +267,10 @@ class ChatMessageViewState extends State<ChatMessageView> {
   }) async {
     const int kLimit = 5000;
 
-    if (content.trim().length > 0 && content.trim().length <= kLimit) {
+    if (content.trim().isNotEmpty && content.trim().length <= kLimit) {
       textEditingController.clear();
 
-      id = id.length > 0 ? id : Uuid().v4();
+      id = id.isNotEmpty ? id : const Uuid().v4();
 
       final int color = Random().nextInt(pageColors.length);
 
@@ -344,18 +344,18 @@ class ChatMessageViewState extends State<ChatMessageView> {
         isLastMessageLeft(index) &&
                 message.userId == widget.flybisUserReceivers[0]!.uid
             ? Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 child: CircleAvatar(
                   backgroundColor: kAvatarBackground,
                   backgroundImage:
-                      widget.flybisUserReceivers[0]!.photoUrl!.length > 0
+                      widget.flybisUserReceivers[0]!.photoUrl!.isNotEmpty
                           ? ImageNetwork.cachedNetworkImageProvider(
                               widget.flybisUserReceivers[0]!.photoUrl!,
                             )
                           : null,
                 ),
               )
-            : Padding(padding: EdgeInsets.zero),
+            : const Padding(padding: EdgeInsets.zero),
         Column(
           children: <Widget>[
             // Message
@@ -364,7 +364,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
               nip: isOwner ? BubbleNip.rightTop : BubbleNip.leftTop,
               alignment: isOwner ? Alignment.centerRight : Alignment.centerLeft,
               color: pageColors[message.messageColor!],
-              margin: BubbleEdges.only(top: 15),
+              margin: const BubbleEdges.only(top: 15),
               child: Container(
                 margin: EdgeInsets.zero,
                 constraints: BoxConstraints(
@@ -387,7 +387,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                                   Text(
                                     content,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                   LinkPreview(
                                     text: urlFromString(content)!,
@@ -400,7 +400,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                             : Text(
                                 content,
                                 textAlign: TextAlign.left,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               )
                         : message.messageType == 'image'
                             // Image
@@ -416,7 +416,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: content.length > 0
+                                  child: content.isNotEmpty
                                       ? ImageNetwork.cachedNetworkImage(
                                           height: (!kIsWeb ||
                                                   MediaQuery.of(context)
@@ -440,7 +440,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                             // Sticker
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
-                                child: content.length > 0
+                                child: content.isNotEmpty
                                     ? ImageNetwork.cachedNetworkImage(
                                         height:
                                             (!kIsWeb ||
@@ -475,13 +475,13 @@ class ChatMessageViewState extends State<ChatMessageView> {
                       DateFormat('dd MMMM KK:mm').format(
                         message.timestamp.toDate(),
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 12.5,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                       top: 15,
                     ),
                   )
@@ -499,12 +499,12 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
   Widget hour(timestamp) {
     return Container(
-      margin: EdgeInsets.only(top: 7.5),
+      margin: const EdgeInsets.only(top: 7.5),
       child: Text(
         DateFormat('KK:mm').format(
           timestamp.toDate(),
         ),
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 10,
         ),
@@ -547,7 +547,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
         });
       }
 
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           setState(() {
             isLoading = false;
@@ -595,7 +595,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
               child: Container(
                 child: IconButton(
                   splashRadius: 20,
-                  icon: Icon(Icons.image),
+                  icon: const Icon(Icons.image),
                   onPressed: getImage,
                   color: Theme.of(context).iconTheme.color,
                 ),
@@ -608,7 +608,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
               child: Container(
                 child: IconButton(
                   splashRadius: 20,
-                  icon: Icon(Icons.gif),
+                  icon: const Icon(Icons.gif),
                   onPressed: getSticker,
                   color: Theme.of(context).iconTheme.color,
                 ),
@@ -621,15 +621,15 @@ class ChatMessageViewState extends State<ChatMessageView> {
               child: Container(
                 height: 40,
                 padding: EdgeInsets.zero,
-                margin: EdgeInsets.only(left: 5, right: 5),
+                margin: const EdgeInsets.only(left: 5, right: 5),
                 child: TextField(
                   maxLines: null,
                   controller: textEditingController,
                   keyboardType:
                       !kIsWeb ? TextInputType.multiline : TextInputType.text,
                   textCapitalization: TextCapitalization.sentences,
-                  style: TextStyle(fontSize: 15),
-                  decoration: InputDecoration(
+                  style: const TextStyle(fontSize: 15),
+                  decoration: const InputDecoration(
                     hintText: 'Type your message...',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -666,7 +666,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
               child: Container(
                 child: IconButton(
                   splashRadius: 20,
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () => onSendMessage(
                     textEditingController.text,
                     'text',
@@ -684,7 +684,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
 
   Widget buildListMessage() {
     return Flexible(
-      child: flybisChatStatus!.chatId.length == 0
+      child: flybisChatStatus!.chatId.isEmpty
           ? Center(
               child: utils_widget.UtilsWidget()
                   .circularProgress(context, color: widget.pageColor),
@@ -711,7 +711,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
                           snapshot.data,
                         )
                       : Scrollbar(
-                          isAlwaysShown: true,
+                          thumbVisibility: true,
                           showTrackOnHover: true,
                           controller: scrollController,
                           child: messages(
@@ -732,7 +732,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
     List<FlybisChatMessage>? docs,
   ) {
     return ListView.builder(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       reverse: true,
       controller: scrollController,
       itemCount: length,
@@ -756,7 +756,7 @@ class ChatMessageViewState extends State<ChatMessageView> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: widget.pageColor,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.white,
@@ -766,17 +766,17 @@ class ChatMessageViewState extends State<ChatMessageView> {
           ),
           title: Text(
             '@' + widget.flybisUserReceivers[0]!.username!,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
           subtitle: Text(
             widget.flybisUserReceivers[0]!.displayName!,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           trailing: GestureDetector(
-            child: Icon(Icons.phone, color: Colors.white),
+            child: const Icon(Icons.phone, color: Colors.white),
             onTap: initCall,
           ),
         ),

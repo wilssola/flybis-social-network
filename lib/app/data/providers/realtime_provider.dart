@@ -14,13 +14,13 @@ class RealtimeProvider {
   RealtimeProvider._();
   static final RealtimeProvider instance = RealtimeProvider._();
 
-  final DatabaseReference _rt = FirebaseDatabase.instance.reference();
+  final DatabaseReference _rt = FirebaseDatabase.instance.ref();
 
   Map<String, String> timestamp() {
     return ServerValue.timestamp;
   }
 
-  Future<DataSnapshot> once<T>({
+  Future<DatabaseEvent> once<T>({
     required String path,
   }) async {
     final DatabaseReference reference = _rt.child(path);
@@ -30,7 +30,7 @@ class RealtimeProvider {
     return reference.once();
   }
 
-  Stream<Event> onValue<T>({
+  Stream<DatabaseEvent> onValue<T>({
     required String path,
   }) {
     final DatabaseReference reference = _rt.child(path);
@@ -40,7 +40,7 @@ class RealtimeProvider {
     return reference.onValue;
   }
 
-  Stream<Event> onChildAdded<T>({
+  Stream<DatabaseEvent> onChildAdded<T>({
     required String path,
   }) {
     final DatabaseReference reference = _rt.child(path);
@@ -50,7 +50,7 @@ class RealtimeProvider {
     return reference.onChildAdded;
   }
 
-  Stream<Event> onChildChanged<T>({
+  Stream<DatabaseEvent> onChildChanged<T>({
     required String path,
   }) {
     final DatabaseReference reference = _rt.child(path);
@@ -60,7 +60,7 @@ class RealtimeProvider {
     return reference.onChildChanged;
   }
 
-  Stream<Event> onChildMoved<T>({
+  Stream<DatabaseEvent> onChildMoved<T>({
     required String path,
   }) {
     final DatabaseReference reference = _rt.child(path);
@@ -70,7 +70,7 @@ class RealtimeProvider {
     return reference.onChildMoved;
   }
 
-  Stream<Event> onChildRemoved<T>({
+  Stream<DatabaseEvent> onChildRemoved<T>({
     required String path,
   }) {
     final DatabaseReference reference = _rt.child(path);

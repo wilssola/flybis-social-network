@@ -1,3 +1,5 @@
+-ignorewarnings
+
 ## Flutter wrapper
 -keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.**  { *; }
@@ -8,7 +10,7 @@
 -dontwarn io.flutter.embedding.**
 
 ## Firebase
--keep class com.google.firebase.iid.FirebaseInstanceId { zza(...); }
+#-keep class com.google.firebase.iid.FirebaseInstanceId { zza(...); }
 -keep class com.google.firebase.** { *; }
 -keep class com.google.gms.** { *; }
 -keep class io.fabric.** { *; }
@@ -46,11 +48,5 @@
 -keep class org.jetbrains.** { *; }
 
 ## Prevent Proguard Error
--keepattributes EnclosingMethod
--keepattributes InnerClasses
-
-## *
-#-ignorewarnings
-#-keep class * {
-#    public private *;
-#}
+#-keepattributes EnclosingMethod
+#-keepattributes InnerClasses

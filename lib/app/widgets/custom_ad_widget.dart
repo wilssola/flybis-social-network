@@ -15,8 +15,7 @@ import 'package:google_mobile_ads/src/ad_instance_manager.dart';
 class CustomAdWidget extends StatefulWidget {
   const CustomAdWidget(
       {Key? key, required this.ad, this.useVirtualDisplay = false})
-      : assert(ad != null),
-        super(key: key);
+      : super(key: key);
 
   final AdWithView ad;
   final bool useVirtualDisplay;
@@ -86,7 +85,7 @@ class _CustomAdWidgetState extends State<CustomAdWidget> {
               viewType: '${instanceManager.channel.name}/ad_widget',
               layoutDirection: TextDirection.ltr,
               creationParams: instanceManager.adIdFor(widget.ad),
-              creationParamsCodec: StandardMessageCodec(),
+              creationParamsCodec: const StandardMessageCodec(),
             )
               ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
               ..create();
@@ -98,7 +97,7 @@ class _CustomAdWidgetState extends State<CustomAdWidget> {
     return UiKitView(
       viewType: '${instanceManager.channel.name}/ad_widget',
       creationParams: instanceManager.adIdFor(widget.ad),
-      creationParamsCodec: StandardMessageCodec(),
+      creationParamsCodec: const StandardMessageCodec(),
     );
   }
 }

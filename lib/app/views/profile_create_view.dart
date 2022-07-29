@@ -16,13 +16,15 @@ import 'package:flybis/app/data/providers/auth_provider.dart';
 import 'package:flybis/app/data/services/profile_service.dart';
 import 'package:flybis/app/data/services/user_service.dart';
 import 'package:flybis/app/widgets/utils_widget.dart' as utils_widget;
+import 'package:image_picker/image_picker.dart';
 
 class ProfileCreateView extends StatefulWidget {
-  final String uid;
-
-  ProfileCreateView({
+  const ProfileCreateView({
+    Key? key,
     required this.uid,
-  });
+  }) : super(key: key);
+
+  final String uid;
 
   @override
   _ProfileCreateViewState createState() => _ProfileCreateViewState();
@@ -50,36 +52,21 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
   File? photoFile;
   String photoUrl = '';
 
-  void photoFromGallery() async {
-    var result;
-
-    if (!kIsWeb) {
-      result =
-          await profileService.photoGallery(widget.uid, 'banner-${widget.uid}');
-    } else {
+  void setProfileImage(ProfileImageType type, ImageSource source) async {
+    if (kIsWeb) {
       utils_widget.UtilsWidget().snackbarWebMissing();
+      return;
     }
+
+    XFile? result = await profileService.setProfileImage(
+      widget.uid,
+      type,
+      source,
+    );
 
     if (mounted) {
       setState(() {
-        photoFile = result;
-      });
-    }
-  }
-
-  void photoFromCamera() async {
-    var result;
-
-    if (!kIsWeb) {
-      result =
-          await profileService.photoCamera(widget.uid, 'banner-${widget.uid}');
-    } else {
-      utils_widget.UtilsWidget().snackbarWebMissing();
-    }
-
-    if (mounted) {
-      setState(() {
-        photoFile = result;
+        photoFile = File(result!.path);
       });
     }
   }
@@ -90,7 +77,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
         .then(
       (String? username) {
         if (username != null) {
-          if (!Get.isSnackbarOpen!) {
+          if (!Get.isSnackbarOpen) {
             Get.snackbar('Flybis', 'Usuário já existente');
           }
 
@@ -151,10 +138,13 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
               child: ListView(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(25),
                     child: GestureDetector(
-                      onTap: photoFromGallery,
-                      child: Container(
+                      onTap: () => setProfileImage(
+                        ProfileImageType.photo,
+                        ImageSource.gallery,
+                      ),
+                      child: SizedBox(
                         width: 150,
                         height: 150,
                         child: CircleAvatar(
@@ -212,7 +202,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
               child: RaisedButton(
                 color: Colors.blue,
                 onPressed: submit,
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Submit',
                     style: TextStyle(

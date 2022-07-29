@@ -34,9 +34,9 @@ Reference storageUrlRef(url) => FirebaseStorage.instance.refFromURL(url);
 final Color? buttonColor = Colors.grey[100];
 final Color? kAvatarBackground = Colors.grey[200];
 
-final int kAppBottomBarHeight = 60;
+const int kAppBottomBarHeight = 60;
 
-final double kWebDrawerWidth = 300;
+const double kWebDrawerWidth = 300;
 double kWebBodyWidth(BuildContext context) =>
     MediaQuery.of(context).size.width - kWebDrawerWidth;
 

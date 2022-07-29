@@ -16,9 +16,9 @@ class DatabaseProvider {
 
   Future<List<T>?> getCollection<T>({
     required String collectionPath,
-    required T builder(Map<String, dynamic>? data, String documentId),
-    Query queryBuilder(Query query)?,
-    int sort(T lhs, T rhs)?,
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
+    Query Function(Query query)? queryBuilder,
+    int Function(T lhs, T rhs)? sort,
   }) async {
     try {
       Query query = _db.collection(collectionPath);
@@ -52,7 +52,7 @@ class DatabaseProvider {
 
   Future<T?> get<T>({
     required String documentPath,
-    required T builder(Map<String, dynamic>? data, String documentId),
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
     Source source = Source.serverAndCache,
   }) async {
     try {
@@ -121,7 +121,7 @@ class DatabaseProvider {
 
   Future<T?> getTransaction<T>({
     required String documentPath,
-    required T builder(Map<String, dynamic>? data, String documentId),
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
   }) async {
     try {
       final DocumentReference reference = _db.doc(documentPath);
@@ -142,6 +142,7 @@ class DatabaseProvider {
     } catch (error) {
       logger.e(error);
     }
+    return null;
   }
 
   Future<void> setTransaction({
@@ -232,7 +233,7 @@ class DatabaseProvider {
   Future<void> setBatch({
     required String collectionPath,
     required Map<String, dynamic> data,
-    Query queryBuilder(Query query)?,
+    Query Function(Query query)? queryBuilder,
     bool merge = false,
   }) async {
     try {
@@ -254,7 +255,7 @@ class DatabaseProvider {
   Future updateBatch({
     required String collectionPath,
     required Map<String, dynamic> data,
-    Query queryBuilder(Query query)?,
+    Query Function(Query query)? queryBuilder,
   }) async {
     try {
       final WriteBatch batch = _db.batch();
@@ -274,7 +275,7 @@ class DatabaseProvider {
 
   Future<void> deleteBatch({
     required String collectionPath,
-    Query queryBuilder(Query query)?,
+    Query Function(Query query)? queryBuilder,
   }) async {
     try {
       final WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -294,9 +295,9 @@ class DatabaseProvider {
 
   Stream<List<T>>? streamCollection<T>({
     required String collectionPath,
-    required T builder(Map<String, dynamic>? data, String documentId),
-    Query queryBuilder(Query query)?,
-    int sort(T lhs, T rhs)?,
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
+    Query Function(Query query)? queryBuilder,
+    int Function(T lhs, T rhs)? sort,
   }) {
     try {
       Query query = _db.collection(collectionPath);
@@ -336,7 +337,7 @@ class DatabaseProvider {
 
   Stream<T>? streamDoc<T>({
     required String documentPath,
-    required T builder(Map<String, dynamic>? data, String documentId),
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
   }) {
     try {
       final DocumentReference reference = _db.doc(documentPath);

@@ -28,9 +28,9 @@ class FlybisChatStatus {
     required this.chatUsers,
 
     // Message
-    this.messageContent: '',
-    this.messageType: 'text', // text, image, video, giphy
-    this.messageColor: 0,
+    this.messageContent = '',
+    this.messageType = 'text', // text, image, video, giphy
+    this.messageColor = 0,
     this.messageCounts,
 
     // Timestamp
@@ -66,18 +66,18 @@ class FlybisChatStatus {
   Map<String, dynamic> toMap() {
     return {
       // Chat
-      'chatId': this.chatId,
-      'chatKey': this.chatKey,
-      'chatUsers': this.chatUsers,
+      'chatId': chatId,
+      'chatKey': chatKey,
+      'chatUsers': chatUsers,
 
       // Message
-      'messageContent': this.messageContent,
-      'messageType': this.messageType, // text, image, video, giphy
-      'messageColor': this.messageColor,
-      'messageCounts': this.messageCounts ?? {},
+      'messageContent': messageContent,
+      'messageType': messageType, // text, image, video, giphy
+      'messageColor': messageColor,
+      'messageCounts': messageCounts ?? {},
 
       // Timestamp
-      'timestamp': this.timestamp ?? timestampNow(),
+      'timestamp': timestamp ?? timestampNow(),
     };
   }
 }
@@ -103,13 +103,13 @@ class FlybisChatMessage {
     required this.chatId,
 
     // Users
-    this.userId: '',
+    this.userId = '',
 
     // Message
     required this.messageId,
-    this.messageContent: '',
-    this.messageType: 'text', // text, image, video, giphy
-    this.messageColor: 0,
+    this.messageContent = '',
+    this.messageType = 'text', // text, image, video, giphy
+    this.messageColor = 0,
 
     // Timestamp
     this.timestamp,
@@ -128,18 +128,18 @@ class FlybisChatMessage {
       chatId: data!['chatId'] != null ? data['chatId'] : '',
 
       // Users
-      userId: data['userId'] != null ? data['userId'] : '',
+      userId: data['userId'] ?? '',
 
       // Message
-      messageId: data['messageId'] != null ? data['messageId'] : documentId,
+      messageId: data['messageId'] ?? documentId,
       messageContent:
-          data['messageContent'] != null ? data['messageContent'] : '',
-      messageType: data['messageType'] != null ? data['messageType'] : '',
+          data['messageContent'] ?? '',
+      messageType: data['messageType'] ?? '',
       messageColor:
-          data['messageColor'] != null ? data['messageColor'] : '' as int?,
+          data['messageColor'] ?? '' as int?,
 
       // Timestamp
-      timestamp: data['timestamp'] != null ? data['timestamp'] : timestampNow(),
+      timestamp: data['timestamp'] ?? timestampNow(),
     );
   }
 
@@ -147,19 +147,19 @@ class FlybisChatMessage {
     try {
       return {
         // Chat
-        'chatId': this.chatId,
+        'chatId': chatId,
 
         // Users
-        'userId': this.userId,
+        'userId': userId,
 
         // Message
-        'messageId': this.messageId,
-        'messageContent': this.messageContent,
-        'messageType': this.messageType,
-        'messageColor': this.messageColor,
+        'messageId': messageId,
+        'messageContent': messageContent,
+        'messageType': messageType,
+        'messageColor': messageColor,
 
         // Timestamp
-        'timestamp': this.timestamp,
+        'timestamp': timestamp,
       };
     } catch (error) {
       logger.e(error);

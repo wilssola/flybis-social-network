@@ -35,7 +35,7 @@ class ApiProvider {
   }
 
   Future<String?> getGifErrorTenor() async {
-    final int random = new Random().nextInt(100);
+    final int random = Random().nextInt(100);
 
     const String authority = 'g.tenor.com';
     const String unencodedPath = '/v1/random';

@@ -1,30 +1,26 @@
 // 🎯 Dart imports:
 import 'dart:async';
-import 'dart:ui';
 
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 
 // 📦 Package imports:
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:day_night_switcher/day_night_switcher.dart'
-    deferred as day_night_switcher;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_funding_choices/flutter_funding_choices.dart';
 import 'package:get/get.dart';
 import 'package:google_api_availability/google_api_availability.dart';
-import 'package:package_info_plus/package_info_plus.dart'
-    deferred as package_info_plus;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_html/html.dart' deferred as html;
 import 'package:intl/intl.dart';
 import 'package:universal_io/io.dart';
+import 'package:universal_html/html.dart' deferred as html;
+import 'package:package_info_plus/package_info_plus.dart'
+    deferred as package_info_plus;
+import 'package:day_night_switcher/day_night_switcher.dart'
+    deferred as day_night_switcher;
 
 // 🌎 Project imports:
 import 'package:flybis/core/values/const.dart';
@@ -32,26 +28,25 @@ import 'package:flybis/core/values/function.dart';
 import 'package:flybis/core/themes/theme.dart';
 import 'package:flybis/global.dart';
 import 'package:flybis/app/data/models/bell_model.dart';
-import 'package:flybis/app/data/models/user_model.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 import 'package:flybis/app/data/providers/auth_provider.dart';
 import 'package:flybis/app/data/services/flybis_service.dart';
 import 'package:flybis/app/data/providers/messaging_provider.dart';
 import 'package:flybis/app/data/services/user_service.dart';
 import 'package:flybis/translation.dart';
-import 'package:flybis/app/views/bell_view.dart' deferred as bell_view;
-import 'package:flybis/app/views/camera_view.dart' deferred as camera_view;
-import 'package:flybis/app/views/chat_view.dart' deferred as chat_view;
+import 'package:flybis/app/views/login_view.dart' deferred as login_view;
 import 'package:flybis/app/views/introduction_view.dart'
     deferred as introduction_view;
-import 'package:flybis/app/views/login_view.dart' deferred as login_view;
-import 'package:flybis/app/views/profile_view.dart' deferred as profile_view;
 import 'package:flybis/app/views/profile_create_view.dart'
     deferred as profile_create_view;
-import 'package:flybis/app/views/search_view.dart' deferred as search_view;
 import 'package:flybis/app/views/timeline_view.dart' deferred as timeline_view;
-import 'package:flybis/app/widgets/icon_button_text_hover_widget.dart';
+import 'package:flybis/app/views/bell_view.dart' deferred as bell_view;
+import 'package:flybis/app/views/camera_view.dart' deferred as camera_view;
+import 'package:flybis/app/views/profile_view.dart' deferred as profile_view;
+import 'package:flybis/app/views/chat_view.dart' deferred as chat_view;
+import 'package:flybis/app/views/search_view.dart' deferred as search_view;
 import 'package:flybis/app/widgets/utils_widget.dart' deferred as utils_widget;
+import 'package:flybis/app/widgets/icon_button_text_hover_widget.dart';
 
 Future<bool> loadLibraries() async {
   await html.loadLibrary();
@@ -94,14 +89,11 @@ Future<bool> searchViewLoadLibrary() async {
   return true;
 }
 
-// Auth
-StreamSubscription? streamuser;
-
 // RemoteConfig
-late RemoteConfig remoteConfig;
+late FirebaseRemoteConfig remoteConfig;
 
 // Google API's
-GooglePlayServicesAvailability? availability;
+late GooglePlayServicesAvailability availability;
 
 // PageView
 PageController pageController = PageController();
@@ -153,7 +145,7 @@ void switchPage(int pageIndex) {
   if (!kIsWeb) {
     pageController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 150),
       curve: Curves.bounceInOut,
     );
   } else {
@@ -178,14 +170,15 @@ void setPage(int pageIndex) async {
 }
 
 class App extends StatefulWidget {
+  const App({
+    Key? key,
+    this.pageIndex = 0,
+  }) : super(key: key);
+
   final int pageIndex;
 
-  App({
-    this.pageIndex = 0,
-  });
-
   @override
-  _AppState createState() => _AppState(pageIndex: pageIndex);
+  _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -196,15 +189,11 @@ class _AppState extends State<App> {
   bool isAuthOffline = false;
   bool isDarkModeEnabled = false;
 
-  int? pageIndex = 0;
-  String? selectedLang = Translation.langs.first;
+  int pageIndex = 0;
+  String selectedLang = Translation.langs.first;
 
   final AuthProvider _auth = AuthProvider.instance;
   final UserService userService = UserService();
-
-  _AppState({
-    this.pageIndex,
-  });
 
   @override
   void initState() {
@@ -241,18 +230,18 @@ class _AppState extends State<App> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? pageIndex = prefs.getInt('pageIndex');
 
-    if (this.pageIndex == 0 && pageIndex != null) {
+    if (pageIndex != null) {
       setPageIndex(pageIndex);
     }
   }
 
   Future<void> load() async {
     if (!isLoad) {
-      final int ms = 1000;
+      const int ms = 1000;
 
       print('Waiting $ms milliseconds to load page');
 
-      await Future.delayed(new Duration(milliseconds: ms));
+      await Future.delayed(const Duration(milliseconds: ms));
 
       if (mounted) {
         setState(() {
@@ -265,7 +254,7 @@ class _AppState extends State<App> {
   }
 
   void checkAdmobConsent() async {
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ConsentInformation consentInfo =
           await FlutterFundingChoices.requestConsentInformation();
       if (consentInfo.isConsentFormAvailable &&
@@ -287,7 +276,7 @@ class _AppState extends State<App> {
     bool? darkMode = prefs.getBool('darkMode');
 
     bool darkBrightness =
-        SchedulerBinding.instance!.window.platformBrightness == Brightness.dark;
+        SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
 
     Get.changeTheme(
       darkMode != null
@@ -299,7 +288,7 @@ class _AppState extends State<App> {
               : theme,
     );
 
-    isDarkModeEnabled = darkMode != null ? darkMode : darkBrightness;
+    isDarkModeEnabled = darkMode ?? darkBrightness;
   }
 
   void setDarkMode(isDarkModeEnabled) async {
@@ -352,7 +341,7 @@ class _AppState extends State<App> {
         ? ('Android ' + packageInfo.version)
         : ('IOS ' + packageInfo.version);
     final String webVersion =
-        html.window.navigator.userAgent.toLowerCase().indexOf('electron') == -1
+        !html.window.navigator.userAgent.toLowerCase().contains('electron')
             ? 'Web'
             : 'Electron';
     final String version = !kIsWeb ? mobileVersion : webVersion;
@@ -369,7 +358,7 @@ class _AppState extends State<App> {
       applicationIcon: Container(
         width: 100,
         height: 100,
-        margin: EdgeInsets.only(left: 0, top: 0, right: 10, bottom: 25),
+        margin: const EdgeInsets.only(left: 0, top: 0, right: 10, bottom: 25),
         child: ImageNetwork.cachedNetworkImage(
           imageUrl: 'https://flybis.net/assets/flybis_icon.png',
         ),
@@ -486,63 +475,59 @@ class _AppState extends State<App> {
               ),
               title: Text(
                 '@${flybisUserOwner!.username}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
                 flybisUserOwner!.displayName!,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
             ),
             decoration: BoxDecoration(
-              color: pageColors[pageIndex!],
+              color: pageColors[pageIndex],
             ),
           ),
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             child: Column(
               children: <Widget>[
-                ListTile(
+                const ListTile(
                   leading: Icon(Icons.settings),
                   title: Text('Configurações'),
                 ),
                 ListTile(
-                  leading: Icon(Icons.info),
-                  title: Text('Sobre'),
+                  leading: const Icon(Icons.info),
+                  title: const Text('Sobre'),
                   onTap: showAbout,
                 ),
                 ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Sair'),
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Sair'),
                   onTap: () => _auth.signOut(context),
                 ),
-                Container(
-                  child: DropdownButton(
-                    icon: Icon(Icons.arrow_drop_down),
-                    value: selectedLang,
-                    items: Translation.langs.map((String lang) {
-                      return DropdownMenuItem(
-                        value: lang,
-                        child: Text(lang),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      // Updates dropdown selected value
-                      setState(() => selectedLang = value);
-                      // Gets language and changes the locale
-                      Translation().changeLocale(value);
-                    },
-                  ),
+                DropdownButton(
+                  icon: const Icon(Icons.arrow_drop_down),
+                  value: selectedLang,
+                  items: Translation.langs.map((String lang) {
+                    return DropdownMenuItem(
+                      value: lang,
+                      child: Text(lang),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    // Updates dropdown selected value
+                    setState(() => selectedLang = value!);
+                    // Gets language and changes the locale
+                    Translation().changeLocale(value);
+                  },
                 ),
-                Container(
-                  child: day_night_switcher.DayNightSwitcher(
-                    isDarkModeEnabled: isDarkModeEnabled,
-                    onStateChanged: setDarkMode,
-                  ),
+                day_night_switcher.DayNightSwitcher(
+                  isDarkModeEnabled: isDarkModeEnabled,
+                  onStateChanged: setDarkMode,
                 ),
               ],
             ),
@@ -558,7 +543,7 @@ class _AppState extends State<App> {
         future: timelineViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return timeline_view.TimelineView(
@@ -572,7 +557,7 @@ class _AppState extends State<App> {
         future: bellViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return bell_view.BellView(
@@ -586,7 +571,7 @@ class _AppState extends State<App> {
         future: cameraViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return camera_view.CameraView(
@@ -600,7 +585,7 @@ class _AppState extends State<App> {
         future: profileViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return profile_view.ProfileView(
@@ -615,7 +600,7 @@ class _AppState extends State<App> {
         future: chatViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return chat_view.ChatView(
@@ -629,7 +614,7 @@ class _AppState extends State<App> {
         future: searchViewLoadLibrary(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
-            return Text('');
+            return const Text('');
           }
 
           return search_view.SearchView(
@@ -656,14 +641,15 @@ class _AppState extends State<App> {
       controller: pageController,
       onPageChanged: onPageChanged,
       scrollDirection: Axis.horizontal,
-      physics:
-          !kIsWeb ? AlwaysScrollableScrollPhysics() : ClampingScrollPhysics(),
+      physics: !kIsWeb
+          ? const AlwaysScrollableScrollPhysics()
+          : const ClampingScrollPhysics(),
     );
   }
 
   BottomNavigationBar bottom() {
     return BottomNavigationBar(
-      currentIndex: pageIndex!,
+      currentIndex: pageIndex,
       onTap: onTap,
       iconSize: 25,
       elevation: 8,
@@ -710,8 +696,8 @@ class _AppState extends State<App> {
         : kWebBodyWidth(context);
 
     Widget leftDrawer({Widget? child}) => kNotIsWebOrScreenLittle(context)
-        ? Padding(padding: EdgeInsets.zero)
-        : Container(width: kWebDrawerWidth, child: child);
+        ? const Padding(padding: EdgeInsets.zero)
+        : SizedBox(width: kWebDrawerWidth, child: child);
 
     return Scaffold(
       primary: true,
@@ -721,7 +707,7 @@ class _AppState extends State<App> {
         children: [
           Align(
             alignment: bodyAlignment,
-            child: Container(
+            child: SizedBox(
               width: bodyWidth,
               child: body(),
             ),
@@ -746,7 +732,7 @@ class _AppState extends State<App> {
       future: loadLibraries(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         if (isLoad) {

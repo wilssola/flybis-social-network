@@ -28,9 +28,9 @@ class FlybisIntroduction {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
-      'image': this.image,
-      'body': this.body,
+      'title': title,
+      'image': image,
+      'body': body,
     };
   }
 }

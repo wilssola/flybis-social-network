@@ -53,7 +53,7 @@ class ProfileView extends StatefulWidget {
   // Scaffold
   final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  ProfileView({
+  const ProfileView({
     required this.uid,
 
     // Page
@@ -131,7 +131,7 @@ class _ProfileViewState extends State<ProfileView> {
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -185,7 +185,7 @@ class _ProfileViewState extends State<ProfileView> {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         bool? isFollowing = snapshot.data;
@@ -264,7 +264,7 @@ class _ProfileViewState extends State<ProfileView> {
   Text textCount(String text) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 22.0,
         fontWeight: FontWeight.bold,
       ),
@@ -277,10 +277,10 @@ class _ProfileViewState extends State<ProfileView> {
       children: <Widget>[
         textCount(format.formatCompactNumber(count)),
         Container(
-          margin: EdgeInsets.only(top: 4),
+          margin: const EdgeInsets.only(top: 4),
           child: Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 15.0,
               fontWeight: FontWeight.w400,
@@ -301,7 +301,7 @@ class _ProfileViewState extends State<ProfileView> {
       stream: FriendService().streamFriend(widget.uid, flybisUserOwner!.uid),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         bool? isFriend = snapshot.data;
@@ -311,7 +311,7 @@ class _ProfileViewState extends State<ProfileView> {
               .streamFriendRequest(flybisUserOwner!.uid, widget.uid),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
             if (!snapshot.hasData) {
-              return Text('');
+              return const Text('');
             }
 
             bool? isRequestedFriendToMe = snapshot.data;
@@ -321,13 +321,13 @@ class _ProfileViewState extends State<ProfileView> {
                   .streamFriendRequest(widget.uid, flybisUserOwner!.uid),
               builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                 if (!snapshot.hasData) {
-                  return Text('');
+                  return const Text('');
                 }
 
                 bool? isRequestedFriend = snapshot.data;
 
                 if (isOwner) {
-                  return Padding(padding: EdgeInsets.zero);
+                  return const Padding(padding: EdgeInsets.zero);
                 } else if (!isFriend!) {
                   if (!isRequestedFriendToMe!) {
                     if (isRequestedFriend!) {
@@ -403,7 +403,7 @@ class _ProfileViewState extends State<ProfileView> {
     Color colorText = Colors.white,
   }) {
     return Container(
-      padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+      padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
       child: Container(
         width: 150.0,
         height: 35.0,
@@ -458,7 +458,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ? 250.0
                               : 350,
                       width: MediaQuery.of(context).size.width,
-                      child: user.bannerUrl!.length > 0
+                      child: user.bannerUrl!.isNotEmpty
                           ? ImageNetwork.cachedNetworkImage(
                               imageUrl: user.bannerUrl!,
                               fit: BoxFit.cover,
@@ -482,15 +482,15 @@ class _ProfileViewState extends State<ProfileView> {
                   endRadius: kNotIsWebOrScreenLittle(context) ? 75 : 125.0,
                   repeat: true,
                   showTwoGlows: true,
-                  duration: Duration(milliseconds: 2000),
-                  repeatPauseDuration: Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 2000),
+                  repeatPauseDuration: const Duration(milliseconds: 100),
                   child: Material(
                     elevation: 8.0,
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     child: CircleAvatar(
                       radius: kNotIsWebOrScreenLittle(context) ? 50.0 : 150.0,
                       backgroundColor: Colors.white,
-                      backgroundImage: user.photoUrl!.length > 0
+                      backgroundImage: user.photoUrl!.isNotEmpty
                           ? ImageNetwork.cachedNetworkImageProvider(
                               user.photoUrl!,
                             )
@@ -503,28 +503,28 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 10),
-            child: user.username!.length > 0
+            padding: const EdgeInsets.only(top: 10),
+            child: user.username!.isNotEmpty
                 ? utils_widget.UtilsWidget().usernameText(user.username!)
-                : Text(''),
+                : const Text(''),
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.only(top: 5),
             child: Text(
               user.displayName!,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(top: 5, bottom: 15),
-            child: user.bio!.length > 0
+            padding: const EdgeInsets.only(top: 5, bottom: 15),
+            child: user.bio!.isNotEmpty
                 ? Text(
                     '"' + user.bio! + '"',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   )
-                : Text(''),
+                : const Text(''),
           ),
           Row(
             children: <Widget>[
@@ -569,7 +569,7 @@ class _ProfileViewState extends State<ProfileView> {
       ) {
         if (!snapshot.hasData) {
           final Widget loading = Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: utils_widget.UtilsWidget().circularProgress(
               context,
               color: widget.pageColor,
@@ -583,9 +583,9 @@ class _ProfileViewState extends State<ProfileView> {
 
         List<FlybisPost> posts = [];
 
-        snapshot.data!.forEach((FlybisPost flybisPost) {
+        for (var flybisPost in snapshot.data!) {
           posts.add(flybisPost);
-        });
+        }
 
         if (posts.isEmpty) {
           final Widget empty =
@@ -597,17 +597,17 @@ class _ProfileViewState extends State<ProfileView> {
         if (postOrientation == 'grid') {
           List<Widget> gridTiles = [];
 
-          posts.forEach((FlybisPost post) {
+          for (var post in posts) {
             gridTiles.add(post_widget.PostWidget(
               key: ValueKey(post.postId),
               flybisPost: post,
               postWidgetType: post_widget.PostWidgetType.GRID,
               pageColor: widget.pageColor,
             ));
-          });
+          }
 
           return Container(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             width: kNotIsWebOrScreenLittle(context)
                 ? MediaQuery.of(context).size.width
                 : MediaQuery.of(context).size.width * 0.5,
@@ -625,22 +625,22 @@ class _ProfileViewState extends State<ProfileView> {
                     ? gridTiles[index]
                     : Card(child: gridTiles[index]);
               },
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
             ),
           );
         } else {
           List<Widget> listTiles = [];
 
-          posts.forEach((FlybisPost post) {
+          for (var post in posts) {
             listTiles.add(post_widget.PostWidget(
               key: ValueKey(post.postId),
               flybisPost: post,
               postWidgetType: post_widget.PostWidgetType.LIST,
               pageColor: widget.pageColor,
             ));
-          });
+          }
 
-          return Container(
+          return SizedBox(
             width: kNotIsWebOrScreenLittle(context)
                 ? MediaQuery.of(context).size.width
                 : MediaQuery.of(context).size.width * 0.5,
@@ -652,7 +652,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ? listTiles[index]
                     : Card(child: listTiles[index]);
               },
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
             ),
           );
         }
@@ -662,11 +662,11 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget toggle() {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
+          const Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
           IconButton(
             onPressed: () => setPostOrientation('grid'),
             icon: Icon(
@@ -685,7 +685,7 @@ class _ProfileViewState extends State<ProfileView> {
                   : Colors.grey,
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
+          const Padding(padding: EdgeInsets.only(top: 25.0, bottom: 25.0)),
         ],
       ),
     );
@@ -701,7 +701,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget profile() {
     final AdWidget adWidget = AdWidget(
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       pageId: widget.pageId,
       pageColor: widget.pageColor!,
     );
@@ -710,9 +710,9 @@ class _ProfileViewState extends State<ProfileView> {
       controller: scrollController,
       children: <Widget>[
         header(),
-        Divider(height: 0, thickness: 0),
+        const Divider(height: 0, thickness: 0),
         toggle(),
-        Divider(height: 0, thickness: 0),
+        const Divider(height: 0, thickness: 0),
         !kIsWeb
             ? adWidget
             : utils_widget.UtilsWidget().webBody(
@@ -749,7 +749,7 @@ class _ProfileViewState extends State<ProfileView> {
       body: !kIsWeb
           ? profile()
           : Scrollbar(
-              isAlwaysShown: true,
+              thumbVisibility: true,
               showTrackOnHover: true,
               controller: scrollController,
               child: profile(),

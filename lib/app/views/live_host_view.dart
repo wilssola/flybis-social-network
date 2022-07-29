@@ -14,7 +14,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wakelock/wakelock.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/HearAnim.dart';
 import 'package:flybis/global.dart';
 import 'package:flybis/app/data/models/live_model.dart';
 import 'package:flybis/app/data/models/message_model.dart';
@@ -39,7 +38,7 @@ class _LiveHostViewState extends State<LiveHostView> {
   List<FlybisUser?> userList = [];
 
   bool _isLogin = true;
-  bool _isInChannel = true;
+  final bool _isInChannel = true;
   int? userNo = 0;
   late Map<String?, String?> userMap;
   bool tryingToEnd = false;
@@ -59,7 +58,7 @@ class _LiveHostViewState extends State<LiveHostView> {
   final _random = math.Random();
   late Timer _timer;
   double height = 0.0;
-  int _numConfetti = 5;
+  final int _numConfetti = 5;
   int guestID = -1;
   bool waiting = false;
 
@@ -98,7 +97,7 @@ class _LiveHostViewState extends State<LiveHostView> {
 
     await engine.enableWebSdkInteroperability(true);
     await engine.setParameters(
-        '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''');
+        '''{"che.video.lowBitRateStreamParameter":{"width":320,"height":180,"frameRate":15,"bitRate":140}}''');
 
     await engine.joinChannel(agoraIoToken, widget.live!.liveId!, null, 0);
   }
@@ -163,7 +162,7 @@ class _LiveHostViewState extends State<LiveHostView> {
       ),
     ];
     if (accepted == true) {
-      _users.forEach((int uid) {
+      for (var uid in _users) {
         if (uid != 0) {
           guestID = uid;
         }
@@ -173,7 +172,7 @@ class _LiveHostViewState extends State<LiveHostView> {
             channelId: widget.live!.liveId!,
           ),
         );
-      });
+      }
     }
     return list;
   }
@@ -226,14 +225,14 @@ class _LiveHostViewState extends State<LiveHostView> {
       heart = true;
     });
 
-    _timer = Timer.periodic(Duration(milliseconds: 125), (Timer t) {
+    _timer = Timer.periodic(const Duration(milliseconds: 125), (Timer t) {
       setState(() {
         height += _random.nextInt(20);
       });
     });
 
     Timer(
-        Duration(seconds: 4),
+        const Duration(seconds: 4),
         () => {
               _timer.cancel(),
               setState(() {
@@ -247,12 +246,12 @@ class _LiveHostViewState extends State<LiveHostView> {
     final confetti = <Widget>[];
     for (var i = 0; i < _numConfetti; i++) {
       final height = _random.nextInt(size.height.floor());
-      final width = 20;
-      confetti.add(HeartAnim(
+      const width = 20;
+      /*confetti.add(HeartAnim(
         height % 200.0,
         width.toDouble(),
         0.5,
-      ));
+      ));*/
     }
 
     return Container(
@@ -260,7 +259,7 @@ class _LiveHostViewState extends State<LiveHostView> {
         padding: const EdgeInsets.only(bottom: 20),
         child: Align(
           alignment: Alignment.bottomRight,
-          child: Container(
+          child: SizedBox(
             height: 400,
             width: 200,
             child: Stack(
@@ -286,7 +285,7 @@ class _LiveHostViewState extends State<LiveHostView> {
             itemCount: _infoStrings.length,
             itemBuilder: (BuildContext context, int index) {
               if (_infoStrings.isEmpty) {
-                return Padding(padding: EdgeInsets.zero);
+                return const Padding(padding: EdgeInsets.zero);
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -319,7 +318,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                               ),
                               child: Text(
                                 '${_infoStrings[index].user} joined',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                 ),
@@ -358,13 +357,13 @@ class _LiveHostViewState extends State<LiveHostView> {
                                       ),
                                       child: Text(
                                         _infoStrings[index].user!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Padding(
@@ -373,7 +372,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                                       ),
                                       child: Text(
                                         _infoStrings[index].message!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.white, fontSize: 14),
                                       ),
                                     ),
@@ -409,7 +408,7 @@ class _LiveHostViewState extends State<LiveHostView> {
   }
 
   Widget _endCall() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -430,7 +429,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                   tryingToEnd = true;
                 });
               },
-              child: Text(
+              child: const Text(
                 'END',
                 style: TextStyle(
                     color: Colors.indigo,
@@ -453,14 +452,14 @@ class _LiveHostViewState extends State<LiveHostView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   //gradient: LinearGradient(
                   //colors: <Color>[Colors.indigo, Colors.blue],
                   //),
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              child: Padding(
+              child: const Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
                 child: Text(
                   'LIVE',
                   style: TextStyle(
@@ -475,7 +474,7 @@ class _LiveHostViewState extends State<LiveHostView> {
               child: Container(
                   decoration: BoxDecoration(
                       color: Colors.black.withOpacity(.6),
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                      borderRadius: const BorderRadius.all(Radius.circular(4.0))),
                   height: 28,
                   alignment: Alignment.center,
                   child: Padding(
@@ -484,17 +483,17 @@ class _LiveHostViewState extends State<LiveHostView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Icon(
+                        const Icon(
                           Icons.remove_red_eye,
                           color: Colors.white,
                           size: 13,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
                           '$userNo',
-                          style: TextStyle(color: Colors.white, fontSize: 11),
+                          style: const TextStyle(color: Colors.white, fontSize: 11),
                         ),
                       ],
                     ),
@@ -511,10 +510,10 @@ class _LiveHostViewState extends State<LiveHostView> {
       color: Colors.black.withOpacity(0.5),
       child: Stack(
         children: <Widget>[
-          Align(
+          const Align(
             alignment: Alignment.center,
             child: Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: EdgeInsets.all(30.0),
               child: Text(
                 'Are you sure you want to end your live video?',
                 textAlign: TextAlign.center,
@@ -532,8 +531,8 @@ class _LiveHostViewState extends State<LiveHostView> {
                     padding: const EdgeInsets.only(
                         left: 8.0, right: 4.0, top: 8.0, bottom: 8.0),
                     child: RaisedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
                         child: Text(
                           'End Video',
                           style: TextStyle(color: Colors.white),
@@ -558,8 +557,8 @@ class _LiveHostViewState extends State<LiveHostView> {
                     padding: const EdgeInsets.only(
                         left: 4.0, right: 8.0, top: 8.0, bottom: 8.0),
                     child: RaisedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
                         child: Text(
                           'Cancel',
                           style: TextStyle(color: Colors.white),
@@ -589,25 +588,25 @@ class _LiveHostViewState extends State<LiveHostView> {
       child: Container(
         height: 2 * MediaQuery.of(context).size.height / 3,
         width: MediaQuery.of(context).size.height,
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.grey[850],
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25)),
         ),
         child: Stack(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 2 * MediaQuery.of(context).size.height / 3 - 50,
               child: Column(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     width: MediaQuery.of(context).size.width,
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       'Go Live with',
                       style: TextStyle(
                           fontSize: 20,
@@ -615,7 +614,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                           color: Colors.white),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Divider(
@@ -624,7 +623,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                     height: 0,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                     width: double.infinity,
                     color: Colors.grey[900],
                     child: Text(
@@ -638,10 +637,10 @@ class _LiveHostViewState extends State<LiveHostView> {
                   ),
                   anyPerson == true
                       ? Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
                           width: double.maxFinite,
-                          child: Text(
+                          child: const Text(
                             'INVITE',
                             style: TextStyle(
                                 color: Colors.grey,
@@ -681,7 +680,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                       Container(
                         height: double.maxFinite,
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'Cancel',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -711,7 +710,7 @@ class _LiveHostViewState extends State<LiveHostView> {
 
   Widget getStory(FlybisUser users) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 7.5),
+      margin: const EdgeInsets.symmetric(vertical: 7.5),
       child: Column(
         children: <Widget>[
           GestureDetector(
@@ -723,7 +722,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                   AgoraRtmMessage.fromText('d1a2v3i4s5h6 ${users.username}'));
             },
             child: Container(
-                padding: EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15),
                 color: Colors.grey[850],
                 child: Row(
                   children: <Widget>[
@@ -745,14 +744,14 @@ class _LiveHostViewState extends State<LiveHostView> {
                         children: <Widget>[
                           Text(
                             users.username!,
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
                           Text(
                             users.displayName!,
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                         ],
                       ),
@@ -778,12 +777,12 @@ class _LiveHostViewState extends State<LiveHostView> {
             await _channel
                 .sendMessage(AgoraRtmMessage.fromText('E1m2I3l4i5E6 stoping'));
           },
-          child: Icon(
+          child: const Icon(
             Icons.clear,
             color: Colors.white,
             size: 15.0,
           ),
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           elevation: 2.0,
           color: Colors.blue[400],
           padding: const EdgeInsets.all(5.0),
@@ -801,7 +800,7 @@ class _LiveHostViewState extends State<LiveHostView> {
           alignment: Alignment.center,
           color: Colors.black,
           child: Wrap(
-            children: <Widget>[
+            children: const <Widget>[
               Text(
                 'Waiting for the user to accept...',
                 style: TextStyle(color: Colors.white, fontSize: 20),
@@ -853,26 +852,26 @@ class _LiveHostViewState extends State<LiveHostView> {
           padding: const EdgeInsets.only(left: 8, top: 5, right: 8, bottom: 5),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            new Expanded(
+            Expanded(
                 child: Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 0),
-              child: new TextField(
+              child: TextField(
                   cursorColor: Colors.blue,
                   textInputAction: TextInputAction.send,
                   onSubmitted: _sendMessage,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   controller: _channelMessageController,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Comment',
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: const BorderSide(color: Colors.white)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50.0),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: const BorderSide(color: Colors.white)),
                   )),
             )),
             Padding(
@@ -880,12 +879,12 @@ class _LiveHostViewState extends State<LiveHostView> {
               child: MaterialButton(
                 minWidth: 0,
                 onPressed: _toggleSendChannelMessage,
-                child: Icon(
+                child: const Icon(
                   Icons.send,
                   color: Colors.white,
                   size: 20.0,
                 ),
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 elevation: 2.0,
                 color: Colors.blue[400],
                 padding: const EdgeInsets.all(12.0),
@@ -897,12 +896,12 @@ class _LiveHostViewState extends State<LiveHostView> {
                 child: MaterialButton(
                   minWidth: 0,
                   onPressed: _addPerson,
-                  child: Icon(
+                  child: const Icon(
                     Icons.person_add,
                     color: Colors.white,
                     size: 20.0,
                   ),
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   elevation: 2.0,
                   color: Colors.blue[400],
                   padding: const EdgeInsets.all(12.0),
@@ -918,7 +917,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                   color: Colors.blue[400],
                   size: 20.0,
                 ),
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 elevation: 2.0,
                 color: Colors.white,
                 padding: const EdgeInsets.all(12.0),
@@ -1015,10 +1014,10 @@ class _LiveHostViewState extends State<LiveHostView> {
     channel.onMemberJoined = (AgoraRtmMember member) async {
       setState(() {
         userList.add(flybisUserOwner);
-        if (userList.length > 0) anyPerson = true;
+        if (userList.isNotEmpty) anyPerson = true;
       });
       userMap.putIfAbsent(member.userId, () => flybisUserOwner!.photoUrl);
-      var len;
+      int len;
       _channel.getMembers().then((value) {
         len = value.length;
         setState(() {
@@ -1029,10 +1028,10 @@ class _LiveHostViewState extends State<LiveHostView> {
       _log(info: 'Member joined: ', user: member.userId, type: 'join');
     };
     channel.onMemberLeft = (AgoraRtmMember member) {
-      var len;
+      int len;
       setState(() {
         userList.removeWhere((element) => element!.username == member.userId);
-        if (userList.length == 0) anyPerson = false;
+        if (userList.isEmpty) anyPerson = false;
       });
 
       _channel.getMembers().then((value) {
@@ -1078,7 +1077,7 @@ class _LiveHostViewState extends State<LiveHostView> {
     } else {
       var image = userMap[user];
       Message m =
-          new Message(message: info, type: type, user: user, image: image);
+          Message(message: info, type: type, user: user, image: image);
       setState(() {
         _infoStrings.insert(0, m);
       });

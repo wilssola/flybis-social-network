@@ -85,7 +85,7 @@ class HostContainer extends StatelessWidget {
 /// Web implementation
 
 class PlatformHostContainer extends StatelessWidget {
-  PlatformHostContainer(this.provider, this.sessionId, this.clientType);
+  const PlatformHostContainer(this.provider, this.sessionId, this.clientType);
 
   final provider;
   final String sessionId;

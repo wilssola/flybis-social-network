@@ -18,7 +18,7 @@ class PhotoView extends StatefulWidget {
   final String? url;
   final Color? pageColor;
 
-  PhotoView({
+  const PhotoView({
     this.title = 'Imagem',
     required this.url,
     this.pageColor,
@@ -37,16 +37,14 @@ class _PhotoViewState extends State<PhotoView> {
       future: loadLibraries(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return Scaffold(
           appBar: AppBar(
             title: Text(widget.title),
             centerTitle: false,
-            backgroundColor: widget.pageColor != null
-                ? widget.pageColor
-                : Theme.of(context).primaryColor,
+            backgroundColor: widget.pageColor ?? Theme.of(context).primaryColor,
           ),
           body: Container(
             child: photo_view.PhotoView(

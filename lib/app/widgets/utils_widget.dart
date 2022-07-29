@@ -1,5 +1,4 @@
 // 🎯 Dart imports:
-import 'dart:math';
 
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 📦 Package imports:
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:shimmer/shimmer.dart';
@@ -28,7 +26,7 @@ class UtilsWidget {
     bool pageHeader = false,
     bool removeBackButton = false,
   }) {
-    final bool isAppTitle = titleText.length == 0;
+    final bool isAppTitle = titleText.isEmpty;
 
     final double buttonsWidth720 =
         MediaQuery.of(context).size.width > 720 ? 400 : 0;
@@ -37,13 +35,13 @@ class UtilsWidget {
 
     return AppBar(
       centerTitle: false,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       automaticallyImplyLeading: !removeBackButton,
       backgroundColor: pageColor,
       leading: scaffoldKey != null && (kNotIsWebOrScreenLittle(context))
           ? Builder(
               builder: (context) => IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.menu,
                   color: Colors.white,
                 ),
@@ -54,7 +52,7 @@ class UtilsWidget {
       title: Row(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(right: 25),
+            margin: const EdgeInsets.only(right: 25),
             child: Text(
               isAppTitle ? 'FLYBIS' : titleText,
               style: TextStyle(
@@ -65,18 +63,18 @@ class UtilsWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           (!pageHeader || kNotIsWebOrScreenLittle(context))
-              ? Padding(padding: EdgeInsets.zero)
-              : Container(
+              ? const Padding(padding: EdgeInsets.zero)
+              : SizedBox(
                   height: 50.0,
                   width: buttonsWidth,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      physics: BouncingScrollPhysics(),
-                      children: [], //pageButtonsWeb,
+                      physics: const BouncingScrollPhysics(),
+                      children: const [], //pageButtonsWeb,
                     ),
                   ),
                 ),
@@ -88,7 +86,7 @@ class UtilsWidget {
   Widget logoText(List<Color> pageColors) {
     return RichText(
       text: TextSpan(
-        style: TextStyle(fontFamily: 'Nexa', fontSize: 75.0),
+        style: const TextStyle(fontFamily: 'Nexa', fontSize: 75.0),
         children: <TextSpan>[
           TextSpan(text: 'F', style: TextStyle(color: pageColors[0])),
           TextSpan(text: 'L', style: TextStyle(color: pageColors[1])),
@@ -158,10 +156,10 @@ class UtilsWidget {
   Widget infoText(String text) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: selectableText(
           text,
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
       ),
@@ -169,7 +167,7 @@ class UtilsWidget {
   }
 
   Widget listViewContainer(BuildContext context, Widget child) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
       child: child,
     );
@@ -177,13 +175,13 @@ class UtilsWidget {
 
   Text usernameText(String username) {
     return Text(
-      username.length > 0 ? '@' + username : '',
+      username.isNotEmpty ? '@' + username : '',
       style: usernameStyle(),
     );
   }
 
   TextStyle usernameStyle() {
-    return TextStyle(
+    return const TextStyle(
       color: Colors.blue,
       fontWeight: !kIsWeb ? FontWeight.bold : FontWeight.normal,
     );
@@ -222,7 +220,7 @@ class UtilsWidget {
   ) {
     return AnimatedOpacity(
       opacity: showToUpButton && toUpButton ? 1.0 : 0.0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       child: showToUpButton || toUpButton
           ? FloatingActionButton(
               backgroundColor: pageColor,
@@ -230,7 +228,7 @@ class UtilsWidget {
               onPressed: () => scrollToUp,
               heroTag: tag,
             )
-          : Padding(padding: EdgeInsets.zero),
+          : const Padding(padding: EdgeInsets.zero),
     );
   }
 
@@ -251,10 +249,10 @@ class UtilsWidget {
     Color? color,
   }) {
     return Container(
-      alignment: Alignment(0.0, 0.0),
+      alignment: const Alignment(0.0, 0.0),
       child: CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation(
-          color != null ? color : Theme.of(context).iconTheme.color,
+          color ?? Theme.of(context).iconTheme.color,
         ),
       ),
     );
@@ -268,10 +266,10 @@ class UtilsWidget {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       width: MediaQuery.of(context).size.width,
-      height: height != null ? height : MediaQuery.of(context).size.height,
+      height: height ?? MediaQuery.of(context).size.height,
       child: circularProgress(
         context,
-        color: color != null ? color : Theme.of(context).primaryColor,
+        color: color ?? Theme.of(context).primaryColor,
       ),
     );
   }
@@ -307,12 +305,12 @@ class UtilsWidget {
     TextCapitalization textCapitalization = TextCapitalization.none,
   }) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 25,
         right: 25,
       ),
       child: Container(
-        margin: EdgeInsets.only(
+        margin: const EdgeInsets.only(
           bottom: 15,
         ),
         child: Form(
@@ -337,11 +335,11 @@ class UtilsWidget {
               }
             },
             decoration: InputDecoration(
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
               labelText: labelText,
-              labelStyle: TextStyle(fontSize: 15.0),
+              labelStyle: const TextStyle(fontSize: 15.0),
               hintText: hintText,
               prefixText: prefixText,
             ),
@@ -366,7 +364,7 @@ class UtilsWidget {
   }) {
     return Align(
       alignment: Alignment.center,
-      child: Container(
+      child: SizedBox(
         width: widthWeb(context) * multiply,
         child: child,
       ),
@@ -382,12 +380,12 @@ class UtilsWidget {
             infoText(text),
             snapshot.hasData
                 ? Container(
-                    padding: EdgeInsets.only(bottom: 15),
+                    padding: const EdgeInsets.only(bottom: 15),
                     child: ImageNetwork.cachedNetworkImage(
                       imageUrl: snapshot.data!,
                     ),
                   )
-                : Padding(padding: EdgeInsets.zero),
+                : const Padding(padding: EdgeInsets.zero),
           ],
         );
       },
@@ -402,8 +400,8 @@ class UtilsWidget {
         highlightColor: Colors.grey,
         child: Container(
           height: height,
-          margin: EdgeInsets.only(top: 1, bottom: 1),
-          padding: EdgeInsets.only(top: 1, bottom: 1),
+          margin: const EdgeInsets.only(top: 1, bottom: 1),
+          padding: const EdgeInsets.only(top: 1, bottom: 1),
           color: Colors.grey,
         ),
       ),

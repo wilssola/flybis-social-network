@@ -28,7 +28,7 @@ class VideoWidget extends StatefulWidget {
   final String? title, author, imageUrl;
   final Function? onDoubleTap;
 
-  VideoWidget({
+  const VideoWidget({
     required this.type,
     required this.source,
     this.title,
@@ -48,7 +48,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   BetterPlayerDataSource? betterPlayerDataSource;
   BetterPlayerController? _betterPlayerController;
 
-  html.VideoElement _videoElement = html.VideoElement();
+  final html.VideoElement _videoElement = html.VideoElement();
 
   final Key _playerKey = GlobalKey();
 
@@ -73,7 +73,7 @@ class _VideoWidgetState extends State<VideoWidget> {
           BetterPlayerDataSourceType.network,
           widget.source!,
           //videoFormat: BetterPlayerVideoFormat.hls,
-          cacheConfiguration: BetterPlayerCacheConfiguration(
+          cacheConfiguration: const BetterPlayerCacheConfiguration(
             useCache: true,
           ),
           notificationConfiguration: BetterPlayerNotificationConfiguration(

@@ -15,7 +15,7 @@ import 'package:flybis/setting.dart';
 class CallView extends StatefulWidget {
   final String chat, callId;
 
-  CallView({
+  const CallView({
     required this.chat,
     required this.callId,
   });
@@ -136,13 +136,13 @@ class CallViewState extends State<CallView> {
         body: Container(
           child: Column(
             children: [
-              Container(height: 320, child: _viewRows()),
-              OutlineButton(
+              SizedBox(height: 320, child: _viewRows()),
+              /*OutlineButton(
                 child: Text(isInChannel ? 'Leave Channel' : 'Join Channel',
                     style: textStyle),
                 onPressed: toggleChannel,
-              ),
-              Container(height: 100, child: _voiceDropdown()),
+              ),*/
+              SizedBox(height: 100, child: _voiceDropdown()),
               Expanded(child: Container(child: _buildInfoList())),
             ],
           ),
@@ -230,7 +230,8 @@ class CallViewState extends State<CallView> {
     return _sessions.map((session) => session.view).toList();
   }
 
-  static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
+  static TextStyle textStyle =
+      const TextStyle(fontSize: 18, color: Colors.blue);
 
   Widget _buildInfoList() {
     return ListView.builder(

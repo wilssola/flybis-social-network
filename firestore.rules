@@ -63,32 +63,36 @@ service cloud.firestore {
 			allow read: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]);
       allow create: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && (request.resource.data.chatId == chatId); //&& (!request.resource.data.keys().hasAny(['key']));      
       allow update: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && (request.resource.data.chatId == chatId) && (request.resource.data.chatKey == resource.data.chatKey);
+      allow list: if userExists(request.auth.uid) && onLimit(10);
     }
 
     match /chats/{chatId}/messages/{messageId} {
 			allow read: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]);
       allow write: if userExists(request.auth.uid) && (request.auth.uid == chatId.split('-')[0] || request.auth.uid == chatId.split('-')[1]) && request.auth.uid == request.resource.data.userId  && request.resource.data.messageContent.size() <= 5000 && isUuid(messageId);
+      allow list: if userExists(request.auth.uid) && onLimit(10);
     }
 
     match /posts/{userId} {
       allow read;
       allow write: if userExists(request.auth.uid) && request.auth.uid == userId;
+      allow list: if userExists(request.auth.uid) && onLimit(10);
     }
     
     match /posts/{userId}/posts/{postId} {
 			allow read;
       allow create: if userExists(request.auth.uid) && request.auth.uid == userId && isUuid(postId);
       allow update: if userExists(request.auth.uid) && request.auth.uid == userId && isUuid(postId);
+      allow list: if userExists(request.auth.uid) && onLimit(10);
     }
 
     match /posts/{userId}/posts/{postId}/likes/{senderId} {
-			allow read;
+			allow read: if userExists(request.auth.uid) && request.auth.uid == senderId;
       allow create: if userExists(request.auth.uid) && request.auth.uid == senderId && !dislikeExists(userId, postId, senderId);
       allow delete: if userExists(request.auth.uid) && request.auth.uid == senderId;
     }
 
     match /posts/{userId}/posts/{postId}/dislikes/{senderId} {
-			allow read;
+			allow read: if userExists(request.auth.uid) && request.auth.uid == senderId;
       allow create: if userExists(request.auth.uid) && request.auth.uid == senderId && !likeExists(userId, postId, senderId);
       allow delete: if userExists(request.auth.uid) && request.auth.uid == senderId;
     }
@@ -137,6 +141,7 @@ service cloud.firestore {
         allow read: if request.auth.uid == uid;
       }
     }
+
     match /products/{id} {
       allow read: if true;
 
@@ -148,6 +153,7 @@ service cloud.firestore {
         allow read: if true;
       }
     }
+    // Stripe - END
 
     function isFriendRequested(userId, friendId) {
       return exists(/databases/$(database)/documents/friends/$(friendId)/requests/$(userId));
@@ -179,7 +185,16 @@ service cloud.firestore {
 
     function isUuid(uuid) {
       return uuid.matches('^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$');
+
       //return uuid.matches('^[A-F\d]{8}-[A-F\d]{4}-4[A-F\d]{3}-[89AB][A-F\d]{3}-[A-F\d]{12}$');
+    }
+
+    function canUpdate(seconds){
+      return request.time < resource.data.updatedAt + duration.value(seconds, 's');
+    }
+
+    function onLimit(limit) {
+      return request.query.limit <= limit;
     }
   }
 }

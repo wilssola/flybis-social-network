@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:ui';
 
 // 🐦 Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -12,7 +11,6 @@ import 'package:animated_background/animated_background.dart'
 import 'package:flybis/core/values/const.dart';
 import 'package:flybis/global.dart';
 import 'package:get/get.dart';
-import 'package:universal_io/io.dart';
 
 // 🌎 Project imports:
 import 'package:flybis/app/data/providers/auth_provider.dart';
@@ -27,12 +25,12 @@ Future<bool> loadLibraries() async {
 class LoginView extends StatefulWidget {
   final List<Color>? pageColors;
 
-  LoginView({
+  const LoginView({
     this.pageColors,
   });
 
   @override
-  _LoginViewState createState() => _LoginViewState(pageColors: this.pageColors);
+  _LoginViewState createState() => _LoginViewState(pageColors: pageColors);
 }
 
 class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
@@ -49,12 +47,13 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
 
   final AuthProvider _auth = AuthProvider.instance;
 
+  @override
   void initState() {
     super.initState();
 
     if (mounted) {
       setState(() {
-        this.pageColor =
+        pageColor =
             widget.pageColors![Random().nextInt(widget.pageColors!.length)];
       });
     }
@@ -64,17 +63,17 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
     String email = this.email.trim();
     String password = this.password.trim();
 
-    bool hasLength = email.length > 0 && password.length > 0;
+    bool hasLength = email.isNotEmpty && password.isNotEmpty;
 
     if (validateAndSave() && hasLength) {
       if (mounted) {
         setState(() {
-          this.isLoad = true;
+          isLoad = true;
         });
       }
 
       try {
-        if (this.isLogin) {
+        if (isLogin) {
           await _auth.signIn(email, password);
         } else {
           await _auth.createUser(email, password);
@@ -89,10 +88,10 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
         }
       }
 
-      Future.delayed(Duration(milliseconds: 500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 500)).then((value) {
         if (mounted) {
           setState(() {
-            this.isLoad = false;
+            isLoad = false;
           });
         }
       });
@@ -102,8 +101,8 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   changeLogin() {
     if (mounted) {
       setState(() {
-        this.message = '';
-        this.isLogin = !this.isLogin;
+        message = '';
+        isLogin = !isLogin;
       });
     }
   }
@@ -124,13 +123,13 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   validatorEmail(String s) => GetUtils.isEmail(s) ? null : 'Not is email';
-  onSavedEmail(String s) => this.email = s;
+  onSavedEmail(String s) => email = s;
 
   // Password
   showPassword() {
     if (mounted) {
       setState(() {
-        this.isObscure = !this.isObscure;
+        isObscure = !isObscure;
       });
     }
   }
@@ -142,7 +141,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   validatorPassword(String s) => s.length >= 8 ? null : 'Bad password';
-  onSavedPassword(String s) => this.password = s;
+  onSavedPassword(String s) => password = s;
 
   bool validateAndSave() {
     final form = _formKey.currentState!;
@@ -164,9 +163,9 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide(),
+          borderSide: const BorderSide(),
         ),
-        contentPadding: EdgeInsets.all(15),
+        contentPadding: const EdgeInsets.all(15),
         suffix: suffix,
       );
 
@@ -179,48 +178,48 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
         labelText: 'Email',
         suffix: Icon(
           Icons.check,
-          color: this.isEmail ? Colors.green : Colors.grey,
+          color: isEmail ? Colors.green : Colors.grey,
         ),
       ),
-      validator: (v) => this.validatorEmail(v!),
-      onChanged: (v) => this.onChangedEmail(v),
-      onSaved: (v) => this.onSavedEmail(v!),
-      onFieldSubmitted: (v) => this.onSavedEmail(v),
+      validator: (v) => validatorEmail(v!),
+      onChanged: (v) => onChangedEmail(v),
+      onSaved: (v) => onSavedEmail(v!),
+      onFieldSubmitted: (v) => onSavedEmail(v),
     );
   }
 
   Widget passwordForm() {
     return TextFormField(
       maxLines: 1,
-      obscureText: this.isObscure,
+      obscureText: isObscure,
       autofocus: false,
       decoration: inputDecoration(
         labelText: 'Password',
         suffix: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
-            onTap: () => this.showPassword(),
+            onTap: () => showPassword(),
             child: Icon(
-              this.isObscure ? Icons.visibility : Icons.visibility_off,
+              isObscure ? Icons.visibility : Icons.visibility_off,
               color: Colors.grey,
             ),
           ),
         ),
       ),
-      validator: (v) => this.validatorPassword(v!),
-      onChanged: (v) => this.onChangedPassword(v),
-      onSaved: (v) => this.onSavedEmail(v!),
-      onFieldSubmitted: (v) => this.onSavedPassword(v),
+      validator: (v) => validatorPassword(v!),
+      onChanged: (v) => onChangedPassword(v),
+      onSaved: (v) => onSavedEmail(v!),
+      onFieldSubmitted: (v) => onSavedPassword(v),
     );
   }
 
   Widget errorWidget() {
-    final bool hasError = this.message.length > 0;
+    final bool hasError = message.isNotEmpty;
 
     return Text(
-      hasError ? this.message : '',
+      hasError ? message : '',
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: const TextStyle(
         height: 1.0,
         fontSize: 12.5,
         color: Colors.red,
@@ -229,16 +228,16 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   }
 
   Widget formWidget() {
-    return Container(
+    return SizedBox(
       width: 350,
       child: Form(
         key: _formKey,
         child: Column(
           children: [
             emailForm(),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             passwordForm(),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
           ],
         ),
       ),
@@ -247,7 +246,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
 
   Widget primaryButton() {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: MaterialButton(
         height: 50.0,
         minWidth: 200.0,
@@ -257,10 +256,10 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
           borderRadius: BorderRadius.circular(25.0),
         ),
         child: Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
-            this.isLogin ? 'Signin' : 'Signup',
-            style: TextStyle(fontSize: 20.0, color: Colors.white),
+            isLogin ? 'Signin' : 'Signup',
+            style: const TextStyle(fontSize: 20.0, color: Colors.white),
           ),
         ),
       ),
@@ -269,13 +268,13 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
 
   Widget secondaryButton() {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: TextButton(
         onPressed: changeLogin,
         child: Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
-            this.isLogin ? 'Signup a account' : 'Signin a account',
+            isLogin ? 'Signup a account' : 'Signin a account',
             style: TextStyle(
               fontSize: 15.0,
               color: Theme.of(context).iconTheme.color,
@@ -319,7 +318,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
       future: loadLibraries(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         if (isLoad || flybisUserOwner != null) {
@@ -358,7 +357,7 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
                       shrinkWrap: true,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,

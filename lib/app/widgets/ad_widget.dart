@@ -28,7 +28,7 @@ class AdWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      return AdsenseWidget();
+      return const AdsenseWidget();
     }
 
     if (Platform.isIOS || Platform.isAndroid) {

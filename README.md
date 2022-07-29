@@ -38,7 +38,7 @@ Instruções básicas para uso do Flutter:
 
 ## Compilar build APK
 
-    flutter build apk --release --tree-shake-icons --shrink --obfuscate --split-debug-info=./.debug_info/android/
+    flutter build apk --release --tree-shake-icons --shrink --obfuscate --split-per-abi --split-debug-info=./.debug_info/android/
 
 ## Compilar build APPBUNDLE
 

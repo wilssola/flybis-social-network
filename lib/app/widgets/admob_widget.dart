@@ -37,7 +37,7 @@ class AdmobWidget extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final Color pageColor;
 
-  AdmobWidget({
+  const AdmobWidget({
     required this.adUnitId,
     this.size = AdmobSize.largeBanner,
     this.margin,
@@ -103,8 +103,8 @@ class _AdmobWidgetState extends State<AdmobWidget> {
         _height = 100;
     }
 
-    _margin = widget.margin != null ? widget.margin : _margin;
-    _padding = widget.padding != null ? widget.padding : _padding;
+    _margin = widget.margin ?? _margin;
+    _padding = widget.padding ?? _padding;
 
     if (!kIsWeb) {
       // Prior to Android 10 AndroidView Should have better performance.
@@ -122,7 +122,7 @@ class _AdmobWidgetState extends State<AdmobWidget> {
       _ad = BannerAd(
         adUnitId: widget.adUnitId,
         size: _size,
-        request: AdRequest(),
+        request: const AdRequest(),
         listener: BannerAdListener(
           onAdLoaded: (Ad ad) {
             if (mounted) {
@@ -130,8 +130,8 @@ class _AdmobWidgetState extends State<AdmobWidget> {
                 _loaded = true;
                 _width = _ad!.size.width.toDouble() * 1.1;
                 _height = _ad!.size.height.toDouble() * 1.1;
-                _margin = widget.margin != null ? widget.margin : _margin;
-                _padding = widget.padding != null ? widget.padding : _padding;
+                _margin = widget.margin ?? _margin;
+                _padding = widget.padding ?? _padding;
               });
             }
 
@@ -179,7 +179,7 @@ class _AdmobWidgetState extends State<AdmobWidget> {
       future: loadLibraries(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return _loaded

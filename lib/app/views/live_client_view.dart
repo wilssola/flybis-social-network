@@ -14,7 +14,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wakelock/wakelock.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/HearAnim.dart';
 import 'package:flybis/global.dart';
 import 'package:flybis/app/data/models/live_model.dart';
 import 'package:flybis/app/data/models/message_model.dart';
@@ -256,7 +255,7 @@ class _LiveClientViewState extends State<LiveClientView> {
     for (var i = 0; i < _numConfetti; i++) {
       final height = _random.nextInt(size.height.floor());
       final width = 20;
-      confetti.add(HeartAnim(height % 200.0, width.toDouble(), 1));
+      //confetti.add(HeartAnim(height % 200.0, width.toDouble(), 1));
     }
 
     return Container(

@@ -12,27 +12,25 @@ import 'package:flybis/extensions/NoTransitionsOnWeb.dart';
 final ThemeData theme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.black,
-  accentColor: Colors.black,
-  iconTheme: IconThemeData(color: Colors.black),
+  iconTheme: const IconThemeData(color: Colors.black),
   applyElevationOverlayColor: false,
   pageTransitionsTheme: NoTransitionsOnWeb(),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.black,
     selectionColor: Colors.blue[800],
-  ),
+  ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.black),
 );
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.white,
-  accentColor: Colors.white,
-  iconTheme: IconThemeData(color: Colors.white),
+  iconTheme: const IconThemeData(color: Colors.white),
   applyElevationOverlayColor: true,
   pageTransitionsTheme: NoTransitionsOnWeb(),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.white,
     selectionColor: Colors.blue[800],
-  ),
+  ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
 );
 
 // Pages
@@ -53,35 +51,35 @@ final List<FlybisView> pages = [
   ),
   FlybisView(
     iconData: Icons.notifications,
-    icon: Icon(Icons.notifications),
+    icon: const Icon(Icons.notifications),
     string: 'bell'.tr,
     text: Text('bell'.tr),
     color: pageColors[1],
   ),
   FlybisView(
     iconData: Icons.camera,
-    icon: Icon(Icons.camera),
+    icon: const Icon(Icons.camera),
     string: 'camera'.tr,
     text: Text('camera'.tr),
     color: pageColors[2],
   ),
   FlybisView(
     iconData: Icons.account_circle,
-    icon: Icon(Icons.account_circle),
+    icon: const Icon(Icons.account_circle),
     string: 'profile'.tr,
     text: Text('profile'.tr),
     color: pageColors[3],
   ),
   FlybisView(
     iconData: Icons.mail,
-    icon: Icon(Icons.mail),
+    icon: const Icon(Icons.mail),
     string: 'chat'.tr,
     text: Text('chat'.tr),
     color: pageColors[4],
   ),
   FlybisView(
     iconData: Icons.search,
-    icon: Icon(Icons.search),
+    icon: const Icon(Icons.search),
     string: 'search'.tr,
     text: Text('search'.tr),
     color: pageColors[5],

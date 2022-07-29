@@ -19,7 +19,7 @@ class FlybisLive {
     this.liveId,
 
     // Status
-    this.status: 'offline',
+    this.status = 'offline',
 
     // Timestamp
     this.timestamp,
@@ -37,28 +37,28 @@ class FlybisLive {
 
     return FlybisLive(
       // ID's
-      userId: data['userId'] != null ? data['userId'] : documentId,
-      liveId: data['liveId'] != null ? data['liveId'] : '',
+      userId: data['userId'] ?? documentId,
+      liveId: data['liveId'] ?? '',
 
       // Status
-      status: data['status'] != null ? data['status'] : '',
+      status: data['status'] ?? '',
 
       // Timestamp
-      timestamp: data['timestamp'] != null ? data['timestamp'] : timestampNow(),
+      timestamp: data['timestamp'] ?? timestampNow(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       // ID's
-      'userId': this.userId,
-      'liveId': this.liveId,
+      'userId': userId,
+      'liveId': liveId,
 
       // Status
-      'status': this.status,
+      'status': status,
 
       // Timestamp
-      'timestamp': this.timestamp,
+      'timestamp': timestamp,
     };
   }
 }
@@ -68,7 +68,7 @@ class FlybisLiveStatus {
   dynamic timestamp;
 
   FlybisLiveStatus({
-    this.status: 'offline',
+    this.status = 'offline',
     this.timestamp,
   });
 
@@ -84,14 +84,14 @@ class FlybisLiveStatus {
 
     return FlybisLiveStatus(
       status: data['status'],
-      timestamp: data['timestamp'] != null ? data['timestamp'] : timestampNow(),
+      timestamp: data['timestamp'] ?? timestampNow(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'status': this.status,
-      'timestamp': this.timestamp,
+      'status': status,
+      'timestamp': timestamp,
     };
   }
 }

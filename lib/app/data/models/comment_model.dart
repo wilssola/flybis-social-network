@@ -19,7 +19,7 @@ class FlybisComment {
 
     // Comment
     required this.commentId,
-    this.commentType: 'posts', // posts, lives, stories
+    this.commentType = 'posts', // posts, lives, stories
     required this.commentContent,
 
     // Timestamp
@@ -47,15 +47,15 @@ class FlybisComment {
   Map<String, dynamic> toMap() {
     return {
       // User
-      'userId': this.userId,
+      'userId': userId,
 
       // Content
-      'commentId': this.commentId,
-      'commentType': this.commentType,
-      'commentContent': this.commentContent,
+      'commentId': commentId,
+      'commentType': commentType,
+      'commentContent': commentContent,
 
       // Timestamp
-      'timestamp': this.timestamp ?? timestampNow(),
+      'timestamp': timestamp ?? timestampNow(),
     };
   }
 }

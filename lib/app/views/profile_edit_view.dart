@@ -22,7 +22,7 @@ class ProfileEditView extends StatefulWidget {
   final String? owner;
   final Color? pageColor;
 
-  ProfileEditView(
+  const ProfileEditView(
     this.owner, {
     required this.pageColor,
   });
@@ -49,53 +49,20 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   bool _displayNameValid = true;
 
   // Photo
-  PickedFile? photoFile;
+  XFile? photoFile;
   String? photoUrl = '';
 
   // Banner
   PickedFile? bannerFile;
   String? bannerUrl = '';
 
-  photoFromGallery() async {
-    var result = await profileService.photoGallery(
-        widget.owner, 'photo-${widget.owner}');
-
-    if (mounted) {
-      setState(() {
-        photoFile = result;
-      });
-    }
-  }
-
-  photoFromCamera() async {
+  void setProfileImage(ProfileImageType type, ImageSource source) async {
     var result =
-        await profileService.photoCamera(widget.owner, 'photo-${widget.owner}');
+        await profileService.setProfileImage(widget.owner!, type, source);
 
     if (mounted) {
       setState(() {
         photoFile = result;
-      });
-    }
-  }
-
-  bannerFromGallery() async {
-    var result = await profileService.photoGallery(
-        widget.owner, 'banner-${widget.owner}');
-
-    if (mounted) {
-      setState(() {
-        bannerFile = result;
-      });
-    }
-  }
-
-  bannerFromCamera() async {
-    var result = await profileService.photoCamera(
-        widget.owner, 'banner-${widget.owner}');
-
-    if (mounted) {
-      setState(() {
-        bannerFile = result;
       });
     }
   }
@@ -132,7 +99,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 12),
           child: Text(
             'Display Name',
@@ -154,7 +121,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 12),
           child: Text(
             'Bio',
@@ -211,10 +178,10 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: widget.pageColor,
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.done),
+            icon: const Icon(Icons.done),
             onPressed: () {
               updateProfileData();
               Navigator.pop(context);
@@ -227,89 +194,91 @@ class _ProfileEditViewState extends State<ProfileEditView> {
               .circularProgress(context, color: widget.pageColor)
           : ListView(
               children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: bannerFromCamera,
-                            child: Container(
-                              color: Colors.black,
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: bannerFile == null
-                                    ? ImageNetwork.cachedNetworkImage(
-                                        imageUrl: bannerUrl!,
-                                      )
-                                    : Image.file(File(bannerFile!.path)),
-                              ),
+                Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => setProfileImage(
+                            ProfileImageType.banner,
+                            ImageSource.camera,
+                          ),
+                          child: Container(
+                            color: Colors.black,
+                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: bannerFile == null
+                                  ? ImageNetwork.cachedNetworkImage(
+                                      imageUrl: bannerUrl!,
+                                    )
+                                  : Image.file(File(bannerFile!.path)),
                             ),
                           ),
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 25.0),
-                              child: GestureDetector(
-                                onTap: photoFromCamera,
-                                child: Container(
-                                  width: 150,
-                                  height: 150,
-                                  child: CircleAvatar(
-                                    backgroundColor: kAvatarBackground,
-                                    backgroundImage: photoFile == null
-                                        ? ImageNetwork
-                                            .cachedNetworkImageProvider(
-                                            photoUrl!,
-                                          )
-                                        : Image.file(File(photoFile!.path))
-                                            .image,
-                                    radius: 50.0,
-                                  ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: GestureDetector(
+                              onTap: () => setProfileImage(
+                                ProfileImageType.photo,
+                                ImageSource.camera,
+                              ),
+                              child: SizedBox(
+                                width: 150,
+                                height: 150,
+                                child: CircleAvatar(
+                                  backgroundColor: kAvatarBackground,
+                                  backgroundImage: photoFile == null
+                                      ? ImageNetwork.cachedNetworkImageProvider(
+                                          photoUrl!,
+                                        )
+                                      : Image.file(File(photoFile!.path)).image,
+                                  radius: 50.0,
                                 ),
                               ),
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: <Widget>[
+                          buildDisplayNameField(),
+                          buildBioField()
                         ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          children: <Widget>[
-                            buildDisplayNameField(),
-                            buildBioField()
-                          ],
+                    ),
+                    RaisedButton(
+                      onPressed: updateProfileData,
+                      child: Text(
+                        'Update Profile',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: FlatButton.icon(
+                        onPressed: () async {
+                          _auth.signOut(context);
+                        },
+                        icon: const Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        ),
+                        label: const Text(
+                          'Logout',
+                          style: TextStyle(color: Colors.red, fontSize: 20.0),
                         ),
                       ),
-                      RaisedButton(
-                        onPressed: updateProfileData,
-                        child: Text(
-                          'Update Profile',
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: FlatButton.icon(
-                          onPressed: () async {
-                            _auth.signOut(context);
-                          },
-                          icon: Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                          label: Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.red, fontSize: 20.0),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 )
               ],
             ),

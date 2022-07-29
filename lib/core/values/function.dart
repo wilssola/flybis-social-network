@@ -34,8 +34,8 @@ void setAllOrientations() {
 
 void setNotificationBar() {
   /// Show Notification Bar.
-  SystemChrome.setEnabledSystemUIOverlays(
-    [
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual, overlays: [
       SystemUiOverlay.top,
       SystemUiOverlay.bottom,
     ],
@@ -43,7 +43,7 @@ void setNotificationBar() {
 
   /// Turn Notification Bar Transparent.
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
+    const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),

@@ -21,7 +21,7 @@ Future<bool> loadLibraries() async {
 class CommentWidget extends StatelessWidget {
   final FlybisComment? flybisComment;
 
-  CommentWidget({
+  const CommentWidget({
     this.flybisComment,
   });
 
@@ -34,7 +34,7 @@ class CommentWidget extends StatelessWidget {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return FutureBuilder(

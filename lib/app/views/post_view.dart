@@ -15,7 +15,7 @@ class PostView extends StatefulWidget {
 
   final Color? pageColor;
 
-  PostView({
+  const PostView({
     this.flybisPost,
     this.userId,
     this.postId,
@@ -64,12 +64,12 @@ class _PostViewState extends State<PostView> {
         }
 
         if (flybisPost != null) {
-          this._postWidget = postWidget;
+          _postWidget = postWidget;
         }
       });
     }
 
-    return null;
+    return;
   }
 
   @override

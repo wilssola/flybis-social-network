@@ -12,15 +12,15 @@ class ImageNetwork {
     required String imageUrl,
     var placeholder,
     var errorWidget,
-    Alignment alignment: Alignment.center,
+    Alignment alignment = Alignment.center,
     double? width,
     double? height,
     BoxFit fit = BoxFit.contain,
     bool showIconError = true,
     Color color = Colors.white,
-    String blurHash: '',
+    String blurHash = '',
   }) {
-    if (imageUrl != null && imageUrl.length > 0) {
+    if (imageUrl.isNotEmpty) {
       return OctoImage(
         image: Image.network(imageUrl).image,
         placeholderBuilder: OctoPlaceholder.blurHash(
@@ -39,7 +39,7 @@ class ImageNetwork {
         image: imageUrl,
       );
     } else {
-      return Padding(
+      return const Padding(
         padding: EdgeInsets.zero,
       );
     }

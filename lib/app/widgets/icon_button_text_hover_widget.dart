@@ -7,7 +7,7 @@ class IconButtonTextHoverWidget extends StatefulWidget {
   final Function? onPressed;
   final ButtonStyle? style;
 
-  IconButtonTextHoverWidget({
+  const IconButtonTextHoverWidget({
     Key? key,
     this.icon,
     this.label,
@@ -38,12 +38,12 @@ class _IconButtonTextHoverWidgetState extends State<IconButtonTextHoverWidget> {
       onEnter: (e) => _mouseEnter(true),
       onExit: (e) => _mouseEnter(false),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         child: TextButton.icon(
           icon: widget.icon!,
           label: AnimatedOpacity(
-            duration: Duration(milliseconds: 200),
-            child: Container(
+            duration: const Duration(milliseconds: 200),
+            child: SizedBox(
               child: Text(widget.label!),
               width: _hovering ? widget.label!.length * 10 : 0,
             ),

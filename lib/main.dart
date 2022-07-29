@@ -114,8 +114,10 @@ Future<InitializationStatus> initGoogleMobileAds() {
 Future<void> initSentry(Function runApp) async {
   try {
     await SentryFlutter.init(
-      (SentryFlutterOptions options) => options.dsn =
-          'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368',
+      (SentryFlutterOptions options) {
+        options.dsn =
+            'https://66b767fd4d654fb19e2dde01a47bd8b3@o541444.ingest.sentry.io/5660368';
+      },
       appRunner: runApp(),
     );
   } catch (error) {
@@ -150,13 +152,15 @@ void main() async {
 
   await initSentry(
     () => runZonedGuarded(
-      () => runApp(flutter_phoenix.Phoenix(child: Main())),
+      () => runApp(flutter_phoenix.Phoenix(child: const Main())),
       firebase_crashlytics.FirebaseCrashlytics.instance.recordError,
     ),
   );
 }
 
 class Main extends StatefulWidget {
+  const Main({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _MainState();
 }
@@ -166,45 +170,45 @@ class _MainState extends State<Main> {
   void initState() {
     super.initState();
 
-    if (!io.Platform.isWindows && !io.Platform.isLinux) {
-      MessagingProvider.instance.getInitialMessage().then((var message) {
-        if (message != null) {
-          logger.i('getInitialMessage: $message');
-        }
-      });
+    if (io.Platform.isWindows || io.Platform.isLinux) return;
 
-      firebase_messaging.FirebaseMessaging.onMessage.listen(
-        (var message) {
-          try {
-            var notification = message.notification;
-            var android = message.notification?.android;
+    MessagingProvider.instance.getInitialMessage().then((var message) {
+      if (message != null) {
+        logger.i('getInitialMessage: $message');
+      }
+    });
 
-            if (notification != null && android != null) {
-              logger.i('onMessage: $notification');
+    firebase_messaging.FirebaseMessaging.onMessage.listen(
+      (var message) {
+        try {
+          var notification = message.notification;
+          var android = message.notification?.android;
 
-              MessagingProvider.instance.showHighNotification(notification);
-            }
-          } catch (error) {
-            logger.e(error);
+          if (notification != null && android != null) {
+            logger.i('onMessage: $notification');
+
+            MessagingProvider.instance.showHighNotification(notification);
           }
-        },
-      );
+        } catch (error) {
+          logger.e(error);
+        }
+      },
+    );
 
-      firebase_messaging.FirebaseMessaging.onMessageOpenedApp.listen(
-        (var message) {
-          logger.i('onMessageOpenedApp: $message');
-        },
-      );
-    }
+    firebase_messaging.FirebaseMessaging.onMessageOpenedApp.listen(
+      (var message) {
+        logger.i('onMessageOpenedApp: $message');
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flybis',
-      theme: theme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
+      //theme: theme,
+      //darkTheme: darkTheme,
+      //themeMode: ThemeMode.light,
       //home: app.App(),
       builder: (BuildContext context, Widget? child) {
         return ScrollConfiguration(
@@ -216,7 +220,7 @@ class _MainState extends State<Main> {
       routes: routes,
       navigatorObservers: [
         firebase_analytics_observer.FirebaseAnalyticsObserver(
-          analytics: firebase_analytics.FirebaseAnalytics(),
+          analytics: firebase_analytics.FirebaseAnalytics.instance,
         ),
       ],
       locale: ui.window.locale,

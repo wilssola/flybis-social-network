@@ -28,8 +28,8 @@ class AuthProvider {
       String uid = result.user!.uid;
 
       return uid;
-    } on FirebaseAuthException catch (error) {
-      throw error;
+    } on FirebaseAuthException {
+      rethrow;
     }
   }
 
@@ -45,8 +45,8 @@ class AuthProvider {
       String uid = result.user!.uid;
 
       return uid;
-    } on FirebaseAuthException catch (error) {
-      throw error;
+    } on FirebaseAuthException {
+      rethrow;
     }
   }
 

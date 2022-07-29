@@ -39,7 +39,7 @@ class ChatView extends StatefulWidget {
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  ChatView({
+  const ChatView({
     Key? key,
     required this.pageColor,
     this.pageHeader = false,
@@ -111,7 +111,7 @@ class ChatViewState extends State<ChatView> {
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -136,7 +136,7 @@ class ChatViewState extends State<ChatView> {
         AsyncSnapshot<FlybisUser> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Padding(padding: EdgeInsets.zero);
+          return const Padding(padding: EdgeInsets.zero);
         }
 
         FlybisUser flybisUserReceiver = snapshot.data!;
@@ -164,12 +164,11 @@ class ChatViewState extends State<ChatView> {
             }
 
             bool hasCount = flybisChatStatus!.messageCounts != null &&
-                flybisChatStatus.messageCounts!.length > 0 &&
+                flybisChatStatus.messageCounts!.isNotEmpty &&
                 flybisChatStatus.messageCounts![flybisUserOwner!.uid] != null &&
                 flybisChatStatus.messageCounts![flybisUserOwner!.uid]! > 0;
 
-            bool hasContent = flybisChatStatus.messageContent != null &&
-                flybisChatStatus.messageContent.length > 0;
+            bool hasContent = flybisChatStatus.messageContent.isNotEmpty;
 
             bool hasTimestamp = flybisChatStatus.timestamp != null;
 
@@ -207,9 +206,9 @@ class ChatViewState extends State<ChatView> {
                     children: <Widget>[
                       utils_widget.UtilsWidget()
                           .usernameText(flybisUserReceiver.username!),
-                      Spacer(),
+                      const Spacer(),
                       hasCount
-                          ? Container(
+                          ? SizedBox(
                               width: 20,
                               height: 20,
                               child: CircleAvatar(
@@ -219,14 +218,14 @@ class ChatViewState extends State<ChatView> {
                                   flybisChatStatus
                                       .messageCounts![flybisUserOwner!.uid]
                                       .toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
                                   ),
                                 ),
                               ),
                             )
-                          : Text(''),
+                          : const Text(''),
                     ],
                   ),
                   subtitle: Row(
@@ -246,14 +245,14 @@ class ChatViewState extends State<ChatView> {
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
                             ),
-                      Spacer(),
+                      const Spacer(),
                       hasTimestamp
                           ? Text(
                               messageTimestampFormat(
                                 flybisChatStatus.timestamp,
                               ),
                             )
-                          : Text(''),
+                          : const Text(''),
                     ],
                   ),
                 ),
@@ -281,7 +280,7 @@ class ChatViewState extends State<ChatView> {
           );
         }
 
-        if (snapshot.data!.length == 0) {
+        if (snapshot.data!.isEmpty) {
           Widget infoText = utils_widget.UtilsWidget().infoText(
             'Que pena, você ainda não tem nenhum amigo adicionado, faça novas amizades',
           );
@@ -293,7 +292,7 @@ class ChatViewState extends State<ChatView> {
 
           return ListView(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               kNotIsWebOrScreenLittle(context)
                   ? infoText
@@ -310,12 +309,12 @@ class ChatViewState extends State<ChatView> {
 
         return ListView(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             kNotIsWebOrScreenLittle(context) ? ad : Card(child: ad),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return chat(context, snapshot.data![index]);
@@ -347,7 +346,7 @@ class ChatViewState extends State<ChatView> {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return Scaffold(
@@ -361,7 +360,7 @@ class ChatViewState extends State<ChatView> {
           body: !kIsWeb
               ? chats()
               : Scrollbar(
-                  isAlwaysShown: true,
+                  thumbVisibility: true,
                   showTrackOnHover: true,
                   controller: scrollController,
                   child: chats(),

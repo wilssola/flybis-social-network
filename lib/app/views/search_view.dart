@@ -1,7 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 // 📦 Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,7 +33,7 @@ class SearchView extends StatefulWidget {
 
   final String? searchQuery;
 
-  SearchView({
+  const SearchView({
     this.searchQuery,
     this.pageColor,
     this.pageHeader = false,
@@ -63,7 +62,7 @@ class _SearchViewState extends State<SearchView>
   void search(String text) async {
     if (mounted) {
       setState(() {
-        this.results = [];
+        results = [];
       });
     }
 
@@ -73,7 +72,7 @@ class _SearchViewState extends State<SearchView>
 
     String query = text.toLowerCase();
 
-    if (query.length > 0) {
+    if (query.isNotEmpty) {
       if (!GetUtils.isEmail(query)) {
         if (!query.contains('#')) {
           String username = query.replaceAll('@', '');
@@ -126,31 +125,29 @@ class _SearchViewState extends State<SearchView>
   }
 
   void addUserWidget(List<FlybisUser>? users, List<String?> uids) {
-    if (users != null && users.length > 0) {
-      users.forEach((FlybisUser flybisUser) {
-        if (flybisUser != null) {
-          if (!uids.contains(flybisUser.uid)) {
-            uids.add(flybisUser.uid);
+    if (users != null && users.isNotEmpty) {
+      for (var flybisUser in users) {
+        if (!uids.contains(flybisUser.uid)) {
+          uids.add(flybisUser.uid);
 
-            UserResult userResult = UserResult(
-              user: flybisUser,
-              pageColor: widget.pageColor,
-            );
+          UserResult userResult = UserResult(
+            user: flybisUser,
+            pageColor: widget.pageColor,
+          );
 
-            if (mounted) {
-              setState(() {
-                this.results.add(userResult);
-              });
-            }
+          if (mounted) {
+            setState(() {
+              results.add(userResult);
+            });
           }
         }
-      });
+      }
     }
   }
 
   void addPostWidget(QuerySnapshot snapshot, List<String?> ids) {
     if (snapshot.docs.isNotEmpty) {
-      snapshot.docs.forEach((DocumentSnapshot doc) {
+      for (var doc in snapshot.docs) {
         if (doc.exists) {
           final FlybisPost flybisPost = FlybisPost(); //.fromDocument(doc);
 
@@ -166,19 +163,19 @@ class _SearchViewState extends State<SearchView>
 
             if (mounted) {
               setState(() {
-                this.results.add(postWidget);
+                results.add(postWidget);
               });
             }
           }
         }
-      });
+      }
     }
   }
 
   void clear() {
     if (mounted) {
       setState(() {
-        this.results = [];
+        results = [];
       });
     }
 
@@ -193,19 +190,19 @@ class _SearchViewState extends State<SearchView>
         controller: controller,
         onFieldSubmitted: search,
         cursorColor: Colors.white,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: 'Buscar...',
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           border: InputBorder.none,
           filled: false,
           fillColor: Colors.white,
           focusColor: Colors.white,
           hoverColor: Colors.white,
-          prefixIcon: Icon(Icons.search, color: Colors.white),
+          prefixIcon: const Icon(Icons.search, color: Colors.white),
           suffixIcon: IconButton(
             onPressed: clear,
-            icon: Icon(Icons.clear, color: Colors.white),
+            icon: const Icon(Icons.clear, color: Colors.white),
           ),
         ),
       ),
@@ -221,10 +218,10 @@ class _SearchViewState extends State<SearchView>
       children: [
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: results.length,
           itemBuilder: (BuildContext context, int index) {
-            if (results.length == 0) {
+            if (results.isEmpty) {
               return utils_widget.UtilsWidget().infoText(
                 'Nenhum resultado encontrado',
               );
@@ -256,7 +253,7 @@ class UserResult extends StatelessWidget {
 
   final Color? pageColor;
 
-  UserResult({
+  const UserResult({
     required this.user,
     required this.pageColor,
   });
@@ -282,10 +279,10 @@ class UserResult extends StatelessWidget {
             title: Row(
               children: <Widget>[
                 utils_widget.UtilsWidget().usernameText(user.username!),
-                Spacer(),
+                const Spacer(),
                 Text(
                   formatCompactNumber(user.followersCount) + ' followers',
-                  style: TextStyle(color: Colors.blue),
+                  style: const TextStyle(color: Colors.blue),
                 ),
               ],
             ),

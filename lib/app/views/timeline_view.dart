@@ -59,7 +59,7 @@ class TimelineView extends StatefulWidget {
 
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  TimelineView({
+  const TimelineView({
     required this.pageColor,
     this.pageHeader = false,
     required this.scaffoldKey,
@@ -131,7 +131,7 @@ class _TimelineViewState extends State<TimelineView>
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -156,7 +156,7 @@ class _TimelineViewState extends State<TimelineView>
   void setLivesList(List<FlybisLive?> flybisLives) {
     bool hasOwner = false;
 
-    flybisLives.forEach((FlybisLive? flybisLive) {
+    for (var flybisLive in flybisLives) {
       if (flybisLive!.userId == flybisUserOwner!.uid) {
         hasOwner = true;
 
@@ -169,7 +169,7 @@ class _TimelineViewState extends State<TimelineView>
           });
         }
       }
-    });
+    }
 
     if (mounted) {
       setState(() {
@@ -190,9 +190,7 @@ class _TimelineViewState extends State<TimelineView>
         .listen((List<FlybisLive?> flybisLives) {
       logger.d('listenLivesList: ' + flybisLives.toString());
 
-      if (flybisLives != null) {
-        setLivesList(flybisLives);
-      }
+      setLivesList(flybisLives);
     });
   }
 
@@ -218,14 +216,14 @@ class _TimelineViewState extends State<TimelineView>
   }
 
   Widget lives() {
-    return Container(
+    return SizedBox(
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: _livesList.length,
         itemBuilder: (BuildContext context, int index) {
-          if (_livesList.length <= 0) {
-            return Text('');
+          if (_livesList.isEmpty) {
+            return const Text('');
           }
 
           return liveUser(_livesList[index]!);
@@ -241,16 +239,16 @@ class _TimelineViewState extends State<TimelineView>
       future: user_service.UserService().getUser(flybisLive.userId),
       builder: (BuildContext context, AsyncSnapshot<FlybisUser?> snapshot) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         FlybisUser flybisUser = snapshot.data!;
 
         return Container(
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           child: Column(
             children: <Widget>[
-              Container(
+              SizedBox(
                 height: 70,
                 width: 70,
                 child: MouseRegion(
@@ -264,14 +262,14 @@ class _TimelineViewState extends State<TimelineView>
                       }
                     },
                     child: Stack(
-                      alignment: Alignment(0, 0),
+                      alignment: const Alignment(0, 0),
                       children: <Widget>[
                         !isOwner
-                            ? Container(
+                            ? SizedBox(
                                 height: 52.5,
                                 width: 52.5,
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
                                       colors: [
@@ -285,8 +283,8 @@ class _TimelineViewState extends State<TimelineView>
                                   ),
                                 ),
                               )
-                            : Padding(padding: EdgeInsets.zero),
-                        Container(
+                            : const Padding(padding: EdgeInsets.zero),
+                        SizedBox(
                           height: 50,
                           width: 50,
                           child: CircleAvatar(
@@ -303,11 +301,11 @@ class _TimelineViewState extends State<TimelineView>
                                 width: 50,
                                 alignment: Alignment.bottomRight,
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.blue,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.add,
                                     size: 15,
                                     color: Colors.white,
@@ -326,7 +324,7 @@ class _TimelineViewState extends State<TimelineView>
                                       width: 27.5,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                           Radius.circular(3.5),
                                         ),
                                         gradient: LinearGradient(
@@ -340,7 +338,7 @@ class _TimelineViewState extends State<TimelineView>
                                       ),
                                     ),
                                     Container(
-                                      child: Padding(
+                                      child: const Padding(
                                         padding: EdgeInsets.all(5),
                                         child: Text(
                                           'LIVE',
@@ -360,7 +358,7 @@ class _TimelineViewState extends State<TimelineView>
                   ),
                 ),
               ),
-              SizedBox(height: 3.5),
+              const SizedBox(height: 3.5),
               Text(flybisUser.username != null ? flybisUser.username! : ''),
             ],
           ),
@@ -371,7 +369,7 @@ class _TimelineViewState extends State<TimelineView>
 
   Widget recommendedUsers() {
     Widget loadingWidget = Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: utils_widget.UtilsWidget().circularProgress(
         context,
         color: widget.pageColor,
@@ -383,8 +381,8 @@ class _TimelineViewState extends State<TimelineView>
         : Card(child: loadingWidget);
 
     Widget errorWidget = Container(
-      padding: EdgeInsets.all(10),
-      child: Text('404'),
+      padding: const EdgeInsets.all(10),
+      child: const Text('404'),
     );
 
     Widget hasError = kNotIsWebOrScreenLittle(context)
@@ -428,8 +426,7 @@ class _TimelineViewState extends State<TimelineView>
 
             List<Widget> users = [];
 
-            snapshot.data!.forEach(
-              (FlybisUser flybisUser) {
+            for (var flybisUser in snapshot.data!) {
                 bool isOwner = flybisUserOwner!.uid == flybisUser.uid;
                 bool isFollowing = followings.contains(flybisUser.uid);
 
@@ -441,8 +438,7 @@ class _TimelineViewState extends State<TimelineView>
 
                   users.add(userResult);
                 }
-              },
-            );
+              }
 
             if (users.isEmpty) {
               Widget infoWidget = utils_widget.UtilsWidget().infoText(
@@ -451,7 +447,7 @@ class _TimelineViewState extends State<TimelineView>
 
               return ListView(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   kNotIsWebOrScreenLittle(context)
                       ? infoWidget
@@ -466,14 +462,14 @@ class _TimelineViewState extends State<TimelineView>
 
             return ListView(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 kNotIsWebOrScreenLittle(context)
                     ? infoWidget
                     : Card(child: infoWidget),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: users.length,
                   itemBuilder: (BuildContext context, int index) {
                     return kNotIsWebOrScreenLittle(context)
@@ -508,7 +504,7 @@ class _TimelineViewState extends State<TimelineView>
         List<Widget> posts = [];
 
         if (snapshot.hasData) {
-          snapshot.data!.forEach((FlybisPost flybisPost) {
+          for (var flybisPost in snapshot.data!) {
             Widget postWidget = post_widget.PostWidget(
               key: ValueKey(flybisPost.postId),
               flybisPost: flybisPost,
@@ -526,7 +522,7 @@ class _TimelineViewState extends State<TimelineView>
             if (localValidity && serverValidity) {
               posts.add(postWidget);
             }
-          });
+          }
         }
 
         if (posts.isEmpty) {
@@ -570,7 +566,7 @@ class _TimelineViewState extends State<TimelineView>
         Widget adWidget = AdWidget(
           pageId: widget.pageId,
           pageColor: widget.pageColor,
-          margin: EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 15),
         );
 
         Widget timelineList = Column(
@@ -583,7 +579,7 @@ class _TimelineViewState extends State<TimelineView>
             kNotIsWebOrScreenLittle(context) ? adWidget : Card(child: adWidget),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: posts.length,
               itemBuilder: (BuildContext context, int index) {
                 return kNotIsWebOrScreenLittle(context)
@@ -607,11 +603,11 @@ class _TimelineViewState extends State<TimelineView>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(width: widthWeb(context), child: timelineList),
-                    Spacer(),
+                    SizedBox(width: widthWeb(context), child: timelineList),
+                    const Spacer(),
                     Container(
                       width: 275,
-                      margin: EdgeInsets.only(top: 100),
+                      margin: const EdgeInsets.only(top: 100),
                       child: Column(
                         children: [
                           recommendedUsers(),
@@ -649,7 +645,7 @@ class _TimelineViewState extends State<TimelineView>
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return Scaffold(
@@ -662,7 +658,7 @@ class _TimelineViewState extends State<TimelineView>
           body: !kIsWeb
               ? timeline()
               : Scrollbar(
-                  isAlwaysShown: true,
+                  thumbVisibility: true,
                   showTrackOnHover: true,
                   controller: scrollController,
                   child: timeline(),

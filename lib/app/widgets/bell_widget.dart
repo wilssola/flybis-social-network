@@ -1,7 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 // 📦 Package imports:
 import 'package:get/get.dart';
@@ -38,7 +37,7 @@ class BellWidget extends StatefulWidget {
   final FlybisBell flybisBell;
   final Color pageColor;
 
-  BellWidget({
+  const BellWidget({
     required this.flybisBell,
     required this.pageColor,
   });
@@ -145,7 +144,7 @@ class _BellWidgetState extends State<BellWidget> {
                   .usernameText(flybisUserSender.username!),
             ),
           ),
-          Container(
+          SizedBox(
             width: kBellTextWidth,
             child: Text(
               ' ' + bellText,
@@ -168,7 +167,7 @@ class _BellWidgetState extends State<BellWidget> {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return FutureBuilder(
@@ -178,7 +177,7 @@ class _BellWidgetState extends State<BellWidget> {
             AsyncSnapshot<Widget> snapshot,
           ) {
             if (!snapshot.hasData) {
-              return Text('');
+              return const Text('');
             }
 
             return snapshot.data!;

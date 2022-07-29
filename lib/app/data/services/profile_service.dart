@@ -3,6 +3,8 @@
 //  Package imports:
 
 // 🐦 Flutter imports:
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 // 📦 Package imports:
@@ -12,46 +14,45 @@ import 'package:image_picker/image_picker.dart';
 // 🌎 Project imports:
 import 'package:flybis/core/values/const.dart';
 
+enum ProfileImageType {
+  photo,
+  banner,
+}
+
 class ProfileService {
-  Future<String?> photoUpload(
-    PickedFile? file,
-    String? userId,
-    String fileId,
+  Future<String?> uploadProfileImage(
+    XFile file,
+    String userId,
+    ProfileImageType type,
   ) async {
-    if (!kIsWeb) {
-      UploadTask uploadTask;
+    if (kIsWeb) return null;
 
-      uploadTask = storage
-          .child('$userId/$fileId.jpg')
-          .putData(await file!.readAsBytes());
+    String fileId = '$type-$userId';
+    String path = '$userId/$fileId.jpg';
 
-      TaskSnapshot storageSnap = await uploadTask; //.onComplete;
+    Uint8List data = await file.readAsBytes();
 
-      String downloadUrl = await storageSnap.ref.getDownloadURL();
+    UploadTask uploadTask = storage.child(path).putData(data);
 
-      /*UserService().updateUser(userId, {
+    TaskSnapshot storageSnap = await uploadTask; //.onComplete;
+
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+
+    /*UserService().updateUser(userId, {
         '${fileId.split('-')[0]}Url': downloadUrl,
       });*/
 
-      return downloadUrl;
-    }
-
-    return null;
+    return downloadUrl;
   }
 
-  Future<PickedFile?> photoCamera(String? userId, String fileId) async {
-    PickedFile? file = await ImagePicker().getImage(source: ImageSource.camera);
+  Future<XFile?> setProfileImage(
+    String userId,
+    ProfileImageType type,
+    ImageSource source,
+  ) async {
+    XFile? file = await ImagePicker().pickImage(source: source);
 
-    await photoUpload(file, userId, fileId);
-
-    return file;
-  }
-
-  Future<PickedFile?> photoGallery(String? userId, String fileId) async {
-    PickedFile? file =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-
-    await photoUpload(file, userId, fileId);
+    await uploadProfileImage(file!, userId, type);
 
     return file;
   }

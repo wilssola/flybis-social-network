@@ -10,10 +10,10 @@ import 'package:flybis/core/values/languages/pt_br.dart';
 
 class Translation extends Translations {
   // Default locale
-  static final locale = Locale('en', 'US');
+  static const locale = Locale('en', 'US');
 
   // The fallbackLocale saves the day when the locale gets in trouble
-  static final fallbackLocale = Locale('en', 'US');
+  static const fallbackLocale = Locale('en', 'US');
 
   static final langs = [
     'English',
@@ -21,8 +21,8 @@ class Translation extends Translations {
   ];
 
   static final locales = [
-    Locale('en', 'US'),
-    Locale('pt', 'BR'),
+    const Locale('en', 'US'),
+    const Locale('pt', 'BR'),
   ];
 
   @override

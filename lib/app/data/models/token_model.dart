@@ -5,10 +5,10 @@ class FlybisTokenMessaging {
   String? androidToken, electronToken, iosToken, webToken;
 
   FlybisTokenMessaging({
-    this.androidToken: '',
-    this.electronToken: '',
-    this.iosToken: '',
-    this.webToken: '',
+    this.androidToken = '',
+    this.electronToken = '',
+    this.iosToken = '',
+    this.webToken = '',
   });
 
   factory FlybisTokenMessaging.fromMap(
@@ -31,10 +31,10 @@ class FlybisTokenMessaging {
 
   Map<String, dynamic> toMap() {
     return {
-      'androidToken': this.androidToken,
-      'electronToken': this.electronToken,
-      'iosToken': this.iosToken,
-      'webToken': this.webToken,
+      'androidToken': androidToken,
+      'electronToken': electronToken,
+      'iosToken': iosToken,
+      'webToken': webToken,
     };
   }
 }

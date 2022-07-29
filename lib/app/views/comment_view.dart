@@ -35,11 +35,11 @@ class CommentView extends StatefulWidget {
 
   final Color? pageColor;
 
-  CommentView({
+  const CommentView({
     required this.userId,
     required this.postId,
     required this.commentType,
-    this.pageColor: Colors.red,
+    this.pageColor = Colors.red,
   });
 
   @override
@@ -107,7 +107,7 @@ class _CommentViewState extends State<CommentView> {
       toUpButton = false;
     });
 
-    Future.delayed(Duration(milliseconds: 500)).then((value) {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
       setState(() {
         showToUpButton = false;
       });
@@ -144,10 +144,10 @@ class _CommentViewState extends State<CommentView> {
   void addComment() async {
     final String commentContent = commentController.text.trim();
 
-    if (commentContent.length > 0) {
+    if (commentContent.isNotEmpty) {
       FlybisComment flybisComment = FlybisComment(
         userId: flybisUserOwner!.uid,
-        commentId: Uuid().v4(),
+        commentId: const Uuid().v4(),
         commentContent: commentContent,
         commentType: commentType,
         timestamp: serverTimestamp(),
@@ -185,13 +185,13 @@ class _CommentViewState extends State<CommentView> {
 
         List<Widget> comments = [];
 
-        snapshot.data!.forEach((FlybisComment flybisComment) {
+        for (var flybisComment in snapshot.data!) {
           comments.add(
             comment_widget.CommentWidget(
               flybisComment: flybisComment,
             ),
           );
-        });
+        }
 
         Widget listComments = ListView.builder(
           controller: scrollController,
@@ -207,7 +207,7 @@ class _CommentViewState extends State<CommentView> {
         return !kIsWeb
             ? listComments
             : Scrollbar(
-                isAlwaysShown: true,
+                thumbVisibility: true,
                 showTrackOnHover: true,
                 child: listComments,
               );
@@ -224,7 +224,7 @@ class _CommentViewState extends State<CommentView> {
         AsyncSnapshot<bool> snapshot,
       ) {
         if (!snapshot.hasData) {
-          return Text('');
+          return const Text('');
         }
 
         return Scaffold(
@@ -234,10 +234,10 @@ class _CommentViewState extends State<CommentView> {
             children: <Widget>[
               Expanded(child: streamComments()),
               Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: ListTile(
                   title: TextField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Write a comment',
                       border: InputBorder.none,
                     ),
@@ -258,17 +258,17 @@ class _CommentViewState extends State<CommentView> {
           ),
           floatingActionButton: AnimatedOpacity(
             opacity: showToUpButton && toUpButton ? 1.0 : 0.0,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             child: showToUpButton || toUpButton
                 ? FloatingActionButton(
                     backgroundColor: widget.pageColor,
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_upward,
                       color: Colors.white,
                     ),
                     onPressed: scrollToUp,
                   )
-                : Padding(padding: EdgeInsets.zero),
+                : const Padding(padding: EdgeInsets.zero),
           ),
         );
       },

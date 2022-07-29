@@ -5,7 +5,6 @@ import 'dart:math';
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 // 📦 Package imports:
 import 'package:animations/animations.dart';
@@ -54,7 +53,7 @@ class PostWidget extends StatefulWidget {
   final PostWidgetType postWidgetType;
   final Color? pageColor;
 
-  PostWidget({
+  const PostWidget({
     required this.flybisPost,
     required this.postWidgetType,
     this.pageColor,
@@ -96,7 +95,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     if (mounted) {
       setState(() {
-        this._flybisUser = flybisUser;
+        _flybisUser = flybisUser;
       });
     }
   }
@@ -122,10 +121,10 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   void hideIcon() {
-    Timer(Duration(milliseconds: 500), () {
+    Timer(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
-          this.iconShow = false;
+          iconShow = false;
         });
       }
     });
@@ -143,7 +142,7 @@ class _PostWidgetState extends State<PostWidget> {
 
       if (mounted) {
         setState(() {
-          this.isLiked = false;
+          isLiked = false;
         });
       }
     } else if (!isLiked! && !isDisliked!) {
@@ -155,10 +154,10 @@ class _PostWidgetState extends State<PostWidget> {
 
       if (mounted) {
         setState(() {
-          this.isLiked = true;
-          this.iconColor = Colors.green;
-          this.iconData = Icons.thumb_up;
-          this.iconShow = true;
+          isLiked = true;
+          iconColor = Colors.green;
+          iconData = Icons.thumb_up;
+          iconShow = true;
         });
       }
 
@@ -178,7 +177,7 @@ class _PostWidgetState extends State<PostWidget> {
 
       if (mounted) {
         setState(() {
-          this.isDisliked = false;
+          isDisliked = false;
         });
       }
     } else if (!isDisliked! && !isLiked!) {
@@ -190,10 +189,10 @@ class _PostWidgetState extends State<PostWidget> {
 
       if (mounted) {
         setState(() {
-          this.isDisliked = true;
-          this.iconColor = Colors.red;
-          this.iconData = Icons.thumb_down;
-          this.iconShow = true;
+          isDisliked = true;
+          iconColor = Colors.red;
+          iconData = Icons.thumb_down;
+          iconShow = true;
         });
       }
 
@@ -225,7 +224,7 @@ class _PostWidgetState extends State<PostWidget> {
     return showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Text('Opções'),
+        title: const Text('Opções'),
         children: <Widget>[
           isOwner
               ? SimpleDialogOption(
@@ -246,18 +245,18 @@ class _PostWidgetState extends State<PostWidget> {
                           ),
                         );
                   },
-                  child: Text('Deletar'),
+                  child: const Text('Deletar'),
                 )
-              : Padding(padding: EdgeInsets.zero),
+              : const Padding(padding: EdgeInsets.zero),
           SimpleDialogOption(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Denunciar'),
+            child: const Text('Denunciar'),
           ),
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           )
         ],
       ),
@@ -269,7 +268,7 @@ class _PostWidgetState extends State<PostWidget> {
 
     bool isOwner = flybisUserOwner!.uid == widget.flybisPost.userId;
 
-    return Container(
+    return SizedBox(
       height: kHeaderHeight,
       width: !kIsWeb ? MediaQuery.of(context).size.width : widthWeb(context),
       child: ListTile(
@@ -288,15 +287,15 @@ class _PostWidgetState extends State<PostWidget> {
               uid: widget.flybisPost.userId,
               pageColor: widget.pageColor,
             ),
-            child: _flybisUser!.username!.length > 0
+            child: _flybisUser!.username!.isNotEmpty
                 ? utils_widget.UtilsWidget()
                     .usernameText(_flybisUser!.username!)
                 : utils_widget.UtilsWidget().shimmer(context, height: 17.5),
           ),
         ),
-        subtitle: _flybisUser!.displayName!.length > 0
+        subtitle: _flybisUser!.displayName!.isNotEmpty
             ? Text(
-                widget.flybisPost.postLocation!.length > 0
+                widget.flybisPost.postLocation!.isNotEmpty
                     ? widget.flybisPost.postLocation!
                     : _flybisUser!.displayName!,
               )
@@ -339,7 +338,7 @@ class _PostWidgetState extends State<PostWidget> {
         content = video_widget.VideoWidget(
           type: video_widget.VideoSourceType.hls,
           source: widget.flybisPost.postContents![i].contentUrl,
-          title: widget.flybisPost.postTitle!.length > 0
+          title: widget.flybisPost.postTitle!.isNotEmpty
               ? widget.flybisPost.postTitle
               : widget.flybisPost.postId,
           author: _flybisUser!.displayName,
@@ -366,7 +365,7 @@ class _PostWidgetState extends State<PostWidget> {
                       pageSnapping: false,
                       enlargeCenterPage: true,
                       enableInfiniteScroll: false,
-                      scrollPhysics: BouncingScrollPhysics(),
+                      scrollPhysics: const BouncingScrollPhysics(),
                       aspectRatio: widget.flybisPost
                           .postContents![_contentIndex].contentAspectRatio!,
                       onPageChanged: (int index, var reason) {
@@ -380,7 +379,7 @@ class _PostWidgetState extends State<PostWidget> {
                     items: contents,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 15),
+                    padding: const EdgeInsets.only(top: 15),
                     child: DotsIndicator(
                       dotsCount: contents.length,
                       position: _contentIndex.toDouble(),
@@ -399,7 +398,7 @@ class _PostWidgetState extends State<PostWidget> {
             : contents[0],
         iconShow
             ? likeOrDislikeAnimation(iconData, iconColor, iconSize)
-            : Padding(padding: EdgeInsets.zero),
+            : const Padding(padding: EdgeInsets.zero),
       ],
     );
   }
@@ -412,14 +411,14 @@ class _PostWidgetState extends State<PostWidget> {
         ? MediaQuery.of(context).size.width
         : widthWeb(context);
 
-    return Container(
+    return SizedBox(
       width: footerWidth,
       child: Column(
         children: <Widget>[
-          widget.flybisPost.postDescription.length > 0
+          widget.flybisPost.postDescription.isNotEmpty
               ? Container(
                   width: footerWidth,
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: kHorizontalPadding,
                     top: kVerticalPadding,
                     right: kHorizontalPadding,
@@ -430,32 +429,32 @@ class _PostWidgetState extends State<PostWidget> {
                       text: widget.flybisPost.postDescription,
                       detectionRegExp: hashTagAtSignUrlRegExp,
                       detectedStyle:
-                          TextStyle(fontSize: 15, color: Colors.blue),
-                      basicStyle: TextStyle(fontSize: 15),
+                          const TextStyle(fontSize: 15, color: Colors.blue),
+                      basicStyle: const TextStyle(fontSize: 15),
                       onTap: (text) {
                         onTapUsernameHashtagText(text, widget.pageColor);
                       },
                     ),
                   ),
                 )
-              : Padding(
+              : const Padding(
                   padding: EdgeInsets.only(
                     top: kVerticalPadding,
                     bottom: kVerticalPadding,
                   ),
                 ),
           Container(
-            padding: EdgeInsets.only(bottom: 25),
+            padding: const EdgeInsets.only(bottom: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(left: kHorizontalPadding)),
+                const Padding(padding: EdgeInsets.only(left: kHorizontalPadding)),
                 likeOrDislike(type: 'likes', onTap: handleLike),
-                Padding(padding: EdgeInsets.only(right: 5)),
+                const Padding(padding: EdgeInsets.only(right: 5)),
                 likeOrDislike(type: 'dislikes', onTap: handleDislike),
-                Spacer(),
+                const Spacer(),
                 streamTimestamp(),
-                Spacer(),
+                const Spacer(),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
@@ -471,7 +470,7 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: kHorizontalPadding)),
+                const Padding(padding: EdgeInsets.only(right: kHorizontalPadding)),
               ],
             ),
           ),
@@ -487,7 +486,7 @@ class _PostWidgetState extends State<PostWidget> {
     );
 
     return StreamBuilder(
-      stream: Stream.periodic(Duration(seconds: 1), (i) => i),
+      stream: Stream.periodic(const Duration(seconds: 1), (i) => i),
       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         final nowTimestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -519,7 +518,7 @@ class _PostWidgetState extends State<PostWidget> {
           alignment: Alignment.center,
           child: Text(
             timestampString,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
@@ -567,7 +566,7 @@ class _PostWidgetState extends State<PostWidget> {
                         color: exists ? activeColor : defaultColor,
                         size: 35.0,
                       ),
-                Padding(padding: EdgeInsets.only(right: 5)),
+                const Padding(padding: EdgeInsets.only(right: 5)),
                 Text(
                   format.formatCompactNumber(
                     exists && count <= 0 ? 1 : count,
@@ -587,7 +586,7 @@ class _PostWidgetState extends State<PostWidget> {
     double size,
   ) {
     return animator.Animator(
-      duration: Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1000),
       tween: Tween(begin: 0.0, end: 1.0),
       curve: Curves.elasticOut,
       cycles: 0,
