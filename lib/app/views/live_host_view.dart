@@ -99,7 +99,7 @@ class _LiveHostViewState extends State<LiveHostView> {
     await engine.setParameters(
         '''{"che.video.lowBitRateStreamParameter":{"width":320,"height":180,"frameRate":15,"bitRate":140}}''');
 
-    await engine.joinChannel(agoraIoToken, widget.live!.liveId!, null, 0);
+    await engine.joinChannel(flybisAgoraToken, widget.live!.liveId!, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -458,8 +458,7 @@ class _LiveHostViewState extends State<LiveHostView> {
                   //),
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
               child: const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+                padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
                 child: Text(
                   'LIVE',
                   style: TextStyle(
@@ -474,7 +473,8 @@ class _LiveHostViewState extends State<LiveHostView> {
               child: Container(
                   decoration: BoxDecoration(
                       color: Colors.black.withOpacity(.6),
-                      borderRadius: const BorderRadius.all(Radius.circular(4.0))),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0))),
                   height: 28,
                   alignment: Alignment.center,
                   child: Padding(
@@ -493,7 +493,8 @@ class _LiveHostViewState extends State<LiveHostView> {
                         ),
                         Text(
                           '$userNo',
-                          style: const TextStyle(color: Colors.white, fontSize: 11),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 11),
                         ),
                       ],
                     ),
@@ -623,7 +624,8 @@ class _LiveHostViewState extends State<LiveHostView> {
                     height: 0,
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 15),
                     width: double.infinity,
                     color: Colors.grey[900],
                     child: Text(
@@ -744,7 +746,8 @@ class _LiveHostViewState extends State<LiveHostView> {
                         children: <Widget>[
                           Text(
                             users.username!,
-                            style: const TextStyle(fontSize: 18, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
                           ),
                           const SizedBox(
                             height: 2,
@@ -1076,8 +1079,7 @@ class _LiveHostViewState extends State<LiveHostView> {
 
     } else {
       var image = userMap[user];
-      Message m =
-          Message(message: info, type: type, user: user, image: image);
+      Message m = Message(message: info, type: type, user: user, image: image);
       setState(() {
         _infoStrings.insert(0, m);
       });

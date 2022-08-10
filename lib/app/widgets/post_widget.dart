@@ -38,6 +38,8 @@ import 'package:flybis/app/widgets/video_widget.dart' as video_widget;
 import 'package:flybis/plugins/image_network/image_network.dart'
     as image_network;
 
+final UserService userService = UserService();
+
 enum PostWidgetType { LIST, GRID }
 
 Future<bool> loadLibraries() async {
@@ -104,12 +106,13 @@ class _PostWidgetState extends State<PostWidget> {
     bool? isLiked = await PostService().getLike(
       widget.flybisPost.userId,
       widget.flybisPost.postId,
-      flybisUserOwner!.uid,
+      userService.flybisUserOwner!.uid,
     );
+
     bool? isDisliked = await PostService().getDislike(
       widget.flybisPost.userId,
       widget.flybisPost.postId,
-      flybisUserOwner!.uid,
+      userService.flybisUserOwner!.uid,
     );
 
     if (mounted) {
@@ -137,7 +140,7 @@ class _PostWidgetState extends State<PostWidget> {
       await PostService().deleteLike(
         widget.flybisPost.userId,
         widget.flybisPost.postId,
-        flybisUserOwner!.uid,
+        userService.flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -149,7 +152,7 @@ class _PostWidgetState extends State<PostWidget> {
       await PostService().setLike(
         widget.flybisPost.userId,
         widget.flybisPost.postId,
-        flybisUserOwner!.uid,
+        userService.flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -172,7 +175,7 @@ class _PostWidgetState extends State<PostWidget> {
       PostService().deleteDislike(
         widget.flybisPost.userId,
         widget.flybisPost.postId,
-        flybisUserOwner!.uid,
+        userService.flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -184,7 +187,7 @@ class _PostWidgetState extends State<PostWidget> {
       PostService().setDislike(
         widget.flybisPost.userId,
         widget.flybisPost.postId,
-        flybisUserOwner!.uid,
+        userService.flybisUserOwner!.uid,
       );
 
       if (mounted) {
@@ -266,7 +269,7 @@ class _PostWidgetState extends State<PostWidget> {
   Widget header(BuildContext context) {
     const double kHeaderHeight = 80;
 
-    bool isOwner = flybisUserOwner!.uid == widget.flybisPost.userId;
+    bool isOwner = userService.flybisUserOwner!.uid == widget.flybisPost.userId;
 
     return SizedBox(
       height: kHeaderHeight,
@@ -448,7 +451,8 @@ class _PostWidgetState extends State<PostWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const Padding(padding: EdgeInsets.only(left: kHorizontalPadding)),
+                const Padding(
+                    padding: EdgeInsets.only(left: kHorizontalPadding)),
                 likeOrDislike(type: 'likes', onTap: handleLike),
                 const Padding(padding: EdgeInsets.only(right: 5)),
                 likeOrDislike(type: 'dislikes', onTap: handleDislike),
@@ -470,7 +474,8 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(right: kHorizontalPadding)),
+                const Padding(
+                    padding: EdgeInsets.only(right: kHorizontalPadding)),
               ],
             ),
           ),
@@ -537,7 +542,7 @@ class _PostWidgetState extends State<PostWidget> {
         widget.flybisPost.userId,
         widget.flybisPost.postId,
         type,
-        flybisUserOwner!.uid,
+        userService.flybisUserOwner!.uid,
       ),
       builder: (
         BuildContext context,

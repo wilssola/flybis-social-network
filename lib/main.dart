@@ -13,6 +13,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_io/io.dart' deferred as io;
 import 'package:url_strategy/url_strategy.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 // 🌎 Project imports:
 import 'package:flybis/core/values/function.dart';
@@ -73,24 +74,21 @@ Future<void> initFirebase() async {
 }
 
 void initMessaging() {
-  firebase_messaging.FirebaseMessaging.onBackgroundMessage((var message) async {
-    try {
-      await firebase_core.Firebase.initializeApp();
+  firebase_messaging.FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+}
 
-      logger.i("Handling a background message: ${message.messageId}");
+Future<void> onBackgroundMessage(var message) async {
+  try {
+    await firebase_core.Firebase.initializeApp();
+    logger.i('onBackgroundMessage: ${message.messageId}');
 
-      var notification = message.notification;
-      var android = message.notification?.android;
+    if (message.notification == null) return;
 
-      if (notification != null && android != null) {
-        logger.i('onBackgroundMessage: $notification');
-
-        MessagingProvider.instance.showHighNotification(notification);
-      }
-    } catch (error) {
-      logger.e(error);
-    }
-  });
+    MessagingProvider.instance.showHighNotification(message.notification);
+    logger.i('showHighNotification: ${message.notification}');
+  } catch (error) {
+    logger.e(error);
+  }
 }
 
 void initCrashlytics() {
@@ -121,8 +119,9 @@ Future<void> initSentry(Function runApp) async {
       appRunner: runApp(),
     );
   } catch (error) {
-    logger.e(error);
     runApp();
+    
+    logger.e(error);
   }
 }
 
@@ -211,9 +210,22 @@ class _MainState extends State<Main> {
       //themeMode: ThemeMode.light,
       //home: app.App(),
       builder: (BuildContext context, Widget? child) {
-        return ScrollConfiguration(
-          behavior: no_glow_on_list_view.NoGlowOnListView(),
-          child: child!,
+        return ResponsiveWrapper.builder(
+          ScrollConfiguration(
+            behavior: no_glow_on_list_view.NoGlowOnListView(),
+            child: child!,
+          ),
+          defaultScale: true,
+          maxWidth: 1200,
+          minWidth: 480,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(480, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          ],
+          background: Container(
+            color: Color(0xFFF5F5F5),
+          ),
         );
       },
       initialRoute: initialRoute,

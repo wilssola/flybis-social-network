@@ -193,6 +193,7 @@ class _AppState extends State<App> {
   String selectedLang = Translation.langs.first;
 
   final AuthProvider _auth = AuthProvider.instance;
+
   final UserService userService = UserService();
 
   @override
@@ -312,14 +313,13 @@ class _AppState extends State<App> {
     await remoteConfig.fetchAndActivate();
   }
 
-  Future<Map<String, dynamic>> showProfileCreateView(String uid) async {
+  Future<Map<String, dynamic>?> showProfileCreateView(String uid) async {
     await profile_create_view.loadLibrary();
 
-    final Map<String, dynamic> result = await (Get.to(
-      profile_create_view.ProfileCreateView(uid: uid),
-    ) as FutureOr<Map<String, dynamic>>);
+    final Map<String, dynamic>? result =
+        await Get.to(profile_create_view.ProfileCreateView(uid: uid));
 
-    logger.i('showProfileCreateView: ${result['username']}');
+    logger.i('showProfileCreateView: ${result!['username']}');
 
     return result;
   }
@@ -365,70 +365,64 @@ class _AppState extends State<App> {
       ),
       applicationVersion: version,
       children: [
-        utils_widget.UtilsWidget().selectableText('id: ' + id),
-        utils_widget.UtilsWidget().selectableText(
-          'minimumPostDuration: ' + minimumPostDuration,
-        )
+        utils_widget.UtilsWidget().selectableText('id: $id'),
+        utils_widget.UtilsWidget()
+            .selectableText('minimumPostDuration: $minimumPostDuration')
       ],
     );
   }
 
   void getUserAuth() async {
-    flybisUserOwner = await _auth.getUserOffline();
+    userService.flybisUserOwner = await _auth.getUserOffline();
 
     auth.setLanguageCode('pt');
 
     auth.userChanges().listen((User? user) async {
       if (user == null) {
-        if (mounted) {
-          setState(() {
-            isAuth = false;
-          });
-        }
+        if (mounted) setState(() => isAuth = false);
 
         print('User not authenticated');
-      } else {
-        await userService.configureUserFirestore(
-          user.uid,
-          user.email!,
-          () async => await showProfileCreateView(user.uid),
-          () async => await showIntroductionView(),
-        );
 
-        if (mounted) {
-          setState(() {
-            isAuth = true;
-          });
-        }
-
-        print('User authenticated');
-
-        await configureAgoraIo();
-
-        if (!user.emailVerified) {
-          await user.sendEmailVerification();
-        }
-
-        if (!kIsWeb) {
-          await userService.configureUserPresence(user.uid);
-          await MessagingProvider.instance.configureMessaging(user.uid);
-        }
+        return;
       }
+
+      await userService.configureUserFirestore(
+        user.uid,
+        user.email!,
+        () async => await showProfileCreateView(user.uid),
+        () async => await showIntroductionView(),
+      );
+
+      if (mounted) setState(() => isAuth = true);
+
+      print('User authenticated');
+
+      if (!user.emailVerified) await user.sendEmailVerification();
+
+      await MessagingProvider.instance.configureMessaging(user.uid);
+
+      await userService.configureUserPresence(user.uid);
+
+      await configureAgoraIo();
     });
 
     await load();
   }
 
   Future<void> configureAgoraIo() async {
-    final HttpsCallable callableAgora = functions.httpsCallable(
-      'getAgoraSignalingToken',
-    );
+    try {
+      final HttpsCallable callableAgora = functions.httpsCallable(
+        'getAgoraSignalingToken',
+      );
 
-    final HttpsCallableResult result = await callableAgora.call();
+      final HttpsCallableResult result = await callableAgora.call();
 
-    agoraIoToken = result.data['token'];
+      flybisAgoraToken = result.data['token'];
 
-    print('AgoraIo: ' + agoraIoToken);
+      logger.i('flybisAgoraToken: $flybisAgoraToken');
+    } catch (error) {
+      logger.e(error);
+    }
   }
 
   void configuraPageNotifications(Map<String, dynamic> message) {
@@ -456,7 +450,7 @@ class _AppState extends State<App> {
     checkPage(pageIndex);
   }
 
-  Drawer drawer() {
+  Drawer? drawer() {
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -470,18 +464,18 @@ class _AppState extends State<App> {
               leading: CircleAvatar(
                 backgroundColor: kAvatarBackground,
                 backgroundImage: ImageNetwork.cachedNetworkImageProvider(
-                  flybisUserOwner!.photoUrl!,
+                  userService.flybisUserOwner!.photoUrl!,
                 ),
               ),
               title: Text(
-                '@${flybisUserOwner!.username}',
+                '@${userService.flybisUserOwner!.username}',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                flybisUserOwner!.displayName!,
+                userService.flybisUserOwner!.displayName!,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
@@ -592,7 +586,7 @@ class _AppState extends State<App> {
             scaffoldKey: scaffoldKey,
             pageColor: pageColors[3],
             pageHeader: true,
-            uid: flybisUserOwner!.uid,
+            uid: userService.flybisUserOwner!.uid,
           );
         },
       ),
@@ -735,15 +729,15 @@ class _AppState extends State<App> {
           return const Text('');
         }
 
-        if (isLoad) {
-          if (isAuth || isAuthOffline) {
-            return app(context);
-          } else {
-            return login_view.LoginView(pageColors: pageColors);
-          }
-        } else {
+        if (!isLoad) {
           return utils_widget.UtilsWidget().centerCircularProgress(context);
         }
+
+        if (isAuth || isAuthOffline) {
+          return app(context);
+        }
+
+        return login_view.LoginView(pageColors: pageColors);
       },
     );
   }

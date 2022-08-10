@@ -188,7 +188,7 @@ class _TimelineViewState extends State<TimelineView>
     live_service.LiveService()
         .streamLives(5)!
         .listen((List<FlybisLive?> flybisLives) {
-      logger.d('listenLivesList: ' + flybisLives.toString());
+      logger.d('listenLivesList: $flybisLives');
 
       setLivesList(flybisLives);
     });
@@ -427,18 +427,18 @@ class _TimelineViewState extends State<TimelineView>
             List<Widget> users = [];
 
             for (var flybisUser in snapshot.data!) {
-                bool isOwner = flybisUserOwner!.uid == flybisUser.uid;
-                bool isFollowing = followings.contains(flybisUser.uid);
+              bool isOwner = flybisUserOwner!.uid == flybisUser.uid;
+              bool isFollowing = followings.contains(flybisUser.uid);
 
-                if (!isOwner && !isFollowing) {
-                  Widget userResult = search_view.UserResult(
-                    user: flybisUser,
-                    pageColor: widget.pageColor,
-                  );
+              if (!isOwner && !isFollowing) {
+                Widget userResult = search_view.UserResult(
+                  user: flybisUser,
+                  pageColor: widget.pageColor,
+                );
 
-                  users.add(userResult);
-                }
+                users.add(userResult);
               }
+            }
 
             if (users.isEmpty) {
               Widget infoWidget = utils_widget.UtilsWidget().infoText(

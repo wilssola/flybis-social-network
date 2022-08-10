@@ -36,6 +36,8 @@ import 'package:flybis/app/widgets/utils_widget.dart' as utils_widget;
 import 'package:flybis/app/widgets/video_editor_widget.dart';
 import 'package:flybis/app/widgets/video_widget.dart';
 
+enum CameraFileType { image, video }
+
 class CameraView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -55,11 +57,11 @@ class CameraView extends StatefulWidget {
 
 class CameraViewState extends State<CameraView>
     with AutomaticKeepAliveClientMixin<CameraView> {
-  List<PickedFile?> files = [];
+  List<XFile?> files = [];
 
   late String imagePath;
   late String videoPath;
-  String? contentType;
+  late CameraFileType contentType;
   bool isUploading = false;
 
   String? postId;
@@ -124,10 +126,7 @@ class CameraViewState extends State<CameraView>
 
   @override
   void initState() {
-    if (!kIsWeb) {
-      initCamera();
-      //initFFmpegService();
-    }
+    if (!kIsWeb) initCamera();
 
     super.initState();
   }
@@ -372,9 +371,9 @@ class CameraViewState extends State<CameraView>
       imagePath = (await getTemporaryDirectory()).path + '/$postId.jpg';
       await cameraController!.takePicture(imagePath);
 
-      contentType = 'image';
+      contentType = CameraFileType.image;
       setState(() {
-        files.add(PickedFile(imagePath));
+        files.add(XFile(imagePath));
       });
     } catch (error) {
       print(error);
@@ -385,10 +384,17 @@ class CameraViewState extends State<CameraView>
     setUuid();
 
     try {
-      videoPath = (await getTemporaryDirectory()).path + '/$postId.mp4';
+      Directory directory = await getTemporaryDirectory();
+
+      videoPath = '${directory.path}/$postId.mp4';
+
       await cameraController!.startVideoRecording(videoPath);
 
-      cameraIconColor = Colors.red;
+      if (mounted) {
+        setState(() {
+          cameraIconColor = Colors.red;
+        });
+      }
     } catch (error) {
       print(error);
     }
@@ -398,18 +404,18 @@ class CameraViewState extends State<CameraView>
     try {
       await cameraController!.stopVideoRecording();
 
-      cameraIconColor = Colors.white;
-
-      contentType = 'video';
+      contentType = CameraFileType.video;
 
       if (mounted) {
         setState(() {
-          files.add(PickedFile(videoPath));
+          cameraIconColor = Colors.white;
+
+          files.add(XFile(videoPath));
         });
       }
 
-      videoPlayerController = VideoPlayerController.file(File(videoPath))
-        ..initialize();
+      videoPlayerController = VideoPlayerController.file(File(videoPath));
+      videoPlayerController.initialize();
       videoPlayerController.setLooping(true);
       videoPlayerController.play();
     } catch (error) {
@@ -432,28 +438,26 @@ class CameraViewState extends State<CameraView>
 
     Navigator.pop(context);
 
-    PickedFile? file =
-        await ImagePicker().getVideo(source: ImageSource.gallery);
+    XFile? file = await ImagePicker().pickVideo(source: ImageSource.gallery);
 
     if (mounted) {
       setState(() {
-        contentType = 'video';
+        contentType = CameraFileType.video;
         files.add(file);
       });
     }
   }
 
-  galleryImage() async {
+  void galleryImage() async {
     setUuid();
 
     Navigator.pop(context);
 
-    PickedFile? file =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+    XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (mounted) {
       setState(() {
-        contentType = 'image';
+        contentType = CameraFileType.image;
         files.add(file);
       });
     }
@@ -508,39 +512,38 @@ class CameraViewState extends State<CameraView>
     );
   }
 
-  Future<String> uploadFile(PickedFile file) async {
+  Future<String> uploadFile(XFile file) async {
     late UploadTask uploadTask;
+
+    const String imageMetaContentType = 'image/jpeg';
+    const String videoMetaContentType = 'video/mp4';
+
+    String imagePath =
+        '${flybisUserOwner!.uid}/posts/images/$postId/$postId.jpg';
+    String videoPath =
+        '${flybisUserOwner!.uid}/posts/videos/$postId/$postId.mp4';
+
+    String metaContentType = contentType == CameraFileType.image
+        ? imageMetaContentType
+        : videoMetaContentType;
+
+    String path = contentType == CameraFileType.image ? imagePath : videoPath;
 
     Uint8List fileData = await file.readAsBytes();
 
-    if (contentType == 'image') {
-      try {
-        uploadTask = storage
-            .child(flybisUserOwner!.uid + '/posts/images/$postId/$postId.jpg')
-            .putData(
-              fileData,
-              SettableMetadata(contentType: 'image/jpeg'),
-            );
-      } catch (error) {
-        print('Image upload error: $error');
-      }
-    } else if (contentType == 'video') {
-      try {
-        uploadTask = storage
-            .child(flybisUserOwner!.uid + '/posts/videos/$postId/$postId.mp4')
-            .putData(
-              fileData,
-              SettableMetadata(contentType: 'video/mp4'),
-            );
-      } catch (error) {
-        print('Video upload error: $error');
-      }
+    try {
+      uploadTask = storage
+          .child(path)
+          .putData(fileData, SettableMetadata(contentType: metaContentType));
+    } catch (error) {
+      print('File upload error: $error');
     }
 
     uploadTask.snapshotEvents.listen(_onUploadProgress);
 
-    TaskSnapshot storageSnap = await uploadTask;
-    String downloadUrl = await storageSnap.ref.getDownloadURL();
+    TaskSnapshot uploadSnapshot = await uploadTask;
+
+    String downloadUrl = await uploadSnapshot.ref.getDownloadURL();
 
     return downloadUrl;
   }
@@ -569,7 +572,7 @@ class CameraViewState extends State<CameraView>
     if (imagefile != null && imagefile.containsKey('image_filtered')) {
       if (mounted) {
         setState(() {
-          files[0] = PickedFile((imagefile['image_filtered'] as File).path);
+          files[0] = XFile((imagefile['image_filtered'] as File).path);
         });
       }
     }
@@ -613,7 +616,7 @@ class CameraViewState extends State<CameraView>
       postLocation: postLocation,
       postDescription: postDescription,
       postContents: [
-        FlybisPostContent(contentUrl: contentUrl, contentType: contentType)
+        FlybisPostContent(contentUrl: contentUrl, contentType: contentType.name)
       ],
       postTags: extractDetections(postDescription, hashTagRegExp),
       postMentions: extractDetections(postDescription, atSignRegExp),

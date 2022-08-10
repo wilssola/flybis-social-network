@@ -11,7 +11,21 @@ import 'package:flybis/app/data/providers/realtime_provider.dart';
 import 'package:flybis/app/data/services/follow_service.dart';
 
 class UserService {
-  UserService();
+  static final UserService _instance = UserService._internal();
+
+  factory UserService() => _instance;
+
+  UserService._internal() {
+    _flybisUserOwner = null;
+    flybisUserOwnerStream = null;
+  }
+
+  FlybisUser? _flybisUserOwner;
+
+  FlybisUser? get flybisUserOwner => _flybisUserOwner;
+  set flybisUserOwner(FlybisUser? value) => _flybisUserOwner = value;
+
+  StreamSubscription? flybisUserOwnerStream;
 
   final DatabaseProvider _db = DatabaseProvider.instance;
   final RealtimeProvider _rt = RealtimeProvider.instance;
@@ -19,13 +33,9 @@ class UserService {
 
   final FollowService followService = FollowService();
 
-  // ignore: cancel_subscriptions
-  StreamSubscription? streamSubscription;
-
   Future<String?> getUsername(String username) async => await _db.get(
         documentPath: DatabasePath.username(username),
-        builder: ((data, documentId) => data != null ? data['uid'] : null)
-            as String Function(Map<String, dynamic>?, String),
+        builder: (data, documentId) => data != null ? data['uid'] : null,
       );
 
   Future<void> setUser(FlybisUser user) async => await _db.set(
@@ -114,74 +124,99 @@ class UserService {
   Future<void> configureUserFirestore(
     String uid,
     String email,
-    Function profileCreateView,
+    Function showProfileCreateView,
     Function introductionView,
   ) async {
-    if (streamSubscription != null) {
-      streamSubscription!.cancel();
-    }
+    if (flybisUserOwnerStream != null) flybisUserOwnerStream!.cancel();
 
     FlybisUser? flybisUser = await getUser(uid);
 
-    // Caso o usuário não exista um novo será criado.
+    flybisUser ??= await createUserFirestore(
+      uid,
+      email,
+      showProfileCreateView,
+      introductionView,
+    );
+
     if (flybisUser == null) {
-      final Map<String, dynamic>? result = await profileCreateView();
-
-      if (result != null) {
-        FlybisUser newFlybisUser = FlybisUser(
-          uid: uid,
-          email: email,
-          username: result['username'],
-          displayName: result['displayName'],
-          bio: result['bio'],
-          photoUrl: result['photoUrl'],
-          timestamp: _db.serverTimestamp(),
-          timestampBirthday: result['timestampBirthday'],
-        );
-
-        logger.i('profileCreateView: ' + newFlybisUser.toMap().toString());
-
-        // Receive result from CreateProfile and set.
-        await setUser(newFlybisUser);
-
-        // Follow self auth.
-        await followService.setFollower(uid, uid);
-
-        flybisUser = await getUser(uid);
-      }
-
-      await introductionView();
+      return configureUserFirestore(
+        uid,
+        email,
+        showProfileCreateView,
+        introductionView,
+      );
     }
-
-    // Rechamada da função configureUserFirestore como createUser.
-    Function createUser = () => configureUserFirestore(
-          uid,
-          email,
-          profileCreateView,
-          introductionView,
-        );
 
     // Caso o usuário exista, flybisUserOwner será definido e será salvo para uso offline.
-    if (flybisUser != null) {
-      flybisUserOwner = flybisUser;
-      _auth.setUserOffline(flybisUserOwner!);
+    flybisUserOwner = flybisUser;
+    _auth.setUserOffline(flybisUserOwner!);
 
-      // Listener para verificar constantemente se o usuário existe.
-      streamSubscription = streamUser(uid)!.listen(
-        (FlybisUser? oldFlybisUser) {
-          // Caso o usuário exista, flybisUserOwner será definido e será salvo para uso offline.
-          if (oldFlybisUser != null) {
-            flybisUserOwner = oldFlybisUser;
-            _auth.setUserOffline(flybisUserOwner!);
-          } else {
-            // Caso o usuário não exista um novo será criado.
-            createUser();
-          }
-        },
-      );
-    } else {
-      // Caso o usuário não exista um novo será criado.
-      createUser();
+    // Listener para verificar constantemente se o usuário existe.
+    flybisUserOwnerStream = streamUser(uid)!.listen(
+      (onData) => listenUser(
+        onData,
+        uid,
+        email,
+        showProfileCreateView,
+        introductionView,
+      ),
+    );
+  }
+
+  Future<FlybisUser?> createUserFirestore(
+    String uid,
+    String email,
+    Function showProfileCreateView,
+    Function introductionView,
+  ) async {
+    Map<String, dynamic>? result = await showProfileCreateView();
+    while (result == null) {
+      result = await showProfileCreateView();
     }
+
+    FlybisUser newFlybisUser = FlybisUser(
+      uid: uid,
+      email: email,
+      username: result['username'],
+      displayName: result['displayName'],
+      bio: result['bio'],
+      photoUrl: result['photoUrl'],
+      timestamp: _db.serverTimestamp(),
+      timestampBirthday: result['timestampBirthday'],
+    );
+
+    logger.i('newFlybisUser:', newFlybisUser.toMap());
+
+    // Receive result and set new user.
+    await setUser(newFlybisUser);
+
+    // Follow self.
+    await followService.setFollower(uid, uid);
+
+    // Receive new user.
+    FlybisUser? flybisUser = await getUser(uid);
+
+    if (flybisUser != null) await introductionView();
+
+    return flybisUser;
+  }
+
+  void listenUser(
+    FlybisUser? flybisUser,
+    String uid,
+    String email,
+    Function showProfileCreateView,
+    Function introductionView,
+  ) {
+    // Caso o usuário exista, flybisUserOwner será definido e será salvo para uso offline.
+    if (flybisUser != null) return;
+
+    // Caso o usuário não exista um novo será criado.
+    configureUserFirestore(
+      uid,
+      email,
+      showProfileCreateView,
+      introductionView,
+    );
   }
 }

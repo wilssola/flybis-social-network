@@ -65,8 +65,9 @@ class DatabaseProvider {
           'get: $documentPath data: ${document.exists ? document.data() : false}');
 
       return builder(
-          document.exists ? document.data() as Map<String, dynamic>? : null,
-          document.id);
+        document.exists ? document.data() as Map<String, dynamic>? : null,
+        document.id,
+      );
     } catch (error) {
       logger.e(error);
 

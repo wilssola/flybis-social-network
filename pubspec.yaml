@@ -27,12 +27,12 @@ dependencies:
   firebase_remote_config: ^2.0.12 # ANDROID IOS
   cloud_firestore: ^3.3.0 # ANDROID IOS WEB
   cloud_functions: ^3.0.0 # ANDROID IOS WEB
-  firebase_app_check: ^0.0.1+2
+  firebase_app_check: ^0.0.6+18
 
   # Widgets
   day_night_switcher: ^0.2.0+1 # ANDROID IOS WEB
   introduction_screen: ^3.0.2 # ANDROID IOS WEB
-  simple_animations: ^3.1.1 # ANDROID IOS WEB
+  simple_animations: ^4.2.0 # ANDROID IOS WEB
   detectable_text_field: ^2.0.2 # ANDROID IOS WEB
   photo_view: ^0.14.0 # ANDROID IOS WEB
 
@@ -65,7 +65,7 @@ dependencies:
   transparent_image: ^2.0.0 # ANDROID IOS WEB
   cached_network_image: ^3.0.0 # ANDROID IOS
   photofilters: ^3.0.1
-  image_editor_plus: ^0.1.4
+  image_editor_plus: ^0.1.5
   #flutter_image_editor: ^1.2.0
   #image_collage_widget: ^1.0.0
 
@@ -83,10 +83,9 @@ dependencies:
   #wakelock: ^0.5.2 # ANDROID IOS WEB
   local_auth: ^2.1.0 # ANDROID IOS
   random_color: ^1.0.6-nullsafety # ANDROID IOS WEB
-  permission_handler: ^9.2.0
 
-  path: ^1.8.0 # ANDROID IOS WEB
-  async: ^2.5.0 # ANDROID IOS WEB
+  path: ^1.8.1 # ANDROID IOS WEB
+  async: ^2.8.2 # ANDROID IOS WEB
 
   flutter_phoenix: ^1.0.0 # ANDROID IOS WEB
   flutter_cache_manager: ^3.0.2 # ANDROID IOS
@@ -155,7 +154,7 @@ dependencies:
 
   modal_bottom_sheet: ^2.0.0
 
-  animated_text_kit: ^4.2.1
+  animated_text_kit: ^4.2.2
 
   octo_image: ^1.0.0+1
 
@@ -175,7 +174,7 @@ dependencies:
 
   awesome_notifications: ^0.6.21
 
-  stripe_sdk: ^5.0.0-nullsafety.0
+  flutter_stripe: ^4.0.0
 
   animated_stack: ^0.2.0
   #auto_animated: ^3.0.1
@@ -194,6 +193,13 @@ dependencies:
   line_icons: ^2.0.1
 
   validatorless: ^1.2.1
+  
+  flutter_dynamic_icon: ^2.1.0
+  
+  responsive_framework: ^0.2.0
+
+dependency_overrides:
+  permission_handler: ^10.0.0
 
 dev_dependencies:
   flutter_test:
@@ -206,7 +212,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   fonts:
     - family: Matiz
       fonts:

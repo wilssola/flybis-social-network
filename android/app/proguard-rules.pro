@@ -10,7 +10,7 @@
 -dontwarn io.flutter.embedding.**
 
 ## Firebase
-#-keep class com.google.firebase.iid.FirebaseInstanceId { zza(...); }
+-keep class com.google.firebase.iid.FirebaseInstanceId { zza(...); }
 -keep class com.google.firebase.** { *; }
 -keep class com.google.gms.** { *; }
 -keep class io.fabric.** { *; }
@@ -48,5 +48,5 @@
 -keep class org.jetbrains.** { *; }
 
 ## Prevent Proguard Error
-#-keepattributes EnclosingMethod
-#-keepattributes InnerClasses
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses

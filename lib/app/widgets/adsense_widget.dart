@@ -13,8 +13,6 @@ class AdsenseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kIsWeb) return const Padding(padding: EdgeInsets.zero);
-
     ui.platformViewRegistry.registerViewFactory(
       'adsenseType',
       (int viewId) => html.IFrameElement()
@@ -27,7 +25,9 @@ class AdsenseWidget extends StatelessWidget {
     return const SizedBox(
       width: 320,
       height: 100,
-      child: HtmlElementView(viewType: 'adsenseType'),
+      child: kIsWeb
+          ? HtmlElementView(viewType: 'adsenseType')
+          : Padding(padding: EdgeInsets.zero),
     );
   }
 }

@@ -100,7 +100,7 @@ class _LiveClientViewState extends State<LiveClientView> {
       '''{\"che.video.lowBitRateStreamParameter\":{\"width\":320,\"height\":180,\"frameRate\":15,\"bitRate\":140}}''',
     );
 
-    await engine.joinChannel(agoraIoToken, widget.live!.liveId!, null, 0);
+    await engine.joinChannel(flybisAgoraToken, widget.live!.liveId!, null, 0);
 
     liveOwner = await UserService().getUser(widget.live!.userId);
   }

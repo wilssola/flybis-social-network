@@ -43,14 +43,14 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
     GlobalKey<FormState>(),
   ];
 
-  String? username = '';
-  bool usernameValidate = false;
+  String username = '';
+  bool usernameExists = false;
 
-  String? displayName = '';
-  String? bio = '';
+  String displayName = '';
+  String bio = '';
 
-  File? photoFile;
   String photoUrl = '';
+  File? photoFile;
 
   void setProfileImage(ProfileImageType type, ImageSource source) async {
     if (kIsWeb) {
@@ -71,34 +71,23 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
     }
   }
 
-  void validateUsername(String value) {
-    UserService()
-        .getUsername(value.trim().toLowerCase().replaceAll(' ', ''))
-        .then(
-      (String? username) {
-        if (username != null) {
-          if (!Get.isSnackbarOpen) {
-            Get.snackbar('Flybis', 'Usuário já existente');
-          }
+  void validateUsername(String? value) {
+    var newUsername = value!.trim().toLowerCase().replaceAll(' ', '');
+    var oldUsername = username.trim().toLowerCase().replaceAll(' ', '');
 
-          if (mounted) {
-            setState(() {
-              usernameValidate = true;
-            });
-          }
-        } else {
-          if (mounted) {
-            setState(() {
-              usernameValidate = false;
-            });
-          }
-        }
-      },
-    );
+    if (newUsername == oldUsername) return;
+
+    username = newUsername;
+
+    UserService().getUsername(newUsername).then(
+          (String? username) => {
+            if (mounted) setState(() => usernameExists = username != null),
+          },
+        );
   }
 
   void submit() {
-    if (!usernameValidate &&
+    if (usernameExists &&
         formKeys[0].currentState!.validate() &&
         formKeys[1].currentState!.validate() &&
         formKeys[2].currentState!.validate()) {
@@ -107,11 +96,11 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
       formKeys[2].currentState!.save();
 
       Map<String, dynamic> result = {
-        'username': username!.trim().replaceAll(' ', ''),
-        'usernameLowercase': username!.trim().toLowerCase().replaceAll(' ', ''),
-        'usernameUppercase': username!.trim().toUpperCase().replaceAll(' ', ''),
-        'displayName': displayName!.trim(),
-        'bio': bio!.trim(),
+        'username': username,
+        'usernameLowercase': username,
+        'usernameUppercase': username,
+        'displayName': displayName.trim(),
+        'bio': bio.trim(),
         'photoUrl': photoUrl.trim(),
       };
 
@@ -158,7 +147,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
                   ),
                   utils_widget.UtilsWidget().formInput(
                     formKeys[0],
-                    (value) => username = value,
+                    (value) => username = value!,
                     'Usuário',
                     'Usuário',
                     'Minímo de 5 caracteres',
@@ -171,7 +160,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
                   ),
                   utils_widget.UtilsWidget().formInput(
                     formKeys[1],
-                    (value) => displayName = value,
+                    (value) => displayName = value!,
                     'Nome',
                     'Nome',
                     'Minímo de 10 caracteres',
@@ -182,7 +171,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
                   ),
                   utils_widget.UtilsWidget().formInput(
                     formKeys[2],
-                    (value) => bio = value,
+                    (value) => bio = value!,
                     'Biografia',
                     'Biografia',
                     'Minímo de 0 caracteres',
