@@ -640,15 +640,19 @@ class _LiveHostViewState extends State<LiveHostView> {
                   anyPerson == true
                       ? Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
                           width: double.maxFinite,
                           child: const Text(
                             'INVITE',
                             style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
                             textAlign: TextAlign.start,
-                          ))
+                          ),
+                        )
                       : Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: Text(
@@ -658,9 +662,10 @@ class _LiveHostViewState extends State<LiveHostView> {
                         ),
                   Expanded(
                     child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        children: getUserStories()),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      children: getUserStories(),
+                    ),
                   ),
                 ],
               ),

@@ -16,4 +16,5 @@ final Logger logger = Logger(
   ),
 );
 
-String? flybisAgoraToken = '';
+late String flybisAgoraToken;
+late FlybisUser? flybisUserOwner;

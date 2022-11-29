@@ -9,8 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 // 🌎 Project imports:
-import 'package:flybis/core/values/const.dart';
 import 'package:flybis/global.dart';
+import 'package:flybis/core/values/const.dart';
 import 'package:flybis/app/data/models/user_model.dart';
 import 'package:flybis/plugins/image_network/image_network.dart';
 import 'package:flybis/app/data/providers/auth_provider.dart';
@@ -219,7 +219,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                         ),
                         Center(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 25.0),
+                            padding: EdgeInsets.only(top: 25),
                             child: GestureDetector(
                               onTap: () => setProfileImage(
                                 ProfileImageType.photo,
@@ -244,37 +244,43 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16),
                       child: Column(
                         children: <Widget>[
                           buildDisplayNameField(),
-                          buildBioField()
+                          buildBioField(),
                         ],
                       ),
                     ),
-                    RaisedButton(
+                    MaterialButton(
                       onPressed: updateProfileData,
                       child: Text(
                         'Update Profile',
                         style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold),
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: FlatButton.icon(
-                        onPressed: () async {
-                          _auth.signOut(context);
-                        },
-                        icon: const Icon(
-                          Icons.cancel,
-                          color: Colors.red,
-                        ),
-                        label: const Text(
-                          'Logout',
-                          style: TextStyle(color: Colors.red, fontSize: 20.0),
+                      padding: EdgeInsets.all(16),
+                      child: MaterialButton(
+                        onPressed: () async => await _auth.signOut(context),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              'Logout',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     )

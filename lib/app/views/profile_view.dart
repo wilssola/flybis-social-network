@@ -408,7 +408,7 @@ class _ProfileViewState extends State<ProfileView> {
         width: 150.0,
         height: 35.0,
         alignment: Alignment.center,
-        child: FlatButton(
+        child: MaterialButton(
           onPressed: function as void Function()?,
           color: colorButton,
           shape: RoundedRectangleBorder(

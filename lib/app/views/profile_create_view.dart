@@ -188,7 +188,7 @@ class _ProfileCreateViewState extends State<ProfileCreateView> {
               height: 50,
               color: Colors.blue,
               width: MediaQuery.of(context).size.width,
-              child: RaisedButton(
+              child: MaterialButton(
                 color: Colors.blue,
                 onPressed: submit,
                 child: const Center(

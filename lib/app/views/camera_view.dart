@@ -15,6 +15,7 @@ import 'package:detectable_text_field/widgets/detectable_text_field.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_better_camera/camera.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flybis/app/widgets/utils_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -210,24 +211,28 @@ class CameraViewState extends State<CameraView>
     return Container(
       child: Align(
         alignment: Alignment.centerLeft,
-        child: FlatButton.icon(
+        child: MaterialButton(
           onPressed: onSwitchCamera,
-          icon: Icon(
-            getCameraLensIcon(lensDirection),
-            color: Colors.white,
-          ),
-          label: Text(
-            lensDirection
-                    .toString()
-                    .substring(lensDirection.toString().indexOf('.') + 1)[0]
-                    .toUpperCase() +
+          child: Row(
+            children: [
+              Icon(
+                getCameraLensIcon(lensDirection),
+                color: Colors.white,
+              ),
+              Text(
                 lensDirection
-                    .toString()
-                    .substring(lensDirection.toString().indexOf('.') + 1)
-                    .substring(1),
-            style: const TextStyle(
-              color: Colors.white,
-            ),
+                        .toString()
+                        .substring(lensDirection.toString().indexOf('.') + 1)[0]
+                        .toUpperCase() +
+                    lensDirection
+                        .toString()
+                        .substring(lensDirection.toString().indexOf('.') + 1)
+                        .substring(1),
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -242,19 +247,18 @@ class CameraViewState extends State<CameraView>
     return Container(
       child: Align(
         alignment: Alignment.centerRight,
-        child: FlatButton.icon(
+        child: MaterialButton(
           onPressed: () {
             //TorchCompat.turnOn();
           }, //onFlash,
-          icon: const Icon(
-            Icons.wb_sunny,
-            color: Colors.white,
-          ),
-          label: const Text(
-            'Lanterna',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          child: Row(
+            children: [
+              const Icon(Icons.wb_sunny, color: Colors.white),
+              const Text(
+                'Lanterna',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
         ),
       ),
@@ -274,17 +278,21 @@ class CameraViewState extends State<CameraView>
       return Container(
         child: Align(
           alignment: Alignment.centerRight,
-          child: FlatButton.icon(
+          child: MaterialButton(
             onPressed: gallerySelect,
-            icon: const Icon(
-              Icons.image,
-              color: Colors.white,
-            ),
-            label: const Text(
-              'Galeria',
-              style: TextStyle(
-                color: Colors.white,
-              ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.image,
+                  color: Colors.white,
+                ),
+                const Text(
+                  'Galeria',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                )
+              ],
             ),
           ),
         ),
@@ -761,7 +769,7 @@ class CameraViewState extends State<CameraView>
         ),
         title: const Text('Caption Post'),
         actions: <Widget>[
-          FlatButton(
+          MaterialButton(
             child: const Text('Post'),
             onPressed: isUploading ? null : () => post(),
           )
@@ -797,15 +805,21 @@ class CameraViewState extends State<CameraView>
                                       width: 200.0,
                                       height: 100.0,
                                       alignment: Alignment.center,
-                                      child: RaisedButton.icon(
+                                      child: MaterialButton(
                                         color: Colors.blue,
-                                        icon: const Icon(
-                                          Icons.remove_red_eye,
-                                          color: Colors.white,
-                                        ),
-                                        label: const Text(
-                                          'Aplicar Filtros',
-                                          style: TextStyle(color: Colors.white),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.remove_red_eye,
+                                              color: Colors.white,
+                                            ),
+                                            const Text(
+                                              'Aplicar Filtros',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -839,7 +853,7 @@ class CameraViewState extends State<CameraView>
                                   width: 200.0,
                                   height: 100.0,
                                   alignment: Alignment.center,
-                                  child: RaisedButton.icon(
+                                  child: UtilsWidget.iconButton(
                                     color: Colors.blue,
                                     icon: const Icon(
                                       Icons.remove_red_eye,
@@ -852,10 +866,9 @@ class CameraViewState extends State<CameraView>
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30),
                                     ),
-                                    onPressed: () {
-                                      Get.to(VideoEditor(
-                                          file: File(files[0]!.path)));
-                                    },
+                                    onPressed: () => Get.to(
+                                      VideoEditor(file: File(files[0]!.path)),
+                                    ),
                                   ),
                                 ),
                               )
@@ -907,7 +920,7 @@ class CameraViewState extends State<CameraView>
                 ),
                 const Spacer(),
                 !kIsWeb
-                    ? RaisedButton.icon(
+                    ? UtilsWidget.iconButton(
                         color: Colors.blue,
                         icon: const Icon(
                           Icons.pin_drop,
@@ -920,15 +933,11 @@ class CameraViewState extends State<CameraView>
                           ),
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            15,
-                          ),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         onPressed: getUserLocation,
                       )
-                    : const Padding(
-                        padding: EdgeInsets.zero,
-                      ),
+                    : const Padding(padding: EdgeInsets.zero),
               ],
             ),
           ),

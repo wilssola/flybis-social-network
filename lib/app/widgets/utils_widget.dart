@@ -407,4 +407,22 @@ class UtilsWidget {
       ),
     );
   }
+
+  static Widget iconButton({
+    required Function()? onPressed,
+    Icon? icon,
+    Text? label,
+    Color? color,
+    ShapeBorder? shape,
+  }) {
+    return MaterialButton(
+      onPressed: onPressed,
+      child: Row(children: [
+        icon!,
+        label!,
+      ]),
+      color: color,
+      shape: shape,
+    );
+  }
 }

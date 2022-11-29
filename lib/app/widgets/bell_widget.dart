@@ -85,7 +85,7 @@ class _BellWidgetState extends State<BellWidget> {
               postId: widget.flybisBell.bellContent.contentId,
             );
         trailingImage = widget.flybisBell.bellContent.contentImage;
-        bellText = 'commented: ' + widget.flybisBell.bellContent.contentText;
+        bellText = 'commented: ${widget.flybisBell.bellContent.contentText}';
         break;
 
       case 'message':
@@ -97,11 +97,11 @@ class _BellWidgetState extends State<BellWidget> {
               ),
             );
         trailingImage = flybisUserReceiver!.photoUrl;
-        bellText = 'talked you: ' + widget.flybisBell.bellContent.contentText;
+        bellText = 'talked you: ${widget.flybisBell.bellContent.contentText}';
         break;
 
       default:
-        bellText = 'Unknown bell ' + widget.flybisBell.bellMode;
+        bellText = 'Unknown bell ${widget.flybisBell.bellMode}';
         break;
     }
 
@@ -146,10 +146,7 @@ class _BellWidgetState extends State<BellWidget> {
           ),
           SizedBox(
             width: kBellTextWidth,
-            child: Text(
-              ' ' + bellText,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: Text(' $bellText', overflow: TextOverflow.ellipsis),
           ),
         ],
       ),

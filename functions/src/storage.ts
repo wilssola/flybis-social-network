@@ -24,6 +24,7 @@ export function getDirectoryStorageFromUrl(url: String) {
 
   const splitedPath = path.split("%2F");
   splitedPath[splitedPath.length - 1] = "";
+  
   path = splitedPath.join("/");
 
   return path; //`${storageBucket}/${path}`;

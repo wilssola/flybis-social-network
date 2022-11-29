@@ -18,7 +18,7 @@ dependencies:
   firebase_auth: ^3.0.1 # ANDROID IOS WEB
   firebase_storage: ^10.0.1 # ANDROID IOS WEB
   firebase_dynamic_links: ^4.3.2 # ANDROID IOS
-  firebase_messaging: ^12.0.0 # ANDROID IOS
+  firebase_messaging: ^13.0.1 # ANDROID IOS
   firebase_in_app_messaging: ^0.6.0+19 # ANDROID IOS
   firebase_performance: ^0.8.2 # ANDROID IOS
   firebase_crashlytics: ^2.0.4 # ANDROID IOS
@@ -32,7 +32,7 @@ dependencies:
   # Widgets
   day_night_switcher: ^0.2.0+1 # ANDROID IOS WEB
   introduction_screen: ^3.0.2 # ANDROID IOS WEB
-  simple_animations: ^4.2.0 # ANDROID IOS WEB
+  simple_animations: ^5.0.0+2 # ANDROID IOS WEB
   detectable_text_field: ^2.0.2 # ANDROID IOS WEB
   photo_view: ^0.14.0 # ANDROID IOS WEB
 
@@ -58,7 +58,7 @@ dependencies:
   flutter_snake_navigationbar: ^0.6.1
 
   image: ^3.0.2 # ANDROID IOS WEB
-  image_cropper: ^2.0.3
+  image_cropper: ^3.0.0
   giphy_picker: ^2.0.0
   image_picker: ^0.8.0+3 # ANDROID IOS
   image_picker_for_web: ^2.0.0 # WEB
@@ -150,7 +150,7 @@ dependencies:
 
   flutter_parsed_text: ^2.2.0
 
-  youtube_player_iframe: ^2.0.0
+  youtube_player_iframe: ^3.1.0
 
   modal_bottom_sheet: ^2.0.0
 
@@ -174,7 +174,7 @@ dependencies:
 
   awesome_notifications: ^0.6.21
 
-  flutter_stripe: ^4.0.0
+  flutter_stripe: ^5.0.0
 
   animated_stack: ^0.2.0
   #auto_animated: ^3.0.1
@@ -190,22 +190,20 @@ dependencies:
 
   flutter_platform_widgets: ^2.0.0
 
-  line_icons: ^2.0.1
-
   validatorless: ^1.2.1
   
   flutter_dynamic_icon: ^2.1.0
   
   responsive_framework: ^0.2.0
 
-dependency_overrides:
-  permission_handler: ^10.0.0
+#dependency_overrides:
+  #permission_handler: ^10.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.10.0
   flutter_native_splash: ^2.2.4
   import_sorter: ^4.5.1
   lints: ^2.0.0
